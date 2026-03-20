@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Naturkunskap – Logga in</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,700;0,900;1,300&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg:      #0b1219;
+      --surface: #111c27;
+      --card:    #172233;
+      --border:  #243548;
+      --teal:    #3ecfb2;
+      --teal2:   #27a890;
+      --amber:   #f0b040;
+      --red:     #e05555;
+      --text:    #dde8f0;
+      --muted:   #6a8aa0;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background:
+        radial-gradient(ellipse 70% 50% at 15% 60%, rgba(62,207,178,0.07) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 60% at 85% 20%, rgba(240,176,64,0.05) 0%, transparent 55%);
+      pointer-events: none;
+    }
+
+    /* ── SITE TITLE ── */
+    .site-title {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 900;
+      color: var(--text);
+      text-align: center;
+      margin-bottom: 6px;
+      letter-spacing: -0.01em;
+    }
+    .site-sub {
+      font-size: 0.82rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--teal);
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    /* ── STEP SYSTEM ── */
+    .step { display: none; width: 100%; max-width: 420px; }
+    .step.active { display: block; }
+
+    /* ── LOGIN CARD ── */
+    .login-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 36px 32px;
+      animation: fadeUp 0.4s ease both;
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .login-card h2 {
+      font-family: 'Fraunces', serif;
+      font-size: 1.25rem;
+      margin-bottom: 6px;
+      color: var(--text);
+    }
+    .login-card p {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-bottom: 28px;
+    }
+    label {
+      display: block;
+      font-size: 0.78rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 7px;
+    }
+    input[type="text"], input[type="password"] {
+      width: 100%;
+      background: var(--card);
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1rem;
+      padding: 13px 16px;
+      outline: none;
+      transition: border-color 0.2s;
+      margin-bottom: 18px;
+    }
+    input:focus { border-color: var(--teal); }
+    .btn {
+      width: 100%;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      padding: 13px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-primary { background: var(--teal); color: #0b1219; }
+    .btn-primary:hover { background: var(--teal2); }
+    .btn-ghost {
+      background: transparent;
+      border: 1.5px solid var(--border);
+      color: var(--muted);
+      margin-top: 10px;
+    }
+    .btn-ghost:hover { border-color: var(--text); color: var(--text); }
+    .error-msg {
+      color: var(--red);
+      font-size: 0.83rem;
+      margin-top: -10px;
+      margin-bottom: 14px;
+      min-height: 18px;
+    }
+
+    /* ── NAME INPUT ── */
+    .name-step .login-card p { margin-bottom: 8px; }
+    .name-hint { font-size: 0.78rem; color: var(--muted); margin-bottom: 22px; font-style: italic; }
+
+    /* ── COURSE SELECT ── */
+    .course-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .course-btn {
+      background: var(--card);
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      padding: 20px 16px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: 'DM Sans', sans-serif;
+    }
+    .course-btn:hover { border-color: var(--teal); transform: translateY(-2px); }
+    .course-btn.selected { border-color: var(--teal); background: rgba(62,207,178,0.1); }
+    .course-btn .course-code {
+      font-family: 'Fraunces', serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .course-btn .course-name {
+      font-size: 0.75rem;
+      color: var(--muted);
+      line-height: 1.3;
+    }
+    .course-btn[data-klass="NK1a1"] .course-code { color: #e07a40; }
+    .course-btn[data-klass="NK1a2"] .course-code { color: #4a9fd4; }
+    .course-btn[data-klass="NK1b"]  .course-code { color: #9b6dd6; }
+    .course-btn[data-klass="NK2"]   .course-code { color: #3ecfb2; }
+
+    /* ── TEACHER LINK ── */
+    .teacher-link {
+      display: block;
+      text-align: center;
+      margin-top: 32px;
+      font-size: 0.78rem;
+      color: var(--muted);
+      cursor: pointer;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .teacher-link:hover { color: var(--text); }
+
+    /* ── WELCOME BACK ── */
+    .welcome-tag {
+      font-size: 0.8rem;
+      color: var(--teal);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .welcome-tag span {
+      background: rgba(62,207,178,0.12);
+      border: 1px solid rgba(62,207,178,0.3);
+      border-radius: 30px;
+      padding: 3px 12px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="site-title">Naturkunskap</div>
+<p class="site-sub">Gymnasiet &middot; Kursmaterial &amp; övningar</p>
+
+<!-- STEP 1: Namn -->
+<div class="step name-step active" id="step-name">
+  <div class="login-card">
+    <h2>Välkommen!</h2>
+    <p>Vad heter du?</p>
+    <p class="name-hint">Använd ditt riktiga namn så kan du följa din progression.</p>
+    <label for="input-name">Ditt namn</label>
+    <input type="text" id="input-name" placeholder="Förnamn Efternamn" autocomplete="name"/>
+    <div class="error-msg" id="err-name"></div>
+    <button class="btn btn-primary" onclick="submitName()">Fortsätt →</button>
+  </div>
+  <a class="teacher-link" onclick="showTeacher()">🔑 Lärarvy</a>
+</div>
+
+<!-- STEP 2: Kursval -->
+<div class="step" id="step-course">
+  <div class="login-card">
+    <h2>Välj din kurs</h2>
+    <p>Vilken kurs läser du?</p>
+    <div class="course-grid">
+      <div class="course-btn" data-klass="NK1a1" onclick="selectCourse(this)">
+        <div class="course-code">NK1a1</div>
+        <div class="course-name">Naturkunskap 1a – del 1</div>
+      </div>
+      <div class="course-btn" data-klass="NK1a2" onclick="selectCourse(this)">
+        <div class="course-code">NK1a2</div>
+        <div class="course-name">Naturkunskap 1a – del 2</div>
+      </div>
+      <div class="course-btn" data-klass="NK1b" onclick="selectCourse(this)">
+        <div class="course-code">NK1b</div>
+        <div class="course-name">Naturkunskap 1b</div>
+      </div>
+      <div class="course-btn" data-klass="NK2" onclick="selectCourse(this)">
+        <div class="course-code">NK2</div>
+        <div class="course-name">Naturkunskap 2</div>
+      </div>
+    </div>
+    <div class="error-msg" id="err-course"></div>
+    <button class="btn btn-primary" onclick="submitCourse()">Gå till kursen →</button>
+    <button class="btn btn-ghost" onclick="goBack('step-name','step-course')">← Tillbaka</button>
+  </div>
+</div>
+
+<!-- STEP 3: Lösenord -->
+<div class="step" id="step-password">
+  <div class="login-card">
+    <h2 id="pw-heading">Ange lösenord</h2>
+    <p id="pw-sub">Lösenordet får du av din lärare.</p>
+    <label for="input-pw">Lösenord</label>
+    <input type="password" id="input-pw" placeholder="••••••" autocomplete="current-password"/>
+    <div class="error-msg" id="err-pw"></div>
+    <button class="btn btn-primary" onclick="submitPassword()">Logga in →</button>
+    <button class="btn btn-ghost" onclick="goBack('step-course','step-password')">← Tillbaka</button>
+  </div>
+</div>
+
+<!-- STEP 4: Lärarlösenord -->
+<div class="step" id="step-teacher">
+  <div class="login-card">
+    <h2>Lärarvy</h2>
+    <p>Ange lärarens lösenord för att se elevstatistik.</p>
+    <label for="input-tpw">Lösenord</label>
+    <input type="password" id="input-tpw" placeholder="••••••"/>
+    <div class="error-msg" id="err-tpw"></div>
+    <button class="btn btn-primary" onclick="submitTeacher()">Logga in som lärare →</button>
+    <button class="btn btn-ghost" onclick="goBack('step-name','step-teacher')">← Tillbaka</button>
+  </div>
+</div>
+
+<script src="shared.js"></script>
+<script>
+  let chosenName  = '';
+  let chosenKlass = '';
+
+  // ── Check existing session ───────────────
+  window.addEventListener('load', () => {
+    const s = getSession();
+    if (s) {
+      if (s.role === 'teacher') { window.location.href = 'larare.html'; return; }
+      const info = CLASSES[s.klass];
+      if (info) { window.location.href = info.page; return; }
+    }
+    // Pre-fill name if stored
+    const saved = localStorage.getItem('nk_name');
+    if (saved) document.getElementById('input-name').value = saved;
+  });
+
+  function showStep(id) {
+    document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+  }
+  function goBack(showId, hideId) { showStep(showId); }
+
+  // ── Step 1: Name ─────────────────────────
+  function submitName() {
+    const v = document.getElementById('input-name').value.trim();
+    if (v.length < 2) { document.getElementById('err-name').textContent = 'Ange ditt namn (minst 2 tecken).'; return; }
+    chosenName = v;
+    localStorage.setItem('nk_name', v);
+    document.getElementById('err-name').textContent = '';
+    showStep('step-course');
+  }
+  document.getElementById('input-name').addEventListener('keydown', e => { if (e.key === 'Enter') submitName(); });
+
+  // ── Step 2: Course ───────────────────────
+  function selectCourse(el) {
+    document.querySelectorAll('.course-btn').forEach(b => b.classList.remove('selected'));
+    el.classList.add('selected');
+    chosenKlass = el.dataset.klass;
+  }
+  function submitCourse() {
+    if (!chosenKlass) { document.getElementById('err-course').textContent = 'Välj en kurs först.'; return; }
+    document.getElementById('err-course').textContent = '';
+    document.getElementById('pw-heading').textContent = 'Lösenord för ' + chosenKlass;
+    document.getElementById('input-pw').value = '';
+    showStep('step-password');
+  }
+
+  // ── Step 3: Password ─────────────────────
+  function submitPassword() {
+    const pw = document.getElementById('input-pw').value;
+    if (pw !== CLASS_PASSWORDS[chosenKlass]) {
+      document.getElementById('err-pw').textContent = 'Fel lösenord – försök igen.';
+      return;
+    }
+    document.getElementById('err-pw').textContent = '';
+    setSession({ name: chosenName, klass: chosenKlass, role: 'student', loginTime: Date.now() });
+    window.location.href = CLASSES[chosenKlass].page;
+  }
+  document.getElementById('input-pw').addEventListener('keydown', e => { if (e.key === 'Enter') submitPassword(); });
+
+  // ── Teacher ──────────────────────────────
+  function showTeacher() { showStep('step-teacher'); }
+  function submitTeacher() {
+    const pw = document.getElementById('input-tpw').value;
+    if (pw !== TEACHER_PASSWORD) { document.getElementById('err-tpw').textContent = 'Fel lösenord.'; return; }
+    setSession({ name: 'Lärare', klass: null, role: 'teacher', loginTime: Date.now() });
+    window.location.href = 'larare.html';
+  }
+  document.getElementById('input-tpw').addEventListener('keydown', e => { if (e.key === 'Enter') submitTeacher(); });
+</script>
+</body>
+</html>

@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Naturkunskap 2</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg:      #0b1219;
+      --surface: #111c27;
+      --card:    #172233;
+      --border:  #243548;
+      --teal:    #3ecfb2;
+      --teal2:   #27a890;
+      --amber:   #f0b040;
+      --text:    #dde8f0;
+      --muted:   #6a8aa0;
+      --radius:  10px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ── TOP BAR ── */
+    .top-bar {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      position: sticky; top: 0; z-index: 50;
+    }
+    .top-left { display: flex; align-items: center; gap: 20px; }
+    .site-name {
+      font-family: 'Fraunces', serif;
+      font-size: 1rem;
+      color: var(--teal);
+      text-decoration: none;
+    }
+    .course-badge {
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      background: rgba(62,207,178,0.12);
+      border: 1px solid rgba(62,207,178,0.3);
+      color: var(--teal);
+      padding: 4px 12px;
+      border-radius: 30px;
+    }
+    .user-info {
+      font-size: 0.83rem;
+      color: var(--muted);
+      display: flex; align-items: center; gap: 12px;
+    }
+    .logout-btn {
+      font-size: 0.78rem;
+      color: var(--muted);
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      padding: 5px 12px;
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      transition: all 0.2s;
+    }
+    .logout-btn:hover { color: var(--text); border-color: var(--text); }
+
+    /* ── HERO ── */
+    .hero {
+      padding: 64px 32px 48px;
+      max-width: 900px;
+      margin: 0 auto;
+      position: relative;
+    }
+    .hero-eyebrow {
+      font-size: 0.75rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 14px;
+    }
+    .hero h1 {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 900;
+      line-height: 1.1;
+      margin-bottom: 16px;
+      color: var(--text);
+    }
+    .hero p {
+      font-size: 1rem;
+      color: var(--muted);
+      max-width: 540px;
+      line-height: 1.7;
+    }
+
+    /* ── MOMENT NAV ── */
+    .moment-nav {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      padding: 0 32px 0;
+      max-width: 900px;
+      margin: 0 auto 48px;
+    }
+    .moment-pill {
+      font-size: 0.8rem;
+      font-weight: 500;
+      padding: 7px 16px;
+      border-radius: 30px;
+      border: 1.5px solid var(--border);
+      color: var(--muted);
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .moment-pill:hover { border-color: var(--teal); color: var(--teal); }
+
+    /* ── SECTION ── */
+    .container { max-width: 900px; margin: 0 auto; padding: 0 32px; }
+    .moment-section { margin-bottom: 72px; scroll-margin-top: 80px; }
+    .moment-header {
+      display: flex;
+      align-items: flex-end;
+      gap: 20px;
+      margin-bottom: 28px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .moment-icon { font-size: 2rem; }
+    .moment-title-wrap {}
+    .moment-eyebrow {
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+    .moment-title {
+      font-family: 'Fraunces', serif;
+      font-size: 1.6rem;
+      color: var(--text);
+    }
+
+    /* ── CONTENT TYPE TABS ── */
+    .content-tabs {
+      display: flex;
+      gap: 0;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 24px;
+    }
+    .content-tab {
+      padding: 10px 18px;
+      font-size: 0.83rem;
+      color: var(--muted);
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .content-tab.active { color: var(--teal); border-bottom-color: var(--teal); }
+    .content-tab:hover:not(.active) { color: var(--text); }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* ── MATERIAL CARDS ── */
+    .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px,1fr)); gap: 14px; }
+    .mat-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px 20px;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .mat-card:hover { border-color: rgba(62,207,178,0.4); transform: translateY(-2px); }
+    .mat-card h4 { font-size: 0.95rem; margin-bottom: 7px; color: var(--text); }
+    .mat-card p  { font-size: 0.82rem; color: var(--muted); line-height: 1.55; }
+    .mat-link {
+      display: inline-block;
+      margin-top: 14px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--teal);
+      text-decoration: none;
+      letter-spacing: 0.04em;
+    }
+    .mat-link:hover { text-decoration: underline; }
+
+    /* ── TASKS ── */
+    .task-list { display: flex; flex-direction: column; gap: 12px; }
+    .task-item {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--teal2);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      padding: 18px 22px;
+    }
+    .task-meta { display: flex; gap: 8px; align-items: center; margin-bottom: 7px; }
+    .badge {
+      font-size: 0.68rem; font-weight: 600; letter-spacing: 0.08em;
+      text-transform: uppercase; padding: 3px 9px; border-radius: 30px;
+    }
+    .badge-e { background: rgba(62,207,178,0.15); color: var(--teal); }
+    .badge-m { background: rgba(240,176,64,0.15);  color: var(--amber); }
+    .badge-a { background: rgba(224,85,85,0.15);   color: #e08080; }
+    .task-item h4 { font-size: 0.95rem; margin-bottom: 6px; }
+    .task-item p  { font-size: 0.85rem; color: var(--muted); line-height: 1.6; }
+
+    /* ── QUIZ INLINE ── */
+    .quiz-start {
+      background: linear-gradient(135deg, #172233 0%, #1a2d3f 100%);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px;
+      text-align: center;
+    }
+    .quiz-start h4 { font-family: 'Fraunces', serif; font-size: 1.15rem; margin-bottom: 8px; }
+    .quiz-start p  { font-size: 0.85rem; color: var(--muted); margin-bottom: 20px; }
+    .btn-quiz {
+      display: inline-block;
+      background: var(--teal);
+      color: #0b1219;
+      font-weight: 600;
+      font-size: 0.88rem;
+      padding: 11px 26px;
+      border-radius: 6px;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .btn-quiz:hover { background: var(--teal2); }
+
+    /* ── VIDEO ── */
+    .video-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px,1fr)); gap: 14px; }
+    .vid-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      transition: border-color 0.2s;
+    }
+    .vid-card:hover { border-color: rgba(62,207,178,0.4); }
+    .vid-thumb {
+      height: 110px;
+      background: #0d1e2d;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2rem;
+      position: relative;
+    }
+    .play-icon {
+      position: absolute;
+      width: 40px; height: 40px;
+      background: rgba(62,207,178,0.2);
+      border: 2px solid var(--teal);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.9rem;
+      padding-left: 3px;
+    }
+    .vid-info { padding: 14px 16px; }
+    .vid-info h4 { font-size: 0.88rem; margin-bottom: 5px; }
+    .vid-info p  { font-size: 0.78rem; color: var(--muted); }
+    .vid-info a  { display: inline-block; margin-top: 10px; font-size: 0.78rem; font-weight: 600; color: var(--teal); text-decoration: none; }
+
+    /* ── CHECKOFF BUTTON ── */
+    .checkoff-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 10px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 500;
+      padding: 5px 12px;
+      border-radius: 30px;
+      border: 1.5px solid var(--border);
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .checkoff-btn:hover:not(.checked) { border-color: var(--teal); color: var(--teal); }
+    .checkoff-btn.checked {
+      border-color: var(--green);
+      background: rgba(76,175,130,0.12);
+      color: var(--green);
+      cursor: default;
+    }
+    .checkoff-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      border: 1.5px solid currentColor;
+      flex-shrink: 0;
+    }
+    .checkoff-btn.checked .checkoff-dot {
+      background: var(--green);
+      border-color: var(--green);
+    }
+    .resource-progress {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .res-prog-bar { flex:1; max-width:100px; height:3px; background:var(--border); border-radius:2px; overflow:hidden; }
+    .res-prog-fill { height:100%; background:var(--green); border-radius:2px; transition:width .3s; }
+
+    /* ── FLASHCARD PICKER WITHIN SECTION ── */
+    .fc-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: 12px; }
+    .fc-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px 18px;
+      text-decoration: none;
+      color: var(--text);
+      display: block;
+      transition: all 0.2s;
+      position: relative;
+    }
+    .fc-card:hover { border-color: var(--teal); transform: translateY(-2px); }
+    .fc-card h4 { font-size: 0.9rem; margin-bottom: 4px; }
+    .fc-card .fc-count { font-size: 0.75rem; color: var(--muted); }
+    .fc-card .fc-arrow {
+      position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+      font-size: 1rem; color: var(--teal); opacity: 0;
+      transition: opacity 0.2s;
+    }
+    .fc-card:hover .fc-arrow { opacity: 1; }
+
+    /* ── SVÅRIGHETSTRAPPA ── */
+    .staircase {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .stair {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 14px;
+      border-radius: 30px;
+      border: 1.5px solid var(--border);
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: var(--muted);
+      background: transparent;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .stair.active {
+      border-color: var(--teal);
+      color: var(--teal);
+      background: rgba(62,207,178,0.08);
+    }
+    .stair.done {
+      border-color: var(--green);
+      color: var(--green);
+      background: rgba(76,175,130,0.08);
+    }
+    .stair-num {
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      border: 1.5px solid currentColor;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.68rem;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .stair.done .stair-num {
+      background: var(--green);
+      border-color: var(--green);
+      color: #0b1219;
+    }
+    .stair-done-icon { display: none; }
+    .stair.done .stair-done-icon { display: inline; }
+    .stair.done .stair-num-val { display: none; }
+    .stair-arrow {
+      color: var(--border);
+      font-size: 0.8rem;
+      margin: 0 2px;
+    }
+
+    /* ── PLACEHOLDER ── */
+    .coming-soon {
+      background: var(--card);
+      border: 1px dashed var(--border);
+      border-radius: var(--radius);
+      padding: 32px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      text-align: center;
+      padding: 28px;
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-top: 40px;
+    }
+
+    @media(max-width:600px) {
+      .top-bar { padding: 14px 16px; }
+      .hero, .container { padding-left: 16px; padding-right: 16px; }
+      .moment-nav { padding: 0 16px 0; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="top-bar">
+  <div class="top-left">
+    <a href="index.html" class="site-name">Naturkunskap</a>
+    <span class="course-badge">NK2</span>
+  </div>
+  <div class="user-info">
+    <span id="user-greeting"></span>
+    <a href="framsteg.html" style="font-size:0.78rem;color:var(--teal);text-decoration:none;border:1px solid rgba(62,207,178,0.3);border-radius:5px;padding:5px 12px;transition:all .2s;" onmouseover="this.style.background='rgba(62,207,178,0.1)'" onmouseout="this.style.background='transparent'">📊 Mitt framsteg</a>
+    <button class="logout-btn" onclick="logout()">Logga ut</button>
+  </div>
+</nav>
+
+<div class="hero">
+  <p class="hero-eyebrow">Gymnasiet &middot; 100 poäng</p>
+  <h1>Naturkunskap 2</h1>
+  <p>Välkommen till kurssidan. Här hittar du allt material, uppgifter, quiz och videoresurser sorterade per moment.</p>
+</div>
+
+<div class="moment-nav">
+  <a class="moment-pill" href="#evolution">🌿 Evolution</a>
+  <a class="moment-pill" href="#manniskokroppen">🫀 Människokroppen</a>
+  <a class="moment-pill" href="#universum">🔭 Universum & Materia</a>
+  <a class="moment-pill" href="#kemi">⚗️ Kemi</a>
+  <a class="moment-pill" href="#metod">🧪 Naturvetenskaplig metod</a>
+</div>
+
+<div class="container">
+
+  <!-- ══════════════════════════════════
+       MOMENT 1 – EVOLUTION
+  ══════════════════════════════════ -->
+  <div class="moment-section" id="evolution">
+    <div class="moment-header">
+      <div class="moment-icon">🌿</div>
+      <div class="moment-title-wrap">
+        <div class="moment-eyebrow">Moment 1</div>
+        <div class="moment-title">Evolution</div>
+      </div>
+    </div>
+    <div class="staircase" id="stair-evo">
+      <div class="stair" data-stair="forsta"><div class="stair-num"><span class="stair-num-val">1</span><span class="stair-done-icon">✓</span></div>Förstå</div>
+      <span class="stair-arrow">→</span>
+      <div class="stair" data-stair="befasta"><div class="stair-num"><span class="stair-num-val">2</span><span class="stair-done-icon">✓</span></div>Befästa</div>
+      <span class="stair-arrow">→</span>
+      <div class="stair" data-stair="tillamp"><div class="stair-num"><span class="stair-num-val">3</span><span class="stair-done-icon">✓</span></div>Tillämpa</div>
+    </div>
+    <div class="content-tabs" data-moment="evo">
+      <div class="content-tab active" data-tab="material" onclick="switchTab(this,'evo')">📚 Material</div>
+      <div class="content-tab" data-tab="uppgifter" onclick="switchTab(this,'evo')">✏️ Uppgifter</div>
+      <div class="content-tab" data-tab="quiz" onclick="switchTab(this,'evo')">🧠 Quiz</div>
+      <div class="content-tab" data-tab="video" onclick="switchTab(this,'evo')">🎬 Video</div>
+      <div class="content-tab" data-tab="flashcards" onclick="switchTab(this,'evo')">🃏 Flashcards</div>
+    </div>
+    <div class="tab-panel active" data-moment="evo" data-type="material">
+      <div class="resource-progress" id="res-prog-evo-material"><span id="rp-evo-material-txt">0 av 3 klara</span><div class="res-prog-bar"><div class="res-prog-fill" id="rp-evo-material-bar" style="width:0%"></div></div></div>
+      <div class="cards">
+        <div class="mat-card"><h4>Darwins naturliga urval</h4><p>Variationer, selektion och överlevnad – grunderna i evolutionsteorin.</p><a href="#" class="mat-link">Öppna →</a><br><button class="checkoff-btn" data-resource="evo-mat-1" onclick="checkoff(this,'evo')"><span class="checkoff-dot"></span><span class="checkoff-label">Markera som läst</span></button></div>
+        <div class="mat-card"><h4>Bevis för evolution</h4><p>Fossil, jämförande anatomi, molekylärbiologi och biogeografi.</p><a href="#" class="mat-link">Öppna →</a><br><button class="checkoff-btn" data-resource="evo-mat-2" onclick="checkoff(this,'evo')"><span class="checkoff-dot"></span><span class="checkoff-label">Markera som läst</span></button></div>
+        <div class="mat-card"><h4>Artbildning</h4><p>Allopatrisk och sympatrisk artbildning – hur nya arter uppstår.</p><a href="#" class="mat-link">Öppna →</a><br><button class="checkoff-btn" data-resource="evo-mat-3" onclick="checkoff(this,'evo')"><span class="checkoff-dot"></span><span class="checkoff-label">Markera som läst</span></button></div>
+      </div>
+    </div>
+    <div class="tab-panel" data-moment="evo" data-type="uppgifter">
+      <div class="task-list">
+        <div class="task-item"><div class="task-meta"><span class="badge badge-e">Enkel</span></div><h4>Uppgift 1 – Naturligt urval</h4><p>Beskriv med egna ord hur naturligt urval fungerar. Ge ett konkret exempel från naturen.</p></div>
+        <div class="task-item"><div class="task-meta"><span class="badge badge-m">Medel</span></div><h4>Uppgift 2 – Evolutionsbevis</h4><p>Jämför minst tre olika typer av bevis för evolution och diskutera varför de stöder teorin.</p></div>
+      </div>
+    </div>
+    <div class="tab-panel" data-moment="evo" data-type="quiz">
+      <div class="quiz-start"><h4>Quiz – Evolution</h4><p>Testa dina kunskaper med 5 frågor om evolutionsteori och naturligt urval.</p><a href="quiz-evolution.html" class="btn-quiz">Starta quiz →</a></div>
+    </div>
+    <div class="tab-panel" data-moment="evo" data-type="video">
+      <div class="resource-progress"><span id="rp-evo-video-txt">0 av 2 klara</span><div class="res-prog-bar"><div class="res-prog-fill" id="rp-evo-video-bar" style="width:0%"></div></div></div>
+      <div class="video-grid">
+        <div class="vid-card"><div class="vid-thumb">🌿<span class="play-icon">▶</span></div><div class="vid-info"><h4>Darwins resa</h4><p>Om beagel-resan och hur observationerna ledde till evolutionsteorin.</p><a href="#" target="_blank">Se video →</a><button class="checkoff-btn" data-resource="evo-vid-1" onclick="checkoff(this,'evo')"><span class="checkoff-dot"></span><span class="checkoff-label">Markera som sedd</span></button></div></div>
+        <div class="vid-card"><div class="vid-thumb">🦋<span class="play-icon">▶</span></div><div class="vid-info"><h4>Industrimelanismen</h4><p>Ett klassiskt exempel på naturligt urval i realtid.</p><a href="#" target="_blank">Se video →</a><button class="checkoff-btn" data-resource="evo-vid-2" onclick="checkoff(this,'evo')"><span class="checkoff-dot"></span><span class="checkoff-label">Markera som sedd</span></button></div></div>
+      </div>
+    </div>
+    <div class="tab-panel" data-moment="evo" data-type="flashcards">
+      <div class="coming-soon">🃏 Flashcards för Evolution – kommer snart. Skicka dina begreppslistor till läraren!</div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       MOMENT 2 – MÄNNISKOKROPPEN
+  ══════════════════════════════════ -->
+  <div class="moment-section" id="manniskokroppen">
+    <div class="moment-header">
+      <div class="moment-icon">🫀</div>
+      <div class="moment-title-wrap">
+        <div class="moment-eyebrow">Moment 2</div>
+        <div class="moment-title">Människokroppen</div>
+      </div>
+    </div>
+    <div class="staircase" id="stair-mk">
+      <div class="stair" data-stair="forsta"><div class="stair-num"><span class="stair-num-val">1</span><span class="stair-done-icon">✓</span></div>Förstå</div>
+      <span class="stair-arrow">→</span>
+      <div class="stair" data-stair="befasta"><div class="stair-num"><span class="stair-num-val">2</span><span class="stair-done-icon">✓</span></div>Befästa</div>
+      <span class="stair-arrow">→</span>
+      <div class="stair" data-stair="tillamp"><div class="stair-num"><span class="stair-num-val">3</span><span class="stair-done-icon">✓</span></div>Tillämpa</div>
+    </div>
+    <div class="content-tabs" data-moment="mk">
+      <div class="content-tab active" data-tab="material" onclick="switchTab(this,'mk')">📚 Material</div>
+      <div class="content-tab" data-tab="uppgifter" onclick="switchTab(this,'mk')">✏️ Uppgifter</div>
+      <div class="content-tab" data-tab="quiz" onclick="switchTab(this,'mk')">🧠 Quiz</div>
+      <div class="content-tab" data-tab="video" onclick="switchTab(this,'mk')">🎬 Video</div>
+      <div class="content-tab" data-tab="flashcards" onclick="switchTab(this,'mk')">🃏 Flashcards</div>
+    </div>
+    <div class="tab-panel active" data-moment="mk" data-type="material">
+      <div class="resource-progress"><span id="rp-mk-material-txt">0 av 6 klara</span><div class="res-prog-bar"><div class="res-prog-fill" id="rp-mk-material-bar" style="width:0%"></div></div></div>
+      <div class="cards">
+        <div class="mat-card"><h4>Hormonsystemet</h4><p>Endokrina körtlar, hormoner och negativ återkoppling.</p><a href="#" class="mat-link">Öppna →</a><br><button class="checkoff-btn" data-resource="mk-mat-1" onclick="checkoff(this,'mk')"><span class="checkoff-dot"></span><span class="checkoff-label">Markera som läst</span></button></div>
+        <div class="mat-card"><h4>Nervsystemet</h4><p>CNS, PNS, nervimpulser och synapser.</p><a href="#" class="mat-link">Öppna →</a><br><button class="checkoff-btn" data-resource="mk-mat-2" onclick="checkoff(this,'mk')"><span class="checkoff-dot"></span><span class="checkoff-label">Markera som läst</span></button></div>
+        <div class="mat-card"><h4>Cirkulationssystemet</h4><p>Hjärtat, blodkärl och blodets funktioner.</p><a href="#" class="mat-link">Öppna →</a><br><button class="checkoff-btn" data-resource="mk-mat-3" onclick="checkoff(this,'mk')"><span class="checkoff-dot"></span><span class="checkoff-label">Markera som läst</span></button></div>
+        <div class="mat-card"><h4>Andningssystemet</h4><p>Lungor, gasutbyte och andningsreglering.</p><a href="#" class="mat-link">Öppna →</a><br><button class="checkoff-btn" data-resource="mk-mat-4" onclick="checkoff(this,'mk')"><span class="checkoff-dot"></span><span class="checkoff-label">Markera som läst</span></button></div>
+        <div class="mat-card"><h4>Immunförsvaret</h4><p>Specifikt och ospecifikt försvar, antikroppar och vaccination.</p><a href="material-immunforsvaret.html" class="mat-link">Öppna →</a><br><button class="checkoff-btn" data-resource="mk-mat-5" onclick="checkoff(this,'mk')"><span class="checkoff-dot"></span><span class="checkoff-label">Markera som läst</span></button></div>
+        <div class="mat-card"><h4>Utsöndringsorganen</h4><p>Njurarnas uppbyggnad, filtrering och reglering av vätskebalans.</p><a href="#" class="mat-link">Öppna →</a><br><button class="checkoff-btn" data-resource="mk-mat-6" onclick="checkoff(this,'mk')"><span class="checkoff-dot"></span><span class="checkoff-label">Markera som läst</span></button></div>
+      </div>
+    </div>
+    <div class="tab-panel" data-moment="mk" data-type="uppgifter">
+      <div class="task-list">
+        <div class="task-item"><div class="task-meta"><span class="badge badge-e">Enkel</span></div><h4>Uppgift 1 – Hormonsystemet</h4><p>Förklara hur insulin och glukagon samverkar för att reglera blodsockret. Rita gärna ett diagram.</p></div>
+        <div class="task-item"><div class="task-meta"><span class="badge badge-m">Medel</span></div><h4>Uppgift 2 – Kroppens kommunikation</h4><p>Jämför hur nervsystemet och hormonsystemet kommunicerar. Vad är skillnaden i hastighet och varaktighet?</p></div>
+        <div class="task-item"><div class="task-meta"><span class="badge badge-a">Avancerad</span></div><h4>Uppgift 3 – Sjukdomsanalys</h4><p>Välj en folksjukdom (t.ex. diabetes typ 2, högt blodtryck) och analysera den utifrån minst två organsystem. 600–800 ord.</p></div>
+      </div>
+    </div>
+    <div class="tab-panel" data-moment="mk" data-type="quiz">
+      <div class="quiz-start"><h4>Quiz – Människokroppen</h4><p>Testa dina kunskaper om kroppens organsystem.</p><a href="quiz-manniskokroppen.html" class="btn-quiz">Starta quiz →</a></div>
+    </div>
+    <div class="tab-panel" data-moment="mk" data-type="video">
+      <div class="resource-progress"><span id="rp-mk-video-txt">0 av 9 klara</span><div class="res-prog-bar"><div class="res-prog-fill" id="rp-mk-video-bar" style="width:0%"></div></div></div>
+      <div class="video-grid">
+        <div class="vid-card"><div class="vid-thumb">🌬️<span class="play-icon">▶</span></div><div class="vid-info"><h4>Andningen och andningsorganen</h4><p>Genomgång av lungornas uppbyggnad, andningsmekaniken och gasutbytet.</p><a href="https://app.begreppa.se/videos/vard-och-omsorg/anatomi-och-fysiologi/andningen-och-andningsorganen" target="_blank">Se video på Begreppa →</a><button class="checkoff-btn" data-resource="mk-vid-1" onclick="checkoff(this,'mk')"><span class="checkoff-dot"></span><span class="checkoff-label">Markera som sedd</span></button></div></div>
+        <div class="vid-card"><div class="vid-thumb">🩸<span class="play-icon">▶</span></div><div class="vid-info"><h4>Blodet och blodcirkulationen</h4><p>Blodets beståndsdelar, hjärtats funktion och hur blodet transporteras runt i kroppen.</p><a href="https://app.begreppa.se/videos/vard-och-omsorg/anatomi-och-fysiologi/blodet-och-blodomloppet" target="_blank">Se video på Begreppa →</a><button class="checkoff-btn" data-resource="mk-vid-2" onclick="checkoff(this,'mk')"><span class="checkoff-dot"></span><span class="checkoff-label">Markera som sedd</span></button></div></div>
+        <div class="vid-card"><div class="vid-thumb">🛡️<span class="play-icon">▶</span></div><div class="vid-info"><h4>Kroppens försvar – immunsystemet</h4><p>Ospecifikt och specifikt försvar, vita blodkroppar och hur kroppen bekämpar infektioner.</p><a href="https://app.begreppa.se/videos/vard-och-omsorg/anatomi-och-fysiologi/kroppens-forsvar" target="_blank">Se video på Begreppa →</a><button class="checkoff-btn" data-resource="mk-vid-3" onclick="checkoff(this,'mk')"><span class="checkoff-dot"></span><span class="checkoff-label">Markera som sedd</span></button></div></div>
+        <div class="vid-card"><div class="vid-thumb">👁️<span class="play-icon">▶</span></div><div class="vid-info"><h4>Sinnesorganen</h4><p>Hur ögat, örat och övriga sinnesorgan tar emot och förmedlar information till hjärnan.</p><a href="https://app.begreppa.se/videos/vard-och-omsorg/anatomi-och-fysiologi/sinnesorganen" target="_blank">Se video på Begreppa →</a><button class="checkoff-btn" data-resource="mk-vid-4" onclick="checkoff(this,'mk')"><span class="checkoff-label">Markera som sedd</span></button></div></div>
+        <div class="vid-card"><div class="vid-thumb">🧠<span class="play-icon">▶</span></div><div class="vid-info"><h4>Nervsystemet</h4><p>Centrala och perifera nervsystemets uppbyggnad, nervimpulser och reflexer.</p><a href="https://app.begreppa.se/videos/vard-och-omsorg/anatomi-och-fysiologi/nervsystemet" target="_blank">Se video på Begreppa →</a><button class="checkoff-btn" data-resource="mk-vid-5" onclick="checkoff(this,'mk')"><span class="checkoff-dot"></span><span class="checkoff-label">Markera som sedd</span></button></div></div>
+        <div class="vid-card"><div class="vid-thumb">🧪<span class="play-icon">▶</span></div><div class="vid-info"><h4>Endokrina organ – hormonsystemet</h4><p>Körtlarnas uppbyggnad, hormonernas transport i blodet och reglering via återkoppling.</p><a href="https://app.begreppa.se/videos/vard-och-omsorg/anatomi-och-fysiologi/endokrina-organ" target="_blank">Se video på Begreppa →</a><button class="checkoff-btn" data-resource="mk-vid-6" onclick="checkoff(this,'mk')"><span class="checkoff-dot"></span><span class="checkoff-label">Markera som sedd</span></button></div></div>
+        <div class="vid-card"><div class="vid-thumb">💧<span class="play-icon">▶</span></div><div class="vid-info"><h4>Urinsystemet – njurarnas funktion</h4><p>Njurarnas filtrering av blodet, urinbildning och reglering av vätskebalansen.</p><a href="https://app.begreppa.se/videos/biologi/M%C3%A4nniskans-anatomi-i-3D/Urinsystemet-(fortsattning)" target="_blank">Se video på Begreppa →</a><button class="checkoff-btn" data-resource="mk-vid-7" onclick="checkoff(this,'mk')"><span class="checkoff-dot"></span><span class="checkoff-label">Markera som sedd</span></button></div></div>
+        <div class="vid-card"><div class="vid-thumb">🫁<span class="play-icon">▶</span></div><div class="vid-info"><h4>Andningsorganen – fördjupning</h4><p>Fördjupad genomgång av andningsorganens anatomi i 3D, från näshåla till alveoler.</p><a href="https://app.begreppa.se/videos/biologi/M%C3%A4nniskans-anatomi-i-3D/Andningsorganen-niv%C3%A5-2" target="_blank">Se video på Begreppa →</a><button class="checkoff-btn" data-resource="mk-vid-8" onclick="checkoff(this,'mk')"><span class="checkoff-dot"></span><span class="checkoff-label">Markera som sedd</span></button></div></div>
+        <div class="vid-card"><div class="vid-thumb">🫀<span class="play-icon">▶</span></div><div class="vid-info"><h4>Hjärtat – fördjupning</h4><p>Hjärtats inre struktur, klaffar, retledningssystem och pumpfunktion i detalj.</p><a href="https://app.begreppa.se/videos/biologi/M%C3%A4nniskans-anatomi-i-3D/hjartat-fortsattning" target="_blank">Se video på Begreppa →</a><button class="checkoff-btn" data-resource="mk-vid-9" onclick="checkoff(this,'mk')"><span class="checkoff-dot"></span><span class="checkoff-label">Markera som sedd</span></button></div></div>
+      </div>
+    </div>
+    <div class="tab-panel" data-moment="mk" data-type="flashcards">
+      <!-- FLASHCARD PICKER -->
+      <p style="font-size:0.85rem;color:var(--muted);margin-bottom:18px">Välj ett begreppsset att öva på:</p>
+      <div class="fc-grid">
+        <a href="flashcards-hormonsystemet.html" class="fc-card"><h4>🧪 Hormonsystemet</h4><div class="fc-count">14 begrepp</div><span class="fc-arrow">→</span></a>
+        <a href="flashcards-nervsystemet.html" class="fc-card"><h4>🧠 Nervsystemet</h4><div class="fc-count">28 begrepp</div><span class="fc-arrow">→</span></a>
+        <a href="flashcards-immunforsvaret.html" class="fc-card"><h4>🛡️ Immunförsvaret</h4><div class="fc-count">32 begrepp</div><span class="fc-arrow">→</span></a>
+        <a href="flashcards-cirkulationen.html" class="fc-card"><h4>🫀 Cirkulationssystemet</h4><div class="fc-count">21 begrepp</div><span class="fc-arrow">→</span></a>
+        <a href="flashcards-andningen.html" class="fc-card"><h4>🌬️ Andningen</h4><div class="fc-count">12 begrepp</div><span class="fc-arrow">→</span></a>
+        <a href="flashcards-cellen.html" class="fc-card"><h4>🔬 Cellen</h4><div class="fc-count">11 begrepp</div><span class="fc-arrow">→</span></a>
+        <a href="flashcards-utsondringsorganen.html" class="fc-card"><h4>💧 Utsöndringsorganen</h4><div class="fc-count">15 begrepp</div><span class="fc-arrow">→</span></a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       MOMENT 3 – UNIVERSUM & MATERIA
+  ══════════════════════════════════ -->
+  <div class="moment-section" id="universum">
+    <div class="moment-header">
+      <div class="moment-icon">🔭</div>
+      <div class="moment-title-wrap">
+        <div class="moment-eyebrow">Moment 3</div>
+        <div class="moment-title">Universum &amp; Materia</div>
+      </div>
+    </div>
+    <div class="staircase" id="stair-uni">
+      <div class="stair" data-stair="forsta"><div class="stair-num"><span class="stair-num-val">1</span><span class="stair-done-icon">✓</span></div>Förstå</div>
+      <span class="stair-arrow">→</span>
+      <div class="stair" data-stair="befasta"><div class="stair-num"><span class="stair-num-val">2</span><span class="stair-done-icon">✓</span></div>Befästa</div>
+      <span class="stair-arrow">→</span>
+      <div class="stair" data-stair="tillamp"><div class="stair-num"><span class="stair-num-val">3</span><span class="stair-done-icon">✓</span></div>Tillämpa</div>
+    </div>
+    <div class="content-tabs" data-moment="uni">
+      <div class="content-tab active" data-tab="material" onclick="switchTab(this,'uni')">📚 Material</div>
+      <div class="content-tab" data-tab="uppgifter" onclick="switchTab(this,'uni')">✏️ Uppgifter</div>
+      <div class="content-tab" data-tab="quiz" onclick="switchTab(this,'uni')">🧠 Quiz</div>
+      <div class="content-tab" data-tab="video" onclick="switchTab(this,'uni')">🎬 Video</div>
+      <div class="content-tab" data-tab="flashcards" onclick="switchTab(this,'uni')">🃏 Flashcards</div>
+    </div>
+    <div class="tab-panel active" data-moment="uni" data-type="material">
+      <div class="resource-progress"><span id="rp-uni-material-txt">0 av 3 klara</span><div class="res-prog-bar"><div class="res-prog-fill" id="rp-uni-material-bar" style="width:0%"></div></div></div>
+      <div class="cards">
+        <div class="mat-card"><h4>Big Bang och universums uppkomst</h4><p>Från singularitet till galaxer – universums tidslinje.</p><a href="#" class="mat-link">Öppna →</a><br><button class="checkoff-btn" data-resource="uni-mat-1" onclick="checkoff(this,'uni')"><span class="checkoff-dot"></span><span class="checkoff-label">Markera som läst</span></button></div>
+        <div class="mat-card"><h4>Stjärnors livscykel</h4><p>Nebulosa, huvudserien, röd jätte, supernova och svart hål.</p><a href="#" class="mat-link">Öppna →</a><br><button class="checkoff-btn" data-resource="uni-mat-2" onclick="checkoff(this,'uni')"><span class="checkoff-dot"></span><span class="checkoff-label">Markera som läst</span></button></div>
+        <div class="mat-card"><h4>Atomens uppbyggnad</h4><p>Protoner, neutroner och elektroner – periodsystemets grunder.</p><a href="#" class="mat-link">Öppna →</a><br><button class="checkoff-btn" data-resource="uni-mat-3" onclick="checkoff(this,'uni')"><span class="checkoff-dot"></span><span class="checkoff-label">Markera som läst</span></button></div>
+      </div>
+    </div>
+    <div class="tab-panel" data-moment="uni" data-type="uppgifter">
+      <div class="coming-soon">✏️ Uppgifter för Universum & Materia – läggs till snart.</div>
+    </div>
+    <div class="tab-panel" data-moment="uni" data-type="quiz">
+      <div class="quiz-start"><h4>Quiz – Universum &amp; Materia</h4><p>Testa dina kunskaper om kosmologi och atomfysik.</p><a href="quiz-universum.html" class="btn-quiz">Starta quiz →</a></div>
+    </div>
+    <div class="tab-panel" data-moment="uni" data-type="video">
+      <div class="resource-progress"><span id="rp-uni-video-txt">0 av 1 klara</span><div class="res-prog-bar"><div class="res-prog-fill" id="rp-uni-video-bar" style="width:0%"></div></div></div>
+      <div class="video-grid">
+        <div class="vid-card"><div class="vid-thumb">🌌<span class="play-icon">▶</span></div><div class="vid-info"><h4>Big Bang förklarad</h4><p>Universums uppkomst och expansion.</p><a href="#" target="_blank">Se video →</a><button class="checkoff-btn" data-resource="uni-vid-1" onclick="checkoff(this,'uni')"><span class="checkoff-dot"></span><span class="checkoff-label">Markera som sedd</span></button></div></div>
+      </div>
+    </div>
+    <div class="tab-panel" data-moment="uni" data-type="flashcards">
+      <div class="coming-soon">🃏 Flashcards för Universum & Materia – skicka dina begreppslistor!</div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       MOMENT 4 – KEMI
+  ══════════════════════════════════ -->
+  <div class="moment-section" id="kemi">
+    <div class="moment-header">
+      <div class="moment-icon">⚗️</div>
+      <div class="moment-title-wrap">
+        <div class="moment-eyebrow">Moment 4</div>
+        <div class="moment-title">Organisk &amp; Oorganisk kemi</div>
+      </div>
+    </div>
+    <div class="staircase" id="stair-kem">
+      <div class="stair" data-stair="forsta"><div class="stair-num"><span class="stair-num-val">1</span><span class="stair-done-icon">✓</span></div>Förstå</div>
+      <span class="stair-arrow">→</span>
+      <div class="stair" data-stair="befasta"><div class="stair-num"><span class="stair-num-val">2</span><span class="stair-done-icon">✓</span></div>Befästa</div>
+      <span class="stair-arrow">→</span>
+      <div class="stair" data-stair="tillamp"><div class="stair-num"><span class="stair-num-val">3</span><span class="stair-done-icon">✓</span></div>Tillämpa</div>
+    </div>
+    <div class="content-tabs" data-moment="kem">
+      <div class="content-tab active" data-tab="material" onclick="switchTab(this,'kem')">📚 Material</div>
+      <div class="content-tab" data-tab="uppgifter" onclick="switchTab(this,'kem')">✏️ Uppgifter</div>
+      <div class="content-tab" data-tab="quiz" onclick="switchTab(this,'kem')">🧠 Quiz</div>
+      <div class="content-tab" data-tab="video" onclick="switchTab(this,'kem')">🎬 Video</div>
+      <div class="content-tab" data-tab="flashcards" onclick="switchTab(this,'kem')">🃏 Flashcards</div>
+    </div>
+    <div class="tab-panel active" data-moment="kem" data-type="material">
+      <div class="resource-progress"><span id="rp-kem-material-txt">0 av 3 klara</span><div class="res-prog-bar"><div class="res-prog-fill" id="rp-kem-material-bar" style="width:0%"></div></div></div>
+      <div class="cards">
+        <div class="mat-card"><h4>Kolföreningar</h4><p>Kolväten, alkoholer, syror och estrar – organisk kemi i vardagen.</p><a href="#" class="mat-link">Öppna →</a><br><button class="checkoff-btn" data-resource="kem-mat-1" onclick="checkoff(this,'kem')"><span class="checkoff-dot"></span><span class="checkoff-label">Markera som läst</span></button></div>
+        <div class="mat-card"><h4>Kemiska reaktioner</h4><p>Syra-bas, redox och hur vi skriver reaktionsformler.</p><a href="#" class="mat-link">Öppna →</a><br><button class="checkoff-btn" data-resource="kem-mat-2" onclick="checkoff(this,'kem')"><span class="checkoff-dot"></span><span class="checkoff-label">Markera som läst</span></button></div>
+        <div class="mat-card"><h4>Miljökemi</h4><p>Surt regn, övergödning och kemikalier i ekosystem.</p><a href="#" class="mat-link">Öppna →</a><br><button class="checkoff-btn" data-resource="kem-mat-3" onclick="checkoff(this,'kem')"><span class="checkoff-dot"></span><span class="checkoff-label">Markera som läst</span></button></div>
+      </div>
+    </div>
+    <div class="tab-panel" data-moment="kem" data-type="uppgifter">
+      <div class="coming-soon">✏️ Uppgifter för Kemi – läggs till snart.</div>
+    </div>
+    <div class="tab-panel" data-moment="kem" data-type="quiz">
+      <div class="quiz-start"><h4>Quiz – Kemi</h4><p>Testa dina kunskaper om organisk och oorganisk kemi.</p><a href="quiz-kemi.html" class="btn-quiz">Starta quiz →</a></div>
+    </div>
+    <div class="tab-panel" data-moment="kem" data-type="video">
+      <div class="coming-soon">🎬 Videolänkar för Kemi – läggs till snart.</div>
+    </div>
+    <div class="tab-panel" data-moment="kem" data-type="flashcards">
+      <div class="coming-soon">🃏 Flashcards för Kemi – skicka dina begreppslistor!</div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       MOMENT 5 – NATURVETENSKAPLIG METOD
+  ══════════════════════════════════ -->
+  <div class="moment-section" id="metod">
+    <div class="moment-header">
+      <div class="moment-icon">🧪</div>
+      <div class="moment-title-wrap">
+        <div class="moment-eyebrow">Moment 5</div>
+        <div class="moment-title">Naturvetenskapliga arbetsmetoder</div>
+      </div>
+    </div>
+    <div class="staircase" id="stair-met">
+      <div class="stair" data-stair="forsta"><div class="stair-num"><span class="stair-num-val">1</span><span class="stair-done-icon">✓</span></div>Förstå</div>
+      <span class="stair-arrow">→</span>
+      <div class="stair" data-stair="befasta"><div class="stair-num"><span class="stair-num-val">2</span><span class="stair-done-icon">✓</span></div>Befästa</div>
+      <span class="stair-arrow">→</span>
+      <div class="stair" data-stair="tillamp"><div class="stair-num"><span class="stair-num-val">3</span><span class="stair-done-icon">✓</span></div>Tillämpa</div>
+    </div>
+    <div class="content-tabs" data-moment="met">
+      <div class="content-tab active" data-tab="material" onclick="switchTab(this,'met')">📚 Material</div>
+      <div class="content-tab" data-tab="uppgifter" onclick="switchTab(this,'met')">✏️ Uppgifter</div>
+      <div class="content-tab" data-tab="quiz" onclick="switchTab(this,'met')">🧠 Quiz</div>
+      <div class="content-tab" data-tab="video" onclick="switchTab(this,'met')">🎬 Video</div>
+      <div class="content-tab" data-tab="flashcards" onclick="switchTab(this,'met')">🃏 Flashcards</div>
+    </div>
+    <div class="tab-panel active" data-moment="met" data-type="material">
+      <div class="resource-progress"><span id="rp-met-material-txt">0 av 3 klara</span><div class="res-prog-bar"><div class="res-prog-fill" id="rp-met-material-bar" style="width:0%"></div></div></div>
+      <div class="cards">
+        <div class="mat-card"><h4>Den vetenskapliga metoden</h4><p>Observation, hypotes, experiment, analys och slutsats.</p><a href="#" class="mat-link">Öppna →</a><br><button class="checkoff-btn" data-resource="met-mat-1" onclick="checkoff(this,'met')"><span class="checkoff-dot"></span><span class="checkoff-label">Markera som läst</span></button></div>
+        <div class="mat-card"><h4>Felkällor &amp; reliabilitet</h4><p>Systematiska och slumpmässiga fel, reproducerbarhet och validitet.</p><a href="#" class="mat-link">Öppna →</a><br><button class="checkoff-btn" data-resource="met-mat-2" onclick="checkoff(this,'met')"><span class="checkoff-dot"></span><span class="checkoff-label">Markera som läst</span></button></div>
+        <div class="mat-card"><h4>Vetenskap vs pseudovetenskap</h4><p>Kriterier för vetenskapliga påståenden och källkritik.</p><a href="#" class="mat-link">Öppna →</a><br><button class="checkoff-btn" data-resource="met-mat-3" onclick="checkoff(this,'met')"><span class="checkoff-dot"></span><span class="checkoff-label">Markera som läst</span></button></div>
+      </div>
+    </div>
+    <div class="tab-panel" data-moment="met" data-type="uppgifter">
+      <div class="task-list">
+        <div class="task-item"><div class="task-meta"><span class="badge badge-m">Medel</span></div><h4>Uppgift – Experimentdesign</h4><p>Designa ett enkelt experiment för att testa om kaffekonsumtion påverkar reaktionstiden. Beskriv hypotes, metod, variabler och möjliga felkällor.</p></div>
+      </div>
+    </div>
+    <div class="tab-panel" data-moment="met" data-type="quiz">
+      <div class="quiz-start"><h4>Quiz – Naturvetenskaplig metod</h4><p>Testa dina kunskaper om vetenskaplig metodik.</p><a href="quiz-metod.html" class="btn-quiz">Starta quiz →</a></div>
+    </div>
+    <div class="tab-panel" data-moment="met" data-type="video">
+      <div class="resource-progress"><span id="rp-met-video-txt">0 av 1 klara</span><div class="res-prog-bar"><div class="res-prog-fill" id="rp-met-video-bar" style="width:0%"></div></div></div>
+      <div class="video-grid">
+        <div class="vid-card"><div class="vid-thumb">🧪<span class="play-icon">▶</span></div><div class="vid-info"><h4>Den vetenskapliga metoden</h4><p>Genomgång av hur naturvetenskaplig metod fungerar – från observation till slutsats.</p><a href="https://urplay.se/program/221748-naturkunskap-forklarad-vetenskaplig-metod" target="_blank">Se video på UR Play →</a><button class="checkoff-btn" data-resource="met-vid-1" onclick="checkoff(this,'met')"><span class="checkoff-dot"></span><span class="checkoff-label">Markera som sedd</span></button></div></div>
+      </div>
+    </div>
+    <div class="tab-panel" data-moment="met" data-type="flashcards">
+      <div class="coming-soon">🃏 Flashcards för Naturvetenskaplig metod – skicka dina begreppslistor!</div>
+    </div>
+  </div>
+
+</div><!-- /container -->
+
+<footer>Naturkunskap 2 &middot; Uppdaterad 2026 &middot; <a href="index.html" style="color:var(--teal);text-decoration:none">Byt kurs</a></footer>
+
+<script src="shared.js"></script>
+<script>
+  // ── Auth ──────────────────────────────────────────────────────
+  const session = requireLogin('NK2');
+  if (!session) throw new Error('no session');
+  const userId = session.name + '_' + session.klass;
+  document.getElementById('user-greeting').textContent = session.name;
+  function logout() { clearSession(); window.location.href = 'index.html'; }
+
+  // ── Resource definitions per moment ──────────────────────────
+  // Lists all checkoff resource IDs that must ALL be checked for "Förstå"
+  const MOMENT_RESOURCES = {
+    evo: ['evo-mat-1','evo-mat-2','evo-mat-3','evo-vid-1','evo-vid-2'],
+    mk:  ['mk-mat-1','mk-mat-2','mk-mat-3','mk-mat-4','mk-mat-5','mk-mat-6',
+           'mk-vid-1','mk-vid-2','mk-vid-3','mk-vid-4','mk-vid-5','mk-vid-6','mk-vid-7','mk-vid-8','mk-vid-9'],
+    uni: ['uni-mat-1','uni-mat-2','uni-mat-3','uni-vid-1'],
+    kem: ['kem-mat-1','kem-mat-2','kem-mat-3'],
+    met: ['met-mat-1','met-mat-2','met-mat-3','met-vid-1']
+  };
+
+  const MOMENT_FC_SETS = {
+    evo: [], mk: ['mk_hormonsystemet','mk_nervsystemet','mk_immunforsvaret','mk_cirkulationen','mk_andningen','mk_cellen','mk_utsondringsorganen'],
+    uni: [], kem: [], met: []
+  };
+
+  // ── Storage helpers ───────────────────────────────────────────
+  function getStairData() {
+    try { return JSON.parse(localStorage.getItem('nk_stair_' + userId) || '{}'); } catch { return {}; }
+  }
+  function saveStairData(d) { localStorage.setItem('nk_stair_' + userId, JSON.stringify(d)); }
+
+  function getCheckoffs() {
+    try { return JSON.parse(localStorage.getItem('nk_checkoff_' + userId) || '{}'); } catch { return {}; }
+  }
+  function saveCheckoffs(d) { localStorage.setItem('nk_checkoff_' + userId, JSON.stringify(d)); }
+
+  // ── Checkoff button handler ───────────────────────────────────
+  function checkoff(btn, moment) {
+    if (btn.classList.contains('checked')) return;
+    const resId = btn.dataset.resource;
+    const co = getCheckoffs();
+    co[resId] = Date.now();
+    saveCheckoffs(co);
+    btn.classList.add('checked');
+    btn.querySelector('.checkoff-label').textContent = 'Sedd ✓';
+    updateResourceProgress(moment);
+    checkForstaComplete(moment);
+  }
+
+  // ── Update mini progress counter above grid ───────────────────
+  function updateResourceProgress(moment) {
+    const co    = getCheckoffs();
+    const res   = MOMENT_RESOURCES[moment] || [];
+    const done  = res.filter(r => co[r]).length;
+    const total = res.length;
+
+    // Split into material and video
+    const matRes = res.filter(r => r.includes('-mat-'));
+    const vidRes = res.filter(r => r.includes('-vid-'));
+    const matDone = matRes.filter(r => co[r]).length;
+    const vidDone = vidRes.filter(r => co[r]).length;
+
+    const setBar = (txtId, barId, done, total) => {
+      const txt = document.getElementById(txtId);
+      const bar = document.getElementById(barId);
+      if (txt) txt.textContent = done + ' av ' + total + ' klara';
+      if (bar) bar.style.width = (total ? Math.round(done/total*100) : 0) + '%';
+    };
+    setBar('rp-'+moment+'-material-txt', 'rp-'+moment+'-material-bar', matDone, matRes.length);
+    setBar('rp-'+moment+'-video-txt',    'rp-'+moment+'-video-bar',    vidDone, vidRes.length);
+  }
+
+  // ── Check if all resources done → mark Förstå ────────────────
+  function checkForstaComplete(moment) {
+    const co  = getCheckoffs();
+    const res = MOMENT_RESOURCES[moment] || [];
+    if (res.length === 0) return; // no resources = not tracked this way
+    const allDone = res.every(r => co[r]);
+    if (allDone) markStep(moment, 'forsta');
+  }
+
+  function checkFlashcardsDone(moment) {
+    const sets = MOMENT_FC_SETS[moment];
+    if (!sets || !sets.length) return false;
+    const prog = getProgress(userId);
+    return sets.some(id => prog[id] && prog[id].sessions && prog[id].sessions.length > 0);
+  }
+
+  // ── Staircase step marker ─────────────────────────────────────
+  function markStep(moment, step) {
+    const data = getStairData();
+    if (!data[moment]) data[moment] = {};
+    if (!data[moment][step]) {
+      data[moment][step] = Date.now();
+      saveStairData(data);
+      renderStaircase(moment);
+    }
+  }
+
+  // ── Render staircase ──────────────────────────────────────────
+  function renderStaircase(moment) {
+    const data  = getStairData();
+    const mData = data[moment] || {};
+
+    if (checkFlashcardsDone(moment) && !mData['befasta']) {
+      if (!data[moment]) data[moment] = {};
+      data[moment]['befasta'] = Date.now();
+      saveStairData(data);
+      mData['befasta'] = true;
+    }
+
+    const stairEl = document.getElementById('stair-' + moment);
+    if (!stairEl) return;
+    const steps = ['forsta','befasta','tillamp'];
+    steps.forEach(k => {
+      const el = stairEl.querySelector(`[data-stair="${k}"]`);
+      if (!el) return;
+      el.classList.remove('active','done');
+      if (mData[k]) el.classList.add('done');
+    });
+    for (const k of steps) {
+      const el = stairEl.querySelector(`[data-stair="${k}"]`);
+      if (el && !mData[k]) { el.classList.add('active'); break; }
+    }
+  }
+
+  // ── Tab switching ─────────────────────────────────────────────
+  function switchTab(el, moment) {
+    const type = el.dataset.tab;
+    document.querySelectorAll(`.content-tabs[data-moment="${moment}"] .content-tab`).forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+    document.querySelectorAll(`.tab-panel[data-moment="${moment}"]`).forEach(p => p.classList.remove('active'));
+    document.querySelector(`.tab-panel[data-moment="${moment}"][data-type="${type}"]`).classList.add('active');
+
+    if (type === 'uppgifter' || type === 'quiz') markStep(moment, 'tillamp');
+    if (type === 'flashcards') renderStaircase(moment);
+  }
+
+  // ── Restore checkoff button states on load ────────────────────
+  function restoreCheckoffs() {
+    const co = getCheckoffs();
+    document.querySelectorAll('.checkoff-btn').forEach(btn => {
+      if (co[btn.dataset.resource]) {
+        btn.classList.add('checked');
+        btn.querySelector('.checkoff-label').textContent = 'Sedd ✓';
+      }
+    });
+  }
+
+  // ── Init ──────────────────────────────────────────────────────
+  const MOMENTS = ['evo','mk','uni','kem','met'];
+  window.addEventListener('load', () => {
+    restoreCheckoffs();
+    MOMENTS.forEach(m => {
+      updateResourceProgress(m);
+      renderStaircase(m);
+    });
+  });
+  window.addEventListener('focus', () => {
+    MOMENTS.forEach(m => renderStaircase(m));
+  });
+</script>
+</body>
+</html>

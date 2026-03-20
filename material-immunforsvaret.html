@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Immunförsvaret – Naturkunskap 2</title>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg:       #f8f5f0;
+      --surface:  #ffffff;
+      --border:   #e0d8cc;
+      --sand:     #f0ebe0;
+      --rust:     #c0522a;
+      --rust2:    #e06030;
+      --teal:     #2a7a6a;
+      --teal2:    #3a9a86;
+      --blue:     #2a5080;
+      --text:     #1a1a18;
+      --muted:    #6a6458;
+      --radius:   10px;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:'Source Sans 3',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;font-size:16px;}
+
+    /* ── TOP BAR ── */
+    .top-bar{background:#1a2a20;padding:14px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;position:sticky;top:0;z-index:100;}
+    .back-link{color:#a0c8b8;text-decoration:none;font-size:.82rem;display:flex;align-items:center;gap:6px;transition:color .2s;}
+    .back-link:hover{color:#fff;}
+    .top-title{font-family:'Lora',serif;font-size:1rem;color:#e0ece8;}
+    .top-title span{color:#5acfb2;}
+
+    /* ── HERO ── */
+    .hero{background:linear-gradient(135deg,#1a2a20 0%,#2a4a38 60%,#1a3028 100%);padding:64px 32px 56px;text-align:center;position:relative;overflow:hidden;}
+    .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 30% 50%,rgba(90,207,178,.1) 0%,transparent 60%),radial-gradient(ellipse 50% 80% at 75% 30%,rgba(192,82,42,.08) 0%,transparent 55%);pointer-events:none;}
+    .hero-eyebrow{font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:#5acfb2;margin-bottom:12px;}
+    .hero h1{font-family:'Lora',serif;font-size:clamp(2rem,5vw,3.2rem);font-weight:700;color:#f0ece4;margin-bottom:16px;line-height:1.15;}
+    .hero-sub{font-size:1rem;color:#a0c0b0;max-width:560px;margin:0 auto 32px;line-height:1.7;}
+    .hero-nav{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;}
+    .hero-nav a{font-size:.8rem;color:#a0c8b8;border:1px solid rgba(90,207,178,.35);border-radius:30px;padding:7px 16px;text-decoration:none;transition:all .2s;}
+    .hero-nav a:hover{background:rgba(90,207,178,.12);border-color:#5acfb2;color:#fff;}
+
+    /* ── LAYOUT ── */
+    .container{max-width:860px;margin:0 auto;padding:0 24px;}
+    .section{padding:60px 0;}
+    .section+.section{border-top:1px solid var(--border);}
+
+    .section-eyebrow{font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--rust);font-weight:600;margin-bottom:8px;}
+    .section-title{font-family:'Lora',serif;font-size:clamp(1.5rem,3vw,2rem);color:var(--text);margin-bottom:6px;line-height:1.25;}
+    .section-intro{font-size:.95rem;color:var(--muted);margin-bottom:32px;max-width:640px;line-height:1.7;}
+
+    /* ── KEY CONCEPT BOX ── */
+    .key-box{background:var(--sand);border-left:4px solid var(--rust2);border-radius:0 var(--radius) var(--radius) 0;padding:18px 22px;margin-bottom:28px;}
+    .key-box h4{font-family:'Lora',serif;font-size:1rem;color:var(--rust);margin-bottom:8px;}
+    .key-box p{font-size:.88rem;color:#4a3a2a;line-height:1.65;}
+    .key-box dl{font-size:.88rem;color:#4a3a2a;display:flex;flex-direction:column;gap:8px;}
+    .key-box dt{font-weight:600;color:var(--text);display:inline;}
+    .key-box dd{display:inline;margin:0;}
+    .key-box .term-row{line-height:1.55;}
+
+    /* ── PROSE ── */
+    .prose{font-size:.95rem;line-height:1.75;color:#2a2520;margin-bottom:24px;}
+    .prose strong{color:var(--text);font-weight:600;}
+
+    /* ── COMPARISON TABLE ── */
+    .compare-table{width:100%;border-collapse:collapse;margin-bottom:32px;font-size:.88rem;}
+    .compare-table th{background:#1a2a20;color:#e0ece8;padding:12px 16px;text-align:left;font-weight:600;font-family:'Lora',serif;}
+    .compare-table th:first-child{border-radius:8px 0 0 0;}
+    .compare-table th:last-child{border-radius:0 8px 0 0;}
+    .compare-table td{padding:11px 16px;border-bottom:1px solid var(--border);vertical-align:top;}
+    .compare-table tr:nth-child(even) td{background:var(--sand);}
+    .compare-table tr:last-child td{border-bottom:none;}
+    .compare-table td:first-child{font-weight:600;color:var(--text);}
+
+    /* ── CELL CARDS ── */
+    .cell-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;margin-bottom:32px;}
+    .cell-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;position:relative;overflow:hidden;}
+    .cell-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+    .cell-card.icke-specifik::before{background:var(--rust2);}
+    .cell-card.specifik::before{background:var(--teal);}
+    .cell-card-type{font-size:.65rem;letter-spacing:.14em;text-transform:uppercase;font-weight:600;margin-bottom:8px;}
+    .icke-specifik .cell-card-type{color:var(--rust2);}
+    .specifik .cell-card-type{color:var(--teal);}
+    .cell-card h4{font-family:'Lora',serif;font-size:1.05rem;margin-bottom:8px;color:var(--text);}
+    .cell-card ul{list-style:none;padding:0;}
+    .cell-card ul li{font-size:.82rem;color:var(--muted);padding:3px 0;padding-left:14px;position:relative;line-height:1.5;}
+    .cell-card ul li::before{content:'→';position:absolute;left:0;color:var(--border);}
+
+    /* ── PROCESS STEPS ── */
+    .process-steps{display:flex;flex-direction:column;gap:0;margin-bottom:32px;position:relative;}
+    .process-steps::before{content:'';position:absolute;left:22px;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,var(--rust2),var(--teal));opacity:.3;}
+    .process-step{display:flex;gap:18px;align-items:flex-start;padding:16px 0;}
+    .step-num{width:44px;height:44px;border-radius:50%;background:var(--rust2);color:#fff;display:flex;align-items:center;justify-content:center;font-family:'Lora',serif;font-size:1.1rem;font-weight:700;flex-shrink:0;position:relative;z-index:1;}
+    .step-num.teal{background:var(--teal);}
+    .step-body h4{font-size:.95rem;font-weight:600;color:var(--text);margin-bottom:4px;}
+    .step-body p{font-size:.85rem;color:var(--muted);line-height:1.6;}
+
+    /* ── CHECKLIST ── */
+    .checklist{background:linear-gradient(135deg,#1a2a20,#2a4030);border-radius:var(--radius);padding:28px 32px;margin-top:40px;}
+    .checklist h3{font-family:'Lora',serif;font-size:1.1rem;color:#e0ece8;margin-bottom:16px;}
+    .checklist ol{padding-left:20px;}
+    .checklist li{font-size:.9rem;color:#a0c0b0;padding:5px 0;line-height:1.6;}
+    .checklist li strong{color:#e0ece8;}
+
+    /* ── SVG DIAGRAM WRAPPERS ── */
+    .diagram-wrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin-bottom:28px;overflow-x:auto;}
+    .diagram-caption{font-size:.78rem;color:var(--muted);text-align:center;margin-top:12px;font-style:italic;}
+
+    /* ── IMMUNITY CARDS ── */
+    .immunity-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:28px;}
+    .immunity-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:22px;}
+    .immunity-card h4{font-family:'Lora',serif;font-size:1rem;margin-bottom:10px;}
+    .immunity-card.naturlig h4{color:var(--teal);}
+    .immunity-card.artificiell h4{color:var(--blue);}
+    .immunity-card ul{list-style:none;padding:0;}
+    .immunity-card li{font-size:.85rem;color:var(--muted);padding:4px 0;border-bottom:1px solid var(--border);line-height:1.5;}
+    .immunity-card li:last-child{border-bottom:none;}
+
+    footer{border-top:1px solid var(--border);padding:28px 24px;text-align:center;font-size:.78rem;color:var(--muted);margin-top:40px;}
+    footer a{color:var(--teal);text-decoration:none;}
+
+    @media(max-width:580px){
+      .hero{padding:44px 20px 36px;}
+      .immunity-grid{grid-template-columns:1fr;}
+      .container{padding:0 16px;}
+    }
+  </style>
+</head>
+<body>
+
+<div class="top-bar">
+  <a href="nk2.html" class="back-link">← NK2 / Människokroppen</a>
+  <div class="top-title">Naturkunskap 2 &mdash; <span>Immunförsvaret</span></div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <p class="hero-eyebrow">Människokroppen &middot; Moment 2</p>
+  <h1>Immunförsvaret</h1>
+  <p class="hero-sub">Kroppens försvarssystem mot bakterier, virus och andra inkräktare – från hudbarriären till minnesceller och naturlig immunitet.</p>
+  <nav class="hero-nav">
+    <a href="#oversikt">Översikt</a>
+    <a href="#forsta-nivan">1. Barriärer</a>
+    <a href="#andra-nivan">2. Icke-specifikt</a>
+    <a href="#celler">Celltyper</a>
+    <a href="#tredje-nivan">3. Specifikt</a>
+    <a href="#immunitet">Immunitet</a>
+    <a href="#kolla">Kolla att du kan</a>
+  </nav>
+</div>
+
+<main>
+
+<!-- ══════════════════════════════════════
+     SEKTION 1 – ÖVERSIKT
+══════════════════════════════════════ -->
+<div class="section" id="oversikt">
+<div class="container">
+  <p class="section-eyebrow">Introduktion</p>
+  <h2 class="section-title">Immunsystemet – en översikt</h2>
+  <p class="section-intro">Immunförsvaret är kroppens skydd mot patogener – organismer eller ämnen som kan orsaka sjukdom. Det består av tre försvarsnivåer som samverkar.</p>
+
+  <div class="key-box">
+    <h4>🦠 Vad är en patogen?</h4>
+    <p>En patogen (sjukdomsalstrare) är ett ämne eller en organism som kan orsaka sjukdom. Exempel: <strong>bakterier, virus, svampar</strong> och <strong>parasiter</strong>. När patogener tar sig in i kroppen och börjar etablera sig kallas det en <strong>infektion</strong> – redan vid intrånget kan ett immunrespons utlösas, innan patogenen hunnit föröka sig i stor skala.</p>
+  </div>
+
+  <p class="prose">Immunförsvaret bygger på samverkan mellan flera organ och celltyper. <strong>Vita blodkroppar (leukocyter)</strong> är de viktigaste aktörerna och transporteras via blodet och lymfan till platser där de behövs. <strong>Lymfkörtlarna</strong> och <strong>mjälten</strong> innehåller stora mängder vita blodkroppar redo att aktiveras. <strong>Thymus</strong> (brässen) är ett specialiserat organ där T-lymfocyter mognar och lär sig skilja kroppens egna celler från främmande inkräktare.</p>
+
+  <!-- SVG: Tre försvarsnivåer – övergripande diagram -->
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 740 280" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:740px;display:block;margin:0 auto">
+      <defs>
+        <marker id="arr" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#6a6458"/></marker>
+      </defs>
+      <!-- Main box -->
+      <rect x="20" y="110" width="120" height="50" rx="8" fill="#1a2a20"/>
+      <text x="80" y="130" text-anchor="middle" font-family="Lora,serif" font-size="13" fill="#e0ece8">Immun-</text>
+      <text x="80" y="147" text-anchor="middle" font-family="Lora,serif" font-size="13" fill="#e0ece8">systemet</text>
+
+      <!-- Arrow 1 -->
+      <line x1="140" y1="120" x2="200" y2="80" stroke="#6a6458" stroke-width="1.5" marker-end="url(#arr)"/>
+      <!-- Arrow 2 -->
+      <line x1="140" y1="135" x2="200" y2="220" stroke="#6a6458" stroke-width="1.5" marker-end="url(#arr)"/>
+
+      <!-- Branch: Icke-specifika -->
+      <rect x="205" y="58" width="150" height="44" rx="7" fill="#c0522a"/>
+      <text x="280" y="76" text-anchor="middle" font-family="Source Sans 3,sans-serif" font-size="12" fill="#fff" font-weight="600">Icke-specifika</text>
+      <text x="280" y="93" text-anchor="middle" font-family="Source Sans 3,sans-serif" font-size="11" fill="#ffd0b0">(Medfött försvar)</text>
+
+      <!-- Branch: Specifika -->
+      <rect x="205" y="198" width="150" height="44" rx="7" fill="#2a7a6a"/>
+      <text x="280" y="216" text-anchor="middle" font-family="Source Sans 3,sans-serif" font-size="12" fill="#fff" font-weight="600">Specifika försvaret</text>
+      <text x="280" y="233" text-anchor="middle" font-family="Source Sans 3,sans-serif" font-size="11" fill="#b0ffe8">(Adaptivt)</text>
+
+      <!-- Arrows from Icke-specifika -->
+      <line x1="355" y1="72" x2="415" y2="50" stroke="#6a6458" stroke-width="1.5" marker-end="url(#arr)"/>
+      <line x1="355" y1="80" x2="415" y2="120" stroke="#6a6458" stroke-width="1.5" marker-end="url(#arr)"/>
+
+      <!-- 1st and 2nd levels -->
+      <rect x="420" y="30" width="140" height="38" rx="6" fill="#e06030"/>
+      <text x="490" y="47" text-anchor="middle" font-family="Source Sans 3,sans-serif" font-size="11" fill="#fff" font-weight="600">1. Barriärer</text>
+      <text x="490" y="60" text-anchor="middle" font-family="Source Sans 3,sans-serif" font-size="10" fill="#ffe0d0">Hud, slemhinnor, magsyra</text>
+
+      <rect x="420" y="102" width="140" height="38" rx="6" fill="#e06030"/>
+      <text x="490" y="119" text-anchor="middle" font-family="Source Sans 3,sans-serif" font-size="11" fill="#fff" font-weight="600">2. Icke-spec. celler</text>
+      <text x="490" y="132" text-anchor="middle" font-family="Source Sans 3,sans-serif" font-size="10" fill="#ffe0d0">Makrofager, NK-celler m.fl.</text>
+
+      <!-- Arrows from Specifika -->
+      <line x1="355" y1="215" x2="415" y2="195" stroke="#6a6458" stroke-width="1.5" marker-end="url(#arr)"/>
+      <line x1="355" y1="228" x2="415" y2="250" stroke="#6a6458" stroke-width="1.5" marker-end="url(#arr)"/>
+
+      <rect x="420" y="178" width="140" height="38" rx="6" fill="#3a9a86"/>
+      <text x="490" y="195" text-anchor="middle" font-family="Source Sans 3,sans-serif" font-size="11" fill="#fff" font-weight="600">3. B-lymfocyter</text>
+      <text x="490" y="208" text-anchor="middle" font-family="Source Sans 3,sans-serif" font-size="10" fill="#b0ffe8">Producerar antikroppar</text>
+
+      <rect x="420" y="234" width="140" height="38" rx="6" fill="#3a9a86"/>
+      <text x="490" y="251" text-anchor="middle" font-family="Source Sans 3,sans-serif" font-size="11" fill="#fff" font-weight="600">3. T-lymfocyter</text>
+      <text x="490" y="264" text-anchor="middle" font-family="Source Sans 3,sans-serif" font-size="10" fill="#b0ffe8">Dödar infekterade celler</text>
+
+      <!-- Feber box -->
+      <rect x="580" y="102" width="140" height="38" rx="6" fill="#8a4020" opacity=".85"/>
+      <text x="650" y="119" text-anchor="middle" font-family="Source Sans 3,sans-serif" font-size="11" fill="#fff" font-weight="600">+ Feber &amp; Inflammation</text>
+      <text x="650" y="132" text-anchor="middle" font-family="Source Sans 3,sans-serif" font-size="10" fill="#ffd0b0">Rekryterar fler celler</text>
+      <line x1="560" y1="121" x2="580" y2="121" stroke="#8a4020" stroke-width="1.5" marker-end="url(#arr)"/>
+    </svg>
+    <p class="diagram-caption">Figur 1. Immunsystemets tre försvarsnivåer och deras beståndsdelar.</p>
+  </div>
+
+  <!-- Jämförelsetabell: specifikt vs icke-specifikt -->
+  <h3 style="font-family:'Lora',serif;font-size:1.1rem;margin-bottom:14px;color:var(--text)">Icke-specifikt vs specifikt försvar</h3>
+  <table class="compare-table">
+    <thead><tr>
+      <th>Egenskap</th>
+      <th>Icke-specifikt (medfött)</th>
+      <th>Specifikt (adaptivt)</th>
+    </tr></thead>
+    <tbody>
+      <tr><td>Reaktionstid</td><td>Omedelbar – sekunder till timmar</td><td>Långsam – dagar till veckor</td></tr>
+      <tr><td>Minne</td><td>Inget minne bildas</td><td>Minnesceller bildas</td></tr>
+      <tr><td>Specificitet</td><td>Känner igen generella mönster hos patogener</td><td>Känner igen specifika antigener</td></tr>
+      <tr><td>Celler</td><td>Makrofager, granulocyter, NK-celler, mastceller</td><td>T-lymfocyter, B-lymfocyter</td></tr>
+      <tr><td>Försvarsnivå</td><td>1:a och 2:a nivån</td><td>3:e nivån</td></tr>
+      <tr><td>Förbättras med åren?</td><td>Nej</td><td>Ja – immunologiskt minne</td></tr>
+    </tbody>
+  </table>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SEKTION 2 – FÖRSTA FÖRSVARSNIVÅN
+══════════════════════════════════════ -->
+<div class="section" id="forsta-nivan">
+<div class="container">
+  <p class="section-eyebrow">Första försvarsnivån</p>
+  <h2 class="section-title">Barriärer – kroppens yttre skydd</h2>
+  <p class="section-intro">Innan en patogen ens når immunsystemets celler måste den ta sig förbi kroppens fysiska och kemiska barriärer. Dessa utgör det första försvaret.</p>
+
+  <!-- SVG: Barriärer -->
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 700 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:700px;display:block;margin:0 auto">
+      <!-- Center node -->
+      <rect x="270" y="85" width="160" height="48" rx="8" fill="#2a4a38"/>
+      <text x="350" y="105" text-anchor="middle" font-family="Lora,serif" font-size="13" fill="#e0ece8" font-weight="600">Första</text>
+      <text x="350" y="122" text-anchor="middle" font-family="Lora,serif" font-size="13" fill="#e0ece8" font-weight="600">försvarsnivån</text>
+
+      <!-- Hud -->
+      <rect x="20" y="14" width="160" height="56" rx="7" fill="#c0522a"/>
+      <text x="100" y="35" text-anchor="middle" font-family="Source Sans 3,sans-serif" font-size="12" fill="#fff" font-weight="600">🧱 Huden</text>
+      <text x="100" y="52" text-anchor="middle" font-family="Source Sans 3,sans-serif" font-size="10" fill="#ffe0d0">Keratin – svårgenomtränglig</text>
+      <text x="100" y="64" text-anchor="middle" font-family="Source Sans 3,sans-serif" font-size="10" fill="#ffe0d0">Förhornade celler i överhuden</text>
+      <line x1="180" y1="42" x2="270" y2="100" stroke="#c0522a" stroke-width="1.5" stroke-dasharray="4,3"/>
+
+      <!-- Slemhinnor -->
+      <rect x="20" y="100" width="160" height="56" rx="7" fill="#e06030"/>
+      <text x="100" y="121" text-anchor="middle" font-family="Source Sans 3,sans-serif" font-size="12" fill="#fff" font-weight="600">💨 Slemhinnor</text>
+      <text x="100" y="138" text-anchor="middle" font-family="Source Sans 3,sans-serif" font-size="10" fill="#ffe0d0">Slem fångar patogener</text>
+      <text x="100" y="150" text-anchor="middle" font-family="Source Sans 3,sans-serif" font-size="10" fill="#ffe0d0">Flimmerhår transporterar bort</text>
+      <line x1="180" y1="128" x2="270" y2="109" stroke="#e06030" stroke-width="1.5" stroke-dasharray="4,3"/>
+
+      <!-- Magsyra -->
+      <rect x="520" y="14" width="160" height="56" rx="7" fill="#8a4020"/>
+      <text x="600" y="35" text-anchor="middle" font-family="Source Sans 3,sans-serif" font-size="12" fill="#fff" font-weight="600">⚗️ Magsyra</text>
+      <text x="600" y="52" text-anchor="middle" font-family="Source Sans 3,sans-serif" font-size="10" fill="#ffe0d0">Lågt pH neutraliserar patogener</text>
+      <text x="600" y="64" text-anchor="middle" font-family="Source Sans 3,sans-serif" font-size="10" fill="#ffe0d0">Pepsin bryter ner bakterier</text>
+      <line x1="520" y1="42" x2="430" y2="100" stroke="#8a4020" stroke-width="1.5" stroke-dasharray="4,3"/>
+
+      <!-- Tårvätska -->
+      <rect x="520" y="100" width="160" height="56" rx="7" fill="#2a5080"/>
+      <text x="600" y="121" text-anchor="middle" font-family="Source Sans 3,sans-serif" font-size="12" fill="#fff" font-weight="600">💧 Tårvätska &amp; saliv</text>
+      <text x="600" y="138" text-anchor="middle" font-family="Source Sans 3,sans-serif" font-size="10" fill="#c0d8f8">Innehåller enzymet lysozym</text>
+      <text x="600" y="150" text-anchor="middle" font-family="Source Sans 3,sans-serif" font-size="10" fill="#c0d8f8">Bryter ner bakteriers cellväggar</text>
+      <line x1="520" y1="128" x2="430" y2="109" stroke="#2a5080" stroke-width="1.5" stroke-dasharray="4,3"/>
+
+      <!-- Bottom note removed - hudflora is not part of core barriers curriculum -->
+    </svg>
+    <p class="diagram-caption">Figur 2. Kroppens fyra barriärer i första försvarsnivån.</p>
+  </div>
+
+  <div class="key-box">
+    <h4>🔑 Nyckelbegrepp – Barriärer</h4>
+    <dl>
+      <div class="term-row"><dt>Keratin</dt><dd> – ett hårt strukturprotein som gör huden svårgenomtränglig.</dd></div>
+      <div class="term-row"><dt>Lysozym</dt><dd> – ett enzym i tårvätska och saliv som bryter ner bakteriers cellväggar.</dd></div>
+      <div class="term-row"><dt>Pepsin</dt><dd> – ett enzym i magsäcken som spjälkar proteiner, inklusive bakteriers ytproteiner.</dd></div>
+      <div class="term-row"><dt>Flimmerhår (cilier)</dt><dd> – mikroskopiska hårliknande utskott i luftvägarna som transporterar slem och partiklar bort från lungorna.</dd></div>
+    </dl>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SEKTION 3 – ANDRA FÖRSVARSNIVÅN
+══════════════════════════════════════ -->
+<div class="section" id="andra-nivan">
+<div class="container">
+  <p class="section-eyebrow">Andra försvarsnivån</p>
+  <h2 class="section-title">Inflammation och feber</h2>
+  <p class="section-intro">Om en patogen lyckas ta sig förbi barriärerna aktiveras det icke-specifika inre försvaret. Inflammation är det viktigaste svaret och fungerar som ett larm som rekryterar förstärkningar.</p>
+
+  <!-- SVG: Inflammationsförlopp -->
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 700 230" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:700px;display:block;margin:0 auto">
+      <defs>
+        <marker id="arr2" markerWidth="8" markerHeight="6" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#c0522a"/></marker>
+      </defs>
+
+      <!-- Feber note – wider box, two lines inside -->
+      <rect x="150" y="8" width="400" height="44" rx="6" fill="#4a2a10" opacity=".9"/>
+      <text x="350" y="26" text-anchor="middle" font-size="11" font-family="Source Sans 3,sans-serif" fill="#ffe0b0" font-weight="600">Vid kraftig infektion: Feber</text>
+      <text x="350" y="42" text-anchor="middle" font-size="10" font-family="Source Sans 3,sans-serif" fill="#c0a080">Höjd temp. → bakterier delar sig långsammare · immunsystemet arbetar hårdare</text>
+
+      <!-- Step 1 – centered in 700px: 4 boxes à 130px + 3 arrows à 25px = 520+75 = 595, margin = (700-595)/2 = ~52 -->
+      <rect x="18" y="90" width="130" height="68" rx="7" fill="#c0522a"/>
+      <text x="83" y="112" text-anchor="middle" font-size="11" font-family="Source Sans 3,sans-serif" fill="#fff" font-weight="600">1. Skada/infektion</text>
+      <text x="83" y="128" text-anchor="middle" font-size="10" font-family="Source Sans 3,sans-serif" fill="#ffe0d0">Patogen tränger in</text>
+      <text x="83" y="142" text-anchor="middle" font-size="10" font-family="Source Sans 3,sans-serif" fill="#ffe0d0">Celler skadas</text>
+
+      <line x1="148" y1="124" x2="172" y2="124" stroke="#c0522a" stroke-width="2" marker-end="url(#arr2)"/>
+
+      <!-- Step 2 -->
+      <rect x="175" y="90" width="130" height="68" rx="7" fill="#c0522a"/>
+      <text x="240" y="112" text-anchor="middle" font-size="11" font-family="Source Sans 3,sans-serif" fill="#fff" font-weight="600">2. Kemiska signaler</text>
+      <text x="240" y="128" text-anchor="middle" font-size="10" font-family="Source Sans 3,sans-serif" fill="#ffe0d0">Histamin frisätts</text>
+      <text x="240" y="142" text-anchor="middle" font-size="10" font-family="Source Sans 3,sans-serif" fill="#ffe0d0">Inflammation startar</text>
+
+      <line x1="305" y1="124" x2="329" y2="124" stroke="#c0522a" stroke-width="2" marker-end="url(#arr2)"/>
+
+      <!-- Step 3 -->
+      <rect x="332" y="90" width="130" height="68" rx="7" fill="#8a4020"/>
+      <text x="397" y="112" text-anchor="middle" font-size="11" font-family="Source Sans 3,sans-serif" fill="#fff" font-weight="600">3. Kärlvidgning</text>
+      <text x="397" y="128" text-anchor="middle" font-size="10" font-family="Source Sans 3,sans-serif" fill="#ffe0d0">Ökat blodflöde</text>
+      <text x="397" y="142" text-anchor="middle" font-size="10" font-family="Source Sans 3,sans-serif" fill="#ffe0d0">Rodnad, värme, svullnad</text>
+
+      <line x1="462" y1="124" x2="486" y2="124" stroke="#c0522a" stroke-width="2" marker-end="url(#arr2)"/>
+
+      <!-- Step 4 -->
+      <rect x="489" y="90" width="130" height="68" rx="7" fill="#2a7a6a"/>
+      <text x="554" y="112" text-anchor="middle" font-size="11" font-family="Source Sans 3,sans-serif" fill="#fff" font-weight="600">4. Vita blodkroppar</text>
+      <text x="554" y="128" text-anchor="middle" font-size="10" font-family="Source Sans 3,sans-serif" fill="#b0ffe8">Rekryteras till platsen</text>
+      <text x="554" y="142" text-anchor="middle" font-size="10" font-family="Source Sans 3,sans-serif" fill="#b0ffe8">Fagocytos av patogener</text>
+
+      <!-- Symptom labels – centered under respective boxes -->
+      <text x="350" y="182" text-anchor="middle" font-size="10" font-family="Source Sans 3,sans-serif" fill="#c0522a" font-style="italic">Symptom: rodnad · svullnad · värme · smärta · ömhet</text>
+      <text x="554" y="182" text-anchor="middle" font-size="10" font-family="Source Sans 3,sans-serif" fill="#2a7a6a" font-style="italic">Resultat: infektion bekämpas</text>
+
+      <!-- Connecting lines from fever box to step 2 and 3 -->
+      <line x1="350" y1="52" x2="350" y2="90" stroke="#4a2a10" stroke-width="1" stroke-dasharray="3,3" opacity=".6"/>
+    </svg>
+    <p class="diagram-caption">Figur 3. Inflammationsförloppet – från skada till immunrespons.</p>
+  </div>
+
+  <p class="prose">Under inflammation frisätts <strong>histamin</strong> från mastceller, vilket orsakar <strong>vasodilatation</strong> (kärlvidgning) och ökad kärlpermeabilitet. Det gör att vätska och vita blodkroppar lättare kan ta sig ut i vävnaden, vilket ger den karakteristiska svullnaden (ödem) och rekryterar makrofager och granulocyter till platsen. <strong>Heparin</strong>, också från mastceller, hindrar blodet från att levra sig och håller blodflödet igång i det drabbade området.</p>
+
+  <div class="key-box">
+    <h4>🔑 Nyckelbegrepp – Inflammation</h4>
+    <dl>
+      <div class="term-row"><dt>Vasodilatation</dt><dd> – kärlvidgning, ökat blodflöde till det drabbade området.</dd></div>
+      <div class="term-row"><dt>Ödem</dt><dd> – svullnad på grund av att vätska ansamlas i vävnaden.</dd></div>
+      <div class="term-row"><dt>Histamin</dt><dd> – signalsubstans som utlöser inflammationsresponsen via kärlvidgning och ökad kärlpermeabilitet.</dd></div>
+      <div class="term-row"><dt>Heparin</dt><dd> – hämmar koagulation så blodflödet hålls igång i det drabbade området.</dd></div>
+      <div class="term-row"><dt>Fagocytos</dt><dd> – processen där en cell omsluter och bryter ner patogener.</dd></div>
+    </dl>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SEKTION 4 – CELLTYPER
+══════════════════════════════════════ -->
+<div class="section" id="celler">
+<div class="container">
+  <p class="section-eyebrow">Vita blodkroppar</p>
+  <h2 class="section-title">Celltyper i immunförsvaret</h2>
+  <p class="section-intro">Vita blodkroppar (leukocyter) är immunförsvarets soldater. De delas grovt in i celler tillhörande det icke-specifika och det specifika försvaret.</p>
+
+  <div class="cell-grid">
+    <div class="cell-card icke-specifik">
+      <div class="cell-card-type">Icke-specifikt försvar</div>
+      <h4>🔴 Granulocyter</h4>
+      <ul>
+        <li>Snabbaste insatsstyrkan</li>
+        <li>Bär enzymer och gifter i blåsor</li>
+        <li>Tre typer: neutrofila, eosinofila, basofila</li>
+        <li>Dödar patogener med kemiska ämnen</li>
+      </ul>
+    </div>
+    <div class="cell-card icke-specifik">
+      <div class="cell-card-type">Icke-specifikt försvar</div>
+      <h4>🟠 Monocyter → Makrofager</h4>
+      <ul>
+        <li>Lagras i mjälten som monocyter</li>
+        <li>Vandrar till inflammerad vävnad</li>
+        <li>Mognar till makrofager ("storätare")</li>
+        <li>Fagocyterar och städar upp efter infektion</li>
+        <li>Kan leva flera år i vävnad</li>
+      </ul>
+    </div>
+    <div class="cell-card icke-specifik">
+      <div class="cell-card-type">Icke-specifikt försvar</div>
+      <h4>⚡ NK-celler</h4>
+      <ul>
+        <li>Natural Killer – naturliga mördarceller</li>
+        <li>Patrullerar hela kroppen</li>
+        <li>Dödar virusinfekterade och cancerceller</li>
+        <li>Frisätter förstörande enzymer</li>
+      </ul>
+    </div>
+    <div class="cell-card icke-specifik">
+      <div class="cell-card-type">Icke-specifikt försvar</div>
+      <h4>🔔 Mastceller</h4>
+      <ul>
+        <li>Finns i bindväv och slemhinnor</li>
+        <li>Frisätter histamin → utlöser inflammation</li>
+        <li>Frisätter heparin → hindrar blodkoagulation</li>
+        <li>Inflammationen rekryterar i sin tur makrofager</li>
+        <li>Ansvariga för allergiska reaktioner</li>
+      </ul>
+    </div>
+    <div class="cell-card icke-specifik">
+      <div class="cell-card-type">Icke-specifikt → Specifikt (brygga)</div>
+      <h4>🌟 Dendritiska celler</h4>
+      <ul>
+        <li>Tar upp och bryter ner patogener</li>
+        <li>Vandrar till lymfknutor</li>
+        <li>Presenterar antigenrester för T-celler</li>
+        <li>Länken mellan medfött och adaptivt försvar</li>
+      </ul>
+    </div>
+    <div class="cell-card specifik">
+      <div class="cell-card-type">Specifikt försvar</div>
+      <h4>🟢 T-lymfocyter</h4>
+      <ul>
+        <li>Mognar i thymus (brässen)</li>
+        <li>T-mördarceller: dödar virusinfekterade celler</li>
+        <li>T-hjälparceller: aktiverar B-celler <em>och</em> T-mördarceller</li>
+        <li>T-hjälparceller aktiverar även makrofager</li>
+        <li>Känner igen icke-kroppsegna proteiner via MHC</li>
+      </ul>
+    </div>
+    <div class="cell-card specifik">
+      <div class="cell-card-type">Specifikt försvar</div>
+      <h4>🔵 B-lymfocyter</h4>
+      <ul>
+        <li>Producerar antikroppar (immunoglobuliner)</li>
+        <li>Aktiveras av T-hjälparceller</li>
+        <li>Omvandlas till plasmaceller som massproducerar antikroppar</li>
+        <li>Bildar minnesceller → naturlig immunitet</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- SVG: Fagocytos-process -->
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 680 140" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:680px;display:block;margin:0 auto">
+      <defs>
+        <marker id="arr3" markerWidth="8" markerHeight="6" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#6a6458"/></marker>
+      </defs>
+      <text x="340" y="18" text-anchor="middle" font-family="Lora,serif" font-size="13" fill="#2a2520" font-weight="600">Fagocytos – hur en makrofag äter en patogen</text>
+
+      <!-- Step boxes -->
+      <rect x="10" y="35" width="140" height="80" rx="7" fill="#f0ebe0" stroke="#c0522a" stroke-width="1.5"/>
+      <text x="80" y="58" text-anchor="middle" font-size="11" font-family="Source Sans 3,sans-serif" fill="#c0522a" font-weight="600">1. Igenkänning</text>
+      <text x="80" y="75" text-anchor="middle" font-size="10" font-family="Source Sans 3,sans-serif" fill="#4a3a2a">Makrofagen känner igen</text>
+      <text x="80" y="90" text-anchor="middle" font-size="10" font-family="Source Sans 3,sans-serif" fill="#4a3a2a">patogenens yta</text>
+      <text x="80" y="106" text-anchor="middle" font-size="10" font-family="Source Sans 3,sans-serif" fill="#4a3a2a">(endocytos påbörjas)</text>
+
+      <line x1="150" y1="75" x2="170" y2="75" stroke="#6a6458" stroke-width="1.5" marker-end="url(#arr3)"/>
+
+      <rect x="173" y="35" width="140" height="80" rx="7" fill="#f0ebe0" stroke="#c0522a" stroke-width="1.5"/>
+      <text x="243" y="58" text-anchor="middle" font-size="11" font-family="Source Sans 3,sans-serif" fill="#c0522a" font-weight="600">2. Inkapslning</text>
+      <text x="243" y="75" text-anchor="middle" font-size="10" font-family="Source Sans 3,sans-serif" fill="#4a3a2a">Patogenen omsluts av</text>
+      <text x="243" y="90" text-anchor="middle" font-size="10" font-family="Source Sans 3,sans-serif" fill="#4a3a2a">cellmembranet och bildar</text>
+      <text x="243" y="106" text-anchor="middle" font-size="10" font-family="Source Sans 3,sans-serif" fill="#4a3a2a">ett fagosom (vesikel)</text>
+
+      <line x1="313" y1="75" x2="333" y2="75" stroke="#6a6458" stroke-width="1.5" marker-end="url(#arr3)"/>
+
+      <rect x="336" y="35" width="140" height="80" rx="7" fill="#f0ebe0" stroke="#2a7a6a" stroke-width="1.5"/>
+      <text x="406" y="58" text-anchor="middle" font-size="11" font-family="Source Sans 3,sans-serif" fill="#2a7a6a" font-weight="600">3. Nedbrytning</text>
+      <text x="406" y="75" text-anchor="middle" font-size="10" font-family="Source Sans 3,sans-serif" fill="#4a3a2a">Lysosomer smälter samman</text>
+      <text x="406" y="90" text-anchor="middle" font-size="10" font-family="Source Sans 3,sans-serif" fill="#4a3a2a">med fagosomen och bryter</text>
+      <text x="406" y="106" text-anchor="middle" font-size="10" font-family="Source Sans 3,sans-serif" fill="#4a3a2a">ner patogenen med enzymer</text>
+
+      <line x1="476" y1="75" x2="496" y2="75" stroke="#6a6458" stroke-width="1.5" marker-end="url(#arr3)"/>
+
+      <rect x="499" y="35" width="170" height="80" rx="7" fill="#f0ebe0" stroke="#2a7a6a" stroke-width="1.5"/>
+      <text x="584" y="58" text-anchor="middle" font-size="11" font-family="Source Sans 3,sans-serif" fill="#2a7a6a" font-weight="600">4. Presentation</text>
+      <text x="584" y="75" text-anchor="middle" font-size="10" font-family="Source Sans 3,sans-serif" fill="#4a3a2a">Rester (peptider) presenteras</text>
+      <text x="584" y="90" text-anchor="middle" font-size="10" font-family="Source Sans 3,sans-serif" fill="#4a3a2a">på cellytan (MHC) →</text>
+      <text x="584" y="106" text-anchor="middle" font-size="10" font-family="Source Sans 3,sans-serif" fill="#4a3a2a">aktiverar T-hjälparceller</text>
+    </svg>
+    <p class="diagram-caption">Figur 4. Fagocytosens fyra steg – från igenkänning till antigenspresentation.</p>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SEKTION 5 – TREDJE FÖRSVARSNIVÅN
+══════════════════════════════════════ -->
+<div class="section" id="tredje-nivan">
+<div class="container">
+  <p class="section-eyebrow">Tredje försvarsnivån</p>
+  <h2 class="section-title">Det specifika (adaptiva) immunförsvaret</h2>
+  <p class="section-intro">Det specifika försvaret verkar i lymfsystemet och är unikt eftersom det anpassar sig till varje patogen och bildar ett immunologiskt minne.</p>
+
+  <div class="key-box">
+    <h4>🔑 Antigen och antikropp – vad är skillnaden?</h4>
+    <dl>
+      <div class="term-row"><dt>Antigen</dt><dd> – en molekyl (ofta ett protein på ytan av en patogen) som utlöser ett immunrespons.</dd></div>
+      <div class="term-row"><dt>Antikropp</dt><dd> – ett Y-format protein som produceras av B-celler och binder specifikt till ett visst antigen, som en nyckel i ett lås.</dd></div>
+      <div class="term-row"><dt>Immunoglobuliner</dt><dd> – annat namn för antikroppar (IgA, IgG, IgE, IgM, IgD).</dd></div>
+      <div class="term-row"><dt>Opsonisering</dt><dd> – när antikroppar täcker en patogen och gör den lättare att känna igen och fagocytera för makrofager.</dd></div>
+    </dl>
+  </div>
+
+  <!-- SVG: T-mördarcell process -->
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 700 180" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:700px;display:block;margin:0 auto">
+      <defs>
+        <marker id="arr4" markerWidth="8" markerHeight="6" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#2a7a6a"/></marker>
+      </defs>
+      <text x="350" y="18" text-anchor="middle" font-family="Lora,serif" font-size="13" fill="#2a2520" font-weight="600">T-mördarcellen hittar och dödar en infekterad cell</text>
+
+      <rect x="10" y="32" width="150" height="80" rx="7" fill="#e8f4f0" stroke="#2a7a6a" stroke-width="1.5"/>
+      <text x="85" y="56" text-anchor="middle" font-size="11" font-family="Source Sans 3,sans-serif" fill="#2a7a6a" font-weight="600">Infekterad cell</text>
+      <text x="85" y="73" text-anchor="middle" font-size="10" font-family="Source Sans 3,sans-serif" fill="#2a4a38">Virusproteiner bryts</text>
+      <text x="85" y="88" text-anchor="middle" font-size="10" font-family="Source Sans 3,sans-serif" fill="#2a4a38">ner inuti cellen och</text>
+      <text x="85" y="103" text-anchor="middle" font-size="10" font-family="Source Sans 3,sans-serif" fill="#2a4a38">presenteras via MHC-I</text>
+
+      <line x1="160" y1="72" x2="185" y2="72" stroke="#2a7a6a" stroke-width="1.5" marker-end="url(#arr4)"/>
+
+      <rect x="188" y="32" width="150" height="80" rx="7" fill="#e8f4f0" stroke="#2a7a6a" stroke-width="1.5"/>
+      <text x="263" y="56" text-anchor="middle" font-size="11" font-family="Source Sans 3,sans-serif" fill="#2a7a6a" font-weight="600">T-mördarcellen "läser"</text>
+      <text x="263" y="73" text-anchor="middle" font-size="10" font-family="Source Sans 3,sans-serif" fill="#2a4a38">Receptorer på T-cellen</text>
+      <text x="263" y="88" text-anchor="middle" font-size="10" font-family="Source Sans 3,sans-serif" fill="#2a4a38">binder till MHC-I-peptid-</text>
+      <text x="263" y="103" text-anchor="middle" font-size="10" font-family="Source Sans 3,sans-serif" fill="#2a4a38">komplexet</text>
+
+      <line x1="338" y1="72" x2="363" y2="72" stroke="#2a7a6a" stroke-width="1.5" marker-end="url(#arr4)"/>
+
+      <rect x="366" y="32" width="150" height="80" rx="7" fill="#e8f4f0" stroke="#c0522a" stroke-width="1.5"/>
+      <text x="441" y="56" text-anchor="middle" font-size="11" font-family="Source Sans 3,sans-serif" fill="#c0522a" font-weight="600">Icke-kroppseget?</text>
+      <text x="441" y="73" text-anchor="middle" font-size="10" font-family="Source Sans 3,sans-serif" fill="#4a2a20">Ja → Gift frisätts</text>
+      <text x="441" y="88" text-anchor="middle" font-size="10" font-family="Source Sans 3,sans-serif" fill="#4a2a20">som inducerar apoptos</text>
+      <text x="441" y="103" text-anchor="middle" font-size="10" font-family="Source Sans 3,sans-serif" fill="#4a2a20">(programmerad celldöd)</text>
+
+      <line x1="516" y1="72" x2="541" y2="72" stroke="#c0522a" stroke-width="1.5" marker-end="url(#arr4)"/>
+
+      <rect x="544" y="32" width="145" height="80" rx="7" fill="#fce8e0" stroke="#c0522a" stroke-width="1.5"/>
+      <text x="616" y="56" text-anchor="middle" font-size="11" font-family="Source Sans 3,sans-serif" fill="#c0522a" font-weight="600">Cellen dör</text>
+      <text x="616" y="73" text-anchor="middle" font-size="10" font-family="Source Sans 3,sans-serif" fill="#4a2a20">Viruset kan inte längre</text>
+      <text x="616" y="88" text-anchor="middle" font-size="10" font-family="Source Sans 3,sans-serif" fill="#4a2a20">föröka sig. Infektion</text>
+      <text x="616" y="103" text-anchor="middle" font-size="10" font-family="Source Sans 3,sans-serif" fill="#4a2a20">stoppas.</text>
+
+      <text x="350" y="155" text-anchor="middle" font-size="10" font-family="Source Sans 3,sans-serif" fill="#6a6458" font-style="italic">Kroppseget protein → inget händer ("nothing to see here")</text>
+    </svg>
+    <p class="diagram-caption">Figur 5. T-mördarcellens process för att identifiera och döda en virusinfekterad cell.</p>
+  </div>
+
+  <!-- B-cells aktivering steps -->
+  <h3 style="font-family:'Lora',serif;font-size:1.15rem;margin-bottom:16px;margin-top:8px">Hur aktiveras B-celler och antikroppar produceras</h3>
+  <div class="process-steps">
+    <div class="process-step">
+      <div class="step-num">1</div>
+      <div class="step-body"><h4>B-cellen lockas till infekterat område</h4><p>Kemiska signaler från infektionen drar till sig B-celler ur lymfsystemet.</p></div>
+    </div>
+    <div class="process-step">
+      <div class="step-num">2</div>
+      <div class="step-body"><h4>Patogen med "rätt" antigen binds</h4><p>B-cellen har receptorer som passar till ett specifikt antigen – precis som ett lås och en nyckel.</p></div>
+    </div>
+    <div class="process-step">
+      <div class="step-num">3</div>
+      <div class="step-body"><h4>Patogenen bryts ner och peptider presenteras</h4><p>B-cellen fagocyterar patogenen, bryter ner den och presenterar peptiderna på sin yta via MHC klass II.</p></div>
+    </div>
+    <div class="process-step">
+      <div class="step-num">4</div>
+      <div class="step-body"><h4>T-hjälparcell aktiveras och signalerar</h4><p>En T-hjälparcell känner igen de icke-kroppsegna peptiderna och skickar aktiveringssignaler – till B-cellen ("dina antikroppar behövs!"), till T-mördarceller (aktivera celldödning) och till makrofager (förstärk fagocytosen).</p></div>
+    </div>
+    <div class="process-step">
+      <div class="step-num teal">5</div>
+      <div class="step-body"><h4>Plasmaceller massproducerar antikroppar</h4><p>Den aktiverade B-cellen delar sig och omvandlas till plasmaceller som kan producera tusentals antikroppar per sekund. Antikropparna binder till patogenernas antigener (<strong>opsonisering</strong>) – de hindrar patogener från att fästa på celler, klumpar ihop dem och markerar dem för fagocytos av makrofager.</p></div>
+    </div>
+    <div class="process-step">
+      <div class="step-num teal">6</div>
+      <div class="step-body"><h4>Minnesceller bildas – naturlig immunitet</h4><p>En del av de aktiverade B-cellerna blir långlivade minnesceller som kan överleva i decennier. Vid nästa infektion med samma patogen reagerar de mycket snabbare och kraftfullare.</p></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SEKTION 6 – IMMUNITET
+══════════════════════════════════════ -->
+<div class="section" id="immunitet">
+<div class="container">
+  <p class="section-eyebrow">Immunitet</p>
+  <h2 class="section-title">Naturlig och artificiell immunitet</h2>
+  <p class="section-intro">Minnesceller är grunden för all immunitet – oavsett om de uppstår efter en faktisk sjukdom eller via vaccination.</p>
+
+  <div class="immunity-grid">
+    <div class="immunity-card naturlig">
+      <h4>🦠 Naturlig immunitet</h4>
+      <ul>
+        <li>Uppstår efter en faktisk infektion</li>
+        <li>Kroppen bekämpar patogenen under sjukdomsförloppet</li>
+        <li>B-celler aktiveras och minnesceller bildas</li>
+        <li>Vid nästa infektion: snabbare och kraftigare respons</li>
+        <li><strong>Risk:</strong> Kan ge allvarlig sjukdom (t.ex. mässling → hjärn­inflammation)</li>
+      </ul>
+    </div>
+    <div class="immunity-card artificiell">
+      <h4>💉 Artificiell immunitet (vaccination)</h4>
+      <ul>
+        <li>Kroppen utsätts för försvagat/dött smittämne eller antigenrester</li>
+        <li>Immunrespons utan sjukdomssymptom</li>
+        <li>Minnesceller bildas – samma skydd som naturlig immunitet</li>
+        <li>Man slipper genomgå sjukdomen och dess risker</li>
+        <li><strong>Effekt:</strong> Lika långvarig immunitet som naturlig</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- SVG: Immunrespons-kurva -->
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 680 215" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:680px;display:block;margin:0 auto">
+      <text x="340" y="18" text-anchor="middle" font-family="Lora,serif" font-size="13" fill="#2a2520" font-weight="600">Immunrespons vid första och andra infektion</text>
+
+      <!-- Axes -->
+      <line x1="60" y1="155" x2="640" y2="155" stroke="#c0b8a8" stroke-width="1.5"/>
+      <line x1="60" y1="28" x2="60" y2="160" stroke="#c0b8a8" stroke-width="1.5"/>
+      <text x="350" y="172" text-anchor="middle" font-size="10" font-family="Source Sans 3,sans-serif" fill="#6a6458">Tid</text>
+      <text x="18" y="100" text-anchor="middle" font-size="10" font-family="Source Sans 3,sans-serif" fill="#6a6458" transform="rotate(-90,18,100)">Antikroppsnivå</text>
+
+      <!-- First infection curve – smooth bell, low peak around x=230 -->
+      <path d="M80,152 C100,148 130,138 160,110 C185,86 205,68 230,62 C255,68 275,86 300,110 C325,132 345,148 380,152 C400,153 420,153 450,153" stroke="#c0522a" stroke-width="2.2" fill="none"/>
+
+      <!-- Second infection curve – smooth bell, high peak around x=540, starts at 450 -->
+      <path d="M450,153 C468,148 480,128 498,90 C514,56 528,36 545,32 C562,36 576,56 592,90 C608,120 620,142 636,152" stroke="#2a7a6a" stroke-width="2.5" fill="none"/>
+
+      <!-- Infection markers -->
+      <line x1="80" y1="150" x2="80" y2="163" stroke="#c0522a" stroke-width="1.5"/>
+      <text x="80" y="173" text-anchor="middle" font-size="9" font-family="Source Sans 3,sans-serif" fill="#c0522a">1:a infektion</text>
+
+      <line x1="450" y1="150" x2="450" y2="163" stroke="#2a7a6a" stroke-width="1.5"/>
+      <text x="450" y="173" text-anchor="middle" font-size="9" font-family="Source Sans 3,sans-serif" fill="#2a7a6a">2:a infektion</text>
+
+      <!-- Label for first curve – above its peak, well clear of line -->
+      <text x="230" y="46" text-anchor="middle" font-size="9" font-family="Source Sans 3,sans-serif" fill="#c0522a" font-weight="600">Långsam, svag respons</text>
+      <text x="230" y="57" text-anchor="middle" font-size="9" font-family="Source Sans 3,sans-serif" fill="#c0522a">(primär immunrespons)</text>
+
+      <!-- Label for second curve – above its peak -->
+      <text x="545" y="18" text-anchor="middle" font-size="9" font-family="Source Sans 3,sans-serif" fill="#2a7a6a" font-weight="600">Snabb, kraftig respons</text>
+      <text x="545" y="29" text-anchor="middle" font-size="9" font-family="Source Sans 3,sans-serif" fill="#2a7a6a">(sekundär immunrespons)</text>
+
+      <!-- Memory cells arrow – starts at peak of first curve, extends past second infection -->
+      <defs>
+        <marker id="mem-arr" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#8a6a20"/></marker>
+      </defs>
+      <line x1="230" y1="192" x2="636" y2="192" stroke="#8a6a20" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#mem-arr)"/>
+      <!-- Dot marking where memory cells form -->
+      <circle cx="230" cy="192" r="3.5" fill="#8a6a20"/>
+      <text x="390" y="207" text-anchor="middle" font-size="9" font-family="Source Sans 3,sans-serif" fill="#8a6a20" font-style="italic">Minnesceller kvar i kroppen</text>
+    </svg>
+    <p class="diagram-caption">Figur 6. Primär vs sekundär immunrespons. Vid andra infektionstillfället aktiveras minnesceller snabbt och massproducerar antikroppar – kroppen reagerar kraftigare och snabbare än första gången.</p>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SEKTION 7 – KOLLA ATT DU KAN
+══════════════════════════════════════ -->
+<div class="section" id="kolla">
+<div class="container">
+
+  <p class="section-eyebrow">Självbedömning</p>
+  <h2 class="section-title">Kolla att du kan</h2>
+  <p class="section-intro">Skriv ditt svar på varje fråga och jämför sedan med mallsvaret. Bocka i om du hade med det viktigaste.</p>
+
+  <div id="questions-wrap"></div>
+
+</div>
+</div>
+
+<style>
+  .q-card {
+    background: #1a2a20;
+    border: 1px solid #2a4030;
+    border-radius: 10px;
+    padding: 24px 28px;
+    margin-bottom: 20px;
+  }
+  .q-num {
+    font-size: .7rem;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: #5acfb2;
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+  .q-text {
+    font-family: 'Lora', serif;
+    font-size: 1rem;
+    color: #e0ece8;
+    margin-bottom: 16px;
+    line-height: 1.5;
+  }
+  .q-textarea {
+    width: 100%;
+    background: #0f1a14;
+    border: 1.5px solid #2a4030;
+    border-radius: 7px;
+    color: #dde8e4;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: .93rem;
+    padding: 12px 14px;
+    resize: vertical;
+    min-height: 90px;
+    outline: none;
+    transition: border-color .2s;
+    line-height: 1.6;
+  }
+  .q-textarea:focus { border-color: #5acfb2; }
+  .q-btn {
+    margin-top: 12px;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: .85rem;
+    font-weight: 600;
+    padding: 9px 22px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    background: #5acfb2;
+    color: #0f1a14;
+    transition: background .2s;
+  }
+  .q-btn:hover { background: #3aaf92; }
+  .q-model {
+    margin-top: 16px;
+    display: none;
+    background: #0f1a14;
+    border: 1px solid #2a4030;
+    border-radius: 7px;
+    overflow: hidden;
+  }
+  .q-model.shown { display: block; }
+  .q-model-header {
+    background: #2a4030;
+    padding: 8px 16px;
+    font-size: .75rem;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: #5acfb2;
+    font-weight: 600;
+  }
+  .q-model-body {
+    padding: 14px 18px;
+    font-size: .88rem;
+    color: #b0d0c0;
+    line-height: 1.75;
+  }
+  .q-model-body strong { color: #e0ece8; }
+  .q-model-body ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .q-model-body li {
+    padding-left: 16px;
+    position: relative;
+  }
+  .q-model-body li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: #5acfb2;
+    font-size: .8rem;
+  }
+  .q-self-check {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid #2a4030;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: .82rem;
+    color: #7aaa90;
+    cursor: pointer;
+  }
+  .q-self-check input { accent-color: #5acfb2; width: 16px; height: 16px; cursor: pointer; }
+  .q-self-check label { cursor: pointer; }
+  .q-retry {
+    margin-top: 10px;
+    font-size: .78rem;
+    color: #5a8a78;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: 'Source Sans 3', sans-serif;
+    text-decoration: underline;
+    padding: 0;
+    display: block;
+  }
+  .q-retry:hover { color: #a0c0b0; }
+  .q-score-bar {
+    background: #0f1a14;
+    border: 1px solid #2a4030;
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin-top: 32px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .q-score-num {
+    font-family: 'Lora', serif;
+    font-size: 2rem;
+    color: #5acfb2;
+    line-height: 1;
+  }
+  .q-score-label { font-size: .85rem; color: #7aaa90; }
+  .q-score-msg { font-size: .88rem; color: #b0d0c0; }
+</style>
+
+<script>
+const QUESTIONS = [
+  {
+    q: "Förklara begreppen patogen, infektion och inflammation med egna ord.",
+    model: [
+      "<strong>Patogen</strong> – ett smittämne som kan orsaka sjukdom, t.ex. bakterie, virus, svamp eller parasit.",
+      "<strong>Infektion</strong> – när patogener tar sig in i kroppen och börjar etablera sig och föröka sig.",
+      "<strong>Inflammation</strong> – kroppens snabba svar på skada eller infektion. Histamin frisätts, blodkärlen vidgas och vita blodkroppar rekryteras till platsen. Symptom: rodnad, svullnad, värme och smärta."
+    ]
+  },
+  {
+    q: "Hur delas immunförsvaret in? Nämn de tre försvarsnivåerna och ge ett exempel på vad som ingår i varje.",
+    model: [
+      "<strong>Första nivån – Barriärer:</strong> hud, slemhinnor, magsyra, lysozym i tårvätska.",
+      "<strong>Andra nivån – Icke-specifikt försvar:</strong> makrofager, granulocyter, NK-celler, mastceller, feber och inflammation.",
+      "<strong>Tredje nivån – Specifikt/adaptivt försvar:</strong> B-lymfocyter, T-lymfocyter, antikroppar och minnesceller."
+    ]
+  },
+  {
+    q: "Vad är skillnaden mellan det icke-specifika och det specifika försvaret? Använd minst tre egenskaper.",
+    model: [
+      "<strong>Reaktionstid:</strong> icke-specifikt reagerar omedelbart (sekunder–timmar), specifikt tar dagar–veckor.",
+      "<strong>Minne:</strong> icke-specifikt bildar inget minne, specifikt bildar minnesceller.",
+      "<strong>Specificitet:</strong> icke-specifikt reagerar lika mot alla patogener, specifikt riktas mot ett särskilt antigen.",
+      "<strong>Ursprung:</strong> icke-specifikt är medfött, specifikt är adaptivt och förbättras med erfarenhet."
+    ]
+  },
+  {
+    q: "Vilka vita blodkroppar ingår i det icke-specifika försvaret och vad gör de?",
+    model: [
+      "<strong>Granulocyter</strong> – snabb insatsstyrka som angriper bakterier med enzymer och gifter.",
+      "<strong>Monocyter/Makrofager</strong> – fagocyterar patogener, städar upp och presenterar antigen för T-celler.",
+      "<strong>NK-celler</strong> – dödar virusinfekterade celler och cancerceller.",
+      "<strong>Mastceller</strong> – frisätter histamin och utlöser inflammation.",
+      "<strong>Dendritiska celler</strong> – brygga till specifika försvaret; presenterar antigen för T-celler."
+    ]
+  },
+  {
+    q: "Beskriv hur en makrofag förstör en bakterie – fagocytos steg för steg.",
+    model: [
+      "1. Makrofagen känner igen bakterien via receptorer på ytan.",
+      "2. Cellmembranet omsluter bakterien (endocytos) → ett fagosom bildas.",
+      "3. Lysosomer smälter samman med fagosomen.",
+      "4. Enzymer i lysosomen bryter ner bakterien.",
+      "5. Peptider från bakterien presenteras på makrofagens yta via MHC → aktiverar T-hjälparceller."
+    ]
+  },
+  {
+    q: "Förklara hur en T-mördarcell hittar och dödar en virusinfekterad cell. Vad är MHC-I:s roll?",
+    model: [
+      "Infekterade celler bryter ner virusproteiner och presenterar peptiderna på cellytan via <strong>MHC-I</strong> – ett slags ID-kort som visar vad som finns inne i cellen.",
+      "T-mördarcellens receptor läser av peptiden. Om den är icke-kroppseget frisätter T-mördarcellen gifter som inducerar <strong>apoptos</strong> (programmerad celldöd) i den infekterade cellen.",
+      "På så vis stoppas viruset från att fortsätta föröka sig."
+    ]
+  },
+  {
+    q: "Hur aktiveras en B-cell och vad händer sedan? Vad är skillnaden mellan en plasmacell och en minnescell?",
+    model: [
+      "B-cellen lockas till infekterat område → binder patogen med rätt antigen → bryter ner och presenterar peptider via MHC-II → T-hjälparcell känner igen dem och signalerar: 'dina antikroppar behövs!'",
+      "<strong>Plasmacell</strong> – aktiverad B-cell som massproducerar antikroppar. Kortlivad. Antikropparna opsoniserar patogener och märker ut dem för förstöring.",
+      "<strong>Minnescell</strong> – långlivad, minns antigenet och möjliggör en snabbare och kraftigare sekundärrespons vid återinfektion."
+    ]
+  },
+  {
+    q: "Vad är skillnaden mellan antigen och antikropp?",
+    model: [
+      "<strong>Antigen</strong> – en molekyl (vanligen ett protein) på patogenens yta som utlöser ett specifikt immunsvar.",
+      "<strong>Antikropp</strong> – ett Y-format protein (immunoglobulin) som produceras av B-celler och binder specifikt till ett visst antigen, som en nyckel i ett lås.",
+      "När antikroppar täcker en patogen kallas det <strong>opsonisering</strong> – det gör patogenen lättare att fagocytera."
+    ]
+  },
+  {
+    q: "Förklara hur naturlig immunitet uppstår och varför en andra infektion går snabbare.",
+    model: [
+      "Vid första infektionen aktiveras B-celler → plasmaceller producerar antikroppar → <strong>minnesceller</strong> bildas.",
+      "Vid återinfektion aktiveras minnescellerna mycket snabbt och massproducerar antikroppar innan man hinner bli sjuk – detta kallas sekundärrespons.",
+      "Sekundärresponsen är både snabbare och kraftigare än den primära, vilket syns tydligt i immunresponskurvan."
+    ]
+  },
+  {
+    q: "Vad är vaccination och hur ger det samma skydd som naturlig immunitet utan att man behöver bli sjuk?",
+    model: [
+      "Vaccination innebär att kroppen utsätts för ett försvagat, dött smittämne eller antigenrester.",
+      "Immunresponsen aktiveras på samma sätt som vid en riktig infektion → minnesceller bildas.",
+      "Skyddet är lika långvarigt som naturlig immunitet, men man slipper genomgå sjukdomen och dess risker (t.ex. komplikationer vid mässling)."
+    ]
+  }
+];
+
+let checked = new Array(QUESTIONS.length).fill(false);
+
+function buildQuestions() {
+  const wrap = document.getElementById('questions-wrap');
+  QUESTIONS.forEach((q, i) => {
+    const modelItems = q.model.map(m => `<li>${m}</li>`).join('');
+    wrap.innerHTML += `
+      <div class="q-card" id="qcard-${i}">
+        <div class="q-num">Fråga ${i+1} av ${QUESTIONS.length}</div>
+        <div class="q-text">${q.q}</div>
+        <textarea class="q-textarea" id="qta-${i}" placeholder="Skriv ditt svar här..."></textarea>
+        <div>
+          <button class="q-btn" onclick="showModel(${i})">Visa mallsvar →</button>
+        </div>
+        <div class="q-model" id="qmodel-${i}">
+          <div class="q-model-header">📋 Mallsvar</div>
+          <div class="q-model-body">
+            <ul>${modelItems}</ul>
+            <div class="q-self-check">
+              <input type="checkbox" id="qcheck-${i}" onchange="toggleCheck(${i})"/>
+              <label for="qcheck-${i}">Jag hade med det viktigaste</label>
+            </div>
+          </div>
+        </div>
+        <button class="q-retry" onclick="resetQuestion(${i})">↩ Rensa och försök igen</button>
+      </div>`;
+  });
+  updateScore();
+}
+
+function showModel(i) {
+  document.getElementById(`qmodel-${i}`).classList.add('shown');
+}
+
+function toggleCheck(i) {
+  checked[i] = document.getElementById(`qcheck-${i}`).checked;
+  updateScore();
+}
+
+function resetQuestion(i) {
+  document.getElementById(`qta-${i}`).value = '';
+  document.getElementById(`qmodel-${i}`).classList.remove('shown');
+  document.getElementById(`qcheck-${i}`).checked = false;
+  checked[i] = false;
+  updateScore();
+}
+
+function updateScore() {
+  const n = checked.filter(Boolean).length;
+  const total = QUESTIONS.length;
+  const pct = Math.round(n / total * 100);
+  const msg = n === total ? '🎉 Utmärkt – du kan hela avsnittet!'
+    : n >= 7 ? '👍 Bra jobbat! Kika igenom de du missat.'
+    : n >= 4 ? '📖 Bra start – fortsätt öva på resten.'
+    : '🔍 Gå tillbaka till materialet och försök igen.';
+
+  let bar = document.getElementById('q-scorebar');
+  if (!bar) {
+    document.getElementById('questions-wrap').insertAdjacentHTML('afterend',
+      `<div class="q-score-bar" id="q-scorebar">
+        <div class="q-score-num" id="qs-num">${n}/${total}</div>
+        <div><div class="q-score-label">Självskattning</div><div class="q-score-msg" id="qs-msg">${msg}</div></div>
+      </div>`);
+  } else {
+    document.getElementById('qs-num').textContent = `${n}/${total}`;
+    document.getElementById('qs-msg').textContent = msg;
+  }
+}
+
+buildQuestions();
+</script>
+
+</main>
+
+<footer>
+  <a href="nk2.html">← Tillbaka till NK2</a> &middot; Naturkunskap 2 &middot; Immunförsvaret
+</footer>
+
+</body>
+</html>

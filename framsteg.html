@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mitt framsteg – NK2</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg:#0b1219; --surface:#111c27; --card:#172233; --border:#243548;
+      --teal:#3ecfb2; --teal2:#27a890; --amber:#f0b040; --red:#e05555;
+      --green:#4caf82; --text:#dde8f0; --muted:#6a8aa0;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+
+    /* TOP */
+    .top-bar{background:var(--surface);border-bottom:1px solid var(--border);padding:16px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;position:sticky;top:0;z-index:50;}
+    .top-left{display:flex;align-items:center;gap:14px;}
+    .back-link{color:var(--muted);text-decoration:none;font-size:0.82rem;display:flex;align-items:center;gap:6px;transition:color .2s;}
+    .back-link:hover{color:var(--teal);}
+    .top-title{font-family:'Fraunces',serif;font-size:1.15rem;color:var(--text);}
+    .user-chip{font-size:0.78rem;color:var(--muted);background:var(--card);border:1px solid var(--border);padding:4px 13px;border-radius:30px;}
+
+    /* MAIN */
+    .main{max-width:800px;margin:0 auto;padding:44px 24px 80px;}
+    .page-title{font-family:'Fraunces',serif;font-size:2rem;margin-bottom:6px;}
+    .page-sub{font-size:0.88rem;color:var(--muted);margin-bottom:40px;line-height:1.6;}
+
+    /* OVERALL SUMMARY */
+    .summary-bar{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:24px 28px;margin-bottom:36px;display:flex;align-items:center;gap:28px;flex-wrap:wrap;}
+    .summary-ring{position:relative;width:80px;height:80px;flex-shrink:0;}
+    .ring-svg{transform:rotate(-90deg);}
+    .ring-bg{fill:none;stroke:var(--border);stroke-width:7;}
+    .ring-fill{fill:none;stroke:var(--teal);stroke-width:7;stroke-linecap:round;transition:stroke-dashoffset .6s ease;}
+    .ring-label{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:'Fraunces',serif;}
+    .ring-pct{font-size:1.2rem;color:var(--text);line-height:1;}
+    .ring-sub{font-size:0.6rem;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;}
+    .summary-text h2{font-family:'Fraunces',serif;font-size:1.2rem;margin-bottom:6px;}
+    .summary-text p{font-size:0.85rem;color:var(--muted);line-height:1.6;max-width:440px;}
+
+    /* MOMENT CARDS */
+    .moments-grid{display:flex;flex-direction:column;gap:16px;}
+    .moment-card{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:border-color .2s;}
+    .moment-card:hover{border-color:rgba(62,207,178,.3);}
+    .moment-top{padding:20px 24px 16px;display:flex;align-items:flex-start;justify-content:space-between;gap:16px;}
+    .moment-left{display:flex;align-items:center;gap:14px;}
+    .moment-icon{font-size:1.6rem;}
+    .moment-info{}
+    .moment-eyebrow{font-size:0.68rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:3px;}
+    .moment-name{font-family:'Fraunces',serif;font-size:1.1rem;color:var(--text);}
+    .moment-status{font-size:0.75rem;font-weight:600;letter-spacing:.06em;padding:4px 12px;border-radius:30px;white-space:nowrap;align-self:flex-start;margin-top:2px;}
+    .status-done{background:rgba(76,175,130,.15);color:var(--green);border:1px solid rgba(76,175,130,.3);}
+    .status-progress{background:rgba(240,176,64,.12);color:var(--amber);border:1px solid rgba(240,176,64,.3);}
+    .status-notstarted{background:rgba(106,138,160,.1);color:var(--muted);border:1px solid var(--border);}
+
+    /* STAIR STEPS */
+    .stair-row{padding:0 24px 20px;display:flex;gap:0;align-items:stretch;}
+    .stair-step{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;position:relative;}
+    .stair-step:not(:last-child)::after{
+      content:'→';position:absolute;right:-8px;top:16px;
+      font-size:.7rem;color:var(--border);z-index:1;
+    }
+    .step-circle{
+      width:36px;height:36px;border-radius:50%;
+      border:2px solid var(--border);
+      background:var(--bg);
+      display:flex;align-items:center;justify-content:center;
+      font-size:.85rem;font-weight:700;color:var(--muted);
+      transition:all .3s;
+    }
+    .step-circle.done{background:var(--green);border-color:var(--green);color:#0b1219;}
+    .step-circle.active{border-color:var(--teal);color:var(--teal);}
+    .step-label{font-size:.72rem;color:var(--muted);text-align:center;line-height:1.3;}
+    .step-label.done{color:var(--green);}
+    .step-label.active{color:var(--teal);}
+    .step-date{font-size:.65rem;color:var(--muted);opacity:.7;text-align:center;}
+
+    /* FLASHCARD DETAIL */
+    .fc-detail{padding:0 24px 20px;}
+    .fc-detail-title{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;}
+    .fc-rows{display:flex;flex-direction:column;gap:7px;}
+    .fc-row{display:flex;align-items:center;gap:10px;font-size:.82rem;}
+    .fc-row-name{color:var(--muted);min-width:190px;}
+    .fc-mini-bar{flex:1;height:5px;background:var(--border);border-radius:3px;overflow:hidden;}
+    .fc-mini-fill{height:100%;border-radius:3px;transition:width .4s;}
+    .fill-g{background:var(--green);}
+    .fill-a{background:var(--amber);}
+    .fill-r{background:var(--red);}
+    .fc-pct{font-size:.75rem;color:var(--text);min-width:34px;text-align:right;}
+    .fc-sessions{font-size:.7rem;color:var(--muted);}
+    .fc-none{font-size:.8rem;color:var(--muted);font-style:italic;}
+
+    /* RESET */
+    .reset-wrap{margin-top:36px;text-align:center;}
+    .reset-btn{font-family:'DM Sans',sans-serif;font-size:.78rem;color:var(--muted);background:none;border:1px solid var(--border);border-radius:6px;padding:7px 16px;cursor:pointer;transition:all .2s;}
+    .reset-btn:hover{border-color:var(--red);color:var(--red);}
+
+    @media(max-width:560px){
+      .summary-bar{gap:16px;}
+      .moment-top{flex-direction:column;gap:10px;}
+      .stair-row{gap:4px;}
+      .fc-row-name{min-width:120px;}
+    }
+  </style>
+</head>
+<body>
+
+<div class="top-bar">
+  <div class="top-left">
+    <a href="nk2.html" class="back-link">← Tillbaka till NK2</a>
+    <div class="top-title">Mitt framsteg</div>
+  </div>
+  <div class="user-chip" id="user-chip">Laddar...</div>
+</div>
+
+<div class="main">
+  <h1 class="page-title">Mitt framsteg</h1>
+  <p class="page-sub">
+    Här ser du hur långt du kommit i varje moment.<br>
+    Stegen bockas av automatiskt när du öppnar material, slutför flashcards och övar med uppgifter.
+  </p>
+
+  <!-- OVERALL RING -->
+  <div class="summary-bar">
+    <div class="summary-ring">
+      <svg class="ring-svg" width="80" height="80" viewBox="0 0 80 80">
+        <circle class="ring-bg" cx="40" cy="40" r="34"/>
+        <circle class="ring-fill" id="ring-fill" cx="40" cy="40" r="34"
+          stroke-dasharray="213.6" stroke-dashoffset="213.6"/>
+      </svg>
+      <div class="ring-label">
+        <div class="ring-pct" id="ring-pct">0%</div>
+        <div class="ring-sub">klart</div>
+      </div>
+    </div>
+    <div class="summary-text">
+      <h2 id="summary-heading">Kom igång!</h2>
+      <p id="summary-msg">Du har inte påbörjat något moment ännu. Börja med att läsa materialet eller se en video under ett moment.</p>
+    </div>
+  </div>
+
+  <!-- MOMENT CARDS -->
+  <div class="moments-grid" id="moments-grid"></div>
+
+  <div class="reset-wrap">
+    <button class="reset-btn" onclick="confirmReset()">🗑 Återställ mitt framsteg</button>
+  </div>
+</div>
+
+<script src="shared.js"></script>
+<script>
+const MOMENTS = [
+  { id:'evo',  icon:'🌿', num:'Moment 1', name:'Evolution' },
+  { id:'mk',   icon:'🫀', num:'Moment 2', name:'Människokroppen' },
+  { id:'uni',  icon:'🔭', num:'Moment 3', name:'Universum & Materia' },
+  { id:'kem',  icon:'⚗️', num:'Moment 4', name:'Organisk & Oorganisk kemi' },
+  { id:'met',  icon:'🧪', num:'Moment 5', name:'Naturvetenskapliga arbetsmetoder' }
+];
+
+const STEPS = [
+  { key:'forsta',  label:'Förstå',   hint:'Video & material' },
+  { key:'befasta', label:'Befästa',  hint:'Flashcards' },
+  { key:'tillamp', label:'Tillämpa', hint:'Uppgifter & quiz' }
+];
+
+const FC_SETS = {
+  mk: [
+    { id:'mk_hormonsystemet',    name:'Hormonsystemet' },
+    { id:'mk_nervsystemet',      name:'Nervsystemet' },
+    { id:'mk_immunforsvaret',    name:'Immunförsvaret' },
+    { id:'mk_cirkulationen',     name:'Cirkulationssystemet' },
+    { id:'mk_andningen',         name:'Andningen' },
+    { id:'mk_cellen',            name:'Cellen' },
+    { id:'mk_utsondringsorganen',name:'Utsöndringsorganen' }
+  ]
+};
+
+let session, userId;
+
+window.addEventListener('load', () => {
+  session = getSession();
+  if (!session) { window.location.href = 'index.html'; return; }
+  userId = session.name + '_' + session.klass;
+  document.getElementById('user-chip').textContent = session.name;
+  render();
+});
+
+function getStairData() {
+  try { return JSON.parse(localStorage.getItem('nk_stair_' + userId) || '{}'); } catch { return {}; }
+}
+
+function checkFCDone(momentId) {
+  const sets = FC_SETS[momentId];
+  if (!sets) return false;
+  const prog = getProgress(userId);
+  return sets.some(s => prog[s.id] && prog[s.id].sessions && prog[s.id].sessions.length > 0);
+}
+
+function getFCData(momentId) {
+  const sets = FC_SETS[momentId];
+  if (!sets) return [];
+  const prog = getProgress(userId);
+  return sets.map(s => {
+    const sessions = (prog[s.id] || {}).sessions || [];
+    const best = sessions.length ? Math.max(...sessions.map(x => x.pct)) : null;
+    return { name: s.name, sessions: sessions.length, best };
+  });
+}
+
+function fmtDate(ts) {
+  if (!ts) return '';
+  return new Date(ts).toLocaleDateString('sv-SE', { month:'short', day:'numeric' });
+}
+
+function render() {
+  const stairData = getStairData();
+  let totalSteps = 0, doneSteps = 0;
+
+  const grid = document.getElementById('moments-grid');
+  grid.innerHTML = '';
+
+  MOMENTS.forEach(m => {
+    const mData = stairData[m.id] || {};
+
+    // Auto-inject befästa if flashcards done
+    if (checkFCDone(m.id) && !mData['befasta']) mData['befasta'] = true;
+
+    const stepsDone = STEPS.filter(s => !!mData[s.key]).length;
+    totalSteps += STEPS.length;
+    doneSteps  += stepsDone;
+
+    // Status label
+    let statusClass, statusText;
+    if (stepsDone === STEPS.length) {
+      statusClass = 'status-done'; statusText = '✓ Klart';
+    } else if (stepsDone > 0) {
+      statusClass = 'status-progress'; statusText = `${stepsDone}/${STEPS.length} steg`;
+    } else {
+      statusClass = 'status-notstarted'; statusText = 'Ej påbörjat';
+    }
+
+    // Stair HTML
+    const stairHTML = STEPS.map((s, i) => {
+      const done   = !!mData[s.key];
+      const active = !done && STEPS.slice(0, i).every(prev => !!mData[prev.key]);
+      const circleClass = done ? 'done' : active ? 'active' : '';
+      const labelClass  = done ? 'done' : active ? 'active' : '';
+      const dateStr = done && mData[s.key] !== true ? fmtDate(mData[s.key]) : '';
+      return `
+        <div class="stair-step">
+          <div class="step-circle ${circleClass}">${done ? '✓' : (i+1)}</div>
+          <div class="step-label ${labelClass}">${s.label}<br><span style="font-weight:300;opacity:.7">${s.hint}</span></div>
+          ${dateStr ? `<div class="step-date">${dateStr}</div>` : ''}
+        </div>`;
+    }).join('<span class="stair-arrow" style="align-self:center;color:var(--border);margin:0 4px;padding-bottom:20px">→</span>');
+
+    // FC detail for Människokroppen
+    let fcHTML = '';
+    const fcData = getFCData(m.id);
+    if (fcData.length > 0) {
+      const rows = fcData.map(fc => {
+        if (fc.sessions === 0) return `<div class="fc-row"><span class="fc-row-name">${fc.name}</span><span class="fc-none">Inte övat ännu</span></div>`;
+        const fillCls = fc.best >= 80 ? 'fill-g' : fc.best >= 50 ? 'fill-a' : 'fill-r';
+        return `<div class="fc-row">
+          <span class="fc-row-name">${fc.name}</span>
+          <div class="fc-mini-bar"><div class="fc-mini-fill ${fillCls}" style="width:${fc.best}%"></div></div>
+          <span class="fc-pct">${fc.best}%</span>
+          <span class="fc-sessions">${fc.sessions} omg.</span>
+        </div>`;
+      }).join('');
+      fcHTML = `<div class="fc-detail">
+        <div class="fc-detail-title">Flashcard-set</div>
+        <div class="fc-rows">${rows}</div>
+      </div>`;
+    }
+
+    grid.innerHTML += `
+      <div class="moment-card">
+        <div class="moment-top">
+          <div class="moment-left">
+            <div class="moment-icon">${m.icon}</div>
+            <div class="moment-info">
+              <div class="moment-eyebrow">${m.num}</div>
+              <div class="moment-name">${m.name}</div>
+            </div>
+          </div>
+          <div class="moment-status ${statusClass}">${statusText}</div>
+        </div>
+        <div class="stair-row">${stairHTML}</div>
+        ${fcHTML}
+      </div>`;
+  });
+
+  // Overall ring
+  const pct = totalSteps ? Math.round((doneSteps / totalSteps) * 100) : 0;
+  const circumference = 213.6;
+  const offset = circumference - (circumference * pct / 100);
+  document.getElementById('ring-fill').style.strokeDashoffset = offset;
+  document.getElementById('ring-pct').textContent = pct + '%';
+
+  const heading = pct === 100 ? 'Kursen klar! 🎉'
+    : pct >= 66 ? 'Nästan i mål!'
+    : pct >= 33 ? 'Bra jobbat, fortsätt!'
+    : pct > 0   ? 'Du har kommit igång!'
+    : 'Kom igång!';
+  const msg = pct === 100
+    ? 'Du har slutfört alla tre steg i samtliga moment. Imponerande!'
+    : pct >= 66
+    ? `${doneSteps} av ${totalSteps} steg klara. Sista spurten – du klarar det!`
+    : pct > 0
+    ? `${doneSteps} av ${totalSteps} steg klara. Jobba dig igenom ett moment i taget.`
+    : 'Börja med att läsa materialet eller se en video under ett moment.';
+
+  document.getElementById('summary-heading').textContent = heading;
+  document.getElementById('summary-msg').textContent = msg;
+}
+
+function confirmReset() {
+  if (confirm('Vill du verkligen återställa allt framsteg? Detta går inte att ångra.')) {
+    localStorage.removeItem('nk_stair_' + userId);
+    render();
+  }
+}
+</script>
+</body>
+</html>

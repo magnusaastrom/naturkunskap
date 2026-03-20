@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Lärarvy – Naturkunskap</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root{--bg:#0b1219;--surface:#111c27;--card:#172233;--border:#243548;--teal:#3ecfb2;--teal2:#27a890;--amber:#f0b040;--red:#e05555;--green:#4caf82;--text:#dde8f0;--muted:#6a8aa0;}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+    .top-bar{background:var(--surface);border-bottom:1px solid var(--border);padding:16px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
+    .top-title{font-family:'Fraunces',serif;font-size:1.2rem;}
+    .top-title span{color:var(--amber);}
+    .logout-btn{font-size:0.78rem;color:var(--muted);background:none;border:1px solid var(--border);border-radius:5px;padding:5px 12px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;}
+    .logout-btn:hover{color:var(--text);border-color:var(--text);}
+    .main{max-width:960px;margin:0 auto;padding:40px 24px 80px;}
+    .page-title{font-family:'Fraunces',serif;font-size:2rem;margin-bottom:8px;}
+    .page-sub{font-size:0.88rem;color:var(--muted);margin-bottom:36px;}
+
+    /* SUMMARY CARDS */
+    .summary-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px;margin-bottom:40px;}
+    .sum-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:20px;}
+    .sum-card .val{font-family:'Fraunces',serif;font-size:2rem;color:var(--teal);margin-bottom:4px;}
+    .sum-card .lbl{font-size:0.78rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;}
+
+    /* FILTER */
+    .filter-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px;}
+    .filter-btn{font-size:0.8rem;padding:6px 16px;border-radius:30px;border:1.5px solid var(--border);background:none;color:var(--muted);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;}
+    .filter-btn:hover{border-color:var(--text);color:var(--text);}
+    .filter-btn.active{background:rgba(62,207,178,.12);border-color:var(--teal);color:var(--teal);}
+
+    /* STUDENT TABLE */
+    .student-table{width:100%;border-collapse:collapse;font-size:0.85rem;}
+    .student-table th{text-align:left;color:var(--muted);font-weight:500;padding:8px 12px;border-bottom:1px solid var(--border);font-size:0.75rem;letter-spacing:.08em;text-transform:uppercase;}
+    .student-table td{padding:12px 12px;border-bottom:1px solid rgba(36,53,72,.5);vertical-align:top;}
+    .student-table tr:last-child td{border-bottom:none;}
+    .student-name{font-weight:500;color:var(--text);}
+    .student-class{font-size:0.75rem;padding:2px 9px;border-radius:30px;display:inline-block;margin-top:3px;}
+    .cl-NK2{background:rgba(62,207,178,.12);color:var(--teal);}
+    .cl-NK1a1{background:rgba(224,122,64,.12);color:#e07a40;}
+    .cl-NK1a2{background:rgba(74,159,212,.12);color:#4a9fd4;}
+    .cl-NK1b{background:rgba(155,109,214,.12);color:#9b6dd6;}
+
+    .set-row{display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap;}
+    .set-name{font-size:0.8rem;color:var(--muted);min-width:180px;}
+    .sessions-count{font-size:0.75rem;color:var(--muted);}
+    .mini-bar-wrap{display:flex;align-items:center;gap:6px;}
+    .mini-bar{width:80px;height:5px;background:var(--border);border-radius:3px;overflow:hidden;}
+    .mini-fill{height:100%;border-radius:3px;}
+    .fill-good{background:var(--green);}
+    .fill-mid{background:var(--amber);}
+    .fill-low{background:var(--red);}
+    .pct-text{font-size:0.78rem;color:var(--text);min-width:36px;}
+    .last-seen{font-size:0.75rem;color:var(--muted);}
+
+    .no-data{text-align:center;padding:48px;color:var(--muted);font-style:italic;}
+
+    /* SECTION TITLE */
+    .section-title{font-family:'Fraunces',serif;font-size:1.15rem;margin-bottom:16px;color:var(--text);}
+    .table-wrap{background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:40px;}
+
+    .empty-state{text-align:center;padding:60px 20px;color:var(--muted);}
+    .empty-state .icon{font-size:2.5rem;margin-bottom:12px;}
+    .empty-state p{font-size:0.9rem;}
+  </style>
+</head>
+<body>
+
+<div class="top-bar">
+  <div class="top-title">🎓 Lärarvy &mdash; <span>Naturkunskap</span></div>
+  <button class="logout-btn" onclick="logout()">Logga ut</button>
+</div>
+
+<div class="main">
+  <h1 class="page-title">Elevöversikt</h1>
+  <p class="page-sub">Progressionsdata sparas lokalt i elevernas webbläsare. Data visas här om eleven använt samma enhet och webbläsare.</p>
+
+  <div class="summary-grid" id="summary-grid"></div>
+
+  <div class="filter-row" id="filter-row">
+    <button class="filter-btn active" data-filter="all" onclick="setFilter(this)">Alla klasser</button>
+    <button class="filter-btn" data-filter="NK2" onclick="setFilter(this)">NK2</button>
+    <button class="filter-btn" data-filter="NK1a1" onclick="setFilter(this)">NK1a1</button>
+    <button class="filter-btn" data-filter="NK1a2" onclick="setFilter(this)">NK1a2</button>
+    <button class="filter-btn" data-filter="NK1b" onclick="setFilter(this)">NK1b</button>
+  </div>
+
+  <div class="section-title">Flashcard-aktivitet per elev</div>
+  <div class="table-wrap">
+    <table class="student-table" id="student-table">
+      <thead><tr>
+        <th>Elev</th>
+        <th>Flashcard-set</th>
+        <th>Bästa resultat</th>
+        <th>Senast aktiv</th>
+        <th>Omgångar</th>
+      </tr></thead>
+      <tbody id="student-tbody"></tbody>
+    </table>
+  </div>
+
+  <div class="empty-state" id="empty-state" style="display:none">
+    <div class="icon">📭</div>
+    <p>Inga elever har övat med flashcards ännu,<br>eller deras data finns på en annan enhet.</p>
+  </div>
+</div>
+
+<script src="shared.js"></script>
+<script>
+  const SET_LABELS = {
+    'mk_hormonsystemet':   '🧪 Hormonsystemet',
+    'mk_nervsystemet':     '🧠 Nervsystemet',
+    'mk_immunforsvaret':   '🛡️ Immunförsvaret',
+    'mk_cirkulationen':    '🫀 Cirkulationssystemet',
+    'mk_andningen':        '🌬️ Andningen',
+    'mk_cellen':           '🔬 Cellen',
+    'mk_utsondringsorganen':'💧 Utsöndringsorganen'
+  };
+
+  let allStudents = [];
+  let currentFilter = 'all';
+
+  window.addEventListener('load', () => {
+    const s = getSession();
+    if (!s || s.role !== 'teacher') { window.location.href = 'index.html'; return; }
+    loadData();
+  });
+
+  function logout() { clearSession(); window.location.href = 'index.html'; }
+
+  function loadData() {
+    allStudents = [];
+    const ids = getAllUserIds();
+
+    ids.forEach(uid => {
+      // uid format: "Förnamn Efternamn_KLASS"
+      const parts = uid.split('_');
+      const klass = parts[parts.length - 1];
+      const name  = parts.slice(0, parts.length - 1).join('_');
+      const prog  = getProgress(uid);
+      if (Object.keys(prog).length === 0) return;
+      allStudents.push({ uid, name, klass, prog });
+    });
+
+    renderSummary();
+    renderTable();
+  }
+
+  function renderSummary() {
+    const total   = allStudents.length;
+    let totalSessions = 0, totalSets = 0;
+    allStudents.forEach(s => {
+      Object.values(s.prog).forEach(set => {
+        totalSessions += set.sessions.length;
+        totalSets++;
+      });
+    });
+    const avgSessions = total ? Math.round(totalSessions / total) : 0;
+
+    document.getElementById('summary-grid').innerHTML = `
+      <div class="sum-card"><div class="val">${total}</div><div class="lbl">Aktiva elever</div></div>
+      <div class="sum-card"><div class="val">${totalSessions}</div><div class="lbl">Totala omgångar</div></div>
+      <div class="sum-card"><div class="val">${totalSets}</div><div class="lbl">Övade set</div></div>
+      <div class="sum-card"><div class="val">${avgSessions}</div><div class="lbl">Snitt omgångar/elev</div></div>
+    `;
+  }
+
+  function setFilter(btn) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentFilter = btn.dataset.filter;
+    renderTable();
+  }
+
+  function renderTable() {
+    const filtered = currentFilter === 'all'
+      ? allStudents
+      : allStudents.filter(s => s.klass === currentFilter);
+
+    const tbody = document.getElementById('student-tbody');
+    const empty = document.getElementById('empty-state');
+
+    if (!filtered.length) {
+      tbody.innerHTML = '';
+      empty.style.display = 'block';
+      document.querySelector('.table-wrap').style.display = 'none';
+      return;
+    }
+    empty.style.display = 'none';
+    document.querySelector('.table-wrap').style.display = 'block';
+
+    tbody.innerHTML = filtered.map(s => {
+      const setRows = Object.entries(s.prog).map(([setId, data]) => {
+        const sessions = data.sessions || [];
+        if (!sessions.length) return '';
+        const best = Math.max(...sessions.map(x => x.pct));
+        const last = new Date(sessions[sessions.length - 1].date);
+        const lastStr = last.toLocaleDateString('sv-SE', {month:'short', day:'numeric'});
+        const fillCls = best >= 80 ? 'fill-good' : best >= 50 ? 'fill-mid' : 'fill-low';
+        const label = SET_LABELS[setId] || setId;
+        return `
+          <div class="set-row">
+            <span class="set-name">${label}</span>
+            <div class="mini-bar-wrap">
+              <div class="mini-bar"><div class="mini-fill ${fillCls}" style="width:${best}%"></div></div>
+              <span class="pct-text">${best}%</span>
+            </div>
+            <span class="sessions-count">${sessions.length} omg.</span>
+          </div>`;
+      }).join('');
+
+      const allSessions = Object.values(s.prog).flatMap(d => d.sessions || []);
+      const lastActive = allSessions.length
+        ? new Date(Math.max(...allSessions.map(x => new Date(x.date).getTime())))
+        : null;
+      const lastStr = lastActive
+        ? lastActive.toLocaleDateString('sv-SE', {month:'short', day:'numeric', hour:'2-digit', minute:'2-digit'})
+        : '–';
+
+      return `<tr>
+        <td>
+          <div class="student-name">${s.name}</div>
+          <div class="student-class cl-${s.klass}">${s.klass}</div>
+        </td>
+        <td>${setRows || '<span style="color:var(--muted);font-size:.82rem">–</span>'}</td>
+        <td></td>
+        <td class="last-seen">${lastStr}</td>
+        <td>${allSessions.length}</td>
+      </tr>`;
+    }).join('');
+  }
+</script>
+</body>
+</html>
