@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Vitaminer & mineralämnen – NK1b</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Mulish:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root{--bg:#faf7f2;--surface:#fff;--border:#e8e0d0;--sand:#f2ece0;--rust:#b85c2a;--rust2:#d4703a;--teal:#2a7a6a;--text:#1a1612;--muted:#6a5e52;--radius:10px;}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:'Mulish',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+    .top-bar{background:#1a1612;padding:14px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;position:sticky;top:0;z-index:50;}
+    .back-link{color:#c8b89a;text-decoration:none;font-size:.82rem;}
+    .back-link:hover{color:#fff;}
+    .top-title{font-family:'Playfair Display',serif;font-size:1rem;color:#e8dcc8;}
+    .top-title span{color:#d4a060;}
+    .hero{background:linear-gradient(135deg,#1a1612,#1a2010,#1a1612);padding:52px 32px 44px;text-align:center;}
+    .hero-eyebrow{font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:#d4a060;margin-bottom:10px;}
+    .hero h1{font-family:'Playfair Display',serif;font-size:clamp(1.6rem,4vw,2.4rem);font-weight:900;color:#f0e8d8;margin-bottom:12px;}
+    .hero p{font-size:.9rem;color:#a09080;max-width:520px;margin:0 auto;line-height:1.7;}
+    .hero-nav{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:24px;}
+    .hero-nav a{font-size:.78rem;color:#c8b89a;border:1px solid rgba(200,184,154,.3);border-radius:30px;padding:6px 14px;text-decoration:none;transition:all .2s;}
+    .hero-nav a:hover{background:rgba(200,184,154,.12);color:#fff;}
+    .container{max-width:860px;margin:0 auto;padding:0 24px;}
+    .section{padding:52px 0;}
+    .section+.section{border-top:1px solid var(--border);}
+    .section-eyebrow{font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--rust);font-weight:600;margin-bottom:6px;}
+    .section-title{font-family:'Playfair Display',serif;font-size:clamp(1.3rem,2.5vw,1.8rem);margin-bottom:6px;}
+    .section-intro{font-size:.92rem;color:var(--muted);margin-bottom:28px;line-height:1.7;max-width:640px;}
+    .prose{font-size:.92rem;line-height:1.75;color:#2a2016;margin-bottom:20px;}
+    .key-box{background:var(--sand);border-left:4px solid var(--rust2);border-radius:0 var(--radius) var(--radius) 0;padding:16px 20px;margin-bottom:24px;}
+    .key-box h4{font-family:'Playfair Display',serif;font-size:.95rem;color:var(--rust);margin-bottom:10px;}
+    .key-box dl{font-size:.86rem;color:#4a3a28;display:flex;flex-direction:column;gap:7px;}
+    .key-box .term-row{line-height:1.55;}
+    .key-box dt{font-weight:600;color:var(--text);display:inline;}
+    .key-box dd{display:inline;margin:0;}
+    .compare-table{width:100%;border-collapse:collapse;margin-bottom:28px;font-size:.84rem;}
+    .compare-table th{background:#1a1612;color:#e8dcc8;padding:10px 13px;text-align:left;font-weight:600;}
+    .compare-table th:first-child{border-radius:6px 0 0 0;}
+    .compare-table th:last-child{border-radius:0 6px 0 0;}
+    .compare-table td{padding:9px 13px;border-bottom:1px solid var(--border);vertical-align:top;}
+    .compare-table tr:nth-child(even) td{background:var(--sand);}
+    .compare-table td:first-child{font-weight:600;}
+    .vit-type-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:28px;}
+    .vit-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px;}
+    .vit-card.fett{border-top:3px solid var(--rust2);}
+    .vit-card.vatten{border-top:3px solid var(--teal);}
+    .vit-card h4{font-family:'Playfair Display',serif;font-size:.95rem;margin-bottom:10px;}
+    .vit-card p{font-size:.84rem;color:var(--muted);line-height:1.6;margin-bottom:8px;}
+    .vit-card strong{color:var(--text);}
+    .q-card{background:#1a1612;border:1px solid #2a2018;border-radius:var(--radius);padding:22px 26px;margin-bottom:18px;}
+    .q-num{font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:#d4a060;margin-bottom:7px;font-weight:600;}
+    .q-text{font-family:'Playfair Display',serif;font-size:.95rem;color:#f0e8d8;margin-bottom:14px;line-height:1.5;}
+    .q-textarea{width:100%;background:#0f0c08;border:1.5px solid #2a2018;border-radius:6px;color:#e8dcc8;font-family:'Mulish',sans-serif;font-size:.9rem;padding:11px 13px;resize:vertical;min-height:80px;outline:none;transition:border-color .2s;line-height:1.6;}
+    .q-textarea:focus{border-color:#d4703a;}
+    .q-btn{margin-top:10px;font-family:'Mulish',sans-serif;font-size:.84rem;font-weight:600;padding:8px 20px;border-radius:6px;border:none;cursor:pointer;background:#d4703a;color:#fff;}
+    .q-btn:hover{background:#b85c2a;}
+    .q-model{margin-top:14px;display:none;background:#0f0c08;border:1px solid #2a2018;border-radius:6px;overflow:hidden;}
+    .q-model.shown{display:block;}
+    .q-model-header{background:#2a2018;padding:7px 14px;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:#d4a060;font-weight:600;}
+    .q-model-body{padding:13px 16px;font-size:.86rem;color:#c8b89a;line-height:1.7;}
+    .q-model-body strong{color:#f0e8d8;}
+    .q-model-body ul{list-style:none;padding:0;display:flex;flex-direction:column;gap:5px;}
+    .q-model-body li{padding-left:14px;position:relative;}
+    .q-model-body li::before{content:'→';position:absolute;left:0;color:#d4703a;font-size:.78rem;}
+    .q-self-check{margin-top:10px;padding-top:10px;border-top:1px solid #2a2018;display:flex;align-items:center;gap:9px;font-size:.8rem;color:#8a7a60;cursor:pointer;}
+    .q-self-check input{accent-color:#d4703a;width:15px;height:15px;cursor:pointer;}
+    .q-retry{margin-top:8px;font-size:.76rem;color:#6a5a40;background:none;border:none;cursor:pointer;font-family:'Mulish',sans-serif;text-decoration:underline;padding:0;display:block;}
+    .q-score-bar{background:#0f0c08;border:1px solid #2a2018;border-radius:var(--radius);padding:18px 22px;margin-top:28px;display:flex;align-items:center;gap:18px;flex-wrap:wrap;}
+    .q-score-num{font-family:'Playfair Display',serif;font-size:1.8rem;color:#d4703a;}
+    .q-score-label{font-size:.8rem;color:#8a7a60;}
+    .q-score-msg{font-size:.86rem;color:#c8b89a;}
+    footer{border-top:1px solid var(--border);text-align:center;padding:24px;font-size:.78rem;color:var(--muted);margin-top:40px;}
+    footer a{color:var(--rust);text-decoration:none;}
+    @media(max-width:560px){.container{padding:0 16px;}.vit-type-grid{grid-template-columns:1fr;}}
+  </style>
+</head>
+<body>
+<div class="top-bar">
+  <a href="nk1b-manniskokroppen.html" class="back-link">← Människokroppen</a>
+  <div class="top-title">NK1b &mdash; <span>Vitaminer & mineralämnen</span></div>
+</div>
+<div class="hero">
+  <p class="hero-eyebrow">Avsnitt 4 &middot; NK1b</p>
+  <h1>Vitaminer & mineralämnen</h1>
+  <p>Mikronäringsämnen – kroppens behöver dem i små mängder men konsekvenserna av brist kan vara stora.</p>
+  <nav class="hero-nav">
+    <a href="#oversikt">Översikt</a>
+    <a href="#vitaminer">💊 Vitaminer</a>
+    <a href="#mineral">🪨 Mineralämnen</a>
+    <a href="#kolla">✅ Kolla att du kan</a>
+  </nav>
+</div>
+<main>
+
+<div class="section" id="oversikt">
+<div class="container">
+  <p class="section-eyebrow">Grundbegrepp</p>
+  <h2 class="section-title">Vad är vitaminer och mineralämnen?</h2>
+  <p class="section-intro">Till skillnad från makronutrienter ger varken vitaminer eller mineralämnen energi – men de är nödvändiga för att kroppen ska fungera.</p>
+  <div class="key-box">
+    <h4>🔑 Gemensamma egenskaper</h4>
+    <dl>
+      <div class="term-row"><dt>Mikronutrienter</dt><dd> – behövs i små mängder (mg eller μg per dag), men är ändå livsnödvändiga.</dd></div>
+      <div class="term-row"><dt>Kroppen kan inte tillverka dem</dt><dd> – måste tillföras via kosten (undantag: D-vitamin bildas i huden vid solljus, K-vitamin bildas delvis av tarmbakterier).</dd></div>
+      <div class="term-row"><dt>Bristsjukdomar</dt><dd> – långvarig brist leder till specifika sjukdomar. Exempel: C-vitaminbrist → skörbjugg. D-vitaminbrist → rakit.</dd></div>
+    </dl>
+  </div>
+</div>
+</div>
+
+<div class="section" id="vitaminer">
+<div class="container">
+  <p class="section-eyebrow">Vitaminer</p>
+  <h2 class="section-title">13 vitaminer – fett- och vattenlösliga</h2>
+  <p class="section-intro">Den viktigaste indelningen av vitaminer är om de är fettlösliga eller vattenlösliga – det avgör hur kroppen lagrar dem.</p>
+  <div class="vit-type-grid">
+    <div class="vit-card fett">
+      <h4>🧈 Fettlösliga vitaminer</h4>
+      <p><strong>A, D, E och K</strong></p>
+      <p>Löser sig i fett och lagras i kroppen (lever och fettvävnad). Kan ansamlas till skadliga nivåer vid överdosering. Behöver fett i kosten för att tas upp.</p>
+      <p><strong>Konsekvens:</strong> Brist utvecklas långsamt – kroppen tömmer lagren. Överdos möjlig.</p>
+    </div>
+    <div class="vit-card vatten">
+      <h4>💧 Vattenlösliga vitaminer</h4>
+      <p><strong>B-vitaminer (8 st) och C-vitamin</strong></p>
+      <p>Löser sig i vatten och kan inte lagras i kroppen. Överskott utsöndras via urinen. Måste tillföras regelbundet via kosten.</p>
+      <p><strong>Konsekvens:</strong> Brist utvecklas snabbare. Överdos sällsynt – utsöndras.</p>
+    </div>
+  </div>
+  <table class="compare-table">
+    <thead><tr><th>Vitamin</th><th>Typ</th><th>Funktion</th><th>Brist ger</th><th>Finns i</th></tr></thead>
+    <tbody>
+      <tr><td>A</td><td>Fettlöslig</td><td>Syn, hud, immunförsvar</td><td>Nattblindhet, hudförändringar</td><td>Lever, fisk, mjölk, morötter (betakaroten)</td></tr>
+      <tr><td>D</td><td>Fettlöslig</td><td>Kalciumupptag, skelett</td><td>Rakit (mjukt skelett)</td><td>Fet fisk, ägg, mjölk; bildas i huden</td></tr>
+      <tr><td>E</td><td>Fettlöslig</td><td>Antioxidant, cellmembran</td><td>Sällsynt – nervskador</td><td>Vegetabiliska oljor, nötter, avokado</td></tr>
+      <tr><td>K</td><td>Fettlöslig</td><td>Blodkoagulering</td><td>Blödningstendens</td><td>Bladgrönsaker, bildas av tarmbakterier</td></tr>
+      <tr><td>B12</td><td>Vattenlöslig</td><td>Blodet, nerverna, celldelning</td><td>Blodbrist, nervskador</td><td>Endast animaliska livsmedel – veganer behöver tillskott</td></tr>
+      <tr><td>C</td><td>Vattenlöslig</td><td>Bindväv, sårläkning, järnupptag</td><td>Skörbjugg (tandköttsblödning)</td><td>Frukt, bär, grönsaker</td></tr>
+    </tbody>
+  </table>
+</div>
+</div>
+
+<div class="section" id="mineral">
+<div class="container">
+  <p class="section-eyebrow">Mineralämnen</p>
+  <h2 class="section-title">Mineralämnen & spårämnen</h2>
+  <p class="section-intro">Mineralämnen är oorganiska ämnen (inte kolföreningar) som kroppen behöver i varierande mängder.</p>
+  <table class="compare-table">
+    <thead><tr><th>Mineral</th><th>Funktion</th><th>Brist ger</th><th>Finns i</th></tr></thead>
+    <tbody>
+      <tr><td>Kalcium (Ca)</td><td>Skelett, tänder, nervsystem, blodkoagulering</td><td>Benskörhet (osteoporos)</td><td>Mjölk, ost, gröna grönsaker</td></tr>
+      <tr><td>Järn (Fe)</td><td>Hemoglobin – syretransport</td><td>Järnbristanemi, trötthet</td><td>Kött, fisk, baljväxter + C-vitamin ökar upptaget</td></tr>
+      <tr><td>Jod (I)</td><td>Hormontillverkning i sköldkörteln</td><td>Struma (förstorad sköldkörtel)</td><td>Fisk, skaldjur, jodat salt</td></tr>
+      <tr><td>Magnesium (Mg)</td><td>Enzymer, muskler, nervsystem</td><td>Muskelkramper, trötthet</td><td>Nötter, fullkorn, grönsaker</td></tr>
+      <tr><td>Zink (Zn) – spårämne</td><td>Ämnesomsättning, immunförsvar, sårläkning</td><td>Försämrat immunförsvar</td><td>Kött, skaldjur, frön</td></tr>
+      <tr><td>Selen (Se) – spårämne</td><td>Antioxidant, skyddar celler</td><td>Muskelproblem</td><td>Nötter (Brasilianska), fisk, kött</td></tr>
+    </tbody>
+  </table>
+  <div class="key-box">
+    <h4>🔑 Kosttillskott – när behövs det?</h4>
+    <dl>
+      <div class="term-row"><dt>Onödigt</dt><dd> – vid varierad, balanserad kost behöver de flesta inga tillskott.</dd></div>
+      <div class="term-row"><dt>Järn + C-vitamin</dt><dd> – rekommenderas till menstruerande kvinnor med låga järnnivåer. C-vitamin ökar järnupptaget.</dd></div>
+      <div class="term-row"><dt>Folsyra (B9)</dt><dd> – rekommenderas till gravida för att minska risk för neuralrörsdefekter.</dd></div>
+      <div class="term-row"><dt>D-vitamin</dt><dd> – rekommenderas till spädbarn och vid begränsad solexponering.</dd></div>
+      <div class="term-row"><dt>B12</dt><dd> – rekommenderas till veganer eftersom B12 enbart finns i animaliska livsmedel.</dd></div>
+    </dl>
+  </div>
+</div>
+</div>
+
+<div class="section" id="kolla">
+<div class="container">
+  <p class="section-eyebrow">Självbedömning</p>
+  <h2 class="section-title">Kolla att du kan</h2>
+  <div id="q-wrap"></div>
+</div>
+</div>
+</main>
+<footer><a href="nk1b-manniskokroppen.html">← Tillbaka till översikten</a> &middot; NK1b &middot; Vitaminer & mineralämnen</footer>
+<script src="shared.js"></script>
+<script>
+requireLogin('NK1b');
+const QS=[
+  {q:"Vad är skillnaden mellan fettlösliga och vattenlösliga vitaminer? Vad får det för konsekvenser?",model:["<strong>Fettlösliga (A, D, E, K)</strong>: lagras i kroppen. Brist tar längre tid att utveckla. Risk för överdos vid höga doser.",`<strong>Vattenlösliga (B och C)</strong>: kan inte lagras, utsöndras via urinen. Brist uppstår snabbare. Överdos ovanligt.`,"Fettlösliga vitaminer kräver fett i kosten för att tas upp överhuvudtaget."]},
+  {q:"Beskriv D-vitaminets funktion och vad brist leder till.",model:["D-vitamin reglerar kroppens kalciumupptag och är nödvändigt för starka skelett och tänder.","Bildas i huden när den utsätts för solstrålning. Finns även i fet fisk, ägg och berikade livsmedel.","Brist hos barn → <strong>rakit</strong>: mjukt, felformat skelett. Hos vuxna → osteoporos och muskelsvaghet.","Risk för brist i Sverige pga. begränsad solexponering på vintern."]},
+  {q:"Varför behöver veganer tillskott av B12?",model:["B12 finns <strong>enbart i animaliska livsmedel</strong> (kött, fisk, ägg, mjölk).", "Veganer utesluter alla animaliska produkter och kan inte tillgodose behovet via kosten.", "B12-brist ger blodbrist (megaloblastisk anemi) och nervskador.","Lösning: regelbundet B12-tillskott eller berikade livsmedel (sojamjölk, näringsjäst)."]},
+  {q:"Vad är järnets funktion i kroppen och varför rekommenderas järntillskott till vissa grupper?",model:["Järn ingår i <strong>hemoglobin</strong> i röda blodkroppar och är nödvändigt för syretransport.", "Järnbrist → anemi: trötthet, blekhet, nedsatt koncentration och immunförsvar.", "Menstruerande kvinnor förlorar järn varje månad och rekommenderas tillskott vid låga nivåer.", "C-vitamin ökar järnupptaget – rekommenderas ätas tillsammans med järnrika livsmedel."]}
+];
+let checked=new Array(QS.length).fill(false);
+function build(){const w=document.getElementById('q-wrap');QS.forEach((q,i)=>{const items=q.model.map(m=>`<li>${m}</li>`).join('');w.innerHTML+=`<div class="q-card"><div class="q-num">Fråga ${i+1} av ${QS.length}</div><div class="q-text">${q.q}</div><textarea class="q-textarea" id="qta-${i}" placeholder="Skriv ditt svar här..."></textarea><button class="q-btn" onclick="show(${i})">Visa mallsvar →</button><div class="q-model" id="qm-${i}"><div class="q-model-header">📋 Mallsvar</div><div class="q-model-body"><ul>${items}</ul><div class="q-self-check"><input type="checkbox" id="qc-${i}" onchange="chk(${i})"/><label for="qc-${i}">Jag hade med det viktigaste</label></div></div></div><button class="q-retry" onclick="reset(${i})">↩ Rensa</button></div>`;});updateScore();}
+function show(i){document.getElementById('qm-'+i).classList.add('shown');}
+function chk(i){checked[i]=document.getElementById('qc-'+i).checked;updateScore();}
+function reset(i){document.getElementById('qta-'+i).value='';document.getElementById('qm-'+i).classList.remove('shown');document.getElementById('qc-'+i).checked=false;checked[i]=false;updateScore();}
+function updateScore(){const n=checked.filter(Boolean).length,t=QS.length;const msg=n===t?'🎉 Utmärkt!':n>=t*.7?'👍 Bra!':'📖 Fortsätt öva.';let b=document.getElementById('qscore');if(!b){document.getElementById('q-wrap').insertAdjacentHTML('afterend',`<div class="q-score-bar" id="qscore"><div class="q-score-num" id="qsn">${n}/${t}</div><div><div class="q-score-label">Självskattning</div><div class="q-score-msg" id="qsmsg">${msg}</div></div></div>`);}else{document.getElementById('qsn').textContent=`${n}/${t}`;document.getElementById('qsmsg').textContent=msg;}}
+build();
+</script>
+</body>
+</html>

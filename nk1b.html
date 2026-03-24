@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Naturkunskap 1b</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Mulish:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root{--bg:#faf7f2;--border:#e8e0d0;--sand:#f2ece0;--rust:#b85c2a;--rust2:#d4703a;--text:#1a1612;--muted:#6a5e52;--radius:10px;}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:'Mulish',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+    .top-bar{background:#1a1612;padding:14px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+    .back-link{color:#c8b89a;text-decoration:none;font-size:.82rem;}
+    .back-link:hover{color:#fff;}
+    .top-title{font-family:'Playfair Display',serif;font-size:1rem;color:#e8dcc8;}
+    .top-title span{color:#d4a060;}
+    .user-info{font-size:.83rem;color:#8a7a60;display:flex;align-items:center;gap:12px;}
+    .logout-btn{font-size:.78rem;color:#6a5a40;background:none;border:1px solid #2a2018;border-radius:5px;padding:5px 12px;cursor:pointer;font-family:'Mulish',sans-serif;transition:all .2s;}
+    .logout-btn:hover{color:#e8dcc8;border-color:#6a5a40;}
+    .hero{background:linear-gradient(135deg,#1a1612,#2a1e10,#1a1612);padding:64px 32px 56px;text-align:center;}
+    .hero-eyebrow{font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:#d4a060;margin-bottom:12px;}
+    .hero h1{font-family:'Playfair Display',serif;font-size:clamp(2rem,5vw,3rem);font-weight:900;color:#f0e8d8;margin-bottom:14px;}
+    .hero p{font-size:.95rem;color:#a09080;max-width:500px;margin:0 auto;line-height:1.7;}
+    .container{max-width:860px;margin:0 auto;padding:48px 24px 80px;}
+    .section-label{font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--rust);font-weight:600;margin-bottom:8px;}
+    .section-title{font-family:'Playfair Display',serif;font-size:1.5rem;margin-bottom:24px;}
+    .module-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(380px,1fr));gap:16px;}
+    .module-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:24px;text-decoration:none;color:var(--text);display:block;transition:all .2s;}
+    .module-card:hover{border-color:var(--rust2);transform:translateY(-2px);box-shadow:0 6px 24px rgba(180,92,42,.1);}
+    .module-icon{font-size:1.8rem;margin-bottom:10px;}
+    .module-title{font-family:'Playfair Display',serif;font-size:1.1rem;margin-bottom:6px;}
+    .module-desc{font-size:.84rem;color:var(--muted);line-height:1.55;}
+    .module-arrow{display:block;margin-top:14px;font-size:.82rem;font-weight:600;color:var(--rust);}
+    .coming-soon{background:var(--sand);border:1px dashed var(--border);border-radius:var(--radius);padding:24px;text-align:center;color:var(--muted);font-size:.88rem;}
+    footer{border-top:1px solid var(--border);text-align:center;padding:24px;font-size:.78rem;color:var(--muted);}
+    footer a{color:var(--rust);text-decoration:none;}
+    @media(max-width:560px){.module-grid{grid-template-columns:1fr;}.container{padding:32px 16px 60px;}}
+  </style>
+</head>
+<body>
+<div class="top-bar">
+  <div style="display:flex;align-items:center;gap:16px;">
+    <a href="index.html" style="font-family:'Playfair Display',serif;font-size:1rem;color:#d4a060;text-decoration:none;">Naturkunskap</a>
+    <span style="font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;background:rgba(212,160,96,.12);border:1px solid rgba(212,160,96,.3);color:#d4a060;padding:4px 12px;border-radius:30px;">NK1b</span>
+  </div>
+  <div class="user-info">
+    <span id="user-greeting"></span>
+    <button class="logout-btn" onclick="logout()">Logga ut</button>
+  </div>
+</div>
+
+<div class="hero">
+  <p class="hero-eyebrow">Gymnasiet &middot; 50 poäng</p>
+  <h1>Naturkunskap 1b</h1>
+  <p>Välkommen till kurssidan. Material läggs till löpande.</p>
+</div>
+
+<div class="container">
+  <p class="section-label">Kursmoment</p>
+  <h2 class="section-title">Välj ett område</h2>
+  <div class="module-grid">
+    <a href="nk1b-manniskokroppen.html" class="module-card">
+      <div class="module-icon">🫀</div>
+      <div class="module-title">Människokroppen</div>
+      <div class="module-desc">Andning, cirkulation, utsöndring, näringslära och matspjälkning.</div>
+      <span class="module-arrow">Gå till material →</span>
+    </a>
+    <div class="coming-soon">
+      <div style="font-size:1.5rem;margin-bottom:8px">🌿</div>
+      <strong>Hållbar utveckling</strong><br>Kommer snart
+    </div>
+    <div class="coming-soon">
+      <div style="font-size:1.5rem;margin-bottom:8px">⚗️</div>
+      <strong>Kemi i vardagen</strong><br>Kommer snart
+    </div>
+    <div class="coming-soon">
+      <div style="font-size:1.5rem;margin-bottom:8px">🧪</div>
+      <strong>Naturvetenskaplig metod</strong><br>Kommer snart
+    </div>
+  </div>
+</div>
+
+<footer><a href="index.html">← Byt kurs</a> &middot; Naturkunskap 1b</footer>
+
+<script src="shared.js"></script>
+<script>
+  const s = requireLogin('NK1b');
+  if (s) document.getElementById('user-greeting').textContent = s.name;
+  function logout() { clearSession(); window.location.href = 'index.html'; }
+</script>
+</body>
+</html>

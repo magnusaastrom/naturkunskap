@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Människokroppen – NK1b</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Mulish:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #faf7f2; --surface: #ffffff; --border: #e8e0d0;
+      --sand: #f2ece0; --rust: #b85c2a; --rust2: #d4703a;
+      --teal: #2a7a6a; --blue: #2a4a7a; --text: #1a1612;
+      --muted: #6a5e52; --radius: 12px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Mulish', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+    .top-bar { background: #1a1612; padding: 14px 28px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+    .back-link { color: #c8b89a; text-decoration: none; font-size: .82rem; transition: color .2s; }
+    .back-link:hover { color: #fff; }
+    .top-title { font-family: 'Playfair Display', serif; font-size: 1rem; color: #e8dcc8; }
+    .top-title span { color: #d4a060; }
+
+    .hero { background: linear-gradient(135deg, #1a1612 0%, #2a2018 60%, #1a1a12 100%); padding: 56px 32px 48px; text-align: center; position: relative; overflow: hidden; }
+    .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 60% 60% at 25% 50%, rgba(180,92,42,.12) 0%, transparent 60%), radial-gradient(ellipse 50% 70% at 80% 30%, rgba(42,122,106,.08) 0%, transparent 55%); pointer-events: none; }
+    .hero-eyebrow { font-size: .72rem; letter-spacing: .22em; text-transform: uppercase; color: #d4a060; margin-bottom: 12px; }
+    .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 900; color: #f0e8d8; margin-bottom: 14px; line-height: 1.15; }
+    .hero p { font-size: .95rem; color: #a09080; max-width: 520px; margin: 0 auto; line-height: 1.7; }
+
+    .container { max-width: 860px; margin: 0 auto; padding: 48px 24px 80px; }
+    .section-label { font-size: .7rem; letter-spacing: .2em; text-transform: uppercase; color: var(--rust); font-weight: 600; margin-bottom: 8px; }
+    .section-title { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--text); margin-bottom: 28px; }
+
+    .cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 20px; margin-bottom: 48px; }
+    .hub-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; text-decoration: none; color: var(--text); display: flex; flex-direction: column; transition: all .2s; position: relative; }
+    .hub-card:hover { border-color: var(--rust2); transform: translateY(-3px); box-shadow: 0 8px 32px rgba(180,92,42,.12); }
+    .hub-card-top { padding: 24px 24px 0; display: flex; align-items: flex-start; gap: 16px; }
+    .hub-icon { font-size: 2rem; flex-shrink: 0; }
+    .hub-num { font-size: .68rem; letter-spacing: .15em; text-transform: uppercase; color: var(--rust); font-weight: 600; margin-bottom: 4px; }
+    .hub-title { font-family: 'Playfair Display', serif; font-size: 1.15rem; margin-bottom: 6px; }
+    .hub-desc { font-size: .83rem; color: var(--muted); line-height: 1.55; }
+    .hub-topics { padding: 14px 24px; display: flex; flex-wrap: wrap; gap: 6px; }
+    .hub-tag { font-size: .72rem; background: var(--sand); border-radius: 30px; padding: 3px 10px; color: var(--muted); }
+    .hub-footer { padding: 14px 24px 20px; display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--border); margin-top: auto; }
+    .hub-arrow { font-size: .82rem; font-weight: 600; color: var(--rust); }
+
+    .info-box { background: var(--sand); border-left: 4px solid var(--rust2); border-radius: 0 var(--radius) var(--radius) 0; padding: 16px 20px; font-size: .88rem; color: var(--muted); line-height: 1.65; }
+    .info-box strong { color: var(--text); }
+
+    footer { border-top: 1px solid var(--border); text-align: center; padding: 24px; font-size: .78rem; color: var(--muted); }
+    footer a { color: var(--rust); text-decoration: none; }
+
+    @media(max-width:560px) { .cards-grid { grid-template-columns: 1fr; } .container { padding: 32px 16px 60px; } }
+  </style>
+</head>
+<body>
+
+<div class="top-bar">
+  <a href="nk1b.html" class="back-link">← NK1b</a>
+  <div class="top-title">Naturkunskap 1b &mdash; <span>Människokroppen</span></div>
+</div>
+
+<div class="hero">
+  <p class="hero-eyebrow">NK1b &middot; Människokroppen</p>
+  <h1>Kroppen inifrån</h1>
+  <p>Välj ett område att fördjupa dig i. Varje avsnitt innehåller material, nyckelbegrepp, diagram och självkontrollfrågor.</p>
+</div>
+
+<div class="container">
+  <p class="section-label">Fyra delområden</p>
+  <h2 class="section-title">Välj ett avsnitt</h2>
+
+  <div class="cards-grid">
+
+    <a href="nk1b-mat-energi.html" class="hub-card">
+      <div class="hub-card-top">
+        <div class="hub-icon">🫁</div>
+        <div>
+          <div class="hub-num">Avsnitt 1</div>
+          <div class="hub-title">Andning, cirkulation & utsöndring</div>
+          <div class="hub-desc">Hur organsystemen samarbetar för att ge cellerna syre, näring och ta bort avfall.</div>
+        </div>
+      </div>
+      <div class="hub-topics">
+        <span class="hub-tag">Andningsorganen</span>
+        <span class="hub-tag">Cirkulationssystemet</span>
+        <span class="hub-tag">Utsöndringsorganen</span>
+        <span class="hub-tag">Cellandning</span>
+      </div>
+      <div class="hub-footer"><span style="font-size:.82rem;color:var(--muted)">Material + diagram</span><span class="hub-arrow">Öppna →</span></div>
+    </a>
+
+    <a href="nk1b-kolhydrater-fetter-proteiner.html" class="hub-card">
+      <div class="hub-card-top">
+        <div class="hub-icon">🥗</div>
+        <div>
+          <div class="hub-num">Avsnitt 2</div>
+          <div class="hub-title">Kolhydrater, fetter & proteiner</div>
+          <div class="hub-desc">Makronutrienternas kemiska uppbyggnad, funktion och var de finns i maten.</div>
+        </div>
+      </div>
+      <div class="hub-topics">
+        <span class="hub-tag">Monosackarider</span>
+        <span class="hub-tag">Fettsyror</span>
+        <span class="hub-tag">Aminosyror</span>
+        <span class="hub-tag">Energi</span>
+      </div>
+      <div class="hub-footer"><span style="font-size:.82rem;color:var(--muted)">Material + diagram</span><span class="hub-arrow">Öppna →</span></div>
+    </a>
+
+    <a href="nk1b-matspjalkning.html" class="hub-card">
+      <div class="hub-card-top">
+        <div class="hub-icon">🍽️</div>
+        <div>
+          <div class="hub-num">Avsnitt 3</div>
+          <div class="hub-title">Matspjälkningssystemet</div>
+          <div class="hub-desc">Matens väg genom kroppen – organ, enzymer och vad som händer i varje steg.</div>
+        </div>
+      </div>
+      <div class="hub-topics">
+        <span class="hub-tag">Munhålan</span>
+        <span class="hub-tag">Magsäcken</span>
+        <span class="hub-tag">Tunntarmen</span>
+        <span class="hub-tag">Enzymer</span>
+      </div>
+      <div class="hub-footer"><span style="font-size:.82rem;color:var(--muted)">Material + diagram</span><span class="hub-arrow">Öppna →</span></div>
+    </a>
+
+    <a href="nk1b-vitaminer-mineraler.html" class="hub-card">
+      <div class="hub-card-top">
+        <div class="hub-icon">🌿</div>
+        <div>
+          <div class="hub-num">Avsnitt 4</div>
+          <div class="hub-title">Vitaminer & mineralämnen</div>
+          <div class="hub-desc">Mikronäringsämnenas roller, skillnaden mellan fett- och vattenlösliga vitaminer och bristsjukdomar.</div>
+        </div>
+      </div>
+      <div class="hub-topics">
+        <span class="hub-tag">Fettlösliga vitaminer</span>
+        <span class="hub-tag">Vattenlösliga vitaminer</span>
+        <span class="hub-tag">Mineralämnen</span>
+        <span class="hub-tag">Kosttillskott</span>
+      </div>
+      <div class="hub-footer"><span style="font-size:.82rem;color:var(--muted)">Material + diagram</span><span class="hub-arrow">Öppna →</span></div>
+    </a>
+
+  </div>
+
+  <div class="info-box">
+    <strong>Tips:</strong> Börja med Avsnitt 1 för att få helhetsbilden av hur systemen hänger ihop. Avsnitt 2–4 kan du sedan läsa i valfri ordning.
+  </div>
+</div>
+
+<footer><a href="nk1b.html">← Tillbaka till NK1b</a> &middot; Naturkunskap 1b &middot; Människokroppen</footer>
+
+<script src="shared.js"></script>
+<script>
+  const s = requireLogin('NK1b');
+  if (!s) window.location.href = 'index.html';
+</script>
+</body>
+</html>
