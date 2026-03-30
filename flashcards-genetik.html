@@ -164,7 +164,7 @@
 
   <!-- HISTORY -->
   <div class="history-toggle">
-    <span style="font-size:.82rem;color:var(--muted)">Genetik &middot; <span id="total-count">57</span> begrepp</span>
+    <span style="font-size:.82rem;color:var(--muted)">Genetik &middot; <span id="total-count">55</span> begrepp</span>
     <button class="history-btn" onclick="toggleHistory()">📊 Visa min historik</button>
   </div>
   <div class="history-panel" id="history-panel">
@@ -272,66 +272,112 @@ const SET_ID = 'nk1b_genetik';
 
 const allCards = [
   // PROTEINSYNTES
-  { cat:'proteinsyntes', term:"RNA", def:"En nukleinsyra som hjälper till att avläsa och använda informationen i DNA för att bygga proteiner", wrong:["DNA","Ribosom","Kodon"] },
-  { cat:'proteinsyntes', term:"mRNA", def:"Budbärar-RNA; kopierar av en gen från DNA och transporterar informationen till ribosomen", wrong:["tRNA","rRNA","Kodon"] },
-  { cat:'proteinsyntes', term:"tRNA", def:"Transport-RNA; hämtar rätt aminosyra och levererar den till ribosomen under proteintillverkningen", wrong:["mRNA","rRNA","Kodon"] },
-  { cat:'proteinsyntes', term:"Ribosom", def:"Den 'maskin' i cellen där proteiner tillverkas", wrong:["Cellkärna","Golgiapparaten","Lysosom"] },
-  { cat:'proteinsyntes', term:"Transkription", def:"Det steg då DNA avläses och en kopia görs i form av mRNA, sker i cellkärnan", wrong:["Translation","Replikation","Rekombination"] },
-  { cat:'proteinsyntes', term:"Translation", def:"Det steg då mRNA-koden läses av i ribosomen och en aminosyrakedjia byggs upp", wrong:["Transkription","Replikation","Transkription"] },
-  { cat:'proteinsyntes', term:"Kodon", def:"En sekvens av tre baser på mRNA som kodar för en specifik aminosyra", wrong:["Antikodon","Triplett på DNA","Kvävebas"] },
-  { cat:'proteinsyntes', term:"Aminosyra", def:"Proteinernas byggstenar; kopplas ihop i en kedja under translation", wrong:["Nukleotid","Kvävebas","Fettsyra"] },
-  { cat:'proteinsyntes', term:"Peptidkedja", def:"En kedja av aminosyror som bildar ett protein", wrong:["DNA-sträng","RNA-sträng","Polysackarid"] },
-  { cat:'proteinsyntes', term:"Gen", def:"En specifik sekvens av DNA som innehåller instruktioner för att bygga ett protein", wrong:["Kromosom","Allel","Kodon"] },
-  { cat:'proteinsyntes', term:"Kvävebas", def:"De 'bokstäver' som bygger upp DNA och RNA: adenin, tymin, guanin, cytosin och uracil", wrong:["Aminosyra","Nukleotid","Fosfatgrupp"] },
-  { cat:'proteinsyntes', term:"Cellkärna", def:"Cellens kontrollcentrum där DNA finns lagrat och transkription sker", wrong:["Cytoplasma","Mitokondrie","Ribosom"] },
-  { cat:'proteinsyntes', term:"Cytoplasma", def:"Vätskan inuti cellen där translation och många andra processer äger rum", wrong:["Cellkärna","Cellmembran","Vakuol"] },
+  // RNA – felsvaren är DNA (lätt att blanda), mRNA (en typ av RNA, inte hela begreppet) och tRNA
+  { cat:'proteinsyntes', term:"RNA", def:"En nukleinsyra som hjälper till att avläsa och använda informationen i DNA för att bygga proteiner", wrong:["DNA","mRNA","tRNA"] },
+  // mRNA – felsvaren är tRNA (den andra RNA-typen eleverna ska kunna), kodon (mRNA innehåller kodoner men är inte samma sak) och gen (kodar för samma sak men är DNA)
+  { cat:'proteinsyntes', term:"mRNA", def:"Den RNA-molekyl som kopierar av en gen och transporterar informationen från cellkärnan till ribosomen", wrong:["tRNA","Gen","Kodon"] },
+  // tRNA – felsvaren är mRNA (den andra RNA-typen), ribosom (dit tRNA levererar) och aminosyra (det tRNA bär)
+  { cat:'proteinsyntes', term:"tRNA", def:"Den RNA-molekyl som hämtar en specifik aminosyra och levererar den till ribosomen under proteintillverkningen", wrong:["mRNA","Ribosom","Aminosyra"] },
+  // Ribosom – felsvaren är cellkärna (där transkription sker, inte translation), Golgiapparaten (dit proteiner skickas vidare) och mitokondrier (annan organell)
+  { cat:'proteinsyntes', term:"Ribosom", def:"Den struktur i cellen där translation sker och proteiner byggs upp", wrong:["Cellkärna","Golgiapparaten","Mitokondrier"] },
+  // Transkription – felsvaren är translation (nästa steg, lätt att blanda), replikation (DNA kopieras istället för avläsas) och rekombination (blandar DNA men kopierar det inte)
+  { cat:'proteinsyntes', term:"Transkription", def:"Det steg i proteinsyntesen då en gen i DNA avläses och kopieras till mRNA, sker i cellkärnan", wrong:["Translation","Replikation","Rekombination"] },
+  // Translation – felsvaren är transkription (föregående steg), transkription igen byts mot "mRNA-syntes" och replikation
+  { cat:'proteinsyntes', term:"Translation", def:"Det steg i proteinsyntesen då mRNA-koden läses av i ribosomen och en aminosyrakedjia byggs upp", wrong:["Transkription","Replikation","Transkription av mRNA"] },
+  // Kodon – felsvaren är antikodon (tRNA:s svarssida), kvävebas (bygger upp kodoner men är inte samma sak) och gen (kodar för proteiner men på DNA-nivå)
+  { cat:'proteinsyntes', term:"Kodon", def:"En grupp av tre baser på mRNA som kodar för en specifik aminosyra", wrong:["Antikodon","Kvävebas","Gen"] },
+  // Aminosyra – felsvaren är kvävebas (bygger upp DNA/RNA, inte protein), nukleotid (bygger upp DNA/RNA) och kodon (koderna som bestämmer vilken aminosyra)
+  { cat:'proteinsyntes', term:"Aminosyra", def:"Proteinernas byggstenar; kopplas ihop i en kedja under translation i ribosomen", wrong:["Kvävebas","Nukleotid","Kodon"] },
+  // Gen – felsvaren är allel (en variant av en gen, lätt att blanda), kromosom (innehåller gener men är inte en gen) och kodon (del av en gen men inte hela)
+  { cat:'proteinsyntes', term:"Gen", def:"En specifik sekvens av DNA som innehåller instruktioner för att bygga ett protein", wrong:["Allel","Kromosom","Kodon"] },
+  // Kvävebas – felsvaren är aminosyra (bygger upp protein, inte DNA), nukleotid (en nukleotid innehåller en kvävebas, men är inte samma sak) och kodon (tre kvävebasers kombination)
+  { cat:'proteinsyntes', term:"Kvävebas", def:"De 'bokstäver' som bygger upp DNA och RNA; adenin, tymin, guanin, cytosin och uracil", wrong:["Aminosyra","Nukleotid","Kodon"] },
+  // Cellkärna – felsvaren är ribosom (där translation sker, inte transkription), cytoplasma (där translation sker) och mitokondrier (eget DNA men inte cellens huvudkontrollcentrum)
+  { cat:'proteinsyntes', term:"Cellkärna", def:"Cellens kontrollcentrum där DNA finns lagrat och transkription äger rum", wrong:["Ribosom","Cytoplasma","Mitokondrier"] },
+  // Cytoplasma – felsvaren är cellkärna (lätt att blanda, men där sker transkription inte translation), ribosom (finns i cytoplasman men är inte cytoplasman) och cellmembran
+  { cat:'proteinsyntes', term:"Cytoplasma", def:"Vätskan inuti cellen utanför cellkärnan, där translation och många andra processer äger rum", wrong:["Cellkärna","Ribosom","Cellmembran"] },
 
   // CELLENS DELAR
-  { cat:'celldelar', term:"DNA", def:"Arvsmassa som innehåller alla genetiska instruktioner för cellen och organismen", wrong:["RNA","Protein","Kromosom"] },
-  { cat:'celldelar', term:"Mitokondrier", def:"Cellens kraftverk; omvandlar näring till energi (ATP) som cellen kan använda", wrong:["Ribosom","Golgiapparaten","Cellkärna"] },
-  { cat:'celldelar', term:"Ribosomer", def:"Små strukturer där proteiner tillverkas utifrån instruktioner från mRNA", wrong:["Lysosomer","Mitokondrier","Golgiapparaten"] },
-  { cat:'celldelar', term:"Golgiapparaten", def:"Cellens 'postkontor'; sorterar, modifierar och skickar vidare proteiner till rätt plats", wrong:["Ribosomer","Lysosomer","Mitokondrier"] },
-  { cat:'celldelar', term:"Lysosomer", def:"Cellens nedbrytningsstation; innehåller enzymer som bryter ner avfall och gamla celldelar", wrong:["Ribosomer","Golgiapparaten","Vakuol"] },
+  // DNA – felsvaren är RNA (nära besläktat, lätt att blanda), kromosom (DNA är upppackat i kromosomer, men är inte samma sak) och gen (del av DNA men inte hela arvsmassan)
+  { cat:'celldelar', term:"DNA", def:"Arvsmassa som innehåller alla genetiska instruktioner för cellen och organismen", wrong:["RNA","Kromosom","Gen"] },
+  // Mitokondrier – felsvaren är ribosom (tillverkar proteiner, inte energi), cellkärna (styr cellen men producerar inte energi) och Golgiapparaten
+  { cat:'celldelar', term:"Mitokondrier", def:"Cellens kraftverk; omvandlar näring till energi i form av ATP", wrong:["Ribosom","Cellkärna","Golgiapparaten"] },
+  // Ribosomer – felsvaren är Golgiapparaten (hanterar proteiner efter att de är gjorda, inte under tillverkningen), mitokondrier och cellkärna
+  { cat:'celldelar', term:"Ribosomer", def:"Små strukturer i cellen där proteiner tillverkas utifrån instruktioner från mRNA", wrong:["Golgiapparaten","Mitokondrier","Cellkärna"] },
+  // Golgiapparaten – felsvaren är ribosomer (tillverkar proteiner, men sorterar dem inte), mitokondrier och cellkärna
+  { cat:'celldelar', term:"Golgiapparaten", def:"Cellens 'postkontor'; sorterar, modifierar och skickar vidare proteiner till rätt plats i eller utanför cellen", wrong:["Ribosomer","Mitokondrier","Cellkärna"] },
 
   // MITOS
-  { cat:'mitos', term:"Cellcykel", def:"Den process en cell går igenom från att den bildas tills den delar sig i två dotterceller", wrong:["Meios","Celldelning","Replikation"] },
-  { cat:'mitos', term:"Kromosom", def:"Upppackat DNA; människan har 46 kromosomer i varje kroppscell", wrong:["Gen","Allel","Kromatid"] },
-  { cat:'mitos', term:"Diploid", def:"Har dubbla uppsättningar av kromosomer (2n); gäller alla vanliga kroppscellar hos människan", wrong:["Haploid","Monoploid","Tetraploid"] },
-  { cat:'mitos', term:"Kroppscell", def:"Alla celler i kroppen utom könsceller; förökas genom mitos", wrong:["Könscell","Gamet","Zygot"] },
+  // Cellcykel – felsvaren är meios (annan typ av delning), mitos (ett steg i cellcykeln, inte hela cykeln) och replikation (ett steg i cellcykeln men inte hela processen)
+  { cat:'mitos', term:"Cellcykel", def:"Den fullständiga process en cell går igenom från att den bildas tills den delar sig i två dotterceller", wrong:["Meios","Mitos","Replikation"] },
+  // Kromosom – felsvaren är gen (finns på kromosomen men är inte en hel kromosom), allel (en variant av en gen) och kromatid (en av de två kopiorna i en delad kromosom)
+  { cat:'mitos', term:"Kromosom", def:"Upppackat DNA-molekyl; människan har 46 stycken i varje kroppscell", wrong:["Gen","Allel","Kromatid"] },
+  // Diploid – felsvaren är haploid (motsatsen, lätt att blanda), homozygot (handlar om alleler, inte kromosomantal) och heterozygot
+  { cat:'mitos', term:"Diploid", def:"Beteckning för en cell med dubbla uppsättningar av kromosomer (2n); gäller alla vanliga kroppscellar hos människan", wrong:["Haploid","Homozygot","Heterozygot"] },
+  // Kroppscell – felsvaren är könscell (motsatsen, delar sig genom meios), zygot (bildas vid befruktning) och gamet (annat ord för könscell)
+  { cat:'mitos', term:"Kroppscell", def:"Alla celler i kroppen utom könsceller; förökas genom mitos och är diploida", wrong:["Könscell (gamet)","Zygot","Haploid cell"] },
 
   // MEIOS
-  { cat:'meios', term:"Haploid", def:"Har enkel uppsättning kromosomer (1n); gäller könsceller", wrong:["Diploid","Tetraploid","Polypoid"] },
-  { cat:'meios', term:"Könscell (gamet)", def:"Ägg- eller spermiecell med halva antalet kromosomer, bildas genom meios", wrong:["Kroppscell","Zygot","Stamcell"] },
-  { cat:'meios', term:"Ägg", def:"Hona könscell som bildas i äggstockarna", wrong:["Spermie","Zygot","Gamet"] },
-  { cat:'meios', term:"Spermie", def:"Hane könscell som bildas i testiklarna", wrong:["Ägg","Zygot","Kroppscell"] },
-  { cat:'meios', term:"Rekombination", def:"Att genetiskt material blandas om under meios, ger genetisk variation", wrong:["Mutation","Transkription","Replikation"] },
-  { cat:'meios', term:"Överkorsning (crossing over)", def:"När kromosomer byter delar med varandra under meios, ökar den genetiska variationen", wrong:["Rekombination","Mutation","Segregation"] },
-  { cat:'meios', term:"Genetisk variation", def:"Skillnader i arvsmassan mellan individer, uppstår bl.a. genom meios och överkorsning", wrong:["Mutation","Selektion","Anpassning"] },
-  { cat:'meios', term:"Zygot", def:"Den befruktade äggcellen som bildas när ett ägg och en spermie möts", wrong:["Embryo","Gamet","Könscell"] },
-  { cat:'meios', term:"Befruktning", def:"När en spermie smälter samman med ett ägg och bildar en zygot med fullt kromosomantal", wrong:["Meios","Mitos","Rekombination"] },
+  // Haploid – felsvaren är diploid (motsatsen), homozygot (handlar om allelvarianter, inte kromosomantal) och zygot (diploid befruktad cell)
+  { cat:'meios', term:"Haploid", def:"Beteckning för en cell med enkel uppsättning kromosomer (1n); gäller könsceller", wrong:["Diploid","Homozygot","Zygot"] },
+  // Könscell – felsvaren är kroppscell (motsatsen), zygot (bildas när två könsceller möts) och stamcell (odifferentierad cell, inte könscell)
+  { cat:'meios', term:"Könscell (gamet)", def:"Ägg- eller spermiecell med halva antalet kromosomer (haploid), bildas genom meios", wrong:["Kroppscell","Zygot","Stamcell"] },
+  // Ägg – felsvaren är spermie (den andra könscellen, lätt att blanda om man missar "hona/hane"), zygot (bildas när ägg och spermie möts) och könscell (ägg är en könscell men begreppet är vidare)
+  { cat:'meios', term:"Ägg", def:"Honans könscell som bildas i äggstockarna och är haploid", wrong:["Spermie","Zygot","Könscell (gamet)"] },
+  // Spermie – liknande resonemang som för Ägg
+  { cat:'meios', term:"Spermie", def:"Hanens könscell som bildas i testiklarna och är haploid", wrong:["Ägg","Zygot","Könscell (gamet)"] },
+  // Rekombination – felsvaren är överkorsning (ett sätt rekombination sker på, lätt att blanda), mutation (annan typ av genetisk förändring) och meios (den process där rekombination ingår)
+  { cat:'meios', term:"Rekombination", def:"Att genetiskt material blandas om under meios så att avkomman får nya kombinationer av anlag", wrong:["Överkorsning (crossing over)","Mutation","Meios"] },
+  // Överkorsning – felsvaren är rekombination (resultatet av överkorsning, lätt att blanda), segregation (kromosomerna separeras, överkorsning sker innan) och mutation
+  { cat:'meios', term:"Överkorsning (crossing over)", def:"Den mekanism under meios då homologa kromosomer byter delar med varandra och ökar den genetiska variationen", wrong:["Rekombination","Segregation","Mutation"] },
+  // Genetisk variation – felsvaren är mutation (en källa till variation men inte hela begreppet), rekombination (en mekanism, inte själva variationen) och selektion (agerar på variationen, skapar den inte)
+  { cat:'meios', term:"Genetisk variation", def:"Skillnader i arvsmassan mellan individer i en population; uppstår bl.a. genom meios, överkorsning och mutation", wrong:["Mutation","Rekombination","Selektion"] },
+  // Zygot – felsvaren är könscell (en zygot bildas av två könsceller men är det inte själv), embryo (nästa stadium efter zygoten) och gamet
+  { cat:'meios', term:"Zygot", def:"Den befruktade äggcellen som bildas när ett ägg och en spermie smälter samman; diploid", wrong:["Könscell (gamet)","Embryo","Haploid cell"] },
+  // Befruktning – felsvaren är meios (processen som skapar könscellerna, inte sammansmältningen), rekombination (sker under meios) och överkorsning
+  { cat:'meios', term:"Befruktning", def:"Det ögonblick då en spermie smälter samman med ett ägg och bildar en diploid zygot", wrong:["Meios","Rekombination","Överkorsning (crossing over)"] },
 
   // ÄRFTLIGHET
-  { cat:'arftlighet', term:"Allel", def:"En variant av en gen; du har två alleler av varje gen, en från varje förälder", wrong:["Gen","Kodon","Kromosom"] },
-  { cat:'arftlighet', term:"Dominant", def:"En allel som alltid syns i fenotypen även om bara en kopia finns", wrong:["Recessiv","Kodominant","Intermediär"] },
-  { cat:'arftlighet', term:"Recessiv", def:"En allel som bara syns i fenotypen om båda kopiorna är recessiva", wrong:["Dominant","Kodominant","Intermediär"] },
-  { cat:'arftlighet', term:"Homozygot", def:"Har två likadana alleler för en egenskap (t.ex. AA eller aa)", wrong:["Heterozygot","Haploid","Diploid"] },
-  { cat:'arftlighet', term:"Heterozygot", def:"Har två olika alleler för en egenskap (t.ex. Aa)", wrong:["Homozygot","Haploid","Diploid"] },
-  { cat:'arftlighet', term:"Genotyp", def:"Den faktiska genetiska uppsättningen en organism har (t.ex. Aa)", wrong:["Fenotyp","Allel","Kromosom"] },
-  { cat:'arftlighet', term:"Fenotyp", def:"Det synliga eller mätbara uttrycket av genotypen (t.ex. blå ögon)", wrong:["Genotyp","Allel","Gen"] },
-  { cat:'arftlighet', term:"Kodominanta anlag", def:"Två alleler som båda uttrycks fullt ut samtidigt (t.ex. blodgrupp AB)", wrong:["Dominanta anlag","Intermediära anlag","Recessiva anlag"] },
-  { cat:'arftlighet', term:"Intermediära anlag", def:"Ingen allel är dominant; resultatet blir ett mellanting av de två (t.ex. röd + vit = rosa blomma)", wrong:["Kodominanta anlag","Dominanta anlag","Recessiva anlag"] },
+  // Allel – felsvaren är gen (allel är en version av en gen, lätt att blanda), genotyp (innehåller allelerna men är inte en allel) och kromosom
+  { cat:'arftlighet', term:"Allel", def:"En av de möjliga varianterna av en gen; varje individ har två alleler per gen, en från varje förälder", wrong:["Gen","Genotyp","Kromosom"] },
+  // Dominant – felsvaren är recessiv (motsatsen), kodominant (båda syns, inte bara en) och intermediär (mellanting, inte full dominans)
+  { cat:'arftlighet', term:"Dominant", def:"En allel som ger utslag i fenotypen även när individen bara bär på en kopia av den", wrong:["Recessiv","Kodominant","Intermediär"] },
+  // Recessiv – felsvaren är dominant (motsatsen), homozygot (tillstånd som krävs för att recessiv ska synas, men är inte samma begrepp) och intermediär
+  { cat:'arftlighet', term:"Recessiv", def:"En allel som bara ger utslag i fenotypen om individen har två kopior av den (är homozygot recessiv)", wrong:["Dominant","Homozygot","Intermediär"] },
+  // Homozygot – felsvaren är heterozygot (motsatsen, lätt att blanda), diploid (har med kromosomantal att göra, inte allelvarianter) och dominant
+  { cat:'arftlighet', term:"Homozygot", def:"En individ som har två identiska alleler för en egenskap, t.ex. AA eller aa", wrong:["Heterozygot","Diploid","Dominant"] },
+  // Heterozygot – felsvaren är homozygot (motsatsen), recessiv (en av allelerna kan vara recessiv men heterozygot handlar om kombinationen) och haploid
+  { cat:'arftlighet', term:"Heterozygot", def:"En individ som har två olika alleler för en egenskap, t.ex. Aa", wrong:["Homozygot","Recessiv","Haploid"] },
+  // Genotyp – felsvaren är fenotyp (det synliga uttrycket, lätt att blanda), allel (ingår i genotypen men är inte hela genotypen) och kromosom
+  { cat:'arftlighet', term:"Genotyp", def:"Den faktiska genetiska sammansättningen hos en organism, t.ex. Aa eller BB", wrong:["Fenotyp","Allel","Kromosom"] },
+  // Fenotyp – felsvaren är genotyp (det genetiska underlaget, lätt att blanda), dominant (en alleltyp, inte ett uttryck) och allel
+  { cat:'arftlighet', term:"Fenotyp", def:"Det synliga eller mätbara uttrycket av en organisms genotyp, t.ex. ögonfärg eller blodgrupp", wrong:["Genotyp","Dominant","Allel"] },
+  // Kodominanta anlag – felsvaren är intermediära anlag (mellanting istället för båda fullt ut, lätt att blanda), dominanta anlag och recessiva anlag
+  { cat:'arftlighet', term:"Kodominanta anlag", def:"Nedärvningsmönster där båda allelerna uttrycks fullt ut och syns samtidigt i fenotypen, t.ex. blodgrupp AB", wrong:["Intermediära anlag","Dominanta anlag","Recessiva anlag"] },
+  // Intermediära anlag – felsvaren är kodominanta (båda fullt ut istället för mellanting, lätt att blanda), dominanta och recessiva
+  { cat:'arftlighet', term:"Intermediära anlag", def:"Nedärvningsmönster där ingen allel är dominant; fenotypen blir ett mellanting av de två, t.ex. röd × vit blomma ger rosa", wrong:["Kodominanta anlag","Dominanta anlag","Recessiva anlag"] },
 
   // EVOLUTION OCH MUTATIONER
-  { cat:'evolution', term:"Mutation", def:"En förändring i DNA-sekvensen som kan vara ärftlig", wrong:["Rekombination","Selektion","Variation"] },
-  { cat:'evolution', term:"Synlig mutation", def:"En mutation som påverkar fenotypen och syns på organismen", wrong:["Tyst mutation","Neutral mutation","Deletion"] },
-  { cat:'evolution', term:"Tyst mutation", def:"En mutation i DNA som inte påverkar proteinet eller fenotypen", wrong:["Synlig mutation","Missense-mutation","Nonsense-mutation"] },
-  { cat:'evolution', term:"Naturligt urval", def:"Processen där individer med fördelaktiga egenskaper överlever och reproducerar sig bättre", wrong:["Selektion","Mutation","Genetisk drift"] },
-  { cat:'evolution', term:"Selektion", def:"Ett annat ord för naturligt urval; det 'filter' som avgör vilka egenskaper förs vidare", wrong:["Mutation","Rekombination","Variation"] },
-  { cat:'evolution', term:"Anpassning", def:"En egenskap som ökar en organisms överlevnad eller reproduktion i dess miljö", wrong:["Mutation","Variation","Selektion"] },
-  { cat:'evolution', term:"Variation", def:"Skillnader mellan individer i en population, grunden för naturligt urval", wrong:["Mutation","Selektion","Anpassning"] },
-  { cat:'evolution', term:"Ärftlighet", def:"Att egenskaper förs vidare från föräldrar till avkomma via arvsmassan", wrong:["Variation","Mutation","Selektion"] },
-  { cat:'evolution', term:"Allopatrisk artbildning", def:"När en population delas geografiskt och de två grupperna utvecklas till skilda arter över tid", wrong:["Sympatrisk artbildning","Rekombination","Selektion"] },
-  { cat:'evolution', term:"Växt- och djurförädling", def:"Människans medvetna urval av individer med önskade egenskaper för att förbättra en art eller ras", wrong:["Naturligt urval","Genetisk drift","Mutation"] }
+  // Mutation – felsvaren är rekombination (annan typ av genetisk förändring, båda ger variation), överkorsning (en mekanism för rekombination) och variation (resultatet av mutation, inte mutation i sig)
+  { cat:'evolution', term:"Mutation", def:"En förändring i DNA-sekvensen; kan uppstå spontant eller av yttre faktorer och kan vara ärftlig", wrong:["Rekombination","Överkorsning (crossing over)","Variation"] },
+  // Synlig mutation – felsvaren är tyst mutation (motsatsen, lätt att blanda), missense-mutation (en typ som kan ge synlig effekt men begreppet är tekniskt/vidare) och anpassning
+  { cat:'evolution', term:"Synlig mutation", def:"En mutation som förändrar proteinet och ger ett märkbart utslag i fenotypen", wrong:["Tyst mutation","Missense-mutation","Anpassning"] },
+  // Tyst mutation – felsvaren är synlig mutation (motsatsen), neutral mutation (bredare begrepp som kan inkludera tysta mutationer, lätt att blanda) och rekombination
+  { cat:'evolution', term:"Tyst mutation", def:"En mutation i DNA som inte förändrar proteinets funktion och därför inte syns i fenotypen", wrong:["Synlig mutation","Neutral mutation","Rekombination"] },
+  // Naturligt urval – felsvaren är selektion (samma process, fast annat ord – testar om eleven förstår att det är synonymer), växt- och djurförädling (konstgjort urval, inte naturligt) och anpassning (resultatet av naturligt urval, inte processen)
+  { cat:'evolution', term:"Naturligt urval", def:"Den process i naturen där individer med fördelaktiga egenskaper överlever och reproducerar sig bättre än andra", wrong:["Selektion","Växt- och djurförädling","Anpassning"] },
+  // Selektion – felsvaren är naturligt urval (synonym – testar om eleven vet att det är samma sak), mutation (skapar variation men är inte selektionsprocessen) och genetisk drift
+  { cat:'evolution', term:"Selektion", def:"Ett annat ord för naturligt urval; det 'filter' i miljön som avgör vilka egenskaper förs vidare till nästa generation", wrong:["Naturligt urval","Mutation","Genetisk drift"] },
+  // Anpassning – felsvaren är mutation (kan leda till anpassning men är inte en anpassning i sig), variation (bredare begrepp) och selektion (processen som leder till anpassning)
+  { cat:'evolution', term:"Anpassning", def:"En egenskap hos en organism som ökar dess överlevnad eller reproduktionsmöjligheter i en specifik miljö", wrong:["Mutation","Variation","Selektion"] },
+  // Variation – felsvaren är mutation (en källa till variation), genetisk variation (mer specifikt, lätt att blanda) och ärftlighet
+  { cat:'evolution', term:"Variation", def:"Skillnader i egenskaper mellan individer i en population; grunden för att naturligt urval ska kunna verka", wrong:["Mutation","Genetisk variation","Ärftlighet"] },
+  // Ärftlighet – felsvaren är variation (skillnader snarare än överföring), DNA (ärftlighet sker via DNA men är inte samma begrepp) och rekombination
+  { cat:'evolution', term:"Ärftlighet", def:"Principen att egenskaper förs vidare från föräldrar till avkomma via arvsmassan", wrong:["Variation","DNA","Rekombination"] },
+  // Allopatrisk artbildning – felsvaren är sympatrisk artbildning (utan geografisk isolering, lätt att blanda), naturligt urval (drivkraften, inte artbildningstypen) och genetisk drift
+  { cat:'evolution', term:"Allopatrisk artbildning", def:"Artbildning som sker när en population delas av en geografisk barriär och de två grupperna utvecklas isär till separata arter", wrong:["Sympatrisk artbildning","Naturligt urval","Genetisk drift"] },
+  // Växt- och djurförädling – felsvaren är naturligt urval (omedvetet, inte styrt av människan), selektion (principen som tillämpas, men inte hela begreppet) och anpassning
+  { cat:'evolution', term:"Växt- och djurförädling", def:"Människans medvetna och systematiska urval av individer med önskade egenskaper för att förbättra en art eller ras över generationer", wrong:["Naturligt urval","Selektion","Anpassning"] }
 ];
 
 const CAT_LABELS = {
