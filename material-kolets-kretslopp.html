@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Kolets kretslopp – NK1a1</title>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg:       #f8f5f0;
+      --surface:  #ffffff;
+      --border:   #e0d8cc;
+      --sand:     #f0ebe0;
+      --rust:     #b85c2a;
+      --rust2:    #d4703a;
+      --teal:     #2a7a6a;
+      --teal2:    #3a9a86;
+      --text:     #1a1a18;
+      --muted:    #6a6458;
+      --radius:   10px;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:'Source Sans 3',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;font-size:16px;}
+
+    .top-bar{background:#1a2010;padding:14px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;position:sticky;top:0;z-index:100;}
+    .back-link{color:#a0c8a0;text-decoration:none;font-size:.82rem;display:flex;align-items:center;gap:6px;transition:color .2s;}
+    .back-link:hover{color:#fff;}
+    .top-title{font-family:'Lora',serif;font-size:1rem;color:#e0ece0;}
+    .top-title span{color:#6abf6a;}
+
+    .hero{background:linear-gradient(135deg,#1a2010 0%,#2a3a20 60%,#1a2810 100%);padding:64px 32px 56px;text-align:center;position:relative;overflow:hidden;}
+    .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 30% 50%,rgba(90,180,90,.1) 0%,transparent 60%),radial-gradient(ellipse 50% 80% at 75% 30%,rgba(180,92,42,.07) 0%,transparent 55%);pointer-events:none;}
+    .hero-eyebrow{font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:#6abf6a;margin-bottom:12px;}
+    .hero h1{font-family:'Lora',serif;font-size:clamp(2rem,5vw,3rem);font-weight:700;color:#f0ece4;margin-bottom:16px;line-height:1.15;}
+    .hero-sub{font-size:1rem;color:#a0c0a0;max-width:560px;margin:0 auto 32px;line-height:1.7;}
+    .hero-nav{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;}
+    .hero-nav a{font-size:.8rem;color:#a0c8a0;border:1px solid rgba(90,180,90,.35);border-radius:30px;padding:7px 16px;text-decoration:none;transition:all .2s;}
+    .hero-nav a:hover{background:rgba(90,180,90,.12);border-color:#6abf6a;color:#fff;}
+
+    .container{max-width:860px;margin:0 auto;padding:0 24px;}
+    .section{padding:60px 0;}
+    .section+.section{border-top:1px solid var(--border);}
+
+    .section-eyebrow{font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--rust);font-weight:600;margin-bottom:8px;}
+    .section-title{font-family:'Lora',serif;font-size:clamp(1.5rem,3vw,2rem);color:var(--text);margin-bottom:6px;line-height:1.25;}
+    .section-intro{font-size:.95rem;color:var(--muted);margin-bottom:32px;max-width:640px;line-height:1.7;}
+
+    .key-box{background:var(--sand);border-left:4px solid var(--rust2);border-radius:0 var(--radius) var(--radius) 0;padding:18px 22px;margin-bottom:28px;}
+    .key-box h4{font-family:'Lora',serif;font-size:1rem;color:var(--rust);margin-bottom:8px;}
+    .key-box p{font-size:.88rem;color:#4a3a2a;line-height:1.65;}
+
+    .prose{font-size:.95rem;line-height:1.75;color:#2a2520;margin-bottom:24px;}
+    .prose strong{color:var(--text);font-weight:600;}
+
+    /* NUMBERED STEPS */
+    .steps-list{display:flex;flex-direction:column;gap:0;margin-bottom:32px;position:relative;}
+    .steps-list::before{content:'';position:absolute;left:21px;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,var(--rust2),var(--teal));opacity:.3;}
+    .step-item{display:flex;gap:18px;align-items:flex-start;padding:16px 0;}
+    .step-num{width:44px;height:44px;border-radius:50%;background:var(--rust2);color:#fff;display:flex;align-items:center;justify-content:center;font-family:'Lora',serif;font-size:1.1rem;font-weight:700;flex-shrink:0;position:relative;z-index:1;}
+    .step-num.green{background:var(--teal);}
+    .step-num.dark{background:#2a3a20;}
+    .step-body h4{font-size:.95rem;font-weight:600;color:var(--text);margin-bottom:4px;}
+    .step-body p{font-size:.85rem;color:var(--muted);line-height:1.6;}
+
+    /* CONCEPT TABLE */
+    .concept-table{width:100%;border-collapse:collapse;margin-bottom:32px;font-size:.88rem;}
+    .concept-table th{background:#1a2010;color:#e0ece0;padding:12px 16px;text-align:left;font-weight:600;font-family:'Lora',serif;}
+    .concept-table th:first-child{border-radius:8px 0 0 0;}
+    .concept-table th:last-child{border-radius:0 8px 0 0;}
+    .concept-table td{padding:11px 16px;border-bottom:1px solid var(--border);vertical-align:top;}
+    .concept-table tr:nth-child(even) td{background:var(--sand);}
+    .concept-table tr:last-child td{border-bottom:none;}
+    .concept-table td:first-child{font-weight:600;color:var(--text);}
+
+    /* DIAGRAM */
+    .diagram-wrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin-bottom:28px;overflow-x:auto;}
+    .diagram-caption{font-size:.78rem;color:var(--muted);text-align:center;margin-top:12px;font-style:italic;}
+
+    /* INFO BOX */
+    .info-box{background:#1a2010;border-radius:var(--radius);padding:28px 32px;margin-top:32px;}
+    .info-box h3{font-family:'Lora',serif;font-size:1.1rem;color:#e0ece0;margin-bottom:16px;}
+    .info-box ul{list-style:none;padding:0;display:flex;flex-direction:column;gap:8px;}
+    .info-box li{font-size:.9rem;color:#a0c0a0;padding-left:20px;position:relative;line-height:1.6;}
+    .info-box li::before{content:'→';position:absolute;left:0;color:#6abf6a;font-size:.8rem;}
+    .info-box li strong{color:#e0ece0;}
+
+    /* SELF CHECK */
+    .q-card{background:#1a2010;border:1px solid #2a3a20;border-radius:var(--radius);padding:22px 26px;margin-bottom:18px;}
+    .q-num{font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:#6abf6a;margin-bottom:7px;font-weight:600;}
+    .q-text{font-family:'Lora',serif;font-size:.95rem;color:#f0ece4;margin-bottom:14px;line-height:1.5;}
+    .q-textarea{width:100%;background:#0f160a;border:1.5px solid #2a3a20;border-radius:6px;color:#e0ece0;font-family:'Source Sans 3',sans-serif;font-size:.9rem;padding:11px 13px;resize:vertical;min-height:80px;outline:none;transition:border-color .2s;line-height:1.6;}
+    .q-textarea:focus{border-color:#6abf6a;}
+    .q-btn{margin-top:10px;font-family:'Source Sans 3',sans-serif;font-size:.85rem;font-weight:600;padding:9px 22px;border-radius:6px;border:none;cursor:pointer;background:#6abf6a;color:#0f160a;transition:background .2s;}
+    .q-btn:hover{background:#4a9f4a;}
+    .q-model{margin-top:14px;display:none;background:#0f160a;border:1px solid #2a3a20;border-radius:6px;overflow:hidden;}
+    .q-model.shown{display:block;}
+    .q-model-header{background:#2a3a20;padding:8px 16px;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:#6abf6a;font-weight:600;}
+    .q-model-body{padding:14px 18px;font-size:.88rem;color:#b0d0b0;line-height:1.75;}
+    .q-model-body strong{color:#e0ece0;}
+    .q-model-body ul{list-style:none;padding:0;display:flex;flex-direction:column;gap:6px;}
+    .q-model-body li{padding-left:16px;position:relative;}
+    .q-model-body li::before{content:'→';position:absolute;left:0;color:#6abf6a;font-size:.8rem;}
+    .q-self-check{margin-top:12px;padding-top:12px;border-top:1px solid #2a3a20;display:flex;align-items:center;gap:10px;font-size:.82rem;color:#7a9a7a;cursor:pointer;}
+    .q-self-check input{accent-color:#6abf6a;width:16px;height:16px;cursor:pointer;}
+    .q-retry{margin-top:10px;font-size:.78rem;color:#5a8a5a;background:none;border:none;cursor:pointer;font-family:'Source Sans 3',sans-serif;text-decoration:underline;padding:0;display:block;}
+    .q-score-bar{background:#0f160a;border:1px solid #2a3a20;border-radius:var(--radius);padding:20px 24px;margin-top:32px;display:flex;align-items:center;gap:20px;flex-wrap:wrap;}
+    .q-score-num{font-family:'Lora',serif;font-size:2rem;color:#6abf6a;}
+    .q-score-label{font-size:.85rem;color:#7a9a7a;}
+    .q-score-msg{font-size:.88rem;color:#b0d0b0;}
+
+    footer{border-top:1px solid var(--border);padding:28px 24px;text-align:center;font-size:.78rem;color:var(--muted);margin-top:40px;}
+    footer a{color:var(--teal);text-decoration:none;}
+
+    @media(max-width:580px){
+      .hero{padding:44px 20px 36px;}
+      .container{padding:0 16px;}
+    }
+  </style>
+</head>
+<body>
+
+<div class="top-bar">
+  <a href="nk1a1-grundlaggande-kemi.html" class="back-link">← Grundläggande kemi</a>
+  <div class="top-title">NK1a1 &mdash; <span>Kolets kretslopp</span></div>
+</div>
+
+<div class="hero">
+  <p class="hero-eyebrow">Grundläggande kemi &middot; NK1a1</p>
+  <h1>Kolets kretslopp</h1>
+  <p class="hero-sub">Hur kol flödar mellan atmosfären, levande organismer, hav och mark – och varför fossila bränslen påverkar balansen.</p>
+  <nav class="hero-nav">
+    <a href="#varfor">Varför kretslopp?</a>
+    <a href="#stegen">Kretsloppets steg</a>
+    <a href="#fossila">Fossila bränslen</a>
+    <a href="#kolla">Kolla att du kan</a>
+  </nav>
+</div>
+
+<main>
+
+<!-- VARFÖR KRETSLOPP -->
+<div class="section" id="varfor">
+<div class="container">
+  <p class="section-eyebrow">Bakgrund</p>
+  <h2 class="section-title">Varför behövs ett kretslopp?</h2>
+  <p class="section-intro">Levande varelser består till stor del av kolatomer. För att livet ska kunna fortgå måste kolet kunna återanvändas – det är det kolets kretslopp gör.</p>
+
+  <div class="key-box">
+    <h4>🔑 Kol i levande organismer</h4>
+    <p>Förutom vatten består levande varelser av främst <strong>organiska ämnen</strong> – kolhydrater, fetter och proteiner. Molekylerna i dessa energirika ämnen har ett "skelett" av kolatomer. För att inte kolatomerna ska ta slut i naturen måste de kunna återanvändas, och det är precis vad kolets kretslopp åstadkommer.</p>
+  </div>
+
+  <p class="prose">I kretsloppet cirkulerar kol i olika former: som <strong>koldioxid (CO₂)</strong> i atmosfären, som <strong>glukos och andra organiska molekyler</strong> i växter och djur, och som <strong>fossila bränslen</strong> (olja, kol, naturgas) i marken. Glukos representerar alla organiska ämnen i levande organismer, och de långa oljemolekylerna representerar fossila bränslen – omvandlat och brännbart material från växter och djur som levde för mycket länge sedan.</p>
+
+  <!-- DIAGRAM: Kretsloppet -->
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 700 340" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:700px;display:block;margin:0 auto">
+      <defs>
+        <marker id="arr" markerWidth="8" markerHeight="6" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#6a6458"/></marker>
+        <marker id="arr-green" markerWidth="8" markerHeight="6" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#2a7a6a"/></marker>
+        <marker id="arr-rust" markerWidth="8" markerHeight="6" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#d4703a"/></marker>
+        <marker id="arr-dark" markerWidth="8" markerHeight="6" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#4a3a20"/></marker>
+      </defs>
+
+      <!-- ATMOSPHERE box -->
+      <rect x="220" y="10" width="260" height="52" rx="8" fill="#1a3040" stroke="#2a5060" stroke-width="1.5"/>
+      <text x="350" y="32" text-anchor="middle" font-family="Lora,serif" font-size="13" fill="#a0d0f0" font-weight="600">Atmosfären</text>
+      <text x="350" y="52" text-anchor="middle" font-family="Source Sans 3,sans-serif" font-size="11" fill="#6aafcf">CO₂ (0,039 % av luften)</text>
+
+      <!-- VÄXTER box -->
+      <rect x="40" y="130" width="160" height="56" rx="8" fill="#1a3020" stroke="#3a6a3a" stroke-width="1.5"/>
+      <text x="120" y="152" text-anchor="middle" font-family="Lora,serif" font-size="13" fill="#a0e0a0" font-weight="600">🌱 Växter</text>
+      <text x="120" y="170" text-anchor="middle" font-family="Source Sans 3,sans-serif" font-size="10" fill="#70b070">Glukos och organiska ämnen</text>
+
+      <!-- DJUR box -->
+      <rect x="500" y="130" width="160" height="56" rx="8" fill="#2a2010" stroke="#6a4a20" stroke-width="1.5"/>
+      <text x="580" y="152" text-anchor="middle" font-family="Lora,serif" font-size="13" fill="#e0c080" font-weight="600">🦌 Djur</text>
+      <text x="580" y="170" text-anchor="middle" font-family="Source Sans 3,sans-serif" font-size="10" fill="#b08040">Äter växter och andra djur</text>
+
+      <!-- NEDBRYTARE box -->
+      <rect x="270" y="230" width="160" height="56" rx="8" fill="#2a1a10" stroke="#5a3a20" stroke-width="1.5"/>
+      <text x="350" y="252" text-anchor="middle" font-family="Lora,serif" font-size="13" fill="#d0a070" font-weight="600">🍄 Nedbrytare</text>
+      <text x="350" y="270" text-anchor="middle" font-family="Source Sans 3,sans-serif" font-size="10" fill="#a07050">Svampar, bakterier</text>
+
+      <!-- FOSSILA box -->
+      <rect x="40" y="270" width="160" height="56" rx="8" fill="#180f00" stroke="#3a2a10" stroke-width="1.5"/>
+      <text x="120" y="292" text-anchor="middle" font-family="Lora,serif" font-size="12" fill="#c0a060" font-weight="600">🛢 Fossila bränslen</text>
+      <text x="120" y="310" text-anchor="middle" font-family="Source Sans 3,sans-serif" font-size="10" fill="#907040">Olja, kol, naturgas</text>
+
+      <!-- FOTOSYNTES: Atm → Växter -->
+      <path d="M280,62 C200,80 180,110 180,130" stroke="#2a7a6a" stroke-width="2" fill="none" marker-end="url(#arr-green)"/>
+      <text x="200" y="100" font-family="Source Sans 3,sans-serif" font-size="10" fill="#4a9a6a" font-style="italic">② Fotosyntes</text>
+
+      <!-- ÄTER: Växter → Djur -->
+      <line x1="200" y1="158" x2="500" y2="158" stroke="#d4703a" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arr-rust)"/>
+      <text x="350" y="150" text-anchor="middle" font-family="Source Sans 3,sans-serif" font-size="10" fill="#c06030" font-style="italic">③ Djuren äter</text>
+
+      <!-- CELLANDNING Växter → Atm -->
+      <path d="M120,130 C120,90 220,62 280,50" stroke="#d4703a" stroke-width="1.5" fill="none" marker-end="url(#arr-rust)"/>
+      <text x="155" y="88" font-family="Source Sans 3,sans-serif" font-size="9" fill="#c06030" font-style="italic">④ Cellandning</text>
+
+      <!-- CELLANDNING Djur → Atm -->
+      <path d="M580,130 C600,80 470,55 430,52" stroke="#d4703a" stroke-width="1.5" fill="none" marker-end="url(#arr-rust)"/>
+      <text x="535" y="88" font-family="Source Sans 3,sans-serif" font-size="9" fill="#c06030" font-style="italic">④ Cellandning</text>
+
+      <!-- DÖD: Växter → Nedbrytare -->
+      <path d="M170,186 C200,215 250,228 270,245" stroke="#6a5a40" stroke-width="1.5" fill="none" marker-end="url(#arr)"/>
+      <text x="190" y="225" font-family="Source Sans 3,sans-serif" font-size="9" fill="#8a7a60" font-style="italic">⑤ Döda org.</text>
+
+      <!-- DÖD: Djur → Nedbrytare -->
+      <path d="M530,186 C500,215 450,228 430,245" stroke="#6a5a40" stroke-width="1.5" fill="none" marker-end="url(#arr)"/>
+
+      <!-- NEDBRYTARE cellandning → Atm -->
+      <path d="M350,230 C350,130 370,80 390,62" stroke="#d4703a" stroke-width="1.5" fill="none" stroke-dasharray="4,3" marker-end="url(#arr-rust)"/>
+      <text x="375" y="150" font-family="Source Sans 3,sans-serif" font-size="9" fill="#c06030" font-style="italic">⑥ Cellandning</text>
+
+      <!-- Döda → Fossila -->
+      <path d="M180,298 C160,295 135,290 120,298" stroke="#4a3a10" stroke-width="1.5" fill="none" marker-end="url(#arr-dark)"/>
+      <text x="85" y="252" text-anchor="middle" font-family="Source Sans 3,sans-serif" font-size="9" fill="#7a6a40" font-style="italic">⑦ Bildas under</text>
+      <text x="85" y="263" text-anchor="middle" font-family="Source Sans 3,sans-serif" font-size="9" fill="#7a6a40" font-style="italic">miljoner år</text>
+
+      <!-- Fossila → Atm (förbränning) -->
+      <path d="M200,275 C300,240 310,100 330,62" stroke="#e05535" stroke-width="2.5" fill="none" marker-end="url(#arr-rust)"/>
+      <text x="245" y="195" font-family="Source Sans 3,sans-serif" font-size="9" fill="#e05535" font-weight="600" font-style="italic">⑧ Förbränning</text>
+
+      <!-- Step 1 label -->
+      <text x="350" y="100" text-anchor="middle" font-family="Source Sans 3,sans-serif" font-size="9" fill="#6aafcf" font-style="italic">① 0,039% CO₂ i luften</text>
+    </svg>
+    <p class="diagram-caption">Figur 1. Kolets kretslopp – kol cirkulerar mellan atmosfären, levande organismer och marken.</p>
+  </div>
+
+</div>
+</div>
+
+<!-- STEGEN I KRETSLOPPET -->
+<div class="section" id="stegen">
+<div class="container">
+  <p class="section-eyebrow">Kretsloppets steg</p>
+  <h2 class="section-title">Åtta steg – från luft till liv och tillbaka</h2>
+  <p class="section-intro">Kretsloppet kan delas in i åtta steg som tillsammans håller mängden tillgängligt kol i balans i naturen.</p>
+
+  <div class="steps-list">
+    <div class="step-item">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <h4>Koldioxid i atmosfären</h4>
+        <p>Ungefär 0,039 % av luften är koldioxid (CO₂). Det är denna pool av oorganiskt kol som allt liv i slutändan är beroende av.</p>
+      </div>
+    </div>
+    <div class="step-item">
+      <div class="step-num green">2</div>
+      <div class="step-body">
+        <h4>Fotosyntes – växter binder kol</h4>
+        <p>Växter tar upp CO₂ från luften och omvandlar det med hjälp av solljus och vatten till <strong>glukos</strong> och syre. Glukos kan sedan byggas om till alla organiska ämnen som växten behöver – cellulosa, proteiner, fetter med mera.</p>
+      </div>
+    </div>
+    <div class="step-item">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <h4>Djuren äter – kolet sprids i näringskedjan</h4>
+        <p>Djur får i sig glukos och annan energirik näring genom att äta växter eller andra djur. Kolet som växter bundit via fotosyntesen förs på så vis vidare upp i näringskedjan.</p>
+      </div>
+    </div>
+    <div class="step-item">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <h4>Cellandning – kol frigörs till luften</h4>
+        <p>Både växter och djur utför <strong>cellandning</strong> – de förbränner glukos med syre för att frigöra energi. Vid cellandningen bildas koldioxid och vatten, som avges tillbaka till atmosfären. Detta är den viktigaste vägen för koldioxid att återvända till luften.</p>
+      </div>
+    </div>
+    <div class="step-item">
+      <div class="step-num">5</div>
+      <div class="step-body">
+        <h4>Döda organismer – näring för nedbrytare</h4>
+        <p>Organiska ämnen i döda växter och djur blir näring åt <strong>nedbrytare</strong>, framförallt svampar och bakterier. Nedbrytarna är livsviktiga för att kolet ska kunna återcirkuleras.</p>
+      </div>
+    </div>
+    <div class="step-item">
+      <div class="step-num green">6</div>
+      <div class="step-body">
+        <h4>Nedbrytarna andas – mer CO₂ till luften</h4>
+        <p>Nedbrytarna har också cellandning och frigör koldioxid när de bryter ner organiskt material. På så sätt bidrar de aktivt till att koldioxid återförs till atmosfären.</p>
+      </div>
+    </div>
+    <div class="step-item">
+      <div class="step-num dark">7</div>
+      <div class="step-body">
+        <h4>Ofullständig nedbrytning – fossila bränslen bildas</h4>
+        <p>En del döda växter och djur hamnar på platser där det är för kallt eller för lite syre för att nedbrytarna ska vara effektiva – till exempel i kärr eller på djupa havsbottnar. Där kan organiska rester lagras under extremt lång tid utan att brytas ner fullständigt. Med tiden omvandlas de till <strong>stenkol, olja eller naturgas</strong> – fossila bränslen.</p>
+      </div>
+    </div>
+    <div class="step-item">
+      <div class="step-num dark">8</div>
+      <div class="step-body">
+        <h4>Förbränning av fossila bränslen – kol frigörs snabbt</h4>
+        <p>Fossila bränslen har bildats och lagrats under <strong>miljontals år</strong>. När vi nu eldar upp dem under några decennier frigörs plötsligt mycket koldioxid till luften – kol som annars hade varit bundet i marken. Detta är det grundläggande problemet med fossila bränslen ur klimatsynpunkt.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- FOSSILA BRÄNSLEN -->
+<div class="section" id="fossila">
+<div class="container">
+  <p class="section-eyebrow">Fördjupning</p>
+  <h2 class="section-title">Fossila bränslen och klimatpåverkan</h2>
+  <p class="section-intro">Fossila bränslen är lagrad solenergi från forntiden – men när vi förbränner dem på rekordtid rubbar vi kretsloppets balans.</p>
+
+  <table class="concept-table">
+    <thead><tr>
+      <th>Fossilt bränsle</th>
+      <th>Ursprung</th>
+      <th>Bildningstid</th>
+      <th>Användning</th>
+    </tr></thead>
+    <tbody>
+      <tr><td>Stenkol</td><td>Forntida växtmaterial (skogar)</td><td>300–350 miljoner år</td><td>Elproduktion, industri</td></tr>
+      <tr><td>Olja</td><td>Mikroorganismer i hav</td><td>50–150 miljoner år</td><td>Drivmedel, plast, kemikalier</td></tr>
+      <tr><td>Naturgas</td><td>Organiskt material, ofta med olja</td><td>50–150 miljoner år</td><td>Uppvärmning, elproduktion</td></tr>
+    </tbody>
+  </table>
+
+  <div class="key-box">
+    <h4>⚠️ Varför är fossila bränslen ett problem?</h4>
+    <p>I det naturliga kretsloppet finns en balans: växter binder CO₂ via fotosyntes ungefär lika snabbt som cellandning och nedbrytning frigör det. Fossila bränslen tar miljoner år att bildas men förbränns på decennier – det är som att tömma ett konto som tog en evighet att spara ihop, på bråkdelen av den tiden. Resultatet är att CO₂-halten i atmosfären stiger snabbare än ekosystemen kan hantera.</p>
+  </div>
+
+  <div class="info-box">
+    <h3>🔑 Nyckelbegrepp att komma ihåg</h3>
+    <ul>
+      <li><strong>Fotosyntes</strong> binder kol från luften – det är ingångsporten till kretsloppet för allt liv.</li>
+      <li><strong>Cellandning</strong> (hos växter, djur och nedbrytare) frigör koldioxid tillbaka till luften.</li>
+      <li><strong>Nedbrytare</strong> (svampar, bakterier) är avgörande för att kol ska återcirkuleras effektivt.</li>
+      <li><strong>Fossila bränslen</strong> representerar kol som "tagits ur kretslopp" i miljoner år – förbränning sätter det tillbaka på bråkdelen av den tiden.</li>
+      <li>Kolets kretslopp är kopplat till både <strong>klimat</strong> (via CO₂ i atmosfären) och <strong>biologisk mångfald</strong> (via näringscykler i ekosystem).</li>
+    </ul>
+  </div>
+
+</div>
+</div>
+
+<!-- KOLLA ATT DU KAN -->
+<div class="section" id="kolla">
+<div class="container">
+  <p class="section-eyebrow">Självbedömning</p>
+  <h2 class="section-title">Kolla att du kan</h2>
+  <p class="section-intro">Skriv ditt svar och jämför sedan med mallsvaret.</p>
+  <div id="q-wrap"></div>
+</div>
+</div>
+
+</main>
+
+<footer>
+  <a href="nk1a1-grundlaggande-kemi.html">← Tillbaka till Grundläggande kemi</a> &middot; NK1a1 &middot; Kolets kretslopp
+</footer>
+
+<script src="shared.js"></script>
+<script>
+requireLogin('NK1a1');
+
+const QUESTIONS = [
+  {
+    q: "Varför behövs kolets kretslopp? Vad skulle hända utan det?",
+    model: [
+      "Levande organismer är uppbyggda av kolföreningar (kolhydrater, fetter, proteiner). Om kolet inte återcirkulerades skulle kolatomer fastna i döda organismer och så småningom ta slut för nya levande varelser.",
+      "Kretsloppet säkerställer att kol flödar mellan atmosfär, levande organismer och mark i en kontinuerlig cykel.",
+      "Utan kretsloppet: CO₂ i atmosfären skulle ta slut → fotosyntes upphör → allt liv kollapsar."
+    ]
+  },
+  {
+    q: "Beskriv fotosyntesens och cellandningens roller i kolets kretslopp.",
+    model: [
+      "<strong>Fotosyntes</strong>: Växter tar upp CO₂ från atmosfären + vatten + solljus → glukos + syre. Det binder kol i organiska molekyler och är kretsloppets 'ingång'.",
+      "<strong>Cellandning</strong>: Växter, djur och nedbrytare förbränner glukos + syre → CO₂ + vatten + energi (ATP). Det frigör kol tillbaka till atmosfären och är kretsloppets 'utgång'.",
+      "Dessa två processer balanserar varandra i det naturliga kretsloppet."
+    ]
+  },
+  {
+    q: "Vilken roll spelar nedbrytare i kolets kretslopp?",
+    model: [
+      "Nedbrytare (svampar och bakterier) bryter ner organiskt material i döda växter och djur.",
+      "Via cellandning frigör nedbrytarna CO₂ tillbaka till atmosfären.",
+      "Utan nedbrytare skulle kol fastna i döda organismer och inte kunna återanvändas – kretsloppet skulle brytas."
+    ]
+  },
+  {
+    q: "Hur bildas fossila bränslen och varför är de ett problem för kretsloppet?",
+    model: [
+      "Fossila bränslen bildas när döda organismer hamnar i syrefattiga miljöer (kärr, havsbottnar) där nedbrytningen är ineffektiv. Under miljontals år omvandlas de till stenkol, olja eller naturgas.",
+      "I det naturliga kretsloppet är detta kol 'låst' – det ingår inte i den aktiva cirkulationen.",
+      "<strong>Problemet</strong>: När vi förbränner fossila bränslen frigörs kol som bundits under miljontals år på bara decennier. Det höjer CO₂-halten i atmosfären snabbare än ekosystemen hinner anpassa sig."
+    ]
+  }
+];
+
+let checked = new Array(QUESTIONS.length).fill(false);
+
+function buildQuestions() {
+  const wrap = document.getElementById('q-wrap');
+  QUESTIONS.forEach((q, i) => {
+    const items = q.model.map(m => `<li>${m}</li>`).join('');
+    wrap.innerHTML += `
+      <div class="q-card">
+        <div class="q-num">Fråga ${i+1} av ${QUESTIONS.length}</div>
+        <div class="q-text">${q.q}</div>
+        <textarea class="q-textarea" id="qta-${i}" placeholder="Skriv ditt svar här..."></textarea>
+        <button class="q-btn" onclick="showModel(${i})">Visa mallsvar →</button>
+        <div class="q-model" id="qmodel-${i}">
+          <div class="q-model-header">📋 Mallsvar</div>
+          <div class="q-model-body">
+            <ul>${items}</ul>
+            <div class="q-self-check">
+              <input type="checkbox" id="qcheck-${i}" onchange="toggleCheck(${i})"/>
+              <label for="qcheck-${i}">Jag hade med det viktigaste</label>
+            </div>
+          </div>
+        </div>
+        <button class="q-retry" onclick="resetQuestion(${i})">↩ Rensa och försök igen</button>
+      </div>`;
+  });
+  updateScore();
+}
+
+function showModel(i) { document.getElementById(`qmodel-${i}`).classList.add('shown'); }
+function toggleCheck(i) { checked[i] = document.getElementById(`qcheck-${i}`).checked; updateScore(); }
+function resetQuestion(i) {
+  document.getElementById(`qta-${i}`).value = '';
+  document.getElementById(`qmodel-${i}`).classList.remove('shown');
+  document.getElementById(`qcheck-${i}`).checked = false;
+  checked[i] = false;
+  updateScore();
+}
+
+function updateScore() {
+  const n = checked.filter(Boolean).length, t = QUESTIONS.length;
+  const msg = n === t ? '🎉 Utmärkt – du kan hela avsnittet!'
+    : n >= 3 ? '👍 Bra jobbat! Kika på de du missat.'
+    : n >= 2 ? '📖 Halvvägs – fortsätt öva!'
+    : '🔍 Gå tillbaka till materialet och försök igen.';
+  let bar = document.getElementById('q-scorebar');
+  if (!bar) {
+    document.getElementById('q-wrap').insertAdjacentHTML('afterend',
+      `<div class="q-score-bar" id="q-scorebar">
+        <div class="q-score-num" id="qs-num">${n}/${t}</div>
+        <div><div class="q-score-label">Självskattning</div><div class="q-score-msg" id="qs-msg">${msg}</div></div>
+      </div>`);
+  } else {
+    document.getElementById('qs-num').textContent = `${n}/${t}`;
+    document.getElementById('qs-msg').textContent = msg;
+  }
+}
+
+buildQuestions();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Grundläggande kemi – NK1a1</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Mulish:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #faf7f2; --surface: #ffffff; --border: #e8e0d0;
+      --sand: #f2ece0; --rust: #b85c2a; --rust2: #d4703a;
+      --teal: #2a7a6a; --blue: #2a4a7a; --text: #1a1612;
+      --muted: #6a5e52; --radius: 12px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Mulish', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+    .top-bar { background: #1a1612; padding: 14px 28px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+    .back-link { color: #c8b89a; text-decoration: none; font-size: .82rem; transition: color .2s; }
+    .back-link:hover { color: #fff; }
+    .top-title { font-family: 'Playfair Display', serif; font-size: 1rem; color: #e8dcc8; }
+    .top-title span { color: #e07a40; }
+
+    .hero { background: linear-gradient(135deg, #1a1612 0%, #1a2010 60%, #1a1612 100%); padding: 56px 32px 48px; text-align: center; position: relative; overflow: hidden; }
+    .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 60% 60% at 70% 50%, rgba(180,92,42,.1) 0%, transparent 60%); pointer-events: none; }
+    .hero-eyebrow { font-size: .72rem; letter-spacing: .22em; text-transform: uppercase; color: #e07a40; margin-bottom: 12px; }
+    .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 900; color: #f0e8d8; margin-bottom: 14px; line-height: 1.15; }
+    .hero p { font-size: .95rem; color: #a09080; max-width: 540px; margin: 0 auto 28px; line-height: 1.7; }
+    .hero-nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+    .hero-nav a { font-size: .78rem; color: #c8b89a; border: 1px solid rgba(200,184,154,.3); border-radius: 30px; padding: 6px 14px; text-decoration: none; transition: all .2s; }
+    .hero-nav a:hover { background: rgba(200,184,154,.12); color: #fff; }
+
+    .container { max-width: 860px; margin: 0 auto; padding: 48px 24px 80px; }
+    .section-label { font-size: .7rem; letter-spacing: .2em; text-transform: uppercase; color: var(--rust); font-weight: 600; margin-bottom: 8px; }
+    .section-title { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--text); margin-bottom: 28px; }
+
+    /* LAUNCH ROW */
+    .launch-row { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-bottom: 36px; padding: 24px; background: var(--sand); border-radius: var(--radius); border: 1px solid var(--border); }
+    .launch-row-text h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; margin-bottom: 5px; }
+    .launch-row-text p { font-size: .84rem; color: var(--muted); line-height: 1.5; }
+    .fc-launch-all { display: inline-flex; align-items: center; gap: 8px; background: #1a1612; color: #e8dcc8; font-family: 'Mulish', sans-serif; font-size: .9rem; font-weight: 700; padding: 14px 28px; border-radius: 9px; text-decoration: none; transition: all .2s; border: 1px solid #3a2a1a; }
+    .fc-launch-all:hover { background: #2a2018; border-color: #d4703a; color: #fff; }
+
+    /* CATEGORY CARDS */
+    .cat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 16px; margin-bottom: 40px; }
+    .cat-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px; }
+    .cat-icon { font-size: 1.6rem; margin-bottom: 10px; }
+    .cat-title { font-family: 'Playfair Display', serif; font-size: 1.05rem; margin-bottom: 6px; }
+    .cat-count { font-size: .75rem; color: var(--muted); margin-bottom: 8px; }
+    .cat-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 10px; }
+    .cat-tag { font-size: .7rem; background: var(--sand); border-radius: 30px; padding: 2px 9px; color: var(--muted); }
+    .fc-launch { display: inline-flex; align-items: center; gap: 6px; background: var(--rust2); color: #fff; font-family: 'Mulish', sans-serif; font-size: .82rem; font-weight: 700; padding: 9px 18px; border-radius: 7px; text-decoration: none; transition: background .2s; margin-top: 4px; }
+    .fc-launch:hover { background: var(--rust); }
+
+    /* MATERIAL CARDS */
+    .mat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 16px; margin-bottom: 36px; }
+    .mat-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px; text-decoration: none; color: var(--text); display: block; transition: all .2s; }
+    .mat-card:hover { border-color: var(--rust2); transform: translateY(-2px); box-shadow: 0 6px 24px rgba(180,92,42,.1); }
+    .mat-card-icon { font-size: 1.6rem; margin-bottom: 10px; }
+    .mat-card h4 { font-family: 'Playfair Display', serif; font-size: 1.05rem; margin-bottom: 6px; }
+    .mat-card p { font-size: .84rem; color: var(--muted); line-height: 1.55; }
+    .mat-arrow { display: block; margin-top: 12px; font-size: .82rem; font-weight: 600; color: var(--rust); }
+
+    .info-box { background: var(--sand); border-left: 4px solid var(--rust2); border-radius: 0 var(--radius) var(--radius) 0; padding: 16px 20px; font-size: .88rem; color: var(--muted); line-height: 1.65; margin-top: 32px; }
+    .info-box strong { color: var(--text); }
+
+    footer { border-top: 1px solid var(--border); text-align: center; padding: 24px; font-size: .78rem; color: var(--muted); }
+    footer a { color: var(--rust); text-decoration: none; }
+
+    @media(max-width:560px) { .cat-grid { grid-template-columns: 1fr; } .container { padding: 32px 16px 60px; } }
+  </style>
+</head>
+<body>
+
+<div class="top-bar">
+  <a href="nk1a1.html" class="back-link">← NK1a1</a>
+  <div class="top-title">Naturkunskap 1a1 &mdash; <span>Grundläggande kemi</span></div>
+</div>
+
+<div class="hero">
+  <p class="hero-eyebrow">NK1a1 &middot; Grundläggande kemi</p>
+  <h1>Grundläggande kemi</h1>
+  <p>Atomens byggstenar, syror och baser, pH-värde samt kemins roll i energi och kretslopp.</p>
+  <nav class="hero-nav">
+    <a href="#material">📄 Material</a>
+    <a href="#flashcards">🃏 Flashcards</a>
+  </nav>
+</div>
+
+<div class="container">
+
+  <!-- MATERIAL -->
+  <p class="section-label" id="material">Läsmaterial</p>
+  <h2 class="section-title">Fördjupa dig i kemins grunder</h2>
+
+  <div class="mat-grid">
+    <a href="material-kolets-kretslopp.html" class="mat-card">
+      <div class="mat-card-icon">🔄</div>
+      <h4>Kolets kretslopp</h4>
+      <p>Hur kol flödar mellan atmosfären, levande organismer, hav och mark – från fotosyntes till fossila bränslen.</p>
+      <span class="mat-arrow">Läs mer →</span>
+    </a>
+  </div>
+
+  <!-- FLASHCARDS -->
+  <p class="section-label" id="flashcards">Flashcards</p>
+  <h2 class="section-title">Öva begreppen</h2>
+
+  <!-- QUICK LAUNCH -->
+  <div class="launch-row">
+    <div style="font-size:2.2rem">🃏</div>
+    <div class="launch-row-text">
+      <h3>Öva alla 25 begrepp</h3>
+      <p>Starta flashcards med hela grundläggande kemi-setet – välj kategori inne i appen.</p>
+    </div>
+    <a href="flashcards-grundlaggande-kemi.html" class="fc-launch-all">Starta flashcards →</a>
+  </div>
+
+  <div class="cat-grid">
+    <div class="cat-card">
+      <div class="cat-icon">⚛️</div>
+      <div class="cat-title">Atomens byggstenar</div>
+      <div class="cat-count">7 begrepp</div>
+      <div class="cat-tags">
+        <span class="cat-tag">Proton</span>
+        <span class="cat-tag">Neutron</span>
+        <span class="cat-tag">Elektron</span>
+        <span class="cat-tag">Grundämne</span>
+        <span class="cat-tag">Molekyl</span>
+      </div>
+      <a href="flashcards-grundlaggande-kemi.html" class="fc-launch">Öva →</a>
+    </div>
+
+    <div class="cat-card">
+      <div class="cat-icon">💧</div>
+      <div class="cat-title">Vattnets egenskaper</div>
+      <div class="cat-count">2 begrepp</div>
+      <div class="cat-tags">
+        <span class="cat-tag">Dipol</span>
+        <span class="cat-tag">Ytspänning</span>
+      </div>
+      <a href="flashcards-grundlaggande-kemi.html" class="fc-launch">Öva →</a>
+    </div>
+
+    <div class="cat-card">
+      <div class="cat-icon">🧪</div>
+      <div class="cat-title">Syror och baser</div>
+      <div class="cat-count">8 begrepp</div>
+      <div class="cat-tags">
+        <span class="cat-tag">Syra</span>
+        <span class="cat-tag">Bas</span>
+        <span class="cat-tag">pH-värde</span>
+        <span class="cat-tag">Indikator</span>
+      </div>
+      <a href="flashcards-grundlaggande-kemi.html" class="fc-launch">Öva →</a>
+    </div>
+
+    <div class="cat-card">
+      <div class="cat-icon">🔥</div>
+      <div class="cat-title">Kemi och energi</div>
+      <div class="cat-count">5 begrepp</div>
+      <div class="cat-tags">
+        <span class="cat-tag">Förbränning</span>
+        <span class="cat-tag">Fotosyntes</span>
+        <span class="cat-tag">Cellandning</span>
+        <span class="cat-tag">Kolets kretslopp</span>
+      </div>
+      <a href="flashcards-grundlaggande-kemi.html" class="fc-launch">Öva →</a>
+    </div>
+  </div>
+
+  <div class="info-box">
+    <strong>Tips:</strong> Börja med att läsa materialet om kolets kretslopp, sedan öva begreppen med flashcards. Inne i flashcard-appen kan du filtrera per kategori.
+  </div>
+
+</div>
+
+<footer><a href="nk1a1.html">← Tillbaka till NK1a1</a> &middot; Naturkunskap 1a1 &middot; Grundläggande kemi</footer>
+
+<script src="shared.js"></script>
+<script>
+  const s = requireLogin('NK1a1');
+  if (!s) window.location.href = 'index.html';
+</script>
+</body>
+</html>
