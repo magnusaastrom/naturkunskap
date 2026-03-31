@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Flashcards – Periodiska systemet & Kemisk bindning</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg:#0f1a24;--surface:#162030;--card:#1c2d3f;--border:#2a3f54;
+      --teal:#3ecfb2;--teal2:#27a890;--amber:#f0b040;--red:#e05555;
+      --green:#4caf82;--text:#dde8f0;--muted:#7a9ab0;--radius:10px;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+    .top-bar{background:var(--surface);border-bottom:1px solid var(--border);padding:16px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+    .top-left{display:flex;align-items:center;gap:14px;}
+    .back-link{color:var(--muted);text-decoration:none;font-size:0.82rem;display:flex;align-items:center;gap:6px;transition:color .2s;}
+    .back-link:hover{color:var(--teal);}
+    .top-title{font-family:'Fraunces',serif;font-size:1.2rem;}
+    .top-title span{color:var(--teal);}
+    .user-chip{font-size:0.78rem;color:var(--muted);background:var(--card);border:1px solid var(--border);padding:4px 12px;border-radius:30px;}
+    .mode-tabs{display:flex;background:var(--surface);border-bottom:1px solid var(--border);padding:0 28px;}
+    .mode-tab{padding:13px 20px;font-size:0.86rem;font-weight:500;color:var(--muted);cursor:pointer;border-bottom:2.5px solid transparent;transition:all .2s;user-select:none;}
+    .mode-tab:hover{color:var(--text);}
+    .mode-tab.active{color:var(--teal);border-bottom-color:var(--teal);}
+    .main{max-width:720px;margin:0 auto;padding:40px 20px 80px;}
+    .history-toggle{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
+    .history-btn{font-size:0.8rem;color:var(--teal);background:none;border:1px solid rgba(62,207,178,.3);border-radius:5px;padding:5px 13px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;}
+    .history-btn:hover{background:rgba(62,207,178,.1);}
+    .cat-filter{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;}
+    .cat-btn{font-size:0.76rem;padding:5px 13px;border-radius:30px;border:1.5px solid var(--border);background:none;color:var(--muted);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;}
+    .cat-btn:hover{border-color:var(--text);color:var(--text);}
+    .cat-btn.active{background:rgba(62,207,178,.12);border-color:var(--teal);color:var(--teal);}
+    .history-panel{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:20px;margin-bottom:24px;display:none;}
+    .history-panel.open{display:block;}
+    .history-panel h3{font-size:0.85rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;}
+    .history-empty{font-size:0.85rem;color:var(--muted);font-style:italic;}
+    .history-table{width:100%;border-collapse:collapse;font-size:0.82rem;}
+    .history-table th{text-align:left;color:var(--muted);font-weight:500;padding:4px 10px 8px 0;border-bottom:1px solid var(--border);}
+    .history-table td{padding:7px 10px 7px 0;border-bottom:1px solid rgba(42,63,84,.5);color:var(--text);}
+    .pct-bar-wrap{display:flex;align-items:center;gap:8px;}
+    .pct-bar{height:5px;background:var(--border);border-radius:3px;flex:1;overflow:hidden;}
+    .pct-fill{height:100%;background:var(--teal);border-radius:3px;transition:width .4s;}
+    .pct-fill.mid{background:var(--amber);}
+    .pct-fill.low{background:var(--red);}
+    .stats-row{display:flex;gap:10px;margin-bottom:24px;flex-wrap:wrap;}
+    .stat-pill{background:var(--card);border:1px solid var(--border);border-radius:30px;padding:6px 14px;font-size:0.78rem;display:flex;align-items:center;gap:6px;}
+    .stat-dot{width:8px;height:8px;border-radius:50%;}
+    .dot-green{background:var(--green);}.dot-red{background:var(--red);}.dot-muted{background:var(--muted);}
+    .prog-wrap{margin-bottom:28px;}
+    .prog-info{display:flex;justify-content:space-between;font-size:0.78rem;color:var(--muted);margin-bottom:6px;}
+    .prog-bar{height:4px;background:var(--border);border-radius:2px;overflow:hidden;}
+    .prog-fill{height:100%;background:linear-gradient(90deg,var(--teal),var(--teal2));border-radius:2px;transition:width .4s;}
+    .card-counter-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
+    .card-counter{font-size:0.8rem;color:var(--muted);}
+    .card-category{font-size:0.72rem;color:var(--amber);background:rgba(240,176,64,.12);border:1px solid rgba(240,176,64,.3);padding:3px 10px;border-radius:30px;}
+    #mode-flip{display:block;}
+    #mode-write,#mode-multi{display:none;}
+    .flip-hint{font-size:0.76rem;color:var(--muted);text-align:center;margin-bottom:12px;}
+    .flip-scene{perspective:1200px;height:260px;cursor:pointer;margin-bottom:24px;}
+    .flip-card{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform .55s cubic-bezier(.4,.2,.2,1);}
+    .flip-card.flipped{transform:rotateY(180deg);}
+    .flip-face{position:absolute;inset:0;backface-visibility:hidden;background:var(--card);border:1px solid var(--border);border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px;text-align:center;}
+    .flip-face.back{transform:rotateY(180deg);background:#1a3040;border-color:var(--teal2);}
+    .flip-label{font-size:0.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:16px;}
+    .flip-label.teal{color:var(--teal);}
+    .flip-term{font-family:'Fraunces',serif;font-size:clamp(1.2rem,3vw,1.8rem);color:var(--text);line-height:1.3;}
+    .flip-def{font-size:0.93rem;color:var(--text);line-height:1.65;max-width:460px;}
+    .flip-actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;}
+    .know-actions{display:flex;justify-content:center;gap:10px;margin-top:14px;flex-wrap:wrap;}
+    .btn{font-family:'DM Sans',sans-serif;font-size:0.86rem;font-weight:500;padding:10px 20px;border-radius:6px;border:none;cursor:pointer;transition:all .18s;letter-spacing:.02em;}
+    .btn-ghost{background:transparent;border:1.5px solid var(--border);color:var(--muted);}
+    .btn-ghost:hover{border-color:var(--text);color:var(--text);}
+    .btn-primary{background:var(--teal);color:#0f1a24;font-weight:600;}
+    .btn-primary:hover{background:var(--teal2);}
+    .btn-green{background:rgba(76,175,130,.2);color:var(--green);border:1.5px solid var(--green);}
+    .btn-green:hover{background:rgba(76,175,130,.35);}
+    .btn-red{background:rgba(224,85,85,.15);color:var(--red);border:1.5px solid var(--red);}
+    .btn-red:hover{background:rgba(224,85,85,.28);}
+    .write-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:32px 28px;margin-bottom:20px;}
+    .write-deflabel{font-size:0.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--teal);margin-bottom:12px;}
+    .write-def{font-size:1rem;line-height:1.65;color:var(--text);margin-bottom:24px;}
+    .write-input{width:100%;background:var(--bg);border:1.5px solid var(--border);border-radius:7px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:1rem;padding:13px 15px;outline:none;transition:border-color .2s;}
+    .write-input:focus{border-color:var(--teal);}
+    .write-input.c{border-color:var(--green);}
+    .write-input.w{border-color:var(--red);}
+    .write-result{margin-top:12px;font-size:0.9rem;min-height:24px;display:none;}
+    .write-result.correct{color:var(--green);display:block;}
+    .write-result.wrong{color:var(--red);display:block;}
+    .override-wrap{margin-top:10px;display:none;align-items:center;gap:9px;font-size:0.83rem;color:var(--muted);}
+    .override-wrap.show{display:flex;}
+    .override-cb{width:16px;height:16px;accent-color:var(--teal);cursor:pointer;}
+    .write-actions{display:flex;gap:10px;flex-wrap:wrap;}
+    .multi-q{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:28px;margin-bottom:20px;}
+    .multi-deflabel{font-size:0.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--amber);margin-bottom:10px;}
+    .multi-term{font-family:'Fraunces',serif;font-size:1.2rem;color:var(--text);margin-bottom:24px;line-height:1.4;}
+    .multi-opts{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+    .multi-opt{background:var(--bg);border:1.5px solid var(--border);border-radius:7px;padding:13px 15px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:0.9rem;cursor:pointer;text-align:left;transition:all .18s;line-height:1.4;}
+    .multi-opt:hover:not(:disabled){border-color:var(--teal);color:var(--teal);}
+    .multi-opt.co{border-color:var(--green);background:rgba(76,175,130,.15);color:var(--green);}
+    .multi-opt.wo{border-color:var(--red);background:rgba(224,85,85,.12);color:var(--red);}
+    .multi-opt:disabled{cursor:default;}
+    .multi-fb{margin-top:14px;font-size:0.88rem;min-height:20px;font-style:italic;color:var(--muted);}
+    .multi-actions{display:flex;gap:10px;margin-top:16px;}
+    .completion{text-align:center;padding:56px 20px;display:none;}
+    .completion.show{display:block;}
+    .comp-icon{font-size:3rem;margin-bottom:18px;}
+    .comp-h{font-family:'Fraunces',serif;font-size:1.7rem;color:var(--teal);margin-bottom:8px;}
+    .comp-score{font-size:2.8rem;font-family:'Fraunces',serif;color:var(--text);margin:12px 0 4px;}
+    .comp-sub{font-size:0.85rem;color:var(--muted);margin-bottom:6px;}
+    .comp-msg{font-size:0.9rem;color:var(--muted);margin-bottom:28px;}
+    .comp-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+    @media(max-width:520px){.multi-opts{grid-template-columns:1fr;}.write-card,.multi-q{padding:20px 16px;}}
+  </style>
+</head>
+<body>
+
+<div class="top-bar">
+  <div class="top-left">
+    <a href="nk2.html" class="back-link">← NK2</a>
+    <div class="top-title">Flashcards &mdash; <span>Periodiska systemet & Kemisk bindning</span></div>
+  </div>
+  <div class="user-chip" id="user-chip">Laddar...</div>
+</div>
+
+<div class="mode-tabs">
+  <div class="mode-tab active" data-mode="flip">🔄 Vändkort</div>
+  <div class="mode-tab" data-mode="write">✏️ Skrivläge</div>
+  <div class="mode-tab" data-mode="multi">🎯 Flerval</div>
+</div>
+
+<div class="main">
+
+  <div class="history-toggle">
+    <span style="font-size:.82rem;color:var(--muted)">Periodiska systemet & Kemisk bindning &middot; <span id="total-count">46</span> begrepp</span>
+    <button class="history-btn" onclick="toggleHistory()">📊 Visa min historik</button>
+  </div>
+  <div class="history-panel" id="history-panel">
+    <h3>Dina tidigare omgångar</h3>
+    <div id="history-content"><p class="history-empty">Inga omgångar sparade ännu.</p></div>
+  </div>
+
+  <div class="cat-filter" id="cat-filter">
+    <button class="cat-btn active" data-cat="all" onclick="setCategory(this)">Alla kategorier</button>
+    <button class="cat-btn" data-cat="atom" onclick="setCategory(this)">⚛️ Atomen & periodiska systemet</button>
+    <button class="cat-btn" data-cat="bindning" onclick="setCategory(this)">🔗 Kemisk bindning</button>
+    <button class="cat-btn" data-cat="inter" onclick="setCategory(this)">🧲 Intermolekylära krafter</button>
+    <button class="cat-btn" data-cat="mol" onclick="setCategory(this)">🔬 Molekyler & joner</button>
+    <button class="cat-btn" data-cat="historia" onclick="setCategory(this)">📜 Atommodellens historia</button>
+  </div>
+
+  <div class="stats-row" id="stats-row">
+    <div class="stat-pill"><span class="stat-dot dot-green"></span><span id="s-know">0 kan</span></div>
+    <div class="stat-pill"><span class="stat-dot dot-red"></span><span id="s-dont">0 kan inte</span></div>
+    <div class="stat-pill"><span class="stat-dot dot-muted"></span><span id="s-left">46 kvar</span></div>
+  </div>
+  <div class="prog-wrap">
+    <div class="prog-info"><span>Framsteg</span><span id="prog-pct">0%</span></div>
+    <div class="prog-bar"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+  </div>
+
+  <!-- FLIP -->
+  <div id="mode-flip">
+    <div class="card-counter-row">
+      <span class="card-counter" id="card-counter">Kort 1 av 46</span>
+      <span class="card-category" id="card-cat-label"></span>
+    </div>
+    <div class="flip-hint">Klicka på kortet för att vända det</div>
+    <div class="flip-scene" onclick="flipCard()">
+      <div class="flip-card" id="flip-card">
+        <div class="flip-face front"><div class="flip-label">Begrepp</div><div class="flip-term" id="ff-term"></div></div>
+        <div class="flip-face back"><div class="flip-label teal">Förklaring</div><div class="flip-def" id="ff-def"></div></div>
+      </div>
+    </div>
+    <div class="flip-actions">
+      <button class="btn btn-ghost" onclick="prevCard()">← Föregående</button>
+      <button class="btn btn-primary" onclick="nextCard()">Nästa →</button>
+    </div>
+    <div class="know-actions" id="know-actions" style="display:none">
+      <button class="btn btn-red" onclick="markCard(false)">✗ Kan inte</button>
+      <button class="btn btn-green" onclick="markCard(true)">✓ Kan!</button>
+    </div>
+  </div>
+
+  <!-- WRITE -->
+  <div id="mode-write">
+    <div class="card-counter-row"><span class="card-counter" id="card-counter-w">Kort 1 av 46</span></div>
+    <div class="write-card">
+      <div class="write-deflabel">Vad är begreppet för denna förklaring?</div>
+      <div class="write-def" id="w-def"></div>
+      <input type="text" class="write-input" id="w-input" placeholder="Skriv begreppet här..." autocomplete="off" autocorrect="off" spellcheck="false"/>
+      <div class="write-result" id="w-result"></div>
+      <div class="override-wrap" id="w-override">
+        <input type="checkbox" class="override-cb" id="w-cb"/>
+        <label for="w-cb">Jag tänkte på rätt begrepp – räkna som rätt ändå</label>
+      </div>
+    </div>
+    <div class="write-actions">
+      <button class="btn btn-primary" id="w-check" onclick="checkWrite()">Kontrollera</button>
+      <button class="btn btn-ghost" id="w-next" onclick="nextCard()" style="display:none">Nästa →</button>
+    </div>
+  </div>
+
+  <!-- MULTI -->
+  <div id="mode-multi">
+    <div class="card-counter-row"><span class="card-counter" id="card-counter-m">Kort 1 av 46</span></div>
+    <div class="multi-q">
+      <div class="multi-deflabel">Vilket begrepp stämmer?</div>
+      <div class="multi-term" id="m-def"></div>
+      <div class="multi-opts" id="m-opts"></div>
+      <div class="multi-fb" id="m-fb"></div>
+      <div class="multi-actions">
+        <button class="btn btn-primary" id="m-next" onclick="nextCard()" style="display:none">Nästa →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- COMPLETION -->
+  <div class="completion" id="completion">
+    <div class="comp-icon">🎉</div>
+    <div class="comp-h">Omgång klar!</div>
+    <div class="comp-score" id="comp-score"></div>
+    <div class="comp-sub" id="comp-sub"></div>
+    <div class="comp-msg" id="comp-msg"></div>
+    <div class="comp-btns">
+      <button class="btn btn-primary" onclick="restart()">Börja om</button>
+      <button class="btn btn-ghost" id="retry-btn" onclick="retryWrong()" style="display:none">Öva felen igen</button>
+      <a href="nk2.html" class="btn btn-ghost" style="text-decoration:none">← Tillbaka</a>
+    </div>
+  </div>
+
+</div>
+
+<script src="shared.js"></script>
+<script>
+const SET_ID = 'nk2_organisk_kemi';
+
+const allCards = [
+
+  // ── ATOMEN & PERIODISKA SYSTEMET ──────────────────────────────
+
+  { cat:'atom', term:"Atom",
+    def:"En byggsten i materia som består av protoner, neutroner och elektroner",
+    multiDef:"Vilket begrepp betecknar den minsta enheten av ett grundämne – bestående av en kärna med protoner och neutroner samt elektroner runtomkring?",
+    wrong:["Molekyl","Jon","Orbital"] },
+
+  { cat:'atom', term:"Atomkärna",
+    def:"Atomens centrum som innehåller protoner och neutroner",
+    multiDef:"Vad kallas det laddade centrum i en atom där protonerna och neutronerna sitter tätt packade?",
+    wrong:["Elektron­skal","Orbital","Valensskal"] },
+
+  { cat:'atom', term:"Proton",
+    def:"Positivt laddad partikel i atomkärnan",
+    multiDef:"Vilken partikel i atomkärnan bär en positiv laddning och avgör vilket grundämne atomen tillhör?",
+    wrong:["Neutron","Elektron","Jon"] },
+
+  { cat:'atom', term:"Neutron",
+    def:"Partikel i atomkärnan utan laddning",
+    multiDef:"Vilken partikel finns i atomkärnan men saknar elektrisk laddning och bidrar bara till massan?",
+    wrong:["Proton","Elektron","Foton"] },
+
+  { cat:'atom', term:"Elektron",
+    def:"Negativt laddad partikel som rör sig runt kärnan",
+    multiDef:"Vilken negativt laddad partikel rör sig i skal runt atomkärnan och deltar i kemiska bindningar?",
+    wrong:["Proton","Neutron","Foton"] },
+
+  { cat:'atom', term:"Atomnummer",
+    def:"Antal protoner i en atom – avgör vilket grundämne det är",
+    multiDef:"Vad kallas det tal som anger hur många protoner ett grundämne har och som bestämmer dess plats i periodiska systemet?",
+    wrong:["Masstal","Neutrontal","Oxidationstal"] },
+
+  { cat:'atom', term:"Masstal",
+    def:"Summan av antalet protoner och neutroner i en atoms kärna",
+    multiDef:"Vad kallas det tal som fås när man adderar antalet protoner och antalet neutroner i en atomkärna?",
+    wrong:["Atomnummer","Atommassa","Oxidationstal"] },
+
+  { cat:'atom', term:"Periodiska systemet",
+    def:"Tabell där alla grundämnen är ordnade efter atomnummer",
+    multiDef:"Vad kallas den tabell där grundämnena är systematiskt ordnade i stigande atomnummer, med ämnen med liknande egenskaper i samma kolumn?",
+    wrong:["Reaktionsschema","Grundämneslistan","Bindningstabellen"] },
+
+  { cat:'atom', term:"Period",
+    def:"Vågrät rad i periodiska systemet – atomer i samma period har lika många elektronskal",
+    multiDef:"Vad kallas en vågrät rad i periodiska systemet, där alla grundämnen har lika många elektronskal?",
+    wrong:["Grupp","Huvudgrupp","Serie"] },
+
+  { cat:'atom', term:"Grupp",
+    def:"Lodrät kolumn i periodiska systemet – atomer i samma grupp har lika många valenselektroner",
+    multiDef:"Vad kallas en lodrät kolumn i periodiska systemet, där alla grundämnen har lika många valenselektroner och liknande kemiska egenskaper?",
+    wrong:["Period","Sektion","Rad"] },
+
+  { cat:'atom', term:"Valenselektron",
+    def:"Elektron i atomens yttersta skal – avgör atomens reaktivitet och bindningsförmåga",
+    multiDef:"Vilka elektroner avgör hur en atom reagerar kemiskt och hur många bindningar den kan bilda?",
+    wrong:["Kärne­elektroner","Inre elektroner","Fria elektroner"] },
+
+  { cat:'atom', term:"Ädelgasstruktur",
+    def:"Stabilt elektronskalstillstånd när yttersta skalet är fullt – det som atomer strävar mot vid bindning",
+    multiDef:"Vad kallas det stabila tillstånd som atomer eftersträvar när de bildar kemiska bindningar, karaktäriserat av ett fullt yttersta elektronskal?",
+    wrong:["Joniseringsenergi","Elektronnegativitet","Oxidationstillstånd"] },
+
+  // ── KEMISK BINDNING ───────────────────────────────────────────
+
+  { cat:'bindning', term:"Jonbindning",
+    def:"Kemisk bindning där en atom avger elektroner och en annan tar emot dem – ger positiva och negativa joner som attraherar varandra",
+    multiDef:"Vilken bindningstyp uppstår när elektroner överförs helt från en atom till en annan, så att en positiv och en negativ jon bildas som håller varandra samman?",
+    wrong:["Kovalent bindning","Polär kovalent bindning","Metallbindning"] },
+
+  { cat:'bindning', term:"Kovalent bindning",
+    def:"Kemisk bindning där två atomer delar ett eller flera elektronpar",
+    multiDef:"Vilken bindningstyp innebär att atomer delar elektroner med varandra i stället för att avge eller ta emot dem?",
+    wrong:["Jonbindning","Metallbindning","Vätebindning"] },
+
+  { cat:'bindning', term:"Opolär kovalent bindning",
+    def:"Kovalent bindning där elektroner delas lika, vilket sker när de bindande atomerna har samma eller liknande elektronegativitet",
+    multiDef:"Vilken typ av kovalent bindning uppstår när de delande atomerna har i stort sett lika stark dragkraft på elektronerna, så att elektronerna delas jämnt?",
+    wrong:["Polär kovalent bindning","Jonbindning","Dipol-dipolbindning"] },
+
+  { cat:'bindning', term:"Polär kovalent bindning",
+    def:"Kovalent bindning där elektroner delas ojämnt – den mer elektronegativa atomen drar dem till sig och får en svagt negativ ände",
+    multiDef:"Vilken typ av kovalent bindning uppstår när de två atomernas elektronegativitet skiljer sig tillräckligt för att elektronerna ska dras mer mot den ena atomen?",
+    wrong:["Opolär kovalent bindning","Jonbindning","Vätebindning"] },
+
+  { cat:'bindning', term:"Elektronegativitet",
+    def:"Mått på hur starkt en atom attraherar de delade elektronerna i en bindning",
+    multiDef:"Vad kallas det mått som anger hur kraftigt en atom drar bindningselektronerna mot sig i en kovalent bindning?",
+    wrong:["Joniseringsenergi","Elektronaffinitet","Bindningsenergi"] },
+
+  { cat:'bindning', term:"Dipol",
+    def:"Molekyl eller bindning med en positiv och en negativ ände till följd av ojämn elektronfördelning",
+    multiDef:"Vad kallas en molekyl som har en distinkt positiv och en negativ pol på grund av ojämn fördelning av laddning?",
+    wrong:["Jon","Polaritet","Valenselektron"] },
+
+  { cat:'bindning', term:"Bindningsenergi",
+    def:"Den energi som krävs för att bryta en kemisk bindning – ett mått på bindningens styrka",
+    multiDef:"Vad kallas den energi som måste tillföras för att bryta en specifik kemisk bindning, och som speglar hur stark bindningen är?",
+    wrong:["Aktiveringsenergi","Joniseringsenergi","Reaktionsenergi"] },
+
+  // ── INTERMOLEKYLÄRA KRAFTER ───────────────────────────────────
+
+  { cat:'inter', term:"Van der Waals-bindning",
+    def:"Svag tillfällig attraktion mellan alla molekyler, orsakad av kortlivade dipoles skapade av rörliga elektroner",
+    multiDef:"Vilken typ av intermolekylär kraft finns mellan alla molekyler – även opolära – och uppstår genom kortvariga ojämna elektronfördelningar?",
+    wrong:["Dipol-dipolbindning","Vätebindning","Jonbindning"] },
+
+  { cat:'inter', term:"Dipol-dipolbindning",
+    def:"Attraktion mellan polära molekyler vars permanenta positiva och negativa ändar attraherar varandra",
+    multiDef:"Vilken typ av intermolekylär kraft verkar specifikt mellan polära molekyler, där den positiva änden av en molekyl dras till den negativa änden av en annan?",
+    wrong:["Van der Waals-bindning","Vätebindning","Kovalent bindning"] },
+
+  { cat:'inter', term:"Vätebindning",
+    def:"Stark intermolekylär bindning som bildas när ett väteatom bundet till syre, kväve eller fluor attraheras av ett fritt elektronpar på ett liknande atom i en annan molekyl",
+    multiDef:"Vilken intermolekylär kraft – starkare än övriga dipol-dipol-krafter – uppstår när väte är bundet till syre, kväve eller fluor och attraheras av fria elektronpar?",
+    wrong:["Dipol-dipolbindning","Van der Waals-bindning","Polär kovalent bindning"] },
+
+  { cat:'inter', term:"Kokpunkt",
+    def:"Den temperatur vid vilken ett ämnes ångtryck överstiger omgivningens tryck och ämnet övergår från flytande till gas",
+    multiDef:"Vad kallas den temperatur då ett flytande ämne börjar bilda gasbubblor inifrån och kokar?",
+    wrong:["Smältpunkt","Sublimationspunkt","Kondensationspunkt"] },
+
+  { cat:'inter', term:"Smältpunkt",
+    def:"Den temperatur vid vilken ett fast ämne övergår till flytande form",
+    multiDef:"Vad kallas den temperatur då ett fast ämne börjar bli flytande?",
+    wrong:["Kokpunkt","Fryspunkt","Sublimationspunkt"] },
+
+  { cat:'inter', term:"Löslighet",
+    def:"Hur mycket av ett ämne (solut) som kan lösas i ett lösningsmedel vid en given temperatur",
+    multiDef:"Vad kallas förmågan hos ett ämne att lösa sig i ett lösningsmedel – styrs bl.a. av polaritet och intermolekylära krafter?",
+    wrong:["Polaritet","Ledningsförmåga","Flyktighet"] },
+
+  { cat:'inter', term:"Polaritet",
+    def:"Hur laddningen är fördelad i en molekyl – beror på bindningarnas polaritet och molekylens geometri",
+    multiDef:"Vad kallas den egenskap hos en molekyl som beskriver om laddningen är jämnt eller ojämnt fördelad, vilket påverkar löslighet och intermolekylära krafter?",
+    wrong:["Elektronegativitet","Dipol","Löslighet"] },
+
+  { cat:'inter', term:"Ledningsförmåga",
+    def:"Förmåga att leda elektrisk ström – kräver rörliga laddningar, t.ex. fria elektroner eller joner i lösning",
+    multiDef:"Vad kallas ett ämnes förmåga att leda elektrisk ström, vilken beror på om det finns fria laddningsbärare?",
+    wrong:["Löslighet","Polaritet","Reaktivitet"] },
+
+  { cat:'inter', term:"Aggregationstillstånd",
+    def:"Om ett ämne befinner sig i fast, flytande eller gasform – bestäms av temperaturen och de intermolekylära krafternas styrka",
+    multiDef:"Vad kallas det tillstånd – fast, flytande eller gas – som ett ämne befinner sig i vid en given temperatur och som bestäms av balansen mellan rörelseenergi och intermolekylära krafter?",
+    wrong:["Fas","Löslighet","Polaritet"] },
+
+  // ── MOLEKYLER & JONER ─────────────────────────────────────────
+
+  { cat:'mol', term:"Molekyl",
+    def:"Grupp av atomer bundna till varandra med kovalenta bindningar, bildar en neutral enhet",
+    multiDef:"Vad kallas en neutral grupp av atomer som hålls samman av kovalenta bindningar och bildar den minsta enheten av en kemisk förening med de egenskaperna?",
+    wrong:["Jon","Jonförening","Atom"] },
+
+  { cat:'mol', term:"Jon",
+    def:"Laddad partikel som uppstått när en atom eller molekyl tagit upp eller lämnat ifrån sig elektroner",
+    multiDef:"Vad kallas en partikel som har en nettoladdning därför att den tagit upp eller avgivit elektroner?",
+    wrong:["Atom","Molekyl","Dipol"] },
+
+  { cat:'mol', term:"Jonförening",
+    def:"Ämne som byggs upp av joner ordnade i ett kristallgitter – t.ex. natriumklorid (koksalt)",
+    multiDef:"Vad kallas ett ämne som består av positivt och negativt laddade joner ordnade i ett regelbundet kristallgitter och hålls samman av jonbindningar?",
+    wrong:["Molekyl","Kovalent förening","Polär förening"] },
+
+  { cat:'mol', term:"Formel",
+    def:"Kemisk beteckning som visar vilka grundämnen och hur många atomer av varje sort som ingår i ett ämne",
+    multiDef:"Vad kallas den kemiska notation som med grundämnessymboler och siffror visar ämnets sammansättning?",
+    wrong:["Ekvation","Struktur­formel","Reaktions­schema"] },
+
+  // ── ATOMMODELLENS HISTORIA ─────────────────────────────────────
+
+  { cat:'historia', term:"Dalton",
+    def:"Föreslog tidigt 1800-tal att atomer är odelbara, solida kulor – varje grundämne har sina unika atomer",
+    multiDef:"Vilken vetenskapsman föreslog att atomer är odelbara solida sfärer och att alla atomer av samma grundämne är identiska?",
+    wrong:["Thomson","Rutherford","Bohr"] },
+
+  { cat:'historia', term:"Thomson",
+    def:"Föreslog 'plommonpuddingmodellen': elektroner är inbäddade i en diffus positiv massa",
+    multiDef:"Vilken vetenskapsman upptäckte elektronen och föreslog att den är inbäddad i en jämnt fördelad positiv laddning – likt russin i en pudding?",
+    wrong:["Dalton","Rutherford","Bohr"] },
+
+  { cat:'historia', term:"Rutherford",
+    def:"Visade genom guldfolieexperimentet att atomen har en liten, tät, positivt laddad kärna och att resten är i stort sett tom",
+    multiDef:"Vilken vetenskapsman genomförde guldfolieexperimentet och drog slutsatsen att atomens positiva massa är koncentrerad till en liten kärna?",
+    wrong:["Thomson","Bohr","Dalton"] },
+
+  { cat:'historia', term:"Bohr",
+    def:"Föreslog att elektroner rör sig i fasta, diskreta banor (skal) runt kärnan och kan hoppa mellan banorna genom att absorbera eller avge energi",
+    multiDef:"Vilken vetenskapsman föreslog att elektroner rör sig i specifika, kvantiserade banor runt kärnan och att hopp mellan banor ger ljus av bestämd färg?",
+    wrong:["Rutherford","Thomson","Schrödinger"] },
+
+  { cat:'historia', term:"Kvantmekanisk modell",
+    def:"Modern atommodell där elektroners position beskrivs som sannolikhetsmoln (orbitaler) snarare än bestämda banor",
+    multiDef:"Vad kallas den moderna atommodellen där det är omöjligt att ange exakt var en elektron befinner sig, utan man talar om sannolikhetsmoln?",
+    wrong:["Bohrs atommodell","Rutherfords kärnmodell","Thomsons modell"] },
+
+  { cat:'historia', term:"Orbital",
+    def:"Det tredimensionella område runt atomkärnan där sannolikheten att hitta en specifik elektron är som störst",
+    multiDef:"Vad kallas det rumsliga område kring kärnan där det statistiskt sett är störst chans att påträffa en elektron?",
+    wrong:["Elektronskal","Elektron­bana","Valensskal"] }
+
+];
+
+const CAT_LABELS = {
+  atom:    '⚛️ Atomen & periodiska systemet',
+  bindning:'🔗 Kemisk bindning',
+  inter:   '🧲 Intermolekylära krafter',
+  mol:     '🔬 Molekyler & joner',
+  historia:'📜 Atommodellens historia'
+};
+
+// ── STATE ──
+let session, userId;
+let cards=[], current=0, mode='flip', isFlipped=false;
+let knowSet=new Set(), dontSet=new Set(), answered=false;
+let currentCat='all';
+
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function getFilteredCards(){const src=currentCat==='all'?allCards:allCards.filter(c=>c.cat===currentCat);return shuffle([...src]);}
+
+window.addEventListener('load',()=>{
+  session=getSession();
+  if(!session){window.location.href='index.html';return;}
+  userId=session.name+'_'+session.klass;
+  document.getElementById('user-chip').textContent=session.name;
+  cards=getFilteredCards();
+  document.getElementById('total-count').textContent=cards.length;
+  renderHistory();loadCard();
+});
+
+function setCategory(btn){
+  document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  currentCat=btn.dataset.cat;
+  cards=getFilteredCards();
+  current=0;knowSet.clear();dontSet.clear();answered=false;
+  document.getElementById('total-count').textContent=cards.length;
+  document.getElementById('completion').classList.remove('show');
+  document.getElementById('stats-row').style.display='flex';
+  showMode(mode);loadCard();
+}
+
+function toggleHistory(){
+  const p=document.getElementById('history-panel');
+  p.classList.toggle('open');
+  document.querySelector('.history-btn').textContent=p.classList.contains('open')?'✕ Stäng historik':'📊 Visa min historik';
+}
+function renderHistory(){
+  const p=getProgress(userId);
+  const sessions=(p[SET_ID]||{sessions:[]}).sessions;
+  const el=document.getElementById('history-content');
+  if(!sessions.length){el.innerHTML='<p class="history-empty">Inga omgångar sparade ännu. Slutför en omgång för att se din historik.</p>';return;}
+  const rows=sessions.slice().reverse().slice(0,10).map(s=>{
+    const d=new Date(s.date);
+    const ds=d.toLocaleDateString('sv-SE',{month:'short',day:'numeric'})+' '+d.toLocaleTimeString('sv-SE',{hour:'2-digit',minute:'2-digit'});
+    return `<tr><td>${ds}</td><td>${s.correct}/${s.total}</td><td><div class="pct-bar-wrap"><div class="pct-bar"><div class="pct-fill ${s.pct>=80?'':(s.pct>=50?'mid':'low')}" style="width:${s.pct}%"></div></div><span>${s.pct}%</span></div></td></tr>`;
+  }).join('');
+  el.innerHTML=`<table class="history-table"><thead><tr><th>Datum</th><th>Rätt</th><th>Resultat</th></tr></thead><tbody>${rows}</tbody></table>`;
+}
+
+function updateStats(){
+  const total=cards.length,done=knowSet.size+dontSet.size;
+  document.getElementById('s-know').textContent=knowSet.size+' kan';
+  document.getElementById('s-dont').textContent=dontSet.size+' kan inte';
+  document.getElementById('s-left').textContent=(total-done)+' kvar';
+  const pct=total?Math.round((done/total)*100):0;
+  document.getElementById('prog-fill').style.width=pct+'%';
+  document.getElementById('prog-pct').textContent=pct+'%';
+  const label='Kort '+(current+1)+' av '+total;
+  ['card-counter','card-counter-w','card-counter-m'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=label;});
+}
+
+function showCompletion(){
+  ['mode-flip','mode-write','mode-multi'].forEach(id=>{document.getElementById(id).style.display='none';});
+  document.getElementById('stats-row').style.display='none';
+  const total=cards.length,know=knowSet.size,pct=Math.round((know/total)*100);
+  recordSession(userId,SET_ID,total,know);
+  renderHistory();
+  document.getElementById('comp-score').textContent=pct+'%';
+  document.getElementById('comp-sub').textContent=know+' av '+total+' rätt';
+  document.getElementById('comp-msg').textContent=pct===100?'🌟 Perfekt! Du kan alla begrepp!':pct>=70?'👍 Bra jobbat! Öva lite till på de du missade.':'📖 Fortsätt öva – du är på rätt väg!';
+  if(dontSet.size>0)document.getElementById('retry-btn').style.display='inline-block';
+  document.getElementById('completion').classList.add('show');
+}
+
+function loadCard(){
+  if(current>=cards.length){showCompletion();return;}
+  answered=false;updateStats();
+  const c=cards[current];
+  const catLabel=document.getElementById('card-cat-label');
+  if(catLabel)catLabel.textContent=CAT_LABELS[c.cat]||'';
+  if(mode==='flip'){
+    isFlipped=false;
+    document.getElementById('flip-card').classList.remove('flipped');
+    document.getElementById('ff-term').textContent=c.term;
+    document.getElementById('ff-def').textContent=c.def;
+    document.getElementById('know-actions').style.display='none';
+  }
+  if(mode==='write'){
+    document.getElementById('w-def').textContent=c.def;
+    document.getElementById('w-input').value='';
+    document.getElementById('w-input').className='write-input';
+    document.getElementById('w-result').className='write-result';
+    document.getElementById('w-result').textContent='';
+    document.getElementById('w-override').className='override-wrap';
+    document.getElementById('w-cb').checked=false;
+    document.getElementById('w-check').style.display='inline-block';
+    document.getElementById('w-next').style.display='none';
+    setTimeout(()=>document.getElementById('w-input').focus(),50);
+  }
+  if(mode==='multi'){
+    document.getElementById('m-def').textContent=c.multiDef||c.def;
+    document.getElementById('m-fb').textContent='';
+    document.getElementById('m-fb').style.color='var(--muted)';
+    document.getElementById('m-next').style.display='none';
+    buildMulti(c);
+  }
+}
+function nextCard(){current++;loadCard();}
+function prevCard(){if(current>0){current--;loadCard();}}
+
+function flipCard(){
+  isFlipped=!isFlipped;
+  document.getElementById('flip-card').classList.toggle('flipped',isFlipped);
+  if(isFlipped)document.getElementById('know-actions').style.display='flex';
+}
+function markCard(know){const t=cards[current].term;know?knowSet.add(t):dontSet.add(t);nextCard();}
+
+function norm(s){return s.trim().toLowerCase().replace(/[åä]/g,'a').replace(/ö/g,'o').replace(/[^a-z0-9 ]/g,'').trim();}
+function checkWrite(){
+  if(answered)return;
+  const c=cards[current],val=document.getElementById('w-input').value;
+  if(!val.trim())return;
+  answered=true;
+  const ok=norm(val)===norm(c.term);
+  document.getElementById('w-input').className='write-input '+(ok?'c':'w');
+  document.getElementById('w-result').className='write-result '+(ok?'correct':'wrong');
+  document.getElementById('w-result').textContent=ok?('✅ Rätt! Begreppet är: '+c.term):('❌ Rätt svar: '+c.term);
+  ok?knowSet.add(c.term):dontSet.add(c.term);
+  if(!ok)document.getElementById('w-override').className='override-wrap show';
+  document.getElementById('w-check').style.display='none';
+  document.getElementById('w-next').style.display='inline-block';
+  updateStats();
+}
+document.addEventListener('keydown',e=>{
+  if(mode==='write'&&e.key==='Enter'){if(!answered)checkWrite();else nextCard();}
+});
+window.addEventListener('load',()=>{
+  const cb=document.getElementById('w-cb');
+  if(cb)cb.addEventListener('change',function(){
+    const t=cards[current].term;
+    if(this.checked){knowSet.add(t);dontSet.delete(t);}else{dontSet.add(t);knowSet.delete(t);}
+    updateStats();
+  });
+});
+
+function buildMulti(c){
+  const wrap=document.getElementById('m-opts');
+  wrap.innerHTML='';
+  const opts=shuffle([c.term,...c.wrong.slice(0,3)]);
+  opts.forEach(o=>{
+    const b=document.createElement('button');
+    b.className='multi-opt';b.textContent=o;
+    b.addEventListener('click',()=>answerMulti(o,c.term));
+    wrap.appendChild(b);
+  });
+}
+function answerMulti(chosen,correct){
+  if(answered)return;
+  answered=true;
+  document.querySelectorAll('.multi-opt').forEach(b=>{
+    b.disabled=true;
+    if(b.textContent===correct)b.classList.add('co');
+    else if(b.textContent===chosen)b.classList.add('wo');
+  });
+  const fb=document.getElementById('m-fb');
+  if(chosen===correct){fb.textContent='✅ Rätt!';fb.style.color='var(--green)';knowSet.add(correct);}
+  else{fb.textContent='❌ Rätt svar var: '+correct;fb.style.color='var(--red)';dontSet.add(correct);}
+  document.getElementById('m-next').style.display='inline-block';
+  updateStats();
+}
+
+function restart(){
+  cards=getFilteredCards();current=0;knowSet.clear();dontSet.clear();answered=false;
+  document.getElementById('completion').classList.remove('show');
+  document.getElementById('stats-row').style.display='flex';
+  document.getElementById('retry-btn').style.display='none';
+  showMode(mode);loadCard();
+}
+function retryWrong(){
+  const wrong=[...dontSet];
+  cards=shuffle(allCards.filter(c=>wrong.includes(c.term)));
+  current=0;knowSet.clear();dontSet.clear();answered=false;
+  document.getElementById('completion').classList.remove('show');
+  document.getElementById('stats-row').style.display='flex';
+  showMode(mode);loadCard();
+}
+
+function showMode(m){
+  ['flip','write','multi'].forEach(id=>{document.getElementById('mode-'+id).style.display=id===m?'block':'none';});
+  document.querySelectorAll('.mode-tab').forEach(t=>t.classList.toggle('active',t.dataset.mode===m));
+  mode=m;
+}
+document.querySelectorAll('.mode-tab').forEach(tab=>{
+  tab.addEventListener('click',()=>{
+    cards=getFilteredCards();current=0;knowSet.clear();dontSet.clear();answered=false;
+    document.getElementById('completion').classList.remove('show');
+    document.getElementById('stats-row').style.display='flex';
+    showMode(tab.dataset.mode);loadCard();
+  });
+});
+</script>
+</body>
+</html>

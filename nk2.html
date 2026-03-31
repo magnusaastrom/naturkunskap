@@ -443,9 +443,8 @@
 <div class="moment-nav">
   <a class="moment-pill" href="#evolution">🌿 Evolution</a>
   <a class="moment-pill" href="#manniskokroppen">🫀 Människokroppen</a>
-  <a class="moment-pill" href="#universum">🔭 Universum & Materia</a>
-  <a class="moment-pill" href="#kemi">⚗️ Kemi</a>
-  <a class="moment-pill" href="#metod">🧪 Naturvetenskaplig metod</a>
+  <a class="moment-pill" href="#periodiska">⚗️ Periodiska systemet & kemisk bindning</a>
+  <a class="moment-pill" href="#organisk">🧪 Organisk kemi</a>
 </div>
 
 <div class="container">
@@ -580,151 +579,104 @@
   </div>
 
   <!-- ══════════════════════════════════
-       MOMENT 3 – UNIVERSUM & MATERIA
+       MOMENT 3 – PERIODISKA SYSTEMET & KEMISK BINDNING
   ══════════════════════════════════ -->
-  <div class="moment-section" id="universum">
-    <div class="moment-header">
-      <div class="moment-icon">🔭</div>
-      <div class="moment-title-wrap">
-        <div class="moment-eyebrow">Moment 3</div>
-        <div class="moment-title">Universum &amp; Materia</div>
-      </div>
-    </div>
-    <div class="staircase" id="stair-uni">
-      <div class="stair" data-stair="forsta"><div class="stair-num"><span class="stair-num-val">1</span><span class="stair-done-icon">✓</span></div>Förstå</div>
-      <span class="stair-arrow">→</span>
-      <div class="stair" data-stair="befasta"><div class="stair-num"><span class="stair-num-val">2</span><span class="stair-done-icon">✓</span></div>Befästa</div>
-      <span class="stair-arrow">→</span>
-      <div class="stair" data-stair="tillamp"><div class="stair-num"><span class="stair-num-val">3</span><span class="stair-done-icon">✓</span></div>Tillämpa</div>
-    </div>
-    <div class="content-tabs" data-moment="uni">
-      <div class="content-tab active" data-tab="material" onclick="switchTab(this,'uni')">📚 Material</div>
-      <div class="content-tab" data-tab="uppgifter" onclick="switchTab(this,'uni')">✏️ Uppgifter</div>
-      <div class="content-tab" data-tab="quiz" onclick="switchTab(this,'uni')">🧠 Quiz</div>
-      <div class="content-tab" data-tab="video" onclick="switchTab(this,'uni')">🎬 Video</div>
-      <div class="content-tab" data-tab="flashcards" onclick="switchTab(this,'uni')">🃏 Flashcards</div>
-    </div>
-    <div class="tab-panel active" data-moment="uni" data-type="material">
-      <div class="resource-progress"><span id="rp-uni-material-txt">0 av 3 klara</span><div class="res-prog-bar"><div class="res-prog-fill" id="rp-uni-material-bar" style="width:0%"></div></div></div>
-      <div class="cards">
-        <div class="mat-card"><h4>Big Bang och universums uppkomst</h4><p>Från singularitet till galaxer – universums tidslinje.</p><a href="#" class="mat-link">Öppna →</a><br><button class="checkoff-btn" data-resource="uni-mat-1" onclick="checkoff(this,'uni')"><span class="checkoff-dot"></span><span class="checkoff-label">Markera som läst</span></button></div>
-        <div class="mat-card"><h4>Stjärnors livscykel</h4><p>Nebulosa, huvudserien, röd jätte, supernova och svart hål.</p><a href="#" class="mat-link">Öppna →</a><br><button class="checkoff-btn" data-resource="uni-mat-2" onclick="checkoff(this,'uni')"><span class="checkoff-dot"></span><span class="checkoff-label">Markera som läst</span></button></div>
-        <div class="mat-card"><h4>Atomens uppbyggnad</h4><p>Protoner, neutroner och elektroner – periodsystemets grunder.</p><a href="#" class="mat-link">Öppna →</a><br><button class="checkoff-btn" data-resource="uni-mat-3" onclick="checkoff(this,'uni')"><span class="checkoff-dot"></span><span class="checkoff-label">Markera som läst</span></button></div>
-      </div>
-    </div>
-    <div class="tab-panel" data-moment="uni" data-type="uppgifter">
-      <div class="coming-soon">✏️ Uppgifter för Universum & Materia – läggs till snart.</div>
-    </div>
-    <div class="tab-panel" data-moment="uni" data-type="quiz">
-      <div class="quiz-start"><h4>Quiz – Universum &amp; Materia</h4><p>Testa dina kunskaper om kosmologi och atomfysik.</p><a href="quiz-universum.html" class="btn-quiz">Starta quiz →</a></div>
-    </div>
-    <div class="tab-panel" data-moment="uni" data-type="video">
-      <div class="resource-progress"><span id="rp-uni-video-txt">0 av 1 klara</span><div class="res-prog-bar"><div class="res-prog-fill" id="rp-uni-video-bar" style="width:0%"></div></div></div>
-      <div class="video-grid">
-        <div class="vid-card"><div class="vid-thumb">🌌<span class="play-icon">▶</span></div><div class="vid-info"><h4>Big Bang förklarad</h4><p>Universums uppkomst och expansion.</p><a href="#" target="_blank">Se video →</a><button class="checkoff-btn" data-resource="uni-vid-1" onclick="checkoff(this,'uni')"><span class="checkoff-dot"></span><span class="checkoff-label">Markera som sedd</span></button></div></div>
-      </div>
-    </div>
-    <div class="tab-panel" data-moment="uni" data-type="flashcards">
-      <div class="coming-soon">🃏 Flashcards för Universum & Materia – skicka dina begreppslistor!</div>
-    </div>
-  </div>
-
-  <!-- ══════════════════════════════════
-       MOMENT 4 – KEMI
-  ══════════════════════════════════ -->
-  <div class="moment-section" id="kemi">
+  <div class="moment-section" id="periodiska">
     <div class="moment-header">
       <div class="moment-icon">⚗️</div>
       <div class="moment-title-wrap">
-        <div class="moment-eyebrow">Moment 4</div>
-        <div class="moment-title">Organisk &amp; Oorganisk kemi</div>
+        <div class="moment-eyebrow">Moment 3</div>
+        <div class="moment-title">Periodiska systemet &amp; kemisk bindning</div>
       </div>
     </div>
-    <div class="staircase" id="stair-kem">
+    <div class="staircase" id="stair-per">
       <div class="stair" data-stair="forsta"><div class="stair-num"><span class="stair-num-val">1</span><span class="stair-done-icon">✓</span></div>Förstå</div>
       <span class="stair-arrow">→</span>
       <div class="stair" data-stair="befasta"><div class="stair-num"><span class="stair-num-val">2</span><span class="stair-done-icon">✓</span></div>Befästa</div>
       <span class="stair-arrow">→</span>
       <div class="stair" data-stair="tillamp"><div class="stair-num"><span class="stair-num-val">3</span><span class="stair-done-icon">✓</span></div>Tillämpa</div>
     </div>
-    <div class="content-tabs" data-moment="kem">
-      <div class="content-tab active" data-tab="material" onclick="switchTab(this,'kem')">📚 Material</div>
-      <div class="content-tab" data-tab="uppgifter" onclick="switchTab(this,'kem')">✏️ Uppgifter</div>
-      <div class="content-tab" data-tab="quiz" onclick="switchTab(this,'kem')">🧠 Quiz</div>
-      <div class="content-tab" data-tab="video" onclick="switchTab(this,'kem')">🎬 Video</div>
-      <div class="content-tab" data-tab="flashcards" onclick="switchTab(this,'kem')">🃏 Flashcards</div>
+    <div class="content-tabs" data-moment="per">
+      <div class="content-tab active" data-tab="material" onclick="switchTab(this,'per')">📚 Material</div>
+      <div class="content-tab" data-tab="uppgifter" onclick="switchTab(this,'per')">✏️ Uppgifter</div>
+      <div class="content-tab" data-tab="quiz" onclick="switchTab(this,'per')">🧠 Quiz</div>
+      <div class="content-tab" data-tab="video" onclick="switchTab(this,'per')">🎬 Video</div>
+      <div class="content-tab" data-tab="flashcards" onclick="switchTab(this,'per')">🃏 Flashcards</div>
     </div>
-    <div class="tab-panel active" data-moment="kem" data-type="material">
-      <div class="resource-progress"><span id="rp-kem-material-txt">0 av 3 klara</span><div class="res-prog-bar"><div class="res-prog-fill" id="rp-kem-material-bar" style="width:0%"></div></div></div>
+    <div class="tab-panel active" data-moment="per" data-type="material">
+      <div class="resource-progress"><span id="rp-per-material-txt">0 av 3 klara</span><div class="res-prog-bar"><div class="res-prog-fill" id="rp-per-material-bar" style="width:0%"></div></div></div>
       <div class="cards">
-        <div class="mat-card"><h4>Kolföreningar</h4><p>Kolväten, alkoholer, syror och estrar – organisk kemi i vardagen.</p><a href="#" class="mat-link">Öppna →</a><br><button class="checkoff-btn" data-resource="kem-mat-1" onclick="checkoff(this,'kem')"><span class="checkoff-dot"></span><span class="checkoff-label">Markera som läst</span></button></div>
-        <div class="mat-card"><h4>Kemiska reaktioner</h4><p>Syra-bas, redox och hur vi skriver reaktionsformler.</p><a href="#" class="mat-link">Öppna →</a><br><button class="checkoff-btn" data-resource="kem-mat-2" onclick="checkoff(this,'kem')"><span class="checkoff-dot"></span><span class="checkoff-label">Markera som läst</span></button></div>
-        <div class="mat-card"><h4>Miljökemi</h4><p>Surt regn, övergödning och kemikalier i ekosystem.</p><a href="#" class="mat-link">Öppna →</a><br><button class="checkoff-btn" data-resource="kem-mat-3" onclick="checkoff(this,'kem')"><span class="checkoff-dot"></span><span class="checkoff-label">Markera som läst</span></button></div>
+        <div class="mat-card"><h4>Atomens uppbyggnad</h4><p>Protoner, neutroner och elektroner – atomnummer, masstal och elektronskal.</p><a href="#" class="mat-link">Öppna →</a><br><button class="checkoff-btn" data-resource="per-mat-1" onclick="checkoff(this,'per')"><span class="checkoff-dot"></span><span class="checkoff-label">Markera som läst</span></button></div>
+        <div class="mat-card"><h4>Periodiska systemet</h4><p>Perioder, grupper, valenselektroner och ädelgasstruktur.</p><a href="#" class="mat-link">Öppna →</a><br><button class="checkoff-btn" data-resource="per-mat-2" onclick="checkoff(this,'per')"><span class="checkoff-dot"></span><span class="checkoff-label">Markera som läst</span></button></div>
+        <div class="mat-card"><h4>Kemiska bindningar</h4><p>Jon-, kovalent och intermolekylära bindningar – vad avgör ett ämnes egenskaper?</p><a href="#" class="mat-link">Öppna →</a><br><button class="checkoff-btn" data-resource="per-mat-3" onclick="checkoff(this,'per')"><span class="checkoff-dot"></span><span class="checkoff-label">Markera som läst</span></button></div>
       </div>
     </div>
-    <div class="tab-panel" data-moment="kem" data-type="uppgifter">
-      <div class="coming-soon">✏️ Uppgifter för Kemi – läggs till snart.</div>
+    <div class="tab-panel" data-moment="per" data-type="uppgifter">
+      <div class="task-list">
+        <div class="task-item"><div class="task-meta"><span class="badge badge-e">Enkel</span></div><h4>Uppgift 1 – Atomens delar</h4><p>Rita en enkel atommodell och förklara skillnaden mellan atomnummer och masstal. Ge ett exempel.</p></div>
+        <div class="task-item"><div class="task-meta"><span class="badge badge-m">Medel</span></div><h4>Uppgift 2 – Bindningstyper</h4><p>Jämför jonbindning och kovalent bindning. Ge ett exempel på ett ämne för varje och förklara hur bindningen påverkar ämnets egenskaper.</p></div>
+      </div>
     </div>
-    <div class="tab-panel" data-moment="kem" data-type="quiz">
-      <div class="quiz-start"><h4>Quiz – Kemi</h4><p>Testa dina kunskaper om organisk och oorganisk kemi.</p><a href="quiz-kemi.html" class="btn-quiz">Starta quiz →</a></div>
+    <div class="tab-panel" data-moment="per" data-type="quiz">
+      <div class="quiz-start"><h4>Quiz – Periodiska systemet</h4><p>Testa dina kunskaper om atomer, periodiska systemet och kemiska bindningar.</p><a href="#" class="btn-quiz">Starta quiz →</a></div>
     </div>
-    <div class="tab-panel" data-moment="kem" data-type="video">
-      <div class="coming-soon">🎬 Videolänkar för Kemi – läggs till snart.</div>
+    <div class="tab-panel" data-moment="per" data-type="video">
+      <div class="coming-soon">🎬 Videolänkar läggs till snart.</div>
     </div>
-    <div class="tab-panel" data-moment="kem" data-type="flashcards">
-      <div class="coming-soon">🃏 Flashcards för Kemi – skicka dina begreppslistor!</div>
+    <div class="tab-panel" data-moment="per" data-type="flashcards">
+      <p style="font-size:0.85rem;color:var(--muted);margin-bottom:18px">Välj ett begreppsset att öva på:</p>
+      <div class="fc-grid">
+        <a href="flashcards-organisk-kemi.html" class="fc-card"><h4>⚗️ Periodiska systemet &amp; kemisk bindning</h4><div class="fc-count">46 begrepp</div><span class="fc-arrow">→</span></a>
+      </div>
     </div>
   </div>
 
   <!-- ══════════════════════════════════
-       MOMENT 5 – NATURVETENSKAPLIG METOD
+       MOMENT 4 – ORGANISK KEMI
   ══════════════════════════════════ -->
-  <div class="moment-section" id="metod">
+  <div class="moment-section" id="organisk">
     <div class="moment-header">
       <div class="moment-icon">🧪</div>
       <div class="moment-title-wrap">
-        <div class="moment-eyebrow">Moment 5</div>
-        <div class="moment-title">Naturvetenskapliga arbetsmetoder</div>
+        <div class="moment-eyebrow">Moment 4</div>
+        <div class="moment-title">Organisk kemi</div>
       </div>
     </div>
-    <div class="staircase" id="stair-met">
+    <div class="staircase" id="stair-org">
       <div class="stair" data-stair="forsta"><div class="stair-num"><span class="stair-num-val">1</span><span class="stair-done-icon">✓</span></div>Förstå</div>
       <span class="stair-arrow">→</span>
       <div class="stair" data-stair="befasta"><div class="stair-num"><span class="stair-num-val">2</span><span class="stair-done-icon">✓</span></div>Befästa</div>
       <span class="stair-arrow">→</span>
       <div class="stair" data-stair="tillamp"><div class="stair-num"><span class="stair-num-val">3</span><span class="stair-done-icon">✓</span></div>Tillämpa</div>
     </div>
-    <div class="content-tabs" data-moment="met">
-      <div class="content-tab active" data-tab="material" onclick="switchTab(this,'met')">📚 Material</div>
-      <div class="content-tab" data-tab="uppgifter" onclick="switchTab(this,'met')">✏️ Uppgifter</div>
-      <div class="content-tab" data-tab="quiz" onclick="switchTab(this,'met')">🧠 Quiz</div>
-      <div class="content-tab" data-tab="video" onclick="switchTab(this,'met')">🎬 Video</div>
-      <div class="content-tab" data-tab="flashcards" onclick="switchTab(this,'met')">🃏 Flashcards</div>
+    <div class="content-tabs" data-moment="org">
+      <div class="content-tab active" data-tab="material" onclick="switchTab(this,'org')">📚 Material</div>
+      <div class="content-tab" data-tab="uppgifter" onclick="switchTab(this,'org')">✏️ Uppgifter</div>
+      <div class="content-tab" data-tab="quiz" onclick="switchTab(this,'org')">🧠 Quiz</div>
+      <div class="content-tab" data-tab="video" onclick="switchTab(this,'org')">🎬 Video</div>
+      <div class="content-tab" data-tab="flashcards" onclick="switchTab(this,'org')">🃏 Flashcards</div>
     </div>
-    <div class="tab-panel active" data-moment="met" data-type="material">
-      <div class="resource-progress"><span id="rp-met-material-txt">0 av 3 klara</span><div class="res-prog-bar"><div class="res-prog-fill" id="rp-met-material-bar" style="width:0%"></div></div></div>
+    <div class="tab-panel active" data-moment="org" data-type="material">
+      <div class="resource-progress"><span id="rp-org-material-txt">0 av 3 klara</span><div class="res-prog-bar"><div class="res-prog-fill" id="rp-org-material-bar" style="width:0%"></div></div></div>
       <div class="cards">
-        <div class="mat-card"><h4>Den vetenskapliga metoden</h4><p>Observation, hypotes, experiment, analys och slutsats.</p><a href="#" class="mat-link">Öppna →</a><br><button class="checkoff-btn" data-resource="met-mat-1" onclick="checkoff(this,'met')"><span class="checkoff-dot"></span><span class="checkoff-label">Markera som läst</span></button></div>
-        <div class="mat-card"><h4>Felkällor &amp; reliabilitet</h4><p>Systematiska och slumpmässiga fel, reproducerbarhet och validitet.</p><a href="#" class="mat-link">Öppna →</a><br><button class="checkoff-btn" data-resource="met-mat-2" onclick="checkoff(this,'met')"><span class="checkoff-dot"></span><span class="checkoff-label">Markera som läst</span></button></div>
-        <div class="mat-card"><h4>Vetenskap vs pseudovetenskap</h4><p>Kriterier för vetenskapliga påståenden och källkritik.</p><a href="#" class="mat-link">Öppna →</a><br><button class="checkoff-btn" data-resource="met-mat-3" onclick="checkoff(this,'met')"><span class="checkoff-dot"></span><span class="checkoff-label">Markera som läst</span></button></div>
+        <div class="mat-card"><h4>Kolföreningar och kolväten</h4><p>Kolkedjans uppbyggnad, mättade och omättade kolväten, namngivning.</p><a href="#" class="mat-link">Öppna →</a><br><button class="checkoff-btn" data-resource="org-mat-1" onclick="checkoff(this,'org')"><span class="checkoff-dot"></span><span class="checkoff-label">Markera som läst</span></button></div>
+        <div class="mat-card"><h4>Funktionella grupper</h4><p>Alkoholer, syror, estrar och aminer – hur gruppen avgör ämnets egenskaper.</p><a href="#" class="mat-link">Öppna →</a><br><button class="checkoff-btn" data-resource="org-mat-2" onclick="checkoff(this,'org')"><span class="checkoff-dot"></span><span class="checkoff-label">Markera som läst</span></button></div>
+        <div class="mat-card"><h4>Organisk kemi i vardagen</h4><p>Plaster, läkemedel, livsmedel och miljöfrågor kopplade till organiska ämnen.</p><a href="#" class="mat-link">Öppna →</a><br><button class="checkoff-btn" data-resource="org-mat-3" onclick="checkoff(this,'org')"><span class="checkoff-dot"></span><span class="checkoff-label">Markera som läst</span></button></div>
       </div>
     </div>
-    <div class="tab-panel" data-moment="met" data-type="uppgifter">
+    <div class="tab-panel" data-moment="org" data-type="uppgifter">
       <div class="task-list">
-        <div class="task-item"><div class="task-meta"><span class="badge badge-m">Medel</span></div><h4>Uppgift – Experimentdesign</h4><p>Designa ett enkelt experiment för att testa om kaffekonsumtion påverkar reaktionstiden. Beskriv hypotes, metod, variabler och möjliga felkällor.</p></div>
+        <div class="task-item"><div class="task-meta"><span class="badge badge-m">Medel</span></div><h4>Uppgift – Kolföreningar i vardagen</h4><p>Välj tre organiska ämnen från din vardag (t.ex. etanol, ättiksyra, plast). Förklara deras kemiska struktur och vilken funktionell grupp de tillhör.</p></div>
       </div>
     </div>
-    <div class="tab-panel" data-moment="met" data-type="quiz">
-      <div class="quiz-start"><h4>Quiz – Naturvetenskaplig metod</h4><p>Testa dina kunskaper om vetenskaplig metodik.</p><a href="quiz-metod.html" class="btn-quiz">Starta quiz →</a></div>
+    <div class="tab-panel" data-moment="org" data-type="quiz">
+      <div class="quiz-start"><h4>Quiz – Organisk kemi</h4><p>Testa dina kunskaper om kolföreningar och funktionella grupper.</p><a href="#" class="btn-quiz">Starta quiz →</a></div>
     </div>
-    <div class="tab-panel" data-moment="met" data-type="video">
-      <div class="resource-progress"><span id="rp-met-video-txt">0 av 1 klara</span><div class="res-prog-bar"><div class="res-prog-fill" id="rp-met-video-bar" style="width:0%"></div></div></div>
-      <div class="video-grid">
-        <div class="vid-card"><div class="vid-thumb">🧪<span class="play-icon">▶</span></div><div class="vid-info"><h4>Den vetenskapliga metoden</h4><p>Genomgång av hur naturvetenskaplig metod fungerar – från observation till slutsats.</p><a href="https://urplay.se/program/221748-naturkunskap-forklarad-vetenskaplig-metod" target="_blank">Se video på UR Play →</a><button class="checkoff-btn" data-resource="met-vid-1" onclick="checkoff(this,'met')"><span class="checkoff-dot"></span><span class="checkoff-label">Markera som sedd</span></button></div></div>
-      </div>
+    <div class="tab-panel" data-moment="org" data-type="video">
+      <div class="coming-soon">🎬 Videolänkar läggs till snart.</div>
     </div>
-    <div class="tab-panel" data-moment="met" data-type="flashcards">
-      <div class="coming-soon">🃏 Flashcards för Naturvetenskaplig metod – skicka dina begreppslistor!</div>
+    <div class="tab-panel" data-moment="org" data-type="flashcards">
+      <div class="coming-soon">🃏 Flashcards för Organisk kemi – kommer snart.</div>
     </div>
   </div>
 
@@ -747,14 +699,13 @@
     evo: ['evo-mat-1','evo-mat-2','evo-mat-3','evo-vid-1','evo-vid-2'],
     mk:  ['mk-mat-1','mk-mat-2','mk-mat-3','mk-mat-4','mk-mat-5','mk-mat-6',
            'mk-vid-1','mk-vid-2','mk-vid-3','mk-vid-4','mk-vid-5','mk-vid-6','mk-vid-7','mk-vid-8','mk-vid-9'],
-    uni: ['uni-mat-1','uni-mat-2','uni-mat-3','uni-vid-1'],
-    kem: ['kem-mat-1','kem-mat-2','kem-mat-3'],
-    met: ['met-mat-1','met-mat-2','met-mat-3','met-vid-1']
+    per: ['per-mat-1','per-mat-2','per-mat-3'],
+    org: ['org-mat-1','org-mat-2','org-mat-3']
   };
 
   const MOMENT_FC_SETS = {
     evo: [], mk: ['mk_hormonsystemet','mk_nervsystemet','mk_immunforsvaret','mk_cirkulationen','mk_andningen','mk_cellen','mk_utsondringsorganen'],
-    uni: [], kem: [], met: []
+    per: ['nk2_organisk_kemi'], org: []
   };
 
   // ── Storage helpers ───────────────────────────────────────────
@@ -882,7 +833,7 @@
   }
 
   // ── Init ──────────────────────────────────────────────────────
-  const MOMENTS = ['evo','mk','uni','kem','met'];
+  const MOMENTS = ['evo','mk','per','org'];
   window.addEventListener('load', () => {
     restoreCheckoffs();
     MOMENTS.forEach(m => {
