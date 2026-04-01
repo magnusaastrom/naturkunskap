@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Evolution – NK2</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+
+  <style>
+    :root {
+      --bg:#0b1219;
+      --surface:#111c27;
+      --card:#172233;
+      --border:#243548;
+      --teal:#3ecfb2;
+      --teal2:#27a890;
+      --amber:#f0b040;
+      --red:#e05555;
+      --green:#4caf82;
+      --text:#dde8f0;
+      --muted:#7a8ca0;
+      --radius:10px;
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{
+      font-family:'DM Sans',sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      min-height:100vh;
+    }
+
+    /* TOP BAR */
+    .top-bar{
+      background:var(--surface);
+      border-bottom:1px solid var(--border);
+      padding:16px 32px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      gap:12px;
+      position:sticky;top:0;z-index:50;
+    }
+    .top-left{display:flex;align-items:center;gap:14px;}
+    .back-link{
+      font-size:.82rem;
+      color:var(--muted);
+      text-decoration:none;
+    }
+    .back-link:hover{color:var(--teal);}
+    .top-title{
+      font-family:'Fraunces',serif;
+      font-size:1.15rem;
+    }
+    .user-chip{
+      background:var(--card);
+      border:1px solid var(--border);
+      padding:5px 12px;
+      border-radius:30px;
+      font-size:.78rem;
+      color:var(--muted);
+    }
+
+    /* HERO */
+    .hero{
+      padding:56px 32px 40px;
+      max-width:900px;
+      margin:0 auto;
+      text-align:center;
+    }
+    .hero-eyebrow{
+      font-size:.75rem;
+      letter-spacing:.22em;
+      text-transform:uppercase;
+      color:var(--teal);
+      margin-bottom:12px;
+    }
+    .hero h1{
+      font-size:clamp(2rem,5vw,3.2rem);
+      font-family:'Fraunces',serif;
+      font-weight:900;
+      margin-bottom:14px;
+    }
+    .hero p{
+      max-width:540px;
+      margin:0 auto;
+      color:var(--muted);
+      font-size:1rem;
+      line-height:1.7;
+    }
+
+    /* TABS */
+    .tabs{
+      display:flex;
+      justify-content:center;
+      gap:0;
+      border-bottom:1px solid var(--border);
+      background:var(--surface);
+      margin-bottom:32px;
+    }
+    .tab{
+      padding:14px 20px;
+      font-size:0.88rem;
+      color:var(--muted);
+      cursor:pointer;
+      border-bottom:2px solid transparent;
+      transition:all .2s;
+    }
+    .tab.active{
+      color:var(--teal);
+      border-bottom-color:var(--teal);
+    }
+    .tab:hover:not(.active){color:var(--text);}
+
+    .panel{display:none;max-width:900px;margin:0 auto;padding:0 32px 80px;}
+    .panel.active{display:block;}
+
+    /* CARDS */
+    .cards{
+      display:grid;
+      grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+      gap:14px;
+    }
+    .card{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      padding:22px;
+      transition:all .2s;
+    }
+    .card:hover{
+      border-color:var(--teal);
+      transform:translateY(-2px);
+    }
+    .card h4{margin-bottom:8px;font-size:1rem;}
+    .card p{
+      color:var(--muted);
+      font-size:.88rem;
+      line-height:1.6;
+    }
+    .mat-link{
+      color:var(--teal);
+      font-size:.82rem;
+      font-weight:600;
+      text-decoration:none;
+      display:inline-block;
+      margin-top:12px;
+    }
+
+    /* TASKS */
+    .task-list{display:flex;flex-direction:column;gap:16px;}
+    .task{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-left:3px solid var(--teal2);
+      border-radius:0 var(--radius) var(--radius) 0;
+      padding:20px 24px;
+    }
+    .task h4{margin-bottom:6px;font-size:1rem;}
+    .task p{color:var(--muted);line-height:1.6;}
+
+    /* VIDEO */
+    .video-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+      gap:14px;
+    }
+    .vid{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      overflow:hidden;
+    }
+    .vid-thumb{
+      height:120px;
+      background:#0d1d2c;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:2rem;
+      position:relative;
+    }
+    .play-icon{
+      width:40px;height:40px;
+      border-radius:50%;
+      border:2px solid var(--teal);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      position:absolute;
+      background:rgba(62,207,178,0.15);
+    }
+    .vid-info{
+      padding:14px 16px;
+    }
+    .vid-info h4{font-size:0.95rem;margin-bottom:4px;}
+    .vid-info p{color:var(--muted);font-size:.82rem;margin-bottom:8px;}
+    .vid-info a{
+      color:var(--teal);
+      font-size:.8rem;
+      text-decoration:none;
+      font-weight:600;
+    }
+
+    .coming-soon{
+      background:var(--card);
+      border:1px dashed var(--border);
+      padding:32px;
+      text-align:center;
+      color:var(--muted);
+      border-radius:var(--radius);
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- TOP BAR -->
+  <nav class="top-bar">
+    <div class="top-left">
+      <a href="nk2.html" class="back-link">← NK2</a>
+      <div class="top-title">Moment 1 — Evolution</div>
+    </div>
+    <div class="user-chip" id="user-chip">Laddar...</div>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <p class="hero-eyebrow">NK2 — Moment 1</p>
+    <h1>Evolution</h1>
+    <p>Naturligt urval, livets utveckling, artbildning och bevisen för evolutionens mekanismer.</p>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <div class="tab active" data-tab="material">📚 Material</div>
+    <div class="tab" data-tab="uppgifter">✏️ Uppgifter</div>
+    <div class="tab" data-tab="video">🎬 Video</div>
+    <div class="tab" data-tab="flashcards">🃏 Flashcards</div>
+    <div class="tab" data-tab="quiz">🧠 Quiz</div>
+  </div>
+
+  <!-- MATERIAL -->
+  <div class="panel active" id="material">
+    <div class="cards">
+
+      <div class="card">
+        <h4>Darwins naturliga urval</h4>
+        <p>Variation, konkurrens och selektion — grunderna i evolutionsteorin.</p>
+        <a href="#" class="mat-link">Öppna →</a>
+      </div>
+
+      <div class="card">
+        <h4>Bevis för evolution</h4>
+        <p>Fossil, jämförande anatomi, DNA, biogeografi och fler stöd för teorin.</p>
+        <a href="#" class="mat-link">Öppna →</a>
+      </div>
+
+      <div class="card">
+        <h4>Artbildning</h4>
+        <p>Hur nya arter uppstår — allopatrisk och sympatrisk artbildning.</p>
+        <a href="#" class="mat-link">Öppna →</a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- UPPGIFTER -->
+  <div class="panel" id="uppgifter">
+    <div class="task-list">
+
+      <div class="task">
+        <h4>Uppgift 1 — Naturligt urval</h4>
+        <p>Beskriv med egna ord hur naturligt urval fungerar. Ge exempel från naturen.</p>
+      </div>
+
+      <div class="task">
+        <h4>Uppgift 2 — Bevis för evolution</h4>
+        <p>Jämför minst tre typer av bevis för evolution och förklara varför de stödjer teorin.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- VIDEO -->
+  <div class="panel" id="video">
+    <div class="video-grid">
+
+      <div class="vid">
+        <div class="vid-thumb">🌿<span class="play-icon">▶</span></div>
+        <div class="vid-info">
+          <h4>Darwins resa</h4>
+          <p>Hur observationer på Galápagos formade evolutionsteorin.</p>
+          <a href="#">Se video →</a>
+        </div>
+      </div>
+
+      <div class="vid">
+        <div class="vid-thumb">🦋<span class="play-icon">▶</span></div>
+        <div class="vid-info">
+          <h4>Industrimelanismen</h4>
+          <p>Ett klassiskt exempel på naturligt urval i realtid.</p>
+          <a href="#">Se video →</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FLASHCARDS -->
+  <div class="panel" id="flashcards">
+    <div class="coming-soon">
+      🃏 Flashcards för Evolution — kommer snart.
+    </div>
+  </div>
+
+  <!-- QUIZ -->
+  <div class="panel" id="quiz">
+    <div class="coming-soon">
+      🧠 Quiz för Evolution — kommer snart.
+    </div>
+  </div>
+
+  <script src="shared.js"></script>
+  <script>
+    // Login
+    const s = requireLogin('NK2');
+    document.getElementById('user-chip').textContent = s.name;
+
+    // TAB SWITCHING
+    const tabs = document.querySelectorAll('.tab');
+    const panels = document.querySelectorAll('.panel');
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+
+        panels.forEach(p => p.classList.remove('active'));
+        document.getElementById(tab.dataset.tab).classList.add('active');
+      });
+    });
+  </script>
+
+</body>
+</html>
