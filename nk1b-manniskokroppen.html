@@ -51,6 +51,57 @@
     footer a { color: var(--rust); text-decoration: none; }
 
     @media(max-width:560px) { .cards-grid { grid-template-columns: 1fr; } .container { padding: 32px 16px 60px; } }
+
+/* ============================
+   FLASHCARDS – SNABBSTART
+   ============================ */
+
+.launch-row{
+  display:flex;
+  align-items:center;
+  gap:16px;
+  padding:24px;
+  margin-bottom:48px;
+  background:var(--sand);
+  border-radius:var(--radius);
+  border:1px solid var(--border);
+}
+
+.launch-row-text h3{
+  font-family:'Playfair Display', serif;
+  font-size:1.1rem;
+  margin-bottom:6px;
+}
+
+.launch-row-text p{
+  font-size:.84rem;
+  color:var(--muted);
+  line-height:1.5;
+}
+
+.fc-launch-all{
+  margin-left:auto;
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  background:#1a1612;
+  color:#e8dcc8;
+  font-family:'Mulish',sans-serif;
+  font-size:.9rem;
+  font-weight:700;
+  padding:14px 28px;
+  border-radius:9px;
+  text-decoration:none;
+  transition:all .2s;
+  border:1px solid #3a2a1a;
+}
+
+.fc-launch-all:hover{
+  background:#2a2018;
+  border-color:#d4703a;
+  color:#fff;
+}
+``
   </style>
 </head>
 <body>
@@ -64,6 +115,23 @@
   <p class="hero-eyebrow">NK1b &middot; Människokroppen</p>
   <h1>Kroppen inifrån</h1>
   <p>Välj ett område att fördjupa dig i. Varje avsnitt innehåller material, nyckelbegrepp, diagram och självkontrollfrågor.</p>
+</div>
+
+<!-- FLASHCARDS – SNABBSTART -->
+<div class="launch-row" id="flashcards">
+  <div style="font-size:2.2rem">🃏</div>
+
+  <div class="launch-row-text">
+    <h3>Öva näringsämnen & matspjälkning</h3>
+    <p>
+      Flashcards för begrepp om kolhydrater, fetter, proteiner,
+      vitaminer och hur maten bryts ner i kroppen.
+    </p>
+  </div>
+
+  <a href="flashcards-matspjalkning.html" class="fc-launch-all">
+    Starta flashcards →
+  </a>
 </div>
 
 <div class="container">
