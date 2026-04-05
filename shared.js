@@ -29,6 +29,10 @@ function setSession(data) {
 function clearSession() {
   sessionStorage.removeItem('nk_session');
 }
+function logoutAndChoose() {
+  sessionStorage.removeItem('nk_session');
+  window.location.href = 'index.html';
+}
 function requireLogin(allowedClass) {
   const s = getSession();
   if (!s) { window.location.href = 'index.html'; return null; }

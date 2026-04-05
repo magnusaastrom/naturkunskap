@@ -1,149 +1,285 @@
 <!DOCTYPE html>
 <html lang="sv">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>NK2 – Människokroppen</title>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Människokroppen – NK2</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 
-<style>
-    body {
-        font-family: 'DM Sans', sans-serif;
-        margin: 0;
-        background:#0f1a24;
-        color:#dde8f0;
-        line-height: 1.6;
+  <style>
+    :root{
+      --bg:#0b1219;
+      --surface:#111c27;
+      --card:#172233;
+      --border:#243548;
+      --teal:#3ecfb2;
+      --teal2:#27a890;
+      --amber:#f0b040;
+      --red:#e05555;
+      --green:#4caf82;
+      --text:#dde8f0;
+      --muted:#7a8ca0;
+      --radius:10px;
+    }
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{
+      font-family:'DM Sans',sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      min-height:100vh;
     }
 
-    header {
-        background:#162030;
-        padding: 24px;
-        border-bottom: 1px solid #2a3f54;
+    /* TOP BAR */
+    .top-bar{
+      background:var(--surface);
+      border-bottom:1px solid var(--border);
+      padding:16px 32px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      gap:12px;
+      position:sticky;
+      top:0;
+      z-index:50;
+    }
+    .top-left{display:flex;align-items:center;gap:14px;}
+    .back-link{
+      font-size:.82rem;
+      color:var(--muted);
+      text-decoration:none;
+    }
+    .back-link:hover{color:var(--teal);}
+    .top-title{
+      font-family:'Fraunces',serif;
+      font-size:1.15rem;
+    }
+    .user-chip{
+      background:var(--card);
+      border:1px solid var(--border);
+      padding:5px 12px;
+      border-radius:30px;
+      font-size:.78rem;
+      color:var(--muted);
     }
 
-    header h1 {
-        margin: 0;
-        font-family: 'Fraunces', serif;
-        color:#3ecfb2;
-        font-size: 1.8rem;
+    /* HERO */
+    .hero{
+      padding:56px 32px 40px;
+      max-width:900px;
+      margin:0 auto;
+      text-align:center;
+    }
+    .hero-eyebrow{
+      font-size:.75rem;
+      letter-spacing:.22em;
+      text-transform:uppercase;
+      color:var(--teal);
+      margin-bottom:12px;
+    }
+    .hero h1{
+      font-size:clamp(2rem,5vw,3.2rem);
+      font-family:'Fraunces',serif;
+      font-weight:900;
+      margin-bottom:14px;
+    }
+    .hero p{
+      max-width:560px;
+      margin:0 auto;
+      color:var(--muted);
+      font-size:1rem;
+      line-height:1.7;
     }
 
-    .container {
-        max-width: 900px;
-        margin: 0 auto;
-        padding: 32px 20px 80px;
+    /* TABS */
+    .tabs{
+      display:flex;
+      justify-content:center;
+      border-bottom:1px solid var(--border);
+      background:var(--surface);
+      margin-bottom:32px;
+    }
+    .tab{
+      padding:14px 20px;
+      font-size:.88rem;
+      color:var(--muted);
+      cursor:pointer;
+      border-bottom:2px solid transparent;
+      transition:.2s;
+    }
+    .tab.active{
+      color:var(--teal);
+      border-bottom-color:var(--teal);
+    }
+    .tab:hover:not(.active){color:var(--text);}
+    .panel{
+      display:none;
+      max-width:900px;
+      margin:0 auto;
+      padding:0 32px 80px;
+    }
+    .panel.active{display:block;}
+
+    /* CARDS */
+    .cards{
+      display:grid;
+      grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+      gap:14px;
+    }
+    .card{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      padding:22px;
+      transition:.2s;
+    }
+    .card:hover{
+      border-color:var(--teal);
+      transform:translateY(-2px);
+    }
+    .card h4{margin-bottom:8px;}
+    .card p{color:var(--muted);font-size:.88rem;line-height:1.6;}
+    .mat-link{
+      color:var(--teal);
+      font-size:.82rem;
+      font-weight:600;
+      text-decoration:none;
+      margin-top:12px;
+      display:inline-block;
     }
 
-    h2 {
-        font-family:'Fraunces',serif;
-        color:#3ecfb2;
-        margin-bottom: 20px;
+    /* COMING SOON */
+    .coming-soon{
+      background:var(--card);
+      border:1px dashed var(--border);
+      padding:32px;
+      text-align:center;
+      color:var(--muted);
+      border-radius:var(--radius);
     }
-
-    /* TILE GRID */
-    .grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit,minmax(230px,1fr));
-        gap: 20px;
-        margin-top: 20px;
-    }
-
-    .tile {
-        background:#162030;
-        padding: 26px;
-        border-radius: 12px;
-        border:1px solid #2a3f54;
-        text-decoration: none;
-        color:#dde8f0;
-        transition: all .2s ease;
-        display:block;
-    }
-
-    .tile:hover {
-        background:#1c2d3f;
-        border-color:#3ecfb2;
-        transform: translateY(-3px);
-    }
-
-    .tile h3 {
-        margin: 0 0 8px 0;
-        font-family:'Fraunces',serif;
-        font-size: 1.2rem;
-        color:#3ecfb2;
-    }
-
-    .tile p {
-        margin:0;
-        color:#a6c4d3;
-        font-size:0.9rem;
-        line-height:1.4;
-    }
-</style>
+  </style>
 </head>
 
 <body>
 
-<header>
-    <h1>Människokroppen – Översikt</h1>
-</header>
+<!-- TOP BAR -->
+<nav class="top-bar">
+  <div class="top-left">
+    <a href="nk2.html" class="back-link">← NK2</a>
+    <div class="top-title">Moment — Människokroppen</div>
+  </div>
+  <div class="user-chip" id="user-chip">Laddar…</div>
+</nav>
 
-<div class="container">
-
-    <!-- FLASHCARDS -->
-    <h2>🎯 Flashcards</h2>
-    <div class="grid">
-        <a href="flashcards-manniskokroppen.html" class="tile">
-            <h3>Flashcards – Alla områden</h3>
-            <p>Träna begrepp från cellen, hormoner, immunförsvaret, nervsystemet och mer.</p>
-        </a>
-    </div>
-
-
-    <!-- MATERIAL -->
-    <h2>📚 Material – Läs om områdena</h2>
-
-    <div class="grid">
-
-        <a href="material-cellen.html" class="tile">
-            <h3>Cellen</h3>
-            <p>Cellens delar, funktioner och transport.</p>
-        </a>
-
-        <a href="material-hormoner.html" class="tile">
-            <h3>Hormonsystemet</h3>
-            <p>Körtlar, hormoner och regleringsmekanismer.</p>
-        </a>
-
-        <a href="material-nervsystemet.html" class="tile">
-            <h3>Nervsystemet</h3>
-            <p>Hjärnan, ryggmärgen och signalöverföring.</p>
-        </a>
-
-        <a href="material-cirkulationen.html" class="tile">
-            <h3>Cirkulationen</h3>
-            <p>Hjärtat, blodet och transport i kroppen.</p>
-        </a>
-
-        <a href="material-andningen.html" class="tile">
-            <h3>Andningen</h3>
-            <p>Luftvägar, gasutbyte och syresättning.</p>
-        </a>
-
-        <a href="material-utsondring.html" class="tile">
-            <h3>Utsöndringsorganen</h3>
-            <p>Njurarna, urinvägarna och rening av blod.</p>
-        </a>
-
-        <!-- DENNA FIL FINNS REDAN ENLIGT DIG -->
-        <a href="material-immunforsvaret.html" class="tile">
-            <h3>Immunförsvaret</h3>
-            <p>Kroppens försvar mot sjukdomar.</p>
-        </a>
-
-    </div>
-
+<!-- HERO -->
+<div class="hero">
+  <p class="hero-eyebrow">NK2 — Människokroppen</p>
+  <h1>Människokroppen</h1>
+  <p>Fördjupning i kroppens organsystem, reglering, samspel och fysiologi.</p>
 </div>
+
+<!-- TABS -->
+<div class="tabs">
+  <div class="tab active" data-tab="material">📚 Material</div>
+  <div class="tab" data-tab="flashcards">🃏 Flashcards</div>
+  <div class="tab" data-tab="uppgifter">✏️ Uppgifter</div>
+  <div class="tab" data-tab="video">🎬 Video</div>
+  <div class="tab" data-tab="quiz">🧠 Quiz</div>
+</div>
+
+<!-- MATERIAL -->
+<div class="panel active" id="material">
+  <div class="cards">
+
+    <div class="card">
+      <h4>Cellen</h4>
+      <p>Cellens delar, funktioner och transportmekanismer.</p>
+      <a href="material-cellen.html" class="mat-link">Öppna →</a>
+    </div>
+
+    <div class="card">
+      <h4>Hormonsystemet</h4>
+      <p>Hormoner, körtlar och långsam reglering.</p>
+      <a href="material-hormoner.html" class="mat-link">Öppna →</a>
+    </div>
+
+    <div class="card">
+      <h4>Nervsystemet</h4>
+      <p>Nervceller, signalöverföring, hjärna och ryggmärg.</p>
+      <a href="material-nervsystemet.html" class="mat-link">Öppna →</a>
+    </div>
+
+    <div class="card">
+      <h4>Cirkulationssystemet</h4>
+      <p>Hjärtat, blodet och transport i kroppen.</p>
+      <a href="material-cirkulationen.html" class="mat-link">Öppna →</a>
+    </div>
+
+    <div class="card">
+      <h4>Andningssystemet</h4>
+      <p>Gastransport, lungor och cellandning.</p>
+      <a href="material-andningen.html" class="mat-link">Öppna →</a>
+    </div>
+
+    <div class="card">
+      <h4>Utsöndringssystemet</h4>
+      <p>Njurarnas funktion och reglering av kroppens inre miljö.</p>
+      <a href="material-utsondring.html" class="mat-link">Öppna →</a>
+    </div>
+
+    <div class="card">
+      <h4>Immunförsvaret</h4>
+      <p>Kroppens försvar mot patogener.</p>
+      <a href="material-immunforsvaret.html" class="mat-link">Öppna →</a>
+    </div>
+
+  </div>
+</div>
+
+<!-- FLASHCARDS -->
+<div class="panel" id="flashcards">
+  <div class="cards">
+    <div class="card">
+      <h4>Flashcards – Människokroppen</h4>
+      <p>Träna begrepp från alla organsystem.</p>
+      <a href="flashcards-manniskokroppen.html" class="mat-link">Starta →</a>
+    </div>
+  </div>
+</div>
+
+<!-- UPPGIFTER -->
+<div class="panel" id="uppgifter">
+  <div class="coming-soon">✏️ Uppgifter kommer här.</div>
+</div>
+
+<!-- VIDEO -->
+<div class="panel" id="video">
+  <div class="coming-soon">🎬 Videomaterial kommer här.</div>
+</div>
+
+<!-- QUIZ -->
+<div class="panel" id="quiz">
+  <div class="coming-soon">🧠 Quiz kommer här.</div>
+</div>
+
+<script src="shared.js"></script>
+<script>
+  const s = requireLogin('NK2');
+  document.getElementById('user-chip').textContent = s.name;
+
+  const tabs = document.querySelectorAll('.tab');
+  const panels = document.querySelectorAll('.panel');
+
+  tabs.forEach(tab=>{
+    tab.addEventListener('click',()=>{
+      tabs.forEach(t=>t.classList.remove('active'));
+      tab.classList.add('active');
+      panels.forEach(p=>p.classList.remove('active'));
+      document.getElementById(tab.dataset.tab).classList.add('active');
+    });
+  });
+</script>
 
 </body>
 </html>

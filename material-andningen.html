@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Andningssystemet – Naturkunskap</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+
+<style>
+:root{
+  --bg:#f8f5f0;
+  --surface:#ffffff;
+  --border:#e0d8cc;
+  --sand:#f0ebe0;
+  --rust:#c0522a;
+  --rust2:#e06030;
+  --teal:#2a7a6a;
+  --teal2:#3a9a86;
+  --blue:#2a5080;
+  --text:#1a1a18;
+  --muted:#6a6458;
+  --radius:10px;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{
+  font-family:'Source Sans 3',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.7;
+  font-size:16px;
+}
+
+/* ── TOP BAR ── */
+.top-bar{
+  background:#1a2a20;
+  padding:14px 28px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  position:sticky;
+  top:0;
+  z-index:100;
+}
+.back-link{
+  color:#a0c8b8;
+  text-decoration:none;
+  font-size:.82rem;
+}
+.back-link:hover{color:#fff;}
+.top-title{
+  font-family:'Lora',serif;
+  font-size:1rem;
+  color:#e0ece8;
+}
+.top-title span{color:#5acfb2;}
+
+/* ── HERO ── */
+.hero{
+  background:linear-gradient(135deg,#1a2a20 0%,#2a4a38 60%,#1a3028 100%);
+  padding:64px 32px 56px;
+  text-align:center;
+  position:relative;
+}
+.hero::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(ellipse 70% 60% at 30% 50%,rgba(90,207,178,.12) 0%,transparent 60%),
+    radial-gradient(ellipse 60% 80% at 75% 30%,rgba(192,82,42,.1) 0%,transparent 55%);
+  pointer-events:none;
+}
+.hero-eyebrow{
+  font-size:.72rem;
+  letter-spacing:.22em;
+  text-transform:uppercase;
+  color:#5acfb2;
+  margin-bottom:12px;
+}
+.hero h1{
+  font-family:'Lora',serif;
+  font-size:clamp(2rem,5vw,3.1rem);
+  font-weight:700;
+  color:#f0ece4;
+  margin-bottom:16px;
+}
+.hero-sub{
+  font-size:1rem;
+  color:#a0c0b0;
+  max-width:620px;
+  margin:0 auto 28px;
+}
+.hero-nav{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:10px;
+}
+.hero-nav a{
+  font-size:.8rem;
+  color:#a0c8b8;
+  border:1px solid rgba(90,207,178,.35);
+  border-radius:30px;
+  padding:7px 16px;
+  text-decoration:none;
+}
+.hero-nav a:hover{
+  background:rgba(90,207,178,.12);
+  border-color:#5acfb2;
+  color:#fff;
+}
+
+/* ── SECTIONS ── */
+.container{max-width:860px;margin:0 auto;padding:0 24px;}
+.section{padding:60px 0;}
+.section+.section{border-top:1px solid var(--border);}
+.section-eyebrow{
+  font-size:.7rem;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+  color:var(--rust);
+  font-weight:600;
+  margin-bottom:8px;
+}
+.section-title{
+  font-family:'Lora',serif;
+  font-size:clamp(1.5rem,3vw,2rem);
+  margin-bottom:8px;
+}
+.section-intro{
+  color:var(--muted);
+  font-size:.95rem;
+  max-width:640px;
+  margin-bottom:32px;
+}
+
+/* ── KEY BOX ── */
+.key-box{
+  background:var(--sand);
+  border-left:4px solid var(--rust2);
+  border-radius:0 var(--radius) var(--radius) 0;
+  padding:18px 22px;
+  margin-bottom:28px;
+}
+.key-box h4{
+  font-family:'Lora',serif;
+  font-size:1rem;
+  margin-bottom:8px;
+  color:var(--rust);
+}
+.key-box dl{font-size:.88rem;}
+.key-box dt{font-weight:600;display:inline;}
+.key-box dd{display:inline;margin:0;}
+.term-row{margin-bottom:6px}
+
+/* ── PROSE ── */
+.prose{
+  font-size:.95rem;
+  color:#2a2520;
+  margin-bottom:24px;
+}
+
+/* ── SVG WRAP ── */
+.diagram-wrap{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:24px;
+  margin-bottom:28px;
+}
+.diagram-caption{
+  font-size:.78rem;
+  color:var(--muted);
+  text-align:center;
+  margin-top:10px;
+  font-style:italic;
+}
+footer{
+  border-top:1px solid var(--border);
+  padding:28px 24px;
+  text-align:center;
+  font-size:.78rem;
+  color:var(--muted);
+  margin-top:40px;
+}
+footer a{
+  color:var(--teal);
+  text-decoration:none;
+}
+footer a:hover{
+  text-decoration:underline;
+}
+.q-card{
+  background:#1a2a20;
+  border:1px solid #2a4030;
+  border-radius:10px;
+  padding:24px 28px;
+  margin-bottom:20px;
+}
+.q-num{
+  font-size:.7rem;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:#5acfb2;
+  margin-bottom:8px;
+  font-weight:600;
+}
+.q-text{
+  font-family:'Lora',serif;
+  font-size:1rem;
+  color:#e0ece8;
+  margin-bottom:16px;
+}
+.q-textarea{
+  width:100%;
+  background:#0f1a14;
+  border:1.5px solid #2a4030;
+  border-radius:7px;
+  color:#dde8e4;
+  font-size:.95rem;
+  padding:12px 14px;
+  resize:vertical;
+  min-height:90px;
+}
+.q-btn{
+  margin-top:12px;
+  font-size:.85rem;
+  font-weight:600;
+  padding:9px 22px;
+  border-radius:6px;
+  border:none;
+  cursor:pointer;
+  background:#5acfb2;
+  color:#0f1a14;
+}
+.q-model{
+  margin-top:16px;
+  display:none;
+  background:#0f1a14;
+  border:1px solid #2a4030;
+  border-radius:7px;
+}
+.q-model.shown{display:block;}
+.q-model-header{
+  background:#2a4030;
+  padding:8px 16px;
+  font-size:.75rem;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  color:#5acfb2;
+  font-weight:600;
+}
+.q-model-body{
+  padding:14px 18px;
+  font-size:.88rem;
+  color:#b0d0c0;
+  line-height:1.7;
+}
+.q-model-body ul{list-style:none;padding:0;display:flex;flex-direction:column;gap:6px;}
+.q-model-body li{padding-left:16px;position:relative;}
+.q-model-body li::before{content:'→';position:absolute;left:0;color:#5acfb2;}
+.q-self-check{
+  margin-top:12px;
+  padding-top:12px;
+  border-top:1px solid #2a4030;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-size:.82rem;
+  color:#7aaa90;
+}
+.q-score-bar{
+  background:#0f1a14;
+  border:1px solid #2a4030;
+  border-radius:10px;
+  padding:20px 24px;
+  margin-top:32px;
+  display:flex;
+  align-items:center;
+  gap:20px;
+}
+.q-score-num{
+  font-family:'Lora',serif;
+  font-size:2rem;
+  color:#5acfb2;
+}
+.q-score-label{font-size:.85rem;color:#7aaa90;}
+.q-score-msg{font-size:.88rem;color:#b0d0c0;}
+
+.diagram-explainer{
+  text-align:left;
+  max-width:680px;
+  margin:16px auto 32px;
+}
+.diagram-explainer p{
+  font-size:.9rem;
+  color:#2a2520;
+  margin-bottom:14px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="top-bar">
+  <a href="nk2-manniskokroppen.html" class="back-link">← Människokroppen</a>
+  <div class="top-title">Naturkunskap — <span>Andningen</span></div>
+</div>
+
+<div class="hero">
+  <p class="hero-eyebrow">Människokroppen · Andningssystemet</p>
+  <h1>Andningssystemet</h1>
+  <p class="hero-sub">
+    Hur kroppen tar upp syre, gör sig av med koldioxid och reglerar andningen för att cellerna ska kunna fungera.
+  </p>
+  <nav class="hero-nav">
+    <a href="#oversikt">Översikt</a>
+    <a href="#luftvagar">Luftvägar</a>
+    <a href="#lungor">Lungor</a>
+    <a href="#gasutbyte">Gasutbyte</a>
+    <a href="#styrning">Reglering</a>
+    <a href="#kolla">Kolla att du kan</a>
+  </nav>
+</div>
+
+<main>
+<!-- ══════════════════════════════════════
+ SEKTION 1 – ÖVERSIKT
+══════════════════════════════════════ -->
+<div class="section" id="oversikt">
+  <div class="container">
+
+    <p class="section-eyebrow">Introduktion</p>
+    <h2 class="section-title">Andningssystemet – en översikt</h2>
+    <p class="section-intro">
+      Andningssystemet ser till att kroppens celler får tillgång till syre
+      och att koldioxid förs bort. Det fungerar i nära samarbete med
+      cirkulationssystemet och är avgörande för att cellandningen ska fungera.
+    </p>
+
+    <div class="key-box">
+      <h4>🎯 Andningssystemets huvuduppgifter</h4>
+      <ul style="padding-left:18px;font-size:.9rem">
+        <li>Transportera syre till blodet</li>
+        <li>Avlägsna koldioxid från kroppen</li>
+        <li>Anpassa andningen efter kroppens behov</li>
+        <li>Skydda lungorna från partiklar och mikroorganismer</li>
+      </ul>
+    </div>
+
+    <p class="prose">
+      Andningssystemet delas in i <strong>övre</strong> och
+      <strong>nedre luftvägar</strong>. De övre luftvägarna förbereder luften
+      genom att värma, fukta och filtrera den, medan de nedre leder luften
+      ner till lungorna där gasutbytet sker.
+    </p>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+ SEKTION 2 – LUFTVÄGAR
+══════════════════════════════════════ -->
+<div class="section" id="luftvagar">
+  <div class="container">
+
+    <p class="section-eyebrow">Struktur</p>
+    <h2 class="section-title">Luftens väg genom kroppen</h2>
+    <p class="section-intro">
+      Inandningsluften följer en bestämd väg från omvärlden ner till lungornas djupaste delar.
+Längs denna väg passerar luften flera strukturer som tillsammans leder, skyddar och förbereder luften innan den når alveolerna.
+I alveolerna övergår luftens transport till gasutbyte med blodet, vilket illustreras i nästa bild.
+    </p>
+
+    <!-- SVG: Luftens väg (förenklad, linjär) -->
+<div class="diagram-wrap">
+  <svg viewBox="0 0 900 200"
+       xmlns="http://www.w3.org/2000/svg"
+       style="width:100%;max-width:900px;display:block;margin:0 auto">
+
+    <!-- Pilar -->
+    <defs>
+      <marker id="arrow"
+              markerWidth="10"
+              markerHeight="10"
+              refX="8"
+              refY="5"
+              orient="auto">
+        <path d="M0,0 L0,10 L10,5 z" fill="#6a6458"/>
+      </marker>
+    </defs>
+
+    <!-- BOXAR -->
+    <!-- Näshåla -->
+    <rect x="20" y="76" width="130" height="48" rx="8" fill="#2a7a6a"/>
+    <text x="85" y="106" text-anchor="middle"
+          font-size="13" font-weight="600" fill="#fff">
+      Näshåla
+    </text>
+
+    <!-- Svalg -->
+    <rect x="190" y="76" width="130" height="48" rx="8" fill="#3a9a86"/>
+    <text x="255" y="106" text-anchor="middle"
+          font-size="13" font-weight="600" fill="#fff">
+      Svalg
+    </text>
+
+    <!-- Luftstrupe -->
+    <rect x="360" y="76" width="150" height="48" rx="8" fill="#2a5080"/>
+    <text x="435" y="106" text-anchor="middle"
+          font-size="13" font-weight="600" fill="#fff">
+      Luftstrupe
+    </text>
+
+    <!-- Luftrör -->
+    <rect x="550" y="76" width="130" height="48" rx="8" fill="#c0522a"/>
+    <text x="615" y="106" text-anchor="middle"
+          font-size="13" font-weight="600" fill="#fff">
+      Luftrör
+    </text>
+
+    <!-- Alveoler -->
+    <rect x="720" y="76" width="150" height="48" rx="8" fill="#8a4020"/>
+    <text x="795" y="106" text-anchor="middle"
+          font-size="13" font-weight="600" fill="#fff">
+      Alveoler
+    </text>
+
+    <!-- PILAR -->
+    <line x1="150" y1="100" x2="190" y2="100"
+          stroke="#6a6458" stroke-width="1.5"
+          marker-end="url(#arrow)"/>
+
+    <line x1="320" y1="100" x2="360" y2="100"
+          stroke="#6a6458" stroke-width="1.5"
+          marker-end="url(#arrow)"/>
+
+    <line x1="510" y1="100" x2="550" y2="100"
+          stroke="#6a6458" stroke-width="1.5"
+          marker-end="url(#arrow)"/>
+
+    <line x1="680" y1="100" x2="720" y2="100"
+          stroke="#6a6458" stroke-width="1.5"
+          marker-end="url(#arrow)"/>
+
+  </svg>
+
+      <p class="diagram-caption">
+        Figur 1. Luftens väg från näshålan ner till lungblåsorna där gasutbytet sker.
+      </p>
+    </div>
+
+    <div class="key-box">
+      <h4>🔑 Nyckelbegrepp – Luftvägarna</h4>
+      <dl>
+        <div class="term-row">
+          <dt>Näshåla</dt><dd> – värmer, fuktar och filtrerar inandningsluften.</dd>
+        </div>
+        <div class="term-row">
+          <dt>Svalg</dt><dd> – gemensam passage för luft och föda.</dd>
+        </div>
+        <div class="term-row">
+          <dt>Struphuvudet</dt><dd> – håller luftvägen öppen och skyddar vid sväljning.</dd>
+        </div>
+        <div class="term-row">
+          <dt>Luftstrupe</dt><dd> – leder luften ner i bröstkorgen.</dd>
+        </div>
+        <div class="term-row">
+          <dt>Alveoler</dt><dd> – lungblåsor där gasutbytet sker.</dd>
+        </div>
+      </dl>
+    </div>
+
+  </div>
+</div>
+<!-- ══════════════════════════════════════
+ SEKTION 3 – LUNGORNA
+══════════════════════════════════════ -->
+<div class="section" id="lungor">
+  <div class="container">
+
+    <p class="section-eyebrow">Organ</p>
+    <h2 class="section-title">Lungornas uppbyggnad</h2>
+    <p class="section-intro">
+      Lungorna är mjuka, svampiga organ som ligger skyddade i bröstkorgen.
+      Deras uppgift är att möjliggöra gasutbyte mellan luften och blodet.
+    </p>
+
+<!-- Bild: Lungornas uppbyggnad -->
+<div class="diagram-wrap">
+  <img src="images/lungor.png"
+       alt="Illustration av lungornas uppbyggnad med lober, luftrör och alveoler"
+       style="width:100%;max-width:700px;display:block;margin:0 auto;">
+
+  <p class="diagram-caption">
+    Figur X. Lungornas uppbyggnad. Höger lunga har tre lober och vänster lunga
+    två lober. Luftrören förgrenas i lungorna och slutar i alveoler som omges
+    av kapillärer.
+  </p>
+</div>
+
+    <p class="prose">
+      Höger lunga är indelad i <strong>tre lober</strong> och vänster lunga i
+      <strong>två lober</strong>. Varje lob försörjs av egna luftrör och
+      blodkärl. Lungorna omges av en <strong>lungsäck</strong> med dubbla väggar,
+      vilket minskar friktion när lungorna rör sig under andningen.
+    </p>
+
+    <p class="prose">
+      Inuti lungorna delar sig luftrören i allt tunnare grenar tills de slutar
+      i miljontals små luftfyllda blåsor – <strong>alveolerna</strong>.
+    </p>
+
+    <div class="key-box">
+      <h4>🔑 Nyckelbegrepp – Lungorna</h4>
+      <dl>
+        <div class="term-row">
+          <dt>Lober</dt><dd> – lungornas uppdelning i större avsnitt.</dd>
+        </div>
+        <div class="term-row">
+          <dt>Lungsäck</dt><dd> – skyddande dubbel hinna runt varje lunga.</dd>
+        </div>
+        <div class="term-row">
+          <dt>Alveoler</dt><dd> – små lungblåsor där gasutbytet sker.</dd>
+        </div>
+        <div class="term-row">
+          <dt>Kapillärer</dt><dd> – kroppens minsta blodkärl som omger alveolerna.</dd>
+        </div>
+      </dl>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+ SEKTION 4 – GASUTBYTE
+══════════════════════════════════════ -->
+<div class="section" id="gasutbyte">
+  <div class="container">
+
+    <p class="section-eyebrow">Process</p>
+    <h2 class="section-title">Gasutbyte i lungorna</h2>
+    <p class="section-intro">
+      Gasutbytet sker längst ut i luftvägarna, i alveolerna, där luften
+      kommer i nära kontakt med blodet i kapillärerna.
+    </p>
+
+<!-- SVG: Gasutbyte mellan alveol och kapillär -->
+<div class="diagram-wrap">
+  <svg viewBox="0 0 700 260"
+       xmlns="http://www.w3.org/2000/svg"
+       style="width:100%;max-width:700px;display:block;margin:0 auto">
+
+    <!-- Pilar -->
+    <defs>
+      <marker id="arrow"
+              markerWidth="10"
+              markerHeight="10"
+              refX="8"
+              refY="5"
+              orient="auto">
+        <path d="M0,0 L0,10 L10,5 z" fill="#6a6458"/>
+      </marker>
+    </defs>
+
+    <!-- Alveol -->
+    <ellipse cx="200" cy="130" rx="110" ry="80"
+             fill="#e8f4f0" stroke="#2a7a6a" stroke-width="2"/>
+
+    <text x="200" y="40" text-anchor="middle"
+          font-size="13" font-weight="600" fill="#2a7a6a">
+      Lungblåsa (alveol)
+    </text>
+
+    <text x="200" y="120" text-anchor="middle"
+          font-size="11" fill="#2a7a6a" font-weight="600">
+      [O₂] hög
+    </text>
+    <text x="200" y="140" text-anchor="middle"
+          font-size="11" fill="#c0522a" font-weight="600">
+      [CO₂] låg
+    </text>
+
+    <!-- Kapillär -->
+    <rect x="425" y="90" width="210" height="80" rx="40"
+          fill="#fce8e0" stroke="#c0522a" stroke-width="2"/>
+
+    <text x="535" y="80" text-anchor="middle"
+          font-size="13" font-weight="600" fill="#c0522a">
+      Kapillär (blodkärl)
+    </text>
+
+    <text x="535" y="120" text-anchor="middle"
+          font-size="11" fill="#2a7a6a" font-weight="600">
+      [O₂] låg
+    </text>
+    <text x="535" y="140" text-anchor="middle"
+          font-size="11" fill="#c0522a" font-weight="600">
+      [CO₂] hög
+    </text>
+
+    <!-- Pilar -->
+    <line x1="315" y1="110" x2="420" y2="110"
+          stroke="#2a7a6a" stroke-width="3"
+          marker-end="url(#arrow)"/>
+    <line x1="425" y1="150" x2="315" y2="150"
+          stroke="#c0522a" stroke-width="3"
+          marker-end="url(#arrow)"/>
+
+    <!-- Gaser -->
+    <text x="365" y="95" text-anchor="middle"
+          font-size="11" font-weight="600" fill="#2a7a6a">O₂</text>
+    <text x="365" y="175" text-anchor="middle"
+          font-size="11" font-weight="600" fill="#c0522a">CO₂</text>
+<p class="diagram-caption">
+  Figur 2. Gasutbyte mellan alveol och kapillär sker genom diffusion, där
+  skillnader i koncentration av syre och koldioxid driver gasutbytet.
+</p>
+  </svg>
+</div>
+
+
+
+<p class="prose">
+  Alveolernas väggar är extremt tunna och omges av ett tätt nätverk av
+  kapillärer. Det gör att syre kan passera från luften in i blodet,
+  samtidigt som koldioxid lämnar blodet och förs ut med utandningsluften.
+</p>
+
+<p class="prose">
+  När syrerikt blod transporteras vidare till kroppens vävnader sker ett
+  liknande gasutbyte: syre tas upp av cellerna och koldioxid förs tillbaka
+  till blodet.
+</p>
+
+    <div class="key-box">
+      <h4>🧭 Viktigt samband</h4>
+      <p>
+        Samma grundläggande process ligger bakom gasutbytet både i lungorna
+        och ute i kroppens vävnader. Hur denna rörelse av gaser sker på
+        molekylnivå behandlas i materialet om
+        <strong>cellens funktioner</strong>.
+      </p>
+    </div>
+
+  </div>
+</div>
+<!-- ══════════════════════════════════════
+ SEKTION 5 – ANDNINGSRÖRELSER
+══════════════════════════════════════ -->
+<div class="section" id="rorelser">
+  <div class="container">
+
+    <p class="section-eyebrow">Mekanik</p>
+    <h2 class="section-title">In- och utandning</h2>
+    <p class="section-intro">
+      Andningen beror på aktiva rörelser i bröstkorgen som skapar
+      tryckskillnader mellan lungorna och omgivande luft.
+    </p>
+
+<!-- SVG: In- och utandning -->
+<div class="diagram-wrap">
+  <svg viewBox="0 0 780 300"
+       xmlns="http://www.w3.org/2000/svg"
+       style="width:100%;max-width:780px;display:block;margin:0 auto">
+
+    <!-- Inandning -->
+    <rect x="40" y="40" width="300" height="200" rx="12"
+          fill="#e8f4f0" stroke="#2a7a6a" stroke-width="2"/>
+    <text x="190" y="65" text-anchor="middle"
+          font-size="14" font-weight="600" fill="#2a7a6a">
+      Inandning
+    </text>
+    <text x="190" y="95" text-anchor="middle" font-size="12">Mellangärdet sänks</text>
+    <text x="190" y="115" text-anchor="middle" font-size="14">↓</text>
+    <text x="190" y="135" text-anchor="middle" font-size="12">Brösthålan ökar i volym</text>
+    <text x="190" y="155" text-anchor="middle" font-size="14">↓</text>
+    <text x="190" y="175" text-anchor="middle" font-size="12">Trycket minskar</text>
+    <text x="190" y="195" text-anchor="middle" font-size="14">↓</text>
+    <text x="190" y="215" text-anchor="middle" font-size="12"
+          fill="#2a7a6a" font-weight="600">
+      Luft sugs in i lungorna
+    </text>
+
+    <!-- Utandning -->
+    <rect x="440" y="40" width="300" height="200" rx="12"
+          fill="#fce8e0" stroke="#c0522a" stroke-width="2"/>
+    <text x="590" y="65" text-anchor="middle"
+          font-size="14" font-weight="600" fill="#c0522a">
+      Utandning
+    </text>
+    <text x="590" y="95" text-anchor="middle" font-size="12">Mellangärdet höjs</text>
+    <text x="590" y="115" text-anchor="middle" font-size="14">↓</text>
+    <text x="590" y="135" text-anchor="middle" font-size="12">Brösthålan minskar</text>
+    <text x="590" y="155" text-anchor="middle" font-size="14">↓</text>
+    <text x="590" y="175" text-anchor="middle" font-size="12">Trycket ökar</text>
+    <text x="590" y="195" text-anchor="middle" font-size="14">↓</text>
+    <text x="590" y="215" text-anchor="middle" font-size="12"
+          fill="#c0522a" font-weight="600">
+      Luft pressas ut
+    </text>
+  </svg>
+
+  <p class="diagram-caption">
+    Figur 3. Skillnader mellan inandning och utandning. Det är tryckskillnader
+    som driver luftflödet in och ut ur lungorna.
+  </p>
+</div>
+
+<p class="prose">
+  Vid inandning arbetar muskler aktivt. Mellangärdet (diafragma) dras nedåt
+  och revbenen lyfts, vilket gör att bröstkorgens volym ökar.
+  När volymen ökar minskar trycket i lungorna och luft strömmar in.
+</p>
+
+<p class="prose">
+  Vid utandning sker processen oftast passivt. Musklerna slappnar av,
+  bröstkorgens volym minskar och lungvävnadens elasticitet pressar ut luften.
+</p>
+
+    <div class="key-box">
+      <h4>🔑 Nyckelbegrepp – Andningsrörelsen</h4>
+      <dl>
+        <div class="term-row">
+          <dt>Diafragma</dt><dd> – stor andningsmuskel som sänks vid inandning.</dd>
+        </div>
+        <div class="term-row">
+          <dt>Brösthålan</dt><dd> – utrymmet där lungorna finns.</dd>
+        </div>
+        <div class="term-row">
+          <dt>Tryckskillnad</dt><dd> – skillnad i lufttryck som gör att luft rör sig.</dd>
+        </div>
+        <div class="term-row">
+          <dt>Elastisk lungvävnad</dt><dd> – gör att utandning oftast sker passivt.</dd>
+        </div>
+      </dl>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+ SEKTION 6 – ANDNINGENS REGLERING
+══════════════════════════════════════ -->
+<div class="section" id="styrning">
+  <div class="container">
+
+    <p class="section-eyebrow">Styrning</p>
+    <h2 class="section-title">Hur andningen regleras</h2>
+    <p class="section-intro">
+      Andningen sker automatiskt, men kan även påverkas viljemässigt.
+      Kroppen anpassar hela tiden andningen efter sitt behov.
+    </p>
+
+    <p class="prose">
+      Andningen styrs från <strong>andningscentrum</strong> i hjärnstammen,
+      närmare bestämt i den förlängda märgen.
+      Där registreras bland annat halten koldioxid i blodet.
+    </p>
+
+    <p class="prose">
+      Om koldioxidhalten ökar skickas signaler till andningsmusklerna
+      som gör att andningen blir snabbare och djupare.
+      På detta sätt regleras andningen automatiskt,
+      utan att du behöver tänka på det.
+    </p>
+
+    <p class="prose">
+      Du kan även styra andningen med viljan – till exempel hålla andan –
+      men bara under begränsad tid.
+      Till slut tar den automatiska styrningen över.
+    </p>
+
+    <div class="key-box">
+      <h4>🧠 Viktigt samband</h4>
+      <p>
+        Det är inte syrebrist utan ökad <strong>koldioxidhalt</strong> i blodet
+        som är den viktigaste signalen som styr andningen.
+      </p>
+    </div>
+
+  </div>
+</div>
+<!-- ══════════════════════════════════════
+ SEKTION 7 – KOLLA ATT DU KAN
+══════════════════════════════════════ -->
+<div class="section" id="kolla">
+  <div class="container">
+
+    <p class="section-eyebrow">Självbedömning</p>
+    <h2 class="section-title">Kolla att du kan</h2>
+    <p class="section-intro">
+      Försök svara på frågorna utan att titta i texten. Visa sedan mallsvaren
+      och bocka i om du hade med det viktigaste.
+    </p>
+
+    <div id="questions-wrap"></div>
+
+  </div>
+</div>
+
+
+<script src="shared.js"></script>
+<script>
+const s = requireLogin('NK2');
+
+const QUESTIONS = [
+ {
+  q: "Beskriv luftens väg från näshålan till lungblåsorna.",
+  model: [
+    "Luften andas in genom näshålan där den värms, fuktas och renas.",
+    "Den passerar svalget och struphuvudet.",
+    "Luften leds vidare ner i luftstrupen.",
+    "Luftstrupen delar sig i luftrör som går in i lungorna.",
+    "Luftrören förgrenas och slutar i lungblåsorna (alveolerna)."
+  ]
+ },
+ {
+  q: "Vilka delar räknas till de övre respektive nedre luftvägarna?",
+  model: [
+    "Övre luftvägar: näshåla, bihålor, svalg och struphuvud.",
+    "Nedre luftvägar: luftstrupe, luftrör och alveoler."
+  ]
+ },
+ {
+  q: "Hur är lungorna uppbyggda och varför är alveolerna viktiga?",
+  model: [
+    "Lungorna är indelade i lober och omges av en lungsäck.",
+    "Inuti lungorna finns miljontals alveoler.",
+    "Alveolerna har mycket tunna väggar och stor sammanlagd yta.",
+    "Det är i alveolerna som gasutbytet mellan luft och blod sker."
+  ]
+ },
+ {
+  q: "Förklara vad som menas med gasutbyte och var det sker.",
+  model: [
+    "Gasutbyte innebär att syre och koldioxid byts mellan luft och blod.",
+    "I lungorna sker gasutbytet mellan alveoler och kapillärer.",
+    "Syre går från luften till blodet.",
+    "Koldioxid går från blodet till luften."
+  ]
+ },
+ {
+  q: "Vad händer vid inandning respektive utandning?",
+  model: [
+    "Vid inandning sänks diafragma och revbenen höjs.",
+    "Bröstkorgens volym ökar och trycket i lungorna minskar.",
+    "Luft sugs in i lungorna.",
+    "Vid utandning slappnar musklerna av.",
+    "Bröstkorgens volym minskar och luften pressas ut."
+  ]
+ },
+ {
+  q: "Hur regleras andningen automatiskt av kroppen?",
+  model: [
+    "Andningen styrs av andningscentrum i hjärnstammen.",
+    "Ökad koldioxidhalt i blodet registreras.",
+    "Signaler skickas till andningsmusklerna.",
+    "Andningen blir snabbare och djupare."
+  ]
+ },
+ {
+  q: "Varför ökar andningsfrekvensen vid fysisk ansträngning?",
+  model: [
+    "Cellandningen ökar vid arbete.",
+    "Mer syre behövs av kroppens celler.",
+    "Mer koldioxid bildas och måste bortföras.",
+    "Den ökade koldioxidhalten stimulerar andningscentrum."
+  ]
+ }
+];
+
+let checked = new Array(QUESTIONS.length).fill(false);
+
+function buildQuestions(){
+  const wrap = document.getElementById('questions-wrap');
+  QUESTIONS.forEach((q,i)=>{
+    const items = q.model.map(m => `<li>${m}</li>`).join('');
+    wrap.innerHTML += `
+      <div class="q-card">
+        <div class="q-num">Fråga ${i+1} av ${QUESTIONS.length}</div>
+        <div class="q-text">${q.q}</div>
+        <textarea class="q-textarea" placeholder="Skriv ditt svar här..."></textarea>
+        <button class="q-btn" onclick="document.getElementById('m${i}').classList.add('shown')">
+          Visa mallsvar →
+        </button>
+        <div class="q-model" id="m${i}">
+          <div class="q-model-header">Mallsvar</div>
+          <div class="q-model-body">
+            <ul>${items}</ul>
+            <div class="q-self-check">
+              <input type="checkbox" id="c${i}" onchange="toggleCheck(${i})"/>
+              <label for="c${i}">Jag hade med det viktigaste</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  });
+
+  updateScore(); 
+}
+
+function toggleCheck(i){
+  checked[i] = document.getElementById(`c${i}`).checked;
+  updateScore();
+}
+
+function updateScore() {
+  const n = checked.filter(Boolean).length;
+  const total = QUESTIONS.length;
+
+  const msg = n === total ? '🎉 Utmärkt – du kan hela avsnittet!'
+    : n >= Math.ceil(total * 0.7) ? '👍 Bra jobbat! Kika igenom de du missat.'
+    : n >= Math.ceil(total * 0.4) ? '📖 Bra start – fortsätt öva på resten.'
+    : '🔍 Gå tillbaka till materialet och försök igen.';
+
+  let bar = document.getElementById('q-scorebar');
+  if (!bar) {
+    document.getElementById('questions-wrap').insertAdjacentHTML(
+      'afterend',
+      `<div class="q-score-bar" id="q-scorebar">
+        <div class="q-score-num" id="qs-num">${n}/${total}</div>
+        <div>
+          <div class="q-score-label">Självskattning</div>
+          <div class="q-score-msg" id="qs-msg">${msg}</div>
+        </div>
+      </div>`
+    );
+  } else {
+    document.getElementById('qs-num').textContent = `${n}/${total}`;
+    document.getElementById('qs-msg').textContent = msg;
+  }
+}
+
+
+
+buildQuestions();
+
+</script>
+</main>
+
+<footer>
+  <a href="nk2-manniskokroppen.html">← Tillbaka till NK2 människokroppen</a> &middot; Naturkunskap 2 &middot; Andningen
+</footer>
+
+
+</body>
+</html>
+
