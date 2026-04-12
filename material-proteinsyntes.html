@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Proteinsyntes – NK1b</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Mulish:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #faf7f2; --surface: #ffffff; --border: #e8e0d0;
+      --sand: #f2ece0; --rust: #b85c2a; --rust2: #d4703a;
+      --teal: #2a7a6a; --blue: #2a4a7a; --text: #1a1612;
+      --muted: #6a5e52; --radius: 10px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Mulish', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; font-size: 16px; }
+
+    /* TOP BAR */
+    .top-bar { background: #1a1612; padding: 14px 28px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; position: sticky; top: 0; z-index: 100; }
+    .back-link { color: #c8b89a; text-decoration: none; font-size: .82rem; transition: color .2s; }
+    .back-link:hover { color: #fff; }
+    .top-title { font-family: 'Playfair Display', serif; font-size: 1rem; color: #e8dcc8; }
+    .top-title span { color: #d4a060; }
+
+    /* HERO */
+    .hero { background: linear-gradient(135deg, #1a1612 0%, #1a2820 60%, #1a1612 100%); padding: 64px 32px 56px; text-align: center; position: relative; overflow: hidden; }
+    .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 60% 60% at 30% 50%, rgba(42,122,106,.12) 0%, transparent 60%), radial-gradient(ellipse 50% 70% at 80% 30%, rgba(180,92,42,.06) 0%, transparent 55%); pointer-events: none; }
+    .hero-eyebrow { font-size: .72rem; letter-spacing: .22em; text-transform: uppercase; color: #d4a060; margin-bottom: 12px; }
+    .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 5vw, 3rem); font-weight: 900; color: #f0e8d8; margin-bottom: 16px; line-height: 1.15; }
+    .hero-sub { font-size: 1rem; color: #a09080; max-width: 560px; margin: 0 auto 32px; line-height: 1.7; }
+    .hero-nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+    .hero-nav a { font-size: .8rem; color: #c8b89a; border: 1px solid rgba(200,184,154,.3); border-radius: 30px; padding: 7px 16px; text-decoration: none; transition: all .2s; }
+    .hero-nav a:hover { background: rgba(200,184,154,.12); color: #fff; }
+
+    /* LAYOUT */
+    .container { max-width: 860px; margin: 0 auto; padding: 0 24px; }
+    .section { padding: 60px 0; }
+    .section + .section { border-top: 1px solid var(--border); }
+
+    .section-eyebrow { font-size: .7rem; letter-spacing: .2em; text-transform: uppercase; color: var(--rust); font-weight: 600; margin-bottom: 8px; }
+    .section-title { font-family: 'Playfair Display', serif; font-size: clamp(1.5rem, 3vw, 2rem); color: var(--text); margin-bottom: 6px; line-height: 1.25; }
+    .section-intro { font-size: .95rem; color: var(--muted); margin-bottom: 32px; max-width: 640px; line-height: 1.7; }
+
+    /* PROSE */
+    .prose { font-size: .95rem; line-height: 1.75; color: #2a2016; margin-bottom: 24px; }
+    .prose strong { color: var(--text); font-weight: 600; }
+
+    /* KEY BOX */
+    .key-box { background: var(--sand); border-left: 4px solid var(--rust2); border-radius: 0 var(--radius) var(--radius) 0; padding: 18px 22px; margin-bottom: 28px; }
+    .key-box h4 { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--rust); margin-bottom: 10px; }
+    .key-box p { font-size: .88rem; color: #4a3a2a; line-height: 1.65; }
+    .key-box dl { font-size: .88rem; color: #4a3a2a; display: flex; flex-direction: column; gap: 8px; }
+    .key-box dt { font-weight: 600; color: var(--text); display: inline; }
+    .key-box dd { display: inline; margin: 0; }
+    .key-box .term-row { line-height: 1.55; }
+
+    /* DIAGRAM */
+    .diagram-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; margin-bottom: 28px; overflow-x: auto; }
+    .diagram-caption { font-size: .78rem; color: var(--muted); text-align: center; margin-top: 12px; font-style: italic; }
+
+    /* COMPARE TABLE */
+    .compare-table { width: 100%; border-collapse: collapse; margin-bottom: 32px; font-size: .88rem; }
+    .compare-table th { background: #1a1612; color: #e8dcc8; padding: 12px 16px; text-align: left; font-weight: 600; font-family: 'Playfair Display', serif; }
+    .compare-table th:first-child { border-radius: 8px 0 0 0; }
+    .compare-table th:last-child { border-radius: 0 8px 0 0; }
+    .compare-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); vertical-align: top; }
+    .compare-table tr:nth-child(even) td { background: var(--sand); }
+    .compare-table tr:last-child td { border-bottom: none; }
+    .compare-table td:first-child { font-weight: 600; color: var(--text); }
+
+    /* PROCESS STEPS */
+    .process-steps { display: flex; flex-direction: column; gap: 0; margin-bottom: 32px; position: relative; }
+    .process-steps::before { content: ''; position: absolute; left: 22px; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, var(--rust2), var(--teal)); opacity: .3; }
+    .process-step { display: flex; gap: 18px; align-items: flex-start; padding: 16px 0; }
+    .step-num { width: 44px; height: 44px; border-radius: 50%; background: var(--rust2); color: #fff; display: flex; align-items: center; justify-content: center; font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; flex-shrink: 0; position: relative; z-index: 1; }
+    .step-num.teal { background: var(--teal); }
+    .step-num.blue { background: var(--blue); }
+    .step-body h4 { font-size: .95rem; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+    .step-body p { font-size: .85rem; color: var(--muted); line-height: 1.6; }
+
+    /* ANALOGY BOX */
+    .analogy-box { background: #1a1612; border-radius: var(--radius); padding: 28px 32px; margin-bottom: 32px; }
+    .analogy-box h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: #e8dcc8; margin-bottom: 14px; }
+    .analogy-box p { font-size: .9rem; color: #a09080; line-height: 1.7; }
+    .analogy-box strong { color: #e8dcc8; }
+
+    /* SELF-CHECK */
+    .q-card { background: #1a1612; border: 1px solid #2a2018; border-radius: var(--radius); padding: 22px 26px; margin-bottom: 18px; }
+    .q-num { font-size: .68rem; letter-spacing: .18em; text-transform: uppercase; color: #d4a060; margin-bottom: 7px; font-weight: 600; }
+    .q-text { font-family: 'Playfair Display', serif; font-size: .95rem; color: #f0e8d8; margin-bottom: 14px; line-height: 1.5; }
+    .q-textarea { width: 100%; background: #0f0c08; border: 1.5px solid #2a2018; border-radius: 6px; color: #e8dcc8; font-family: 'Mulish', sans-serif; font-size: .9rem; padding: 11px 13px; resize: vertical; min-height: 80px; outline: none; transition: border-color .2s; line-height: 1.6; }
+    .q-textarea:focus { border-color: #d4703a; }
+    .q-btn { margin-top: 10px; font-family: 'Mulish', sans-serif; font-size: .84rem; font-weight: 600; padding: 8px 20px; border-radius: 6px; border: none; cursor: pointer; background: #d4703a; color: #fff; transition: background .2s; }
+    .q-btn:hover { background: #b85c2a; }
+    .q-model { margin-top: 14px; display: none; background: #0f0c08; border: 1px solid #2a2018; border-radius: 6px; overflow: hidden; }
+    .q-model.shown { display: block; }
+    .q-model-header { background: #2a2018; padding: 8px 16px; font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: #d4a060; font-weight: 600; }
+    .q-model-body { padding: 14px 18px; font-size: .88rem; color: #c8b89a; line-height: 1.75; }
+    .q-model-body strong { color: #f0e8d8; }
+    .q-model-body ul { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+    .q-model-body li { padding-left: 16px; position: relative; }
+    .q-model-body li::before { content: '→'; position: absolute; left: 0; color: #d4703a; font-size: .8rem; }
+    .q-self-check { margin-top: 12px; padding-top: 12px; border-top: 1px solid #2a2018; display: flex; align-items: center; gap: 10px; font-size: .82rem; color: #8a7a60; cursor: pointer; }
+    .q-self-check input { accent-color: #d4703a; width: 16px; height: 16px; cursor: pointer; }
+    .q-retry { margin-top: 10px; font-size: .78rem; color: #6a5a40; background: none; border: none; cursor: pointer; font-family: 'Mulish', sans-serif; text-decoration: underline; padding: 0; display: block; }
+    .q-score-bar { background: #0f0c08; border: 1px solid #2a2018; border-radius: var(--radius); padding: 20px 24px; margin-top: 32px; display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+    .q-score-num { font-family: 'Playfair Display', serif; font-size: 2rem; color: #d4703a; }
+    .q-score-label { font-size: .85rem; color: #8a7a60; }
+    .q-score-msg { font-size: .88rem; color: #c8b89a; }
+
+    footer { border-top: 1px solid var(--border); padding: 28px 24px; text-align: center; font-size: .78rem; color: var(--muted); margin-top: 40px; }
+    footer a { color: var(--teal); text-decoration: none; }
+
+    @media(max-width: 580px) {
+      .hero { padding: 44px 20px 36px; }
+      .container { padding: 0 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="top-bar">
+  <a href="nk1b-genetik.html" class="back-link">← Genetik</a>
+  <div class="top-title">NK1b &mdash; <span>Proteinsyntes</span></div>
+</div>
+
+<div class="hero">
+  <p class="hero-eyebrow">Genetik &middot; NK1b</p>
+  <h1>Proteinsyntes</h1>
+  <p class="hero-sub">Hur informationen i DNA omvandlas till proteiner – cellens viktigaste byggmaterial och funktionsmolekyler.</p>
+  <nav class="hero-nav">
+    <a href="#oversikt">Översikt</a>
+    <a href="#dna">DNA & gener</a>
+    <a href="#transkription">Transkription</a>
+    <a href="#translation">Translation</a>
+    <a href="#sammanfattning">Sammanfattning</a>
+    <a href="#kolla">Kolla att du kan</a>
+  </nav>
+</div>
+
+<main>
+
+<!-- ══════════════════════════════════════
+     SEKTION 1 – ÖVERSIKT
+══════════════════════════════════════ -->
+<div class="section" id="oversikt">
+<div class="container">
+  <p class="section-eyebrow">Introduktion</p>
+  <h2 class="section-title">Från gen till protein – en översikt</h2>
+  <p class="section-intro">Nästan allt som händer i en levande cell styrs av proteiner. Enzymer som driver kemiska reaktioner, hormoner som skickar signaler, antikroppar som bekämpar inkräktare – allt är proteiner. Men hur byggs de? Svaret finns kodat i DNA.</p>
+
+  <div class="analogy-box">
+    <h3>🏗️ En bra liknelse</h3>
+    <p>Tänk dig att <strong>DNA är ett byggnadsarkiv</strong> som förvaras i ett säkert valv (cellkärnan). Arkivet innehåller alla ritningar (generna), men originalen får aldrig lämna valvet. Istället görs <strong>kopior (mRNA)</strong> som skickas ut till fabriksgolvet (cytoplasman), där <strong>proteinerna faktiskt tillverkas</strong> av montörer (ribosomer) med hjälp av materialleverantörer (tRNA).</p>
+  </div>
+
+  <!-- SVG: Flödesöversikt -->
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 700 110" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:700px;display:block;margin:0 auto">
+      <defs>
+        <marker id="arr" markerWidth="8" markerHeight="6" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#6a5e52"/></marker>
+      </defs>
+      <!-- DNA -->
+      <rect x="10" y="30" width="130" height="50" rx="8" fill="#1a1612"/>
+      <text x="75" y="52" text-anchor="middle" font-family="Playfair Display,serif" font-size="13" fill="#e8dcc8" font-weight="700">DNA</text>
+      <text x="75" y="70" text-anchor="middle" font-family="Mulish,sans-serif" font-size="10" fill="#a09080">I cellkärnan</text>
+      <!-- arrow -->
+      <line x1="140" y1="55" x2="190" y2="55" stroke="#6a5e52" stroke-width="2" marker-end="url(#arr)"/>
+      <text x="165" y="30" text-anchor="middle" font-family="Mulish,sans-serif" font-size="9" fill="#b85c2a" font-style="italic">Transkription</text>
+      <!-- mRNA -->
+      <rect x="193" y="30" width="130" height="50" rx="8" fill="#2a4a7a"/>
+      <text x="258" y="52" text-anchor="middle" font-family="Playfair Display,serif" font-size="13" fill="#e8dcc8" font-weight="700">mRNA</text>
+      <text x="258" y="70" text-anchor="middle" font-family="Mulish,sans-serif" font-size="10" fill="#a0c0e8">Budbärare</text>
+      <!-- arrow -->
+      <line x1="323" y1="55" x2="373" y2="55" stroke="#6a5e52" stroke-width="2" marker-end="url(#arr)"/>
+      <text x="348" y="30" text-anchor="middle" font-family="Mulish,sans-serif" font-size="9" fill="#b85c2a" font-style="italic">Translation</text>
+      <!-- Ribosom -->
+      <rect x="376" y="30" width="130" height="50" rx="8" fill="#2a7a6a"/>
+      <text x="441" y="52" text-anchor="middle" font-family="Playfair Display,serif" font-size="13" fill="#e8dcc8" font-weight="700">Ribosom</text>
+      <text x="441" y="70" text-anchor="middle" font-family="Mulish,sans-serif" font-size="10" fill="#a0e0c0">+ tRNA</text>
+      <!-- arrow -->
+      <line x1="506" y1="55" x2="556" y2="55" stroke="#6a5e52" stroke-width="2" marker-end="url(#arr)"/>
+      <!-- Protein -->
+      <rect x="559" y="30" width="130" height="50" rx="8" fill="#b85c2a"/>
+      <text x="624" y="52" text-anchor="middle" font-family="Playfair Display,serif" font-size="13" fill="#f0e8d8" font-weight="700">Protein</text>
+      <text x="624" y="70" text-anchor="middle" font-family="Mulish,sans-serif" font-size="10" fill="#ffd0a8">Aminosyrekedja</text>
+    </svg>
+    <p class="diagram-caption">Figur 1. Informationsflödet i cellen: DNA → mRNA → Protein. Transkription sker i cellkärnan, translation i cytoplasman.</p>
+  </div>
+
+  <div class="key-box">
+    <h4>🔑 Tre aktörer att hålla koll på</h4>
+    <dl>
+      <div class="term-row"><dt>DNA</dt><dd> – det dubbelsidiga arvsanlagets "masterritning". Lämnar aldrig cellkärnan.</dd></div>
+      <div class="term-row"><dt>RNA</dt><dd> – enkelsträngad kopia av DNA; finns i tre varianter: mRNA, tRNA och rRNA.</dd></div>
+      <div class="term-row"><dt>Aminosyror</dt><dd> – proteinernas byggstenar. Kedjas ihop i rätt ordning med hjälp av informationen i mRNA.</dd></div>
+    </dl>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SEKTION 2 – DNA OCH GENER
+══════════════════════════════════════ -->
+<div class="section" id="dna">
+<div class="container">
+  <p class="section-eyebrow">Grunden</p>
+  <h2 class="section-title">DNA, gener och den genetiska koden</h2>
+  <p class="section-intro">Innan vi kan förstå proteinsyntesen behöver vi ha koll på hur informationen faktiskt är lagrad i DNA.</p>
+
+  <p class="prose">DNA-molekylen är uppbyggd av fyra kvävebaser: <strong>adenin (A)</strong>, <strong>tymin (T)</strong>, <strong>guanin (G)</strong> och <strong>cytosin (C)</strong>. Ordningsföljden av dessa baser längs DNA-strängen är den genetiska koden – precis som bokstäver i ett alfabet bildar ord och meningar.</p>
+
+  <p class="prose">En <strong>gen</strong> är en specifik sekvens av baser som kodar för ett visst protein. Människans genom innehåller ungefär 20 000–25 000 gener, inlagrade i 46 kromosomer.</p>
+
+  <!-- SVG: DNA-baspar -->
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 680 180" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:680px;display:block;margin:0 auto">
+      <!-- Labels -->
+      <text x="340" y="18" text-anchor="middle" font-family="Playfair Display,serif" font-size="13" fill="#1a1612" font-weight="700">DNA – komplementära baspar</text>
+
+      <!-- Strand 1 bases -->
+      <!-- A -->
+      <rect x="100" y="48" width="36" height="30" rx="5" fill="#d4703a"/>
+      <text x="118" y="68" text-anchor="middle" font-family="Mulish,sans-serif" font-size="14" font-weight="700" fill="#fff">A</text>
+      <!-- T -->
+      <rect x="180" y="48" width="36" height="30" rx="5" fill="#2a7a6a"/>
+      <text x="198" y="68" text-anchor="middle" font-family="Mulish,sans-serif" font-size="14" font-weight="700" fill="#fff">T</text>
+      <!-- G -->
+      <rect x="260" y="48" width="36" height="30" rx="5" fill="#2a4a7a"/>
+      <text x="278" y="68" text-anchor="middle" font-family="Mulish,sans-serif" font-size="14" font-weight="700" fill="#fff">G</text>
+      <!-- C -->
+      <rect x="340" y="48" width="36" height="30" rx="5" fill="#8a4020"/>
+      <text x="358" y="68" text-anchor="middle" font-family="Mulish,sans-serif" font-size="14" font-weight="700" fill="#fff">C</text>
+      <!-- A -->
+      <rect x="420" y="48" width="36" height="30" rx="5" fill="#d4703a"/>
+      <text x="438" y="68" text-anchor="middle" font-family="Mulish,sans-serif" font-size="14" font-weight="700" fill="#fff">A</text>
+      <!-- G -->
+      <rect x="500" y="48" width="36" height="30" rx="5" fill="#2a4a7a"/>
+      <text x="518" y="68" text-anchor="middle" font-family="Mulish,sans-serif" font-size="14" font-weight="700" fill="#fff">G</text>
+
+      <!-- Hydrogen bonds (dashed lines) -->
+      <line x1="118" y1="78" x2="118" y2="112" stroke="#c8b89a" stroke-width="1.5" stroke-dasharray="4,3"/>
+      <line x1="198" y1="78" x2="198" y2="112" stroke="#c8b89a" stroke-width="1.5" stroke-dasharray="4,3"/>
+      <line x1="278" y1="78" x2="278" y2="112" stroke="#c8b89a" stroke-width="1.5" stroke-dasharray="4,3"/>
+      <line x1="358" y1="78" x2="358" y2="112" stroke="#c8b89a" stroke-width="1.5" stroke-dasharray="4,3"/>
+      <line x1="438" y1="78" x2="438" y2="112" stroke="#c8b89a" stroke-width="1.5" stroke-dasharray="4,3"/>
+      <line x1="518" y1="78" x2="518" y2="112" stroke="#c8b89a" stroke-width="1.5" stroke-dasharray="4,3"/>
+
+      <!-- Strand 2 bases (complementary) -->
+      <!-- T pairs with A -->
+      <rect x="100" y="112" width="36" height="30" rx="5" fill="#2a7a6a"/>
+      <text x="118" y="132" text-anchor="middle" font-family="Mulish,sans-serif" font-size="14" font-weight="700" fill="#fff">T</text>
+      <!-- A pairs with T -->
+      <rect x="180" y="112" width="36" height="30" rx="5" fill="#d4703a"/>
+      <text x="198" y="132" text-anchor="middle" font-family="Mulish,sans-serif" font-size="14" font-weight="700" fill="#fff">A</text>
+      <!-- C pairs with G -->
+      <rect x="260" y="112" width="36" height="30" rx="5" fill="#8a4020"/>
+      <text x="278" y="132" text-anchor="middle" font-family="Mulish,sans-serif" font-size="14" font-weight="700" fill="#fff">C</text>
+      <!-- G pairs with C -->
+      <rect x="340" y="112" width="36" height="30" rx="5" fill="#2a4a7a"/>
+      <text x="358" y="132" text-anchor="middle" font-family="Mulish,sans-serif" font-size="14" font-weight="700" fill="#fff">G</text>
+      <!-- T pairs with A -->
+      <rect x="420" y="112" width="36" height="30" rx="5" fill="#2a7a6a"/>
+      <text x="438" y="132" text-anchor="middle" font-family="Mulish,sans-serif" font-size="14" font-weight="700" fill="#fff">T</text>
+      <!-- C pairs with G -->
+      <rect x="500" y="112" width="36" height="30" rx="5" fill="#8a4020"/>
+      <text x="518" y="132" text-anchor="middle" font-family="Mulish,sans-serif" font-size="14" font-weight="700" fill="#fff">C</text>
+
+      <!-- Pairing labels -->
+      <text x="80" y="100" font-family="Mulish,sans-serif" font-size="9" fill="#b85c2a" font-style="italic">A–T</text>
+      <text x="160" y="100" font-family="Mulish,sans-serif" font-size="9" fill="#b85c2a" font-style="italic">T–A</text>
+      <text x="240" y="100" font-family="Mulish,sans-serif" font-size="9" fill="#b85c2a" font-style="italic">G–C</text>
+      <text x="320" y="100" font-family="Mulish,sans-serif" font-size="9" fill="#b85c2a" font-style="italic">C–G</text>
+      <text x="400" y="100" font-family="Mulish,sans-serif" font-size="9" fill="#b85c2a" font-style="italic">A–T</text>
+      <text x="480" y="100" font-family="Mulish,sans-serif" font-size="9" fill="#b85c2a" font-style="italic">G–C</text>
+    </svg>
+    <p class="diagram-caption">Figur 2. DNA:s komplementära baspar – A parar alltid med T, och G parar alltid med C. Strecken representerar svaga vätebindningar.</p>
+  </div>
+
+  <div class="key-box">
+    <h4>🔑 Komplementaritetsprincipen</h4>
+    <dl>
+      <div class="term-row"><dt>A–T</dt><dd> – Adenin binder alltid till Tymin (i DNA) eller Uracil (i RNA).</dd></div>
+      <div class="term-row"><dt>G–C</dt><dd> – Guanin binder alltid till Cytosin.</dd></div>
+      <div class="term-row"><dt>Uracil (U)</dt><dd> – I RNA ersätts Tymin av Uracil. Alltså: A i DNA → U i mRNA.</dd></div>
+    </dl>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SEKTION 3 – TRANSKRIPTION
+══════════════════════════════════════ -->
+<div class="section" id="transkription">
+<div class="container">
+  <p class="section-eyebrow">Steg 1</p>
+  <h2 class="section-title">Transkription – kopiera ritningen</h2>
+  <p class="section-intro">Transkription är det första steget i proteinsyntesen. En kopia av genen görs i form av mRNA, som sedan lämnar cellkärnan.</p>
+
+  <p class="prose">Transkriptionen startar när ett enzym som kallas RNA‑polymeras fäster vid början av en gen i DNA‑molekylen. Enzymet öppnar DNA‑spiralen och använder den ena DNA‑strängen som mall. Med hjälp av denna mall byggs en ny mRNA‑sträng genom att passande RNA‑baser kopplas ihop.
+</p>
+
+  <p class="prose">När hela genen har kopierats släpper mRNA‑strängen, och DNA‑molekylen sluts igen.
+I eukaryota celler, som mänskliga celler, bearbetas mRNA vidare i cellkärnan innan det transporteras ut till cytoplasman där proteinsyntesen fortsätter.</p>
+
+  <!-- SVG: Transkriptionsprocessen (centrerad) -->
+<div class="diagram-wrap">
+  <svg viewBox="0 0 700 220"
+       xmlns="http://www.w3.org/2000/svg"
+       style="width:100%;max-width:700px;display:block;margin:0 auto">
+
+    <defs>
+      <marker id="arr2" markerWidth="8" markerHeight="6"
+              refX="6" refY="3" orient="auto">
+        <path d="M0,0 L0,6 L8,3 z" fill="#d4703a"/>
+      </marker>
+    </defs>
+
+    <!-- Titel -->
+    <text x="350" y="18" text-anchor="middle"
+          font-family="Playfair Display,serif"
+          font-size="13" font-weight="700" fill="#1a1612">
+      Transkription – DNA läses av, mRNA byggs
+    </text>
+
+<!-- CENTRERAT DIAGRAMINNEHÅLL -->
+<g transform="translate(45,0)">
+
+  <!-- DNA strand -->
+  <text x="60" y="52" font-family="Mulish,sans-serif"
+        font-size="10" fill="#6a5e52">DNA-mall:</text>
+
+  <rect x="130" y="40" width="36" height="26" rx="4" fill="#1a1612"/>
+  <text x="148" y="58" text-anchor="middle"
+        font-size="12" font-weight="700" fill="#e8dcc8">T</text>
+
+  <rect x="175" y="40" width="36" height="26" rx="4" fill="#1a1612"/>
+  <text x="193" y="58" text-anchor="middle"
+        font-size="12" font-weight="700" fill="#e8dcc8">A</text>
+
+  <rect x="220" y="40" width="36" height="26" rx="4" fill="#1a1612"/>
+  <text x="238" y="58" text-anchor="middle"
+        font-size="12" font-weight="700" fill="#e8dcc8">C</text>
+
+  <rect x="265" y="40" width="36" height="26" rx="4" fill="#1a1612"/>
+  <text x="283" y="58" text-anchor="middle"
+        font-size="12" font-weight="700" fill="#e8dcc8">G</text>
+
+  <rect x="310" y="40" width="36" height="26" rx="4" fill="#1a1612"/>
+  <text x="328" y="58" text-anchor="middle"
+        font-size="12" font-weight="700" fill="#e8dcc8">T</text>
+
+  <rect x="355" y="40" width="36" height="26" rx="4" fill="#1a1612"/>
+  <text x="373" y="58" text-anchor="middle"
+        font-size="12" font-weight="700" fill="#e8dcc8">A</text>
+
+  <rect x="400" y="40" width="36" height="26" rx="4" fill="#1a1612"/>
+  <text x="418" y="58" text-anchor="middle"
+        font-size="12" font-weight="700" fill="#e8dcc8">C</text>
+
+  <rect x="445" y="40" width="36" height="26" rx="4" fill="#1a1612"/>
+  <text x="463" y="58" text-anchor="middle"
+        font-size="12" font-weight="700" fill="#e8dcc8">G</text>
+
+  <!-- RNA-polymeras-pil -->
+  <text x="310" y="100" text-anchor="middle"
+        font-family="Mulish,sans-serif"
+        font-size="10" fill="#b85c2a" font-style="italic">
+    RNA-polymeras avläser och bygger mRNA
+  </text>
+  <line x1="310" y1="105" x2="310" y2="118"
+        stroke="#d4703a" stroke-width="1.5"
+        marker-end="url(#arr2)"/>
+
+  <!-- mRNA -->
+  <text x="60" y="148" font-family="Mulish,sans-serif"
+        font-size="10" fill="#2a4a7a">mRNA:</text>
+
+  <rect x="130" y="136" width="36" height="26" rx="4" fill="#2a4a7a"/>
+  <text x="148" y="154" text-anchor="middle"
+        font-size="12" font-weight="700" fill="#fff">A</text>
+
+  <rect x="175" y="136" width="36" height="26" rx="4" fill="#2a4a7a"/>
+  <text x="193" y="154" text-anchor="middle"
+        font-size="12" font-weight="700" fill="#fff">U</text>
+
+  <rect x="220" y="136" width="36" height="26" rx="4" fill="#2a4a7a"/>
+  <text x="238" y="154" text-anchor="middle"
+        font-size="12" font-weight="700" fill="#fff">G</text>
+
+  <rect x="265" y="136" width="36" height="26" rx="4" fill="#2a4a7a"/>
+  <text x="283" y="154" text-anchor="middle"
+        font-size="12" font-weight="700" fill="#fff">C</text>
+
+  <rect x="310" y="136" width="36" height="26" rx="4" fill="#2a4a7a"/>
+  <text x="328" y="154" text-anchor="middle"
+        font-size="12" font-weight="700" fill="#fff">A</text>
+
+  <rect x="355" y="136" width="36" height="26" rx="4" fill="#2a4a7a"/>
+  <text x="373" y="154" text-anchor="middle"
+        font-size="12" font-weight="700" fill="#fff">U</text>
+
+  <rect x="400" y="136" width="36" height="26" rx="4" fill="#2a4a7a"/>
+  <text x="418" y="154" text-anchor="middle"
+        font-size="12" font-weight="700" fill="#fff">G</text>
+
+  <rect x="445" y="136" width="36" height="26" rx="4" fill="#2a4a7a"/>
+  <text x="463" y="154" text-anchor="middle"
+        font-size="12" font-weight="700" fill="#fff">C</text>
+
+</g>
+
+    </g>
+
+    <!-- Not -->
+    <text x="350" y="195" text-anchor="middle"
+          font-family="Mulish,sans-serif"
+          font-size="10" fill="#6a5e52" font-style="italic">
+      Notera: Tymin (T) i DNA → Uracil (U) i mRNA. Övriga regler är desamma.
+    </text>
+
+  </svg>
+
+  <p class="diagram-caption">
+    Figur 3. Transkription – RNA‑polymeraset läser DNA‑mallen och sätter ihop en
+    komplementär mRNA‑sträng. Tymin byts ut mot Uracil i RNA.
+  </p>
+</div>
+
+  <div class="key-box">
+    <h4>🔑 Nyckelbegrepp – Transkription</h4>
+    <dl>
+      <div class="term-row"><dt>RNA-polymeras</dt><dd> – det enzym som utför transkriptionen, sätter ihop mRNA utifrån DNA-mallen.</dd></div>
+      <div class="term-row"><dt>mRNA (budbärar-RNA)</dt><dd> – den enkelsträng som kopieras av genen och bär informationen ut ur kärnan.</dd></div>
+      <div class="term-row"><dt>Promotor</dt><dd> – en sekvens i DNA som signalerar var transkriptionen ska börja.</dd></div>
+      <div class="term-row"><dt>Uracil (U)</dt><dd> – den RNA-bas som ersätter Tymin; U parar med A precis som T gör.</dd></div>
+    </dl>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SEKTION 4 – TRANSLATION
+══════════════════════════════════════ -->
+<div class="section" id="translation">
+<div class="container">
+  <p class="section-eyebrow">Steg 2</p>
+  <h2 class="section-title">Translation – bygga proteinet</h2>
+  <p class="section-intro">Translation är det andra och avslutande steget. Här "läser" ribosomen mRNA och sätter ihop aminosyror i rätt ordning för att bilda ett protein.</p>
+
+  <p class="prose">mRNA-strängen bär koden i form av <strong>kodoner</strong> – tripletter av tre baser i rad. Varje kodon kodar för en specifik aminosyra. Det finns 64 möjliga kodoner men bara 20 aminosyror, vilket innebär att flera kodoner kan koda för samma aminosyra – koden är alltså <strong>redundant</strong>.</p>
+
+  <p class="prose"><strong>tRNA (transport-RNA)</strong> är molekylerna som levererar rätt aminosyra till ribosomen. Varje tRNA-molekyl har en <strong>antikodon</strong> – tre baser som parar med motsvarande kodon på mRNA. I den andra änden av tRNA sitter den aminosyra som kodas av det kodonet.</p>
+
+  <!-- SVG: Kodon–antikodon-igenkänning (rensad och centrerad) -->
+<div class="diagram-wrap">
+  <svg viewBox="0 0 700 240"
+       xmlns="http://www.w3.org/2000/svg"
+       style="width:100%;max-width:700px;display:block;margin:0 auto">
+
+    <!-- Titel -->
+    <text x="350" y="18" text-anchor="middle"
+          font-family="Playfair Display,serif"
+          font-size="13" font-weight="700" fill="#1a1612">
+      Translation – ribosom läser mRNA, tRNA levererar aminosyror
+    </text>
+
+    <!-- ========================= -->
+    <!-- CENTRERAT DIAGRAMINNEHÅLL -->
+    <!-- ========================= -->
+    <g transform="translate(70,0)">
+
+      <!-- RIBOSOM (bakgrund, flyttad ner & bakom) -->
+      <rect x="35" y="32" width="460" height="165" rx="10"
+            fill="none" stroke="#e8e0d0" stroke-width="1.5"
+            stroke-dasharray="6,4"/>
+      <text x="510" y="135"
+            font-family="Mulish,sans-serif"
+            font-size="10" fill="#a09080"
+            font-style="italic">
+        Ribosom
+      </text>
+
+      <!-- mRNA -->
+      <text x="40" y="68"
+            font-family="Mulish,sans-serif"
+            font-size="10" fill="#2a4a7a">
+        mRNA:
+      </text>
+
+      <!-- Kodon 1 -->
+      <rect x="90" y="55" width="36" height="26" rx="4" fill="#2a4a7a"/>
+      <rect x="130" y="55" width="36" height="26" rx="4" fill="#2a4a7a"/>
+      <rect x="170" y="55" width="36" height="26" rx="4" fill="#2a4a7a"/>
+      <text x="148" y="48" text-anchor="middle" font-size="9" fill="#b85c2a">
+        Kodon 1: AUG (start)
+      </text>
+
+      <!-- Codon 1 letters -->
+      <text x="108" y="73" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">A</text>
+      <text x="148" y="73" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">U</text>
+      <text x="188" y="73" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">G</text>
+
+      <!-- Kodon 2 -->
+      <rect x="215" y="55" width="36" height="26" rx="4" fill="#1a3040"/>
+      <rect x="255" y="55" width="36" height="26" rx="4" fill="#1a3040"/>
+      <rect x="295" y="55" width="36" height="26" rx="4" fill="#1a3040"/>
+      <text x="273" y="48" text-anchor="middle" font-size="9" fill="#6a8aa0">
+        Kodon 2: CGU
+      </text>
+
+      <text x="233" y="73" text-anchor="middle" font-size="12" font-weight="700" fill="#a0c0e8">C</text>
+      <text x="273" y="73" text-anchor="middle" font-size="12" font-weight="700" fill="#a0c0e8">G</text>
+      <text x="313" y="73" text-anchor="middle" font-size="12" font-weight="700" fill="#a0c0e8">U</text>
+
+      <!-- Kodon 3 -->
+      <rect x="340" y="55" width="36" height="26" rx="4" fill="#1a3040"/>
+      <rect x="380" y="55" width="36" height="26" rx="4" fill="#1a3040"/>
+      <rect x="420" y="55" width="36" height="26" rx="4" fill="#1a3040"/>
+      <text x="398" y="48" text-anchor="middle" font-size="9" fill="#6a8aa0">
+        Kodon 3: AAC
+      </text>
+
+      <text x="358" y="73" text-anchor="middle" font-size="12" font-weight="700" fill="#a0c0e8">A</text>
+      <text x="398" y="73" text-anchor="middle" font-size="12" font-weight="700" fill="#a0c0e8">A</text>
+      <text x="438" y="73" text-anchor="middle" font-size="12" font-weight="700" fill="#a0c0e8">C</text>
+
+      <!-- tRNA + aminosyror -->
+      <rect x="90" y="102" width="36" height="26" rx="4" fill="#2a7a6a"/>
+      <rect x="130" y="102" width="36" height="26" rx="4" fill="#2a7a6a"/>
+      <rect x="170" y="102" width="36" height="26" rx="4" fill="#2a7a6a"/>
+
+      <text x="148" y="96" text-anchor="middle" font-size="9" fill="#2a7a6a">
+        tRNA (antikodon UAC)
+      </text>
+<!-- Koppling mellan tRNA och aminosyra -->
+<line x1="148" y1="128" x2="148" y2="143"
+      stroke="#2a7a6a" stroke-width="2"/>
+
+<line x1="273" y1="128" x2="273" y2="143"
+      stroke="#2a7a6a" stroke-width="2"/>
+
+      <ellipse cx="148" cy="165" rx="42" ry="22" fill="#d4703a"/>
+      <text x="148" y="170" text-anchor="middle" font-size="11" font-weight="600" fill="#fff">Met</text>
+
+      <rect x="215" y="102" width="36" height="26" rx="4" fill="#2a7a6a"/>
+      <rect x="255" y="102" width="36" height="26" rx="4" fill="#2a7a6a"/>
+      <rect x="295" y="102" width="36" height="26" rx="4" fill="#2a7a6a"/>
+
+      <text x="273" y="96" text-anchor="middle" font-size="9" fill="#2a7a6a">
+        tRNA (antikodon GCA)
+      </text>
+
+      <ellipse cx="273" cy="165" rx="42" ry="22" fill="#d4703a"/>
+      <text x="273" y="170" text-anchor="middle" font-size="11" font-weight="600" fill="#fff">Arg</text>
+
+      <!-- Peptidbindning – FLYTTAD UPP -->
+      <line x1="190" y1="165" x2="231" y2="165"
+            stroke="#1a1612" stroke-width="2.5"/>
+      <text x="210" y="150" text-anchor="middle"
+            font-size="8" fill="#6a5e52">
+        peptidbindning
+      </text>
+
+    </g>
+  </svg>
+
+  <p class="diagram-caption">
+    Figur 4. Translation – ribosomen läser mRNA‑kodonet, tRNA med matchande
+    antikodon levererar rätt aminosyra. Aminosyrorna kopplas ihop med
+    peptidbindningar.
+  </p>
+</div>
+
+  <p class="prose">Proteinsyntesen börjar alltid vid <strong>startkodonet AUG</strong>, som kodar för aminosyran metionin. Ribosomen rör sig sedan längs mRNA och adderar en aminosyra i taget tills det möter ett <strong>stoppkodon</strong> (UAA, UAG eller UGA). Stoppkodoner kodar inte för någon aminosyra – de signalerar att kedjan är klar. Den färdiga aminosyrekedjan veckas sedan ut till en tredimensionell form och blir ett funktionellt protein.</p>
+
+  <div class="key-box">
+    <h4>🔑 Nyckelbegrepp – Translation</h4>
+    <dl>
+      <div class="term-row"><dt>Kodon</dt><dd> – tre baser i följd på mRNA som kodar för en aminosyra.</dd></div>
+      <div class="term-row"><dt>Antikodon</dt><dd> – tre komplementära baser på tRNA som parar med kodonet.</dd></div>
+      <div class="term-row"><dt>tRNA (transport-RNA)</dt><dd> – levererar rätt aminosyra till ribosomen baserat på kodonet.</dd></div>
+      <div class="term-row"><dt>Ribosom</dt><dd> – cellens "proteinbyggmaskin"; läser mRNA och katalyserar peptidbindningarna.</dd></div>
+      <div class="term-row"><dt>Startkodonet AUG</dt><dd> – alltid proteinsyntesens startpunkt; kodar för aminosyran metionin.</dd></div>
+      <div class="term-row"><dt>Stoppkodon</dt><dd> – UAA, UAG eller UGA; signalerar att aminosyrekedjan är komplett.</dd></div>
+      <div class="term-row"><dt>Peptidbindning</dt><dd> – den kemiska bindning som kopplar ihop aminosyror i en kedja.</dd></div>
+    </dl>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SEKTION 5 – SAMMANFATTNING
+══════════════════════════════════════ -->
+<div class="section" id="sammanfattning">
+<div class="container">
+  <p class="section-eyebrow">Sammanfattning</p>
+  <h2 class="section-title">Proteinsyntesen steg för steg</h2>
+  <p class="section-intro">Här är hela flödet samlat, från DNA till färdigt protein.</p>
+
+  <div class="process-steps">
+    <div class="process-step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <h4>Genen identifieras</h4>
+        <p>RNA-polymeraset fäster vid promotorregionen i DNA – en sekvens som markerar var en gen börjar.</p>
+      </div>
+    </div>
+    <div class="process-step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <h4>Transkription – mRNA kopieras</h4>
+        <p>RNA-polymeraset öppnar DNA-spiralen och bygger ett komplementärt mRNA-strång. Tymin i DNA ersätts av Uracil i mRNA. Processen sker i cellkärnan.</p>
+      </div>
+    </div>
+    <div class="process-step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <h4>mRNA lämnar kärnan</h4>
+        <p>Det färdiga mRNA transporteras ut ur cellkärnan genom kärnporerna till cytoplasman, där ribosomerna finns.</p>
+      </div>
+    </div>
+    <div class="process-step">
+      <div class="step-num teal">4</div>
+      <div class="step-body">
+        <h4>Translation börjar – ribosomen fäster</h4>
+        <p>Ribosomen fäster vid mRNA:ets 5'-ände och söker upp startkodonet AUG. tRNA med antikodon UAC levererar metionin – alltid den första aminosyran.</p>
+      </div>
+    </div>
+    <div class="process-step">
+      <div class="step-num teal">5</div>
+      <div class="step-body">
+        <h4>Kedjan förlängs</h4>
+        <p>Ribosomen rör sig längs mRNA ett kodon i taget. För varje kodon levererar rätt tRNA sin aminosyra. Aminosyrorna fogas ihop med peptidbindningar till en växande kedja.</p>
+      </div>
+    </div>
+    <div class="process-step">
+      <div class="step-num teal">6</div>
+      <div class="step-body">
+        <h4>Stoppkodon – proteinet frigörs</h4>
+        <p>När ribosomen möter ett stoppkodon (UAA, UAG eller UGA) avslutas kedjans tillväxt och proteinet frigörs. Det veckar sedan ut sig till sin funktionella tredimensionella form.</p>
+      </div>
+    </div>
+  </div>
+
+  <table class="compare-table">
+    <thead><tr>
+      <th>Process</th>
+      <th>Plats i cellen</th>
+      <th>Enzym/molekyl</th>
+      <th>Produkt</th>
+    </tr></thead>
+    <tbody>
+      <tr><td>Transkription</td><td>Cellkärnan</td><td>RNA-polymeras</td><td>mRNA</td></tr>
+      <tr><td>Transport</td><td>Kärnporer</td><td>–</td><td>mRNA i cytoplasma</td></tr>
+      <tr><td>Translation</td><td>Cytoplasma (ribosomer)</td><td>Ribosomer + tRNA</td><td>Aminosyrekedja → Protein</td></tr>
+    </tbody>
+  </table>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SEKTION 6 – KOLLA ATT DU KAN
+══════════════════════════════════════ -->
+<div class="section" id="kolla">
+<div class="container">
+  <p class="section-eyebrow">Självbedömning</p>
+  <h2 class="section-title">Kolla att du kan</h2>
+  <p class="section-intro">Försök svara utan att titta i texten. Visa sedan mallsvaret och bocka i om du hade med det viktigaste.</p>
+  <div id="q-wrap"></div>
+</div>
+</div>
+
+</main>
+
+<footer>
+  <a href="nk1b-genetik.html">← Tillbaka till Genetik</a> &middot; NK1b &middot; Proteinsyntes
+</footer>
+
+<script src="shared.js"></script>
+<script>
+requireLogin('NK1b');
+
+const QUESTIONS = [
+  {
+    q: "Vad menas med att DNA är cellens 'masterritning'? Varför lämnar det aldrig cellkärnan?",
+    model: [
+      "DNA innehåller all genetisk information för att bygga och driva en organism.",
+      "Det förvaras säkert i cellkärnan och lämnar aldrig därifrån – originalet skyddas.",
+      "Istället görs kopior i form av mRNA (transkription) som transporteras ut till cytoplasman.",
+      "Om DNA lämnade kärnan riskerade det att skadas eller muteras."
+    ]
+  },
+  {
+    q: "Förklara komplementaritetsprincipen – vilka baser parar med vilka i DNA respektive RNA?",
+    model: [
+      "I DNA: Adenin (A) parar alltid med Tymin (T), och Guanin (G) parar alltid med Cytosin (C).",
+      "I RNA används Uracil (U) istället för Tymin – alltså: A i DNA ger U i mRNA.",
+      "G–C-paringen gäller även mellan DNA och mRNA.",
+      "Komplementariteten säkerställer att informationen kopieras korrekt."
+    ]
+  },
+  {
+    q: "Beskriv vad som händer under transkription – var sker det, vad deltar och vad produceras?",
+    model: [
+      "Transkription sker i cellkärnan.",
+      "RNA-polymeraset fäster vid promotorregionen i DNA och öppnar upp spiralen.",
+      "Enzymet läser av DNA-mallen och bygger ett komplementärt mRNA-strång.",
+      "Tymin i DNA ersätts av Uracil i mRNA.",
+      "Produkten är ett mRNA-strång som sedan transporteras till cytoplasman."
+    ]
+  },
+  {
+    q: "Vad är ett kodon och vad är ett antikodon? Hur samverkar de under translation?",
+    model: [
+      "Ett kodon är tre baser i följd på mRNA som kodar för en specifik aminosyra.",
+      "Ett antikodon är tre komplementära baser på tRNA-molekylen.",
+      "Under translation läser ribosomen ett kodon i taget på mRNA.",
+      "Det tRNA vars antikodon matchar kodonet fäster och levererar sin aminosyra till den växande kedjan."
+    ]
+  },
+  {
+    q: "Beskriv hela proteinsyntesen från gen till färdigt protein i rätt ordning.",
+    model: [
+      "1. RNA-polymeraset identifierar genen via promotorn i DNA.",
+      "2. Transkription: mRNA kopieras komplementärt från DNA-mallen i cellkärnan.",
+      "3. mRNA transporteras ut ur kärnan till cytoplasman.",
+      "4. Ribosomen fäster vid mRNA och hittar startkodonet AUG.",
+      "5. tRNA levererar aminosyror i den ordning kodonen anger; peptidbindningar bildas.",
+      "6. Ribosomen möter ett stoppkodon → proteinet frigörs och veckar ut sig till sin funktionella form."
+    ]
+  },
+  {
+    q: "Vad är tRNA:s roll i proteinsyntesen och hur skiljer det sig från mRNA?",
+    model: [
+      "mRNA bär informationen (koden) från DNA till ribosomen – det är budbäraren.",
+      "tRNA är transportmolekylen – det hämtar rätt aminosyra och levererar den till ribosomen.",
+      "tRNA har en antikodon som parar med mRNA:ets kodon, vilket säkerställer att rätt aminosyra sätts in.",
+      "mRNA är linjärt och läses av ribosomen; tRNA är klöverbladformat med aminosyran fäst i ena änden."
+    ]
+  }
+];
+
+let checked = new Array(QUESTIONS.length).fill(false);
+
+function buildQuestions() {
+  const wrap = document.getElementById('q-wrap');
+  QUESTIONS.forEach((q, i) => {
+    const items = q.model.map(m => `<li>${m}</li>`).join('');
+    wrap.innerHTML += `
+      <div class="q-card">
+        <div class="q-num">Fråga ${i+1} av ${QUESTIONS.length}</div>
+        <div class="q-text">${q.q}</div>
+        <textarea class="q-textarea" id="qta-${i}" placeholder="Skriv ditt svar här..."></textarea>
+        <button class="q-btn" onclick="showModel(${i})">Visa mallsvar →</button>
+        <div class="q-model" id="qmodel-${i}">
+          <div class="q-model-header">📋 Mallsvar</div>
+          <div class="q-model-body">
+            <ul>${items}</ul>
+            <div class="q-self-check">
+              <input type="checkbox" id="qcheck-${i}" onchange="toggleCheck(${i})"/>
+              <label for="qcheck-${i}">Jag hade med det viktigaste</label>
+            </div>
+          </div>
+        </div>
+        <button class="q-retry" onclick="resetQuestion(${i})">↩ Rensa och försök igen</button>
+      </div>`;
+  });
+  updateScore();
+}
+
+function showModel(i) { document.getElementById(`qmodel-${i}`).classList.add('shown'); }
+function toggleCheck(i) { checked[i] = document.getElementById(`qcheck-${i}`).checked; updateScore(); }
+function resetQuestion(i) {
+  document.getElementById(`qta-${i}`).value = '';
+  document.getElementById(`qmodel-${i}`).classList.remove('shown');
+  document.getElementById(`qcheck-${i}`).checked = false;
+  checked[i] = false;
+  updateScore();
+}
+
+function updateScore() {
+  const n = checked.filter(Boolean).length;
+  const total = QUESTIONS.length;
+  const msg = n === total ? '🎉 Utmärkt – du kan hela avsnittet!'
+    : n >= 4 ? '👍 Bra jobbat! Kika igenom de du missat.'
+    : n >= 2 ? '📖 Bra start – fortsätt öva på resten.'
+    : '🔍 Gå tillbaka till materialet och försök igen.';
+
+  let bar = document.getElementById('q-scorebar');
+  if (!bar) {
+    document.getElementById('q-wrap').insertAdjacentHTML('afterend',
+      `<div class="q-score-bar" id="q-scorebar">
+        <div class="q-score-num" id="qs-num">${n}/${total}</div>
+        <div><div class="q-score-label">Självskattning</div><div class="q-score-msg" id="qs-msg">${msg}</div></div>
+      </div>`);
+  } else {
+    document.getElementById('qs-num').textContent = `${n}/${total}`;
+    document.getElementById('qs-msg').textContent = msg;
+  }
+}
+
+buildQuestions();
+</script>
+
+</body>
+</html>
