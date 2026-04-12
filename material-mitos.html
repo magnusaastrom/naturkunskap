@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Celldelning – Mitos – NK1b</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Mulish:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #faf7f2; --surface: #ffffff; --border: #e8e0d0;
+      --sand: #f2ece0; --rust: #b85c2a; --rust2: #d4703a;
+      --teal: #2a7a6a; --blue: #2a4a7a; --text: #1a1612;
+      --muted: #6a5e52; --radius: 10px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Mulish', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; font-size: 16px; }
+
+    .top-bar { background: #1a1612; padding: 14px 28px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; position: sticky; top: 0; z-index: 100; }
+    .back-link { color: #c8b89a; text-decoration: none; font-size: .82rem; transition: color .2s; }
+    .back-link:hover { color: #fff; }
+    .top-title { font-family: 'Playfair Display', serif; font-size: 1rem; color: #e8dcc8; }
+    .top-title span { color: #d4a060; }
+
+    .hero { background: linear-gradient(135deg, #1a1612 0%, #1a2820 60%, #1a1612 100%); padding: 64px 32px 56px; text-align: center; position: relative; overflow: hidden; }
+    .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 60% 60% at 30% 50%, rgba(42,122,106,.12) 0%, transparent 60%), radial-gradient(ellipse 50% 70% at 80% 30%, rgba(180,92,42,.06) 0%, transparent 55%); pointer-events: none; }
+    .hero-eyebrow { font-size: .72rem; letter-spacing: .22em; text-transform: uppercase; color: #d4a060; margin-bottom: 12px; }
+    .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 5vw, 3rem); font-weight: 900; color: #f0e8d8; margin-bottom: 16px; line-height: 1.15; }
+    .hero-sub { font-size: 1rem; color: #a09080; max-width: 560px; margin: 0 auto 32px; line-height: 1.7; }
+    .hero-nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+    .hero-nav a { font-size: .8rem; color: #c8b89a; border: 1px solid rgba(200,184,154,.3); border-radius: 30px; padding: 7px 16px; text-decoration: none; transition: all .2s; }
+    .hero-nav a:hover { background: rgba(200,184,154,.12); color: #fff; }
+
+    .container { max-width: 860px; margin: 0 auto; padding: 0 24px; }
+    .section { padding: 60px 0; }
+    .section + .section { border-top: 1px solid var(--border); }
+
+    .section-eyebrow { font-size: .7rem; letter-spacing: .2em; text-transform: uppercase; color: var(--rust); font-weight: 600; margin-bottom: 8px; }
+    .section-title { font-family: 'Playfair Display', serif; font-size: clamp(1.5rem, 3vw, 2rem); color: var(--text); margin-bottom: 6px; line-height: 1.25; }
+    .section-intro { font-size: .95rem; color: var(--muted); margin-bottom: 32px; max-width: 640px; line-height: 1.7; }
+
+    .prose { font-size: .95rem; line-height: 1.75; color: #2a2016; margin-bottom: 24px; }
+    .prose strong { color: var(--text); font-weight: 600; }
+
+    .key-box { background: var(--sand); border-left: 4px solid var(--rust2); border-radius: 0 var(--radius) var(--radius) 0; padding: 18px 22px; margin-bottom: 28px; }
+    .key-box h4 { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--rust); margin-bottom: 10px; }
+    .key-box p { font-size: .88rem; color: #4a3a2a; line-height: 1.65; }
+    .key-box dl { font-size: .88rem; color: #4a3a2a; display: flex; flex-direction: column; gap: 8px; }
+    .key-box dt { font-weight: 600; color: var(--text); display: inline; }
+    .key-box dd { display: inline; margin: 0; }
+    .key-box .term-row { line-height: 1.55; }
+
+    .diagram-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; margin-bottom: 28px; overflow-x: auto; }
+    .diagram-caption { font-size: .78rem; color: var(--muted); text-align: center; margin-top: 12px; font-style: italic; }
+
+    .compare-table { width: 100%; border-collapse: collapse; margin-bottom: 32px; font-size: .88rem; }
+    .compare-table th { background: #1a1612; color: #e8dcc8; padding: 12px 16px; text-align: left; font-weight: 600; font-family: 'Playfair Display', serif; }
+    .compare-table th:first-child { border-radius: 8px 0 0 0; }
+    .compare-table th:last-child { border-radius: 0 8px 0 0; }
+    .compare-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); vertical-align: top; }
+    .compare-table tr:nth-child(even) td { background: var(--sand); }
+    .compare-table tr:last-child td { border-bottom: none; }
+    .compare-table td:first-child { font-weight: 600; color: var(--text); }
+
+    /* PHASE CARDS */
+    .phase-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; margin-bottom: 32px; }
+    .phase-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+    .phase-card-top { padding: 16px 18px 12px; }
+    .phase-num { font-size: .68rem; letter-spacing: .15em; text-transform: uppercase; color: var(--rust); font-weight: 600; margin-bottom: 4px; }
+    .phase-name { font-family: 'Playfair Display', serif; font-size: 1.05rem; margin-bottom: 8px; }
+    .phase-desc { font-size: .83rem; color: var(--muted); line-height: 1.55; }
+    .phase-card-bar { height: 4px; }
+
+    /* ANALOGY BOX */
+    .analogy-box { background: #1a1612; border-radius: var(--radius); padding: 28px 32px; margin-bottom: 32px; }
+    .analogy-box h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: #e8dcc8; margin-bottom: 14px; }
+    .analogy-box p { font-size: .9rem; color: #a09080; line-height: 1.7; }
+    .analogy-box strong { color: #e8dcc8; }
+
+    /* PROCESS STEPS */
+    .process-steps { display: flex; flex-direction: column; gap: 0; margin-bottom: 32px; position: relative; }
+    .process-steps::before { content: ''; position: absolute; left: 22px; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, var(--rust2), var(--teal)); opacity: .3; }
+    .process-step { display: flex; gap: 18px; align-items: flex-start; padding: 16px 0; }
+    .step-num { width: 44px; height: 44px; border-radius: 50%; background: var(--rust2); color: #fff; display: flex; align-items: center; justify-content: center; font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; flex-shrink: 0; position: relative; z-index: 1; }
+    .step-num.teal { background: var(--teal); }
+    .step-body h4 { font-size: .95rem; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+    .step-body p { font-size: .85rem; color: var(--muted); line-height: 1.6; }
+
+    /* SELF-CHECK */
+    .q-card { background: #1a1612; border: 1px solid #2a2018; border-radius: var(--radius); padding: 22px 26px; margin-bottom: 18px; }
+    .q-num { font-size: .68rem; letter-spacing: .18em; text-transform: uppercase; color: #d4a060; margin-bottom: 7px; font-weight: 600; }
+    .q-text { font-family: 'Playfair Display', serif; font-size: .95rem; color: #f0e8d8; margin-bottom: 14px; line-height: 1.5; }
+    .q-textarea { width: 100%; background: #0f0c08; border: 1.5px solid #2a2018; border-radius: 6px; color: #e8dcc8; font-family: 'Mulish', sans-serif; font-size: .9rem; padding: 11px 13px; resize: vertical; min-height: 80px; outline: none; transition: border-color .2s; line-height: 1.6; }
+    .q-textarea:focus { border-color: #d4703a; }
+    .q-btn { margin-top: 10px; font-family: 'Mulish', sans-serif; font-size: .84rem; font-weight: 600; padding: 8px 20px; border-radius: 6px; border: none; cursor: pointer; background: #d4703a; color: #fff; transition: background .2s; }
+    .q-btn:hover { background: #b85c2a; }
+    .q-model { margin-top: 14px; display: none; background: #0f0c08; border: 1px solid #2a2018; border-radius: 6px; overflow: hidden; }
+    .q-model.shown { display: block; }
+    .q-model-header { background: #2a2018; padding: 8px 16px; font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: #d4a060; font-weight: 600; }
+    .q-model-body { padding: 14px 18px; font-size: .88rem; color: #c8b89a; line-height: 1.75; }
+    .q-model-body strong { color: #f0e8d8; }
+    .q-model-body ul { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+    .q-model-body li { padding-left: 16px; position: relative; }
+    .q-model-body li::before { content: '→'; position: absolute; left: 0; color: #d4703a; font-size: .8rem; }
+    .q-self-check { margin-top: 12px; padding-top: 12px; border-top: 1px solid #2a2018; display: flex; align-items: center; gap: 10px; font-size: .82rem; color: #8a7a60; cursor: pointer; }
+    .q-self-check input { accent-color: #d4703a; width: 16px; height: 16px; cursor: pointer; }
+    .q-retry { margin-top: 10px; font-size: .78rem; color: #6a5a40; background: none; border: none; cursor: pointer; font-family: 'Mulish', sans-serif; text-decoration: underline; padding: 0; display: block; }
+    .q-score-bar { background: #0f0c08; border: 1px solid #2a2018; border-radius: var(--radius); padding: 20px 24px; margin-top: 32px; display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+    .q-score-num { font-family: 'Playfair Display', serif; font-size: 2rem; color: #d4703a; }
+    .q-score-label { font-size: .85rem; color: #8a7a60; }
+    .q-score-msg { font-size: .88rem; color: #c8b89a; }
+
+    footer { border-top: 1px solid var(--border); padding: 28px 24px; text-align: center; font-size: .78rem; color: var(--muted); margin-top: 40px; }
+    footer a { color: var(--teal); text-decoration: none; }
+
+    @media(max-width: 580px) {
+      .hero { padding: 44px 20px 36px; }
+      .container { padding: 0 16px; }
+      .phase-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+.diagram-wrap img {
+  max-width: 100%;
+  max-height: 380px;   /* ← NYCKELRAD */
+  width: auto;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+
+  </style>
+</head>
+<body>
+
+<div class="top-bar">
+  <a href="nk1b-genetik.html" class="back-link">← Genetik</a>
+  <div class="top-title">NK1b &mdash; <span>Celldelning – Mitos</span></div>
+</div>
+
+<div class="hero">
+  <p class="hero-eyebrow">Genetik &middot; NK1b</p>
+  <h1>Celldelning – Mitos</h1>
+  <p class="hero-sub">Hur en cell delar sig i två exakta kopior – och varför det är nödvändigt för att kroppen ska växa och läka.</p>
+  <nav class="hero-nav">
+    <a href="#varfor">Varför delar sig celler?</a>
+    <a href="#kromosomer">Kromosomer</a>
+    <a href="#faserna">Faserna</a>
+    <a href="#sammanfattning">Sammanfattning</a>
+    <a href="#kolla">Kolla att du kan</a>
+  </nav>
+</div>
+
+<main>
+
+<!-- ══════════════════════════════════════
+     SEKTION 1 – VARFÖR DELAR SIG CELLER?
+══════════════════════════════════════ -->
+<div class="section" id="varfor">
+<div class="container">
+  <p class="section-eyebrow">Bakgrund</p>
+  <h2 class="section-title">Varför behöver celler dela sig?</h2>
+  <p class="section-intro">Celldelning är en av livets mest grundläggande processer. Utan den skulle kroppen inte kunna växa, läka sår eller ersätta gamla celler.</p>
+
+  <p class="prose">Du började som en enda cell – ett befruktat ägg. Från den cellen har det blivit ungefär <strong>37 000 miljarder celler</strong> i din kropp. Det sker enbart genom celldelning. Och det slutar inte där: varje sekund bildas miljontals nya celler för att ersätta sådana som dött ut.</p>
+
+  <div class="key-box">
+    <h4>📌 Tre skäl till att celler delar sig</h4>
+    <dl>
+      <div class="term-row"><dt>Tillväxt</dt><dd> – kroppen behöver fler celler för att bli större, särskilt under barn- och ungdomsåren.</dd></div>
+      <div class="term-row"><dt>Reparation</dt><dd> – skadad eller döende vävnad ersätts med nya celler, till exempel vid sårläkning.</dd></div>
+      <div class="term-row"><dt>Underhåll</dt><dd> – många celler lever kort tid och behöver ständigt bytas ut, till exempel röda blodkroppar (lever ca 120 dagar) och tarmceller (lever bara några dagar).</dd></div>
+    </dl>
+  </div>
+
+  <div class="analogy-box">
+    <h3>📋 En bra liknelse</h3>
+    <p>Tänk dig celldelning som att <strong>kopiera ett viktigt dokument</strong>. Originalet (DNA:t) kopieras noggrant, sedan delas kopian och originalet upp i varsitt kuvert. Två identiska kuvert skickas vidare – en ny cell till dig, en ny cell till din granne. Varje ny cell har exakt samma information som den ursprungliga.</p>
+  </div>
+
+</div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SEKTION 2 – KROMOSOMER
+══════════════════════════════════════ -->
+<div class="section" id="kromosomer">
+<div class="container">
+  <p class="section-eyebrow">Grunden</p>
+  <h2 class="section-title">Kromosomer – cellens paketerade DNA</h2>
+  <p class="section-intro">Innan vi kan förstå celldelningen behöver vi veta hur DNA är organiserat inne i cellen.</p>
+
+<p class="prose">DNA är ett mycket långt molekylärt informationsbärande ämne. Om man skulle sträcka ut allt DNA från en enda mänsklig cell skulle det bli nästan <strong>två meter långt</strong>. Trots detta ryms DNA i cellkärnan, som är så liten att den inte syns för blotta ögat.
+Detta är möjligt eftersom DNA:t är tätt uppspolat runt proteiner och packat i strukturer som kallas <strong>kromosomer</strong>. 
+Kromosomer kan ses som ordnade paket av DNA, som gör det lättare för cellen att hantera och skydda den genetiska informationen.</p>
+
+<p class="prose">Vanliga mänskliga kroppsceller innehåller 46 kromosomer, organiserade i 23 par. I varje par kommer den ena kromosomen från mamman och den andra från pappan. Tillsammans innehåller de information om samma egenskaper. Celler med en dubbel uppsättning kromosomer kallas <strong>diploida</strong> celler och betecknas 2n. De flesta av kroppens celler är diploida.</p>
+
+  
+<!-- Bild: Kromosomer – översikt -->
+<div class="diagram-wrap">
+  <img
+    src="images/dna-kromosomer-i-cellen.png"
+    alt="Illustration som visar hur DNA är packat i kromosomer i cellkärnan"
+    style="max-width:100%;display:block;margin:0 auto;"
+  >
+
+  <p class="diagram-caption">
+    Figur 1. DNA är hårt packat i kromosomer för att få plats i cellkärnan.
+    En mänsklig kroppscell innehåller 46 kromosomer ordnade i 23 par.
+  </p>
+</div>
+
+  <div class="key-box">
+    <h4>🔑 Nyckelbegrepp – Kromosomer</h4>
+    <dl>
+      <div class="term-row"><dt>Kromosom</dt><dd> – ett tätt hoppackat DNA-sträng. Människan har 46 stycken i varje kroppscell.</dd></div>
+      <div class="term-row"><dt>Diploid (2n)</dt><dd> – cellen har dubbla uppsättningar av kromosomer, alltså 46 i mänskliga celler.</dd></div>
+      <div class="term-row"><dt>Kromosompar</dt><dd> – </dd>kromosomer som hör ihop två och två, en från mamma och en från pappa, och som innehåller information om samma egenskaper.</div>
+      <div class="term-row"><dt>DNA-kopiering</dt><dd> – processen där cellen gör en exakt kopia av sitt DNA innan celldelning.</dd></div>
+    </dl>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SEKTION 4 – MITOS
+══════════════════════════════════════ -->
+<div class="section" id="celldelning - mitos">
+  <div class="container">
+
+    <p class="section-eyebrow">Celldelning</p>
+    <h2 class="section-title">Mitos – i korthet</h2>
+
+    <p class="section-intro">
+  Mitos är den vanligaste formen av celldelning i kroppen.
+  I detta avsnitt förklaras vad mitos är och vad som händer med cellens arvsmassa
+  när en cell delar sig.
+	</p>
+
+	<p class="prose">
+  		Genom mitos kan kroppen både växa och underhålla sig själv.
+  		Nya celler bildas hela tiden för att ersätta celler som skadats
+  		eller slutat fungera, till exempel i hud, blod och slemhinnor.
+	</p>
+
+<p class="prose">
+  Det viktigaste med mitos är att <strong>arvsmassan bevaras</strong>.
+  DNA kopieras först, och sedan fördelas kopiorna så att de nya cellerna
+  får exakt samma genetiska information som den ursprungliga cellen.
+  På så sätt kan kroppen bilda nya celler utan att information går förlorad
+  eller förändras.
+</p>
+
+
+
+<!-- Bild: mitos – översikt -->
+<div class="diagram-wrap">
+<img
+    src="images/celldelning-mitos.png"
+    alt="illustration som visar hur celldelning går till"
+    style="max-width:100%;display:block;margin:0 auto;"
+  >
+
+  <p class="diagram-caption">
+    Figur 1. DNA är hårt packat i kromosomer för att få plats i cellkärnan.
+    En mänsklig kroppscell innehåller 46 kromosomer ordnade i 23 par.
+  </p>
+</div>
+
+    <div class="process-steps">
+
+      <div class="process-step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <h4>DNA kopieras</h4>
+          <p>
+            Innan cellen delar sig görs en exakt kopia av hela DNA:t.
+            Varje kromosom finns nu i två likadana exemplar.
+          </p>
+        </div>
+      </div>
+
+      <div class="process-step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <h4>Arvsmassan fördelas</h4>
+          <p>
+            De kopierade kromosomerna delas upp och separeras,
+            så att de hamnar i var sin del av cellen.
+          </p>
+        </div>
+      </div>
+
+      <div class="process-step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <h4>Två identiska celler bildas</h4>
+          <p>
+            Cellen delas i två nya celler.
+            Varje dottercell har samma antal kromosomer
+            och samma arvsmassa som den ursprungliga cellen.
+          </p>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="key-box">
+      <h4>🔑 Det viktigaste att komma ihåg</h4>
+      <p>
+        Mitos ger alltid <strong>två genetiskt identiska dotterceller</strong>.
+        Hos människan innebär det att varje ny cell får 46 kromosomer.
+        Arvsmassan bevaras oförändrad.
+      </p>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SEKTION 5 – KOLLA ATT DU KAN
+══════════════════════════════════════ -->
+<div class="section" id="kolla">
+<div class="container">
+  <p class="section-eyebrow">Självbedömning</p>
+  <h2 class="section-title">Kolla att du kan</h2>
+  <p class="section-intro">Försök svara utan att titta i texten. Visa sedan mallsvaret och bocka i om du hade med det viktigaste.</p>
+  <div id="q-wrap"></div>
+</div>
+</div>
+
+</main>
+
+<footer>
+  <a href="nk1b-genetik.html">← Tillbaka till Genetik</a> &middot; NK1b &middot; Celldelning – Mitos
+</footer>
+
+<script src="shared.js"></script>
+<script>
+requireLogin('NK1b');
+
+const QUESTIONS = [
+  {
+    q: "Nämn tre anledningar till att celler behöver dela sig.",
+    model: [
+      "<strong>Tillväxt</strong> – kroppen behöver fler celler för att bli större.",
+      "<strong>Reparation</strong> – skadad vävnad ersätts med nya celler, till exempel vid sårläkning.",
+      "<strong>Underhåll</strong> – gamla eller slitna celler ersätts kontinuerligt."
+    ]
+  },
+  {
+    q: "Vad är en kromosom?",
+    model: [
+      "En kromosom är ett tätt packat paket av DNA.",
+      "Kromosomer gör att DNA kan rymmas i cellkärnan.",
+      "De innehåller cellens genetiska information."
+    ]
+  },
+  {
+    q: "Hur många kromosomer har en vanlig mänsklig kroppscell?",
+    model: [
+      "En mänsklig kroppscell har 46 kromosomer.",
+      "De är ordnade i 23 par.",
+      "En kromosom i varje par kommer från mamma och en från pappa."
+    ]
+  },
+  {
+    q: "Vad händer med DNA:t innan en cell delar sig?",
+    model: [
+      "Hela cellens DNA kopieras.",
+      "Varje kromosom får en exakt likadan kopia.",
+      "Detta gör att de nya cellerna får samma arvsmassa."
+    ]
+  },
+  {
+    q: "Beskriv mitos i stora drag.",
+    model: [
+      "Först kopieras DNA.",
+      "Sedan delas arvsmassan upp jämnt.",
+      "Till slut bildas två nya celler."
+    ]
+  },
+  {
+    q: "Vad blir slutresultatet av mitos?",
+    model: [
+      "Två dotterceller bildas.",
+      "Dottercellerna är genetiskt identiska med varandra.",
+      "Varje dottercell har samma antal kromosomer som den ursprungliga cellen."
+    ]
+  }
+];
+
+let checked = new Array(QUESTIONS.length).fill(false);
+
+function buildQuestions() {
+  const wrap = document.getElementById('q-wrap');
+  QUESTIONS.forEach((q, i) => {
+    const items = q.model.map(m => `<li>${m}</li>`).join('');
+    wrap.innerHTML += `
+      <div class="q-card">
+        <div class="q-num">Fråga ${i+1} av ${QUESTIONS.length}</div>
+        <div class="q-text">${q.q}</div>
+        <textarea class="q-textarea" id="qta-${i}" placeholder="Skriv ditt svar här..."></textarea>
+        <button class="q-btn" onclick="showModel(${i})">Visa mallsvar →</button>
+        <div class="q-model" id="qmodel-${i}">
+          <div class="q-model-header">📋 Mallsvar</div>
+          <div class="q-model-body">
+            <ul>${items}</ul>
+            <div class="q-self-check">
+              <input type="checkbox" id="qcheck-${i}" onchange="toggleCheck(${i})"/>
+              <label for="qcheck-${i}">Jag hade med det viktigaste</label>
+            </div>
+          </div>
+        </div>
+        <button class="q-retry" onclick="resetQuestion(${i})">↩ Rensa och försök igen</button>
+      </div>`;
+  });
+  updateScore();
+}
+
+function showModel(i) { document.getElementById(`qmodel-${i}`).classList.add('shown'); }
+function toggleCheck(i) { checked[i] = document.getElementById(`qcheck-${i}`).checked; updateScore(); }
+function resetQuestion(i) {
+  document.getElementById(`qta-${i}`).value = '';
+  document.getElementById(`qmodel-${i}`).classList.remove('shown');
+  document.getElementById(`qcheck-${i}`).checked = false;
+  checked[i] = false;
+  updateScore();
+}
+
+function updateScore() {
+  const n = checked.filter(Boolean).length;
+  const total = QUESTIONS.length;
+  const msg = n === total ? '🎉 Utmärkt – du kan hela avsnittet!'
+    : n >= 4 ? '👍 Bra jobbat! Kika igenom de du missat.'
+    : n >= 2 ? '📖 Bra start – fortsätt öva på resten.'
+    : '🔍 Gå tillbaka till materialet och försök igen.';
+
+  let bar = document.getElementById('q-scorebar');
+  if (!bar) {
+    document.getElementById('q-wrap').insertAdjacentHTML('afterend',
+      `<div class="q-score-bar" id="q-scorebar">
+        <div class="q-score-num" id="qs-num">${n}/${total}</div>
+        <div><div class="q-score-label">Självskattning</div><div class="q-score-msg" id="qs-msg">${msg}</div></div>
+      </div>`);
+  } else {
+    document.getElementById('qs-num').textContent = `${n}/${total}`;
+    document.getElementById('qs-msg').textContent = msg;
+  }
+}
+
+buildQuestions();
+</script>
+
+</body>
+</html>
