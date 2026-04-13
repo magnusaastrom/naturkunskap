@@ -69,3 +69,111 @@ function getAllUserIds() {
   }
   return ids;
 }
+
+// ── PUNNETT ÖVNINGAR ────────────────────────
+// Körs bara på sidor som innehåller .punnett
+
+
+function getCurrentExercise() {
+  return Array.from(document.querySelectorAll('.punnett'))
+    .find(el => el.offsetParent !== null);
+}
+
+function parseNumberFromAnswer(value) {
+  if (!value) return null;
+
+  // plocka ut första talet (accepterar "2", "2 av 4", "50 %", "50%")
+  const match = value.match(/\d+/);
+  return match ? Number(match[0]) : null;
+}
+
+function checkPunnett() {
+  const current = getCurrentExercise();
+  if (!current) return;
+
+  const inputs = current.querySelectorAll('input[data-answer]');
+  let correct = 0;
+
+  inputs.forEach(input => {
+    input.classList.remove('correct', 'wrong');
+
+    
+const userValue = (input.value || '').trim();
+const expected  = input.dataset.answer;
+
+if (userValue === expected) {
+
+      input.classList.add('correct');
+      correct++;
+    } else {
+      input.classList.add('wrong');
+    }
+  });
+// ✅ Kontroll av sannolikhetsfrågor (om de finns)
+let probCorrect = true;
+const probInputs = current.querySelectorAll('input[data-prob]');
+
+probInputs.forEach(input => {
+  input.classList.remove('correct', 'wrong');
+
+  const expected = Number(input.dataset.prob);
+  const given = parseNumberFromAnswer(input.value);
+
+  if (given === expected) {
+    input.classList.add('correct');
+  } else {
+    input.classList.add('wrong');
+    probCorrect = false;
+  }
+});
+
+  const feedback = current.querySelector('.feedback');
+  const nextBtn = current.querySelector('.next-btn');
+
+  if (feedback) {
+    if (correct === inputs.length && probCorrect) {
+      feedback.textContent = '✅ Alla rutor är rätt!';
+      if (nextBtn) nextBtn.disabled = false;
+    } else {
+      feedback.textContent =
+        '❌ Några rutor är fel. Titta på vilka alleler som kombineras.';
+      if (nextBtn) nextBtn.disabled = true;
+   
+    }
+  }
+}
+
+function resetPunnett() {
+  const current = getCurrentExercise();
+  if (!current) return;
+
+  const inputs = current.querySelectorAll('input[data-answer]');
+  inputs.forEach(input => {
+    input.value = '';
+    input.classList.remove('correct', 'wrong');
+  });
+
+  const feedback = current.querySelector('.feedback');
+  if (feedback) feedback.textContent = '';
+
+  const nextBtn = current.querySelector('.next-btn');
+  if (nextBtn) nextBtn.disabled = true;
+}
+
+function nextPunnett() {
+  const current = getCurrentExercise();
+  if (!current) return;
+
+  const next = current.nextElementSibling;
+
+  if (next && next.classList.contains('punnett')) {
+    current.style.display = 'none';
+    next.style.display = 'block';
+
+    next.scrollIntoView({ behavior: 'smooth' });
+
+    const nextBtn = next.querySelector('.next-btn');
+    if (nextBtn) nextBtn.disabled = true;
+  }
+}
+

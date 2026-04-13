@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Punnett-övningar – NK1b</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Mulish:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+
+  <style>
+    :root {
+      --bg:#faf7f2; --surface:#ffffff; --border:#e8e0d0;
+      --rust:#b85c2a; --rust2:#d4703a;
+      --teal:#2a7a6a; --blue:#2a4a7a;
+      --text:#1a1612; --muted:#6a5e52; --radius:10px;
+    }
+
+    * { box-sizing:border-box; margin:0; padding:0; }
+    body {
+      font-family:'Mulish',sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      line-height:1.7;
+    }
+
+    header {
+      background:#1a1612;
+      padding:18px 28px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+    }
+
+    header a {
+      color:#c8b89a;
+      text-decoration:none;
+      font-size:.85rem;
+    }
+
+    header h1 {
+      font-family:'Playfair Display',serif;
+      color:#f0e8d8;
+      font-size:1.2rem;
+    }
+
+    main {
+      max-width:860px;
+      margin:0 auto;
+      padding:48px 24px 64px;
+    }
+
+    h2 {
+      font-family:'Playfair Display',serif;
+      font-size:2rem;
+      margin-bottom:8px;
+    }
+
+    .intro {
+      color:var(--muted);
+      max-width:640px;
+      margin-bottom:36px;
+      font-size:.95rem;
+    }
+
+    .exercise-card {
+      background:var(--surface);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      padding:28px;
+      margin-bottom:36px;
+    }
+
+    .exercise-card h3 {
+      font-family:'Playfair Display',serif;
+      margin-bottom:12px;
+    }
+
+    .punnett-table {
+      border-collapse:collapse;
+      margin:20px auto;
+    }
+
+    .punnett-table th,
+    .punnett-table td {
+      border:1px solid var(--border);
+      width:80px;
+      height:64px;
+      text-align:center;
+      font-weight:600;
+    }
+
+    .punnett-table th {
+      background:#f2ece0;
+      font-weight:700;
+    }
+
+    .punnett-table input {
+      width:100%;
+      height:100%;
+      border:none;
+      text-align:center;
+      font-size:1rem;
+      background:none;
+      outline:none;
+    }
+
+    .punnett-table input.correct {
+      background:#e0f0e8;
+      color:#1a1612;
+    }
+
+    .punnett-table input.wrong {
+      background:#fce8d8;
+      color:#b85c2a;
+    }
+
+    .btn-row {
+      text-align:center;
+      margin-top:16px;
+    }
+
+    button {
+      background:var(--rust2);
+      color:white;
+      border:none;
+      border-radius:6px;
+      padding:10px 20px;
+      font-size:.85rem;
+      cursor:pointer;
+      font-weight:600;
+    }
+
+    button:hover { background:var(--rust); }
+
+    .feedback {
+      text-align:center;
+      margin-top:12px;
+      font-size:.85rem;
+      color:var(--muted);
+    }
+
+    .next {
+      text-align:center;
+      margin-top:40px;
+      font-size:.85rem;
+    }
+
+    .next span {
+      color:var(--muted);
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <a href="nk1b-genetik.html">← Tillbaka till Genetik</a>
+  <h1>NK1b – Punnett‑övningar</h1>
+</header>
+
+<main>
+
+  <h2>Öva korsningsscheman</h2>
+  <p class="intro">
+    Här kan du träna på <strong>Punnett‑diagram</strong> i lugn och ro.
+    Fyll i vilka genotyper som bildas när föräldrarnas alleler kombineras.
+    Du får direkt återkoppling på varje ruta.
+  </p>
+
+  <!-- ÖVNING 1 -->
+  <div class="exercise-card punnett">
+    <h3>Övning 1: Ll × Ll</h3>
+    <p>
+      Båda föräldrarna är heterozygota och har genotypen <strong>Ll</strong>.
+      Fyll i vilka genotyper som bildas hos avkomman.
+    </p>
+
+    <table class="punnett-table">
+      <tr>
+        <th></th>
+        <th>L</th>
+        <th>l</th>
+      </tr>
+      <tr>
+        <th>L</th>
+        <td><input data-answer="LL"></td>
+        <td><input data-answer="Ll"></td>
+      </tr>
+      <tr>
+        <th>l</th>
+        <td><input data-answer="Ll"></td>
+        <td><input data-answer="ll"></td>
+      </tr>
+    </table>
+
+    
+
+<div class="btn-row">
+  <button onclick="resetPunnett()">Återställ</button>
+  <button onclick="checkPunnett()">Kontrollera</button>
+  <button class="next-btn" onclick="nextPunnett()" disabled>
+    Nästa övning →
+  </button>
+</div>
+
+
+
+    <div class="feedback" id="feedback"></div>
+  </div>
+
+<!-- ÖVNING 2 -->
+<div class="exercise-card punnett" id="ovning2" style="display:none;">
+  <h3>Övning 2: LL × ll</h3>
+  <p>
+    Den ena föräldern är <strong>homozygot dominant (LL)</strong> och den andra är
+    <strong>homozygot recessiv (ll)</strong>.
+    Fyll i vilka genotyper som bildas hos avkomman.
+  </p>
+
+  <table class="punnett-table">
+    <tr>
+      <th></th>
+      <th>L</th>
+      <th>L</th>
+    </tr>
+    <tr>
+      <th>l</th>
+      <td><input data-answer="Ll"></td>
+      <td><input data-answer="Ll"></td>
+    </tr>
+    <tr>
+      <th>l</th>
+      <td><input data-answer="Ll"></td>
+      <td><input data-answer="Ll"></td>
+    </tr>
+  </table>
+
+  <div class="btn-row">
+    <button onclick="resetPunnett()">Återställ</button>
+    <button onclick="checkPunnett()">Kontrollera</button>
+    <button class="next-btn" onclick="nextPunnett()" disabled>
+      Nästa övning →
+    </button>
+  </div>
+
+  <div class="feedback"></div>
+</div>
+
+<!-- ÖVNING 3 -->
+<div class="exercise-card punnett" style="display:none;">
+  <h3>Övning 3: Ll × ll</h3>
+
+  <p>
+    Den ena föräldern är <strong>heterozygot (Ll)</strong> och den andra är
+    <strong>homozygot recessiv (ll)</strong>.
+  </p>
+
+  <!-- Punnett-diagram -->
+  <table class="punnett-table">
+    <tr>
+      <th></th>
+      <th>l</th>
+      <th>l</th>
+    </tr>
+    <tr>
+      <th>L</th>
+      <td><input data-answer="Ll"></td>
+      <td><input data-answer="Ll"></td>
+    </tr>
+    <tr>
+      <th>l</th>
+      <td><input data-answer="ll"></td>
+      <td><input data-answer="ll"></td>
+    </tr>
+  </table>
+
+  <!-- Sannolikhetsfrågor -->
+  <div style="margin-top:24px;">
+    <p><strong>Utifrån schema ovan:</strong></p>
+
+    <p>
+      Hur många av de 4 möjliga kombinationerna får
+      <strong>dominant fenotyp</strong>?
+    </p>
+    <input type="text" data-prob="2" placeholder="t.ex. 1 av 4">
+
+    <p style="margin-top:14px;">
+      Hur stor är sannolikheten att avkomman får
+      <strong>dominant fenotyp</strong>?
+    </p>
+    <input type="text" data-prob="50" placeholder="t.ex. 25 %">
+  </div>
+
+  <div class="btn-row">
+    <button onclick="resetPunnett()">Återställ</button>
+    <button onclick="checkPunnett()">Kontrollera</button>
+    <button class="next-btn" onclick="nextPunnett()" disabled>
+      Nästa övning →
+    </button>
+  </div>
+
+  <div class="feedback"></div>
+</div>
+
+ <div class="next">
+    <span>Fler övningar kommer snart:</span><br>
+    Dominant/recessiv → Kodominans → Intermediär nedärvning
+  </div>
+
+</main>
+
+
+<script src="shared.js"></script>
+</body>
+</html>

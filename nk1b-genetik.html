@@ -45,6 +45,20 @@
     .cat-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 10px; }
     .cat-tag { font-size: .7rem; background: var(--sand); border-radius: 30px; padding: 2px 9px; color: var(--muted); }
 
+.cat-card {
+  display: flex;
+  flex-direction: column;
+}
+
+
+.cat-actions {
+  margin-top: auto;          /* ⭐ magin */
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+
     /* FLASHCARD BUTTON */
     .fc-launch {
       display: inline-flex; align-items: center; gap: 6px;
@@ -66,6 +80,8 @@
     .launch-row { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-bottom: 36px; padding: 24px; background: var(--sand); border-radius: var(--radius); border: 1px solid var(--border); }
     .launch-row-text h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; margin-bottom: 5px; }
     .launch-row-text p { font-size: .84rem; color: var(--muted); line-height: 1.5; }
+    .launch-row .fc-launch-all {margin-left: auto;}
+
 
     .info-box { background: var(--sand); border-left: 4px solid var(--rust2); border-radius: 0 var(--radius) var(--radius) 0; padding: 16px 20px; font-size: .88rem; color: var(--muted); line-height: 1.65; margin-top: 32px; }
     .info-box strong { color: var(--text); }
@@ -105,6 +121,19 @@
     <a href="flashcards-genetik.html" class="fc-launch-all">Starta flashcards →</a>
   </div>
 
+
+<div class="launch-row" id="punnett">
+  <div style="font-size:2.2rem">🧬</div>
+  <div class="launch-row-text">
+    <h3>Öva korsningsscheman</h3>
+    <p>Träna på dig att fylla i korsningsscheman steg för steg </p>
+  </div>
+  <a href="punnett-ovning.html" class="fc-launch-all">
+    Starta övning →
+  </a>
+</div>
+
+
   <!-- CATEGORIES -->
   <p class="section-label" id="kategorier">Begreppsområden</p>
   <h2 class="section-title">Sex kategorier att öva på</h2>
@@ -121,9 +150,10 @@
         <span class="cat-tag">Translation</span>
         <span class="cat-tag">Kodon</span>
       </div>
+<div class="cat-actions">
       <a href="flashcards-genetik.html" class="fc-launch">Öva →</a>
 	<a href="material-proteinsyntes.html" class="fc-launch">Läs material →</a>
-
+</div>
     </div>
 
     <div class="cat-card">
@@ -136,9 +166,10 @@
         <span class="cat-tag">Golgiapparaten</span>
         <span class="cat-tag">Lysosomer</span>
       </div>
+<div class="cat-actions">
       <a href="flashcards-genetik.html" class="fc-launch">Öva →</a>
     </div>
-
+</div>
     <div class="cat-card">
       <div class="cat-icon">⚡</div>
       <div class="cat-title">Celldelning – Mitos</div>
@@ -149,9 +180,11 @@
         <span class="cat-tag">Diploid</span>
         <span class="cat-tag">Kroppscell</span>
       </div>
+<div class="cat-actions">
       <a href="flashcards-genetik.html" class="fc-launch">Öva →</a>
 	<a href="material-mitos.html" class="fc-launch">Läs material →</a>
     </div>
+</div>	
 
     <div class="cat-card">
       <div class="cat-icon">🌀</div>
@@ -164,8 +197,10 @@
         <span class="cat-tag">Överkorsning</span>
         <span class="cat-tag">Zygot</span>
       </div>
+<div class="cat-actions">
       <a href="flashcards-genetik.html" class="fc-launch">Öva →</a>
     </div>
+</div>
 
     <div class="cat-card">
       <div class="cat-icon">🧫</div>
@@ -177,9 +212,11 @@
         <span class="cat-tag">Genotyp / Fenotyp</span>
         <span class="cat-tag">Kodominant</span>
       </div>
+<div class="cat-actions">
       <a href="flashcards-genetik.html" class="fc-launch">Öva →</a>
 	<a href="material-arftlighet.html" class="fc-launch">Läs material →</a>
     </div>
+  </div>
 
     <div class="cat-card">
       <div class="cat-icon">🌿</div>
@@ -192,9 +229,11 @@
         <span class="cat-tag">Anpassning</span>
         <span class="cat-tag">Artbildning</span>
       </div>
+<div class="cat-actions">
       <a href="flashcards-genetik.html" class="fc-launch">Öva →</a>
     </div>
   </div>
+</div>
 
   <div class="info-box">
     <strong>Tips:</strong> Inne i flashcard-appen kan du filtrera per kategori med knapparna längst upp. Börja med en kategori i taget och gå sedan vidare till "Alla kategorier" för att blanda dem.
