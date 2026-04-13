@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ärftlighet – NK1b</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Mulish:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #faf7f2; --surface: #ffffff; --border: #e8e0d0;
+      --sand: #f2ece0; --rust: #b85c2a; --rust2: #d4703a;
+      --teal: #2a7a6a; --blue: #2a4a7a; --text: #1a1612;
+      --muted: #6a5e52; --radius: 10px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Mulish', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; font-size: 16px; }
+
+    .top-bar { background: #1a1612; padding: 14px 28px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; position: sticky; top: 0; z-index: 100; }
+    .back-link { color: #c8b89a; text-decoration: none; font-size: .82rem; transition: color .2s; }
+    .back-link:hover { color: #fff; }
+    .top-title { font-family: 'Playfair Display', serif; font-size: 1rem; color: #e8dcc8; }
+    .top-title span { color: #d4a060; }
+
+    .hero { background: linear-gradient(135deg, #1a1612 0%, #1a2820 60%, #1a1612 100%); padding: 64px 32px 56px; text-align: center; position: relative; overflow: hidden; }
+    .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 60% 60% at 30% 50%, rgba(42,122,106,.12) 0%, transparent 60%), radial-gradient(ellipse 50% 70% at 80% 30%, rgba(180,92,42,.06) 0%, transparent 55%); pointer-events: none; }
+    .hero-eyebrow { font-size: .72rem; letter-spacing: .22em; text-transform: uppercase; color: #d4a060; margin-bottom: 12px; }
+    .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 5vw, 3rem); font-weight: 900; color: #f0e8d8; margin-bottom: 16px; line-height: 1.15; }
+    .hero-sub { font-size: 1rem; color: #a09080; max-width: 580px; margin: 0 auto 32px; line-height: 1.7; }
+    .hero-nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+    .hero-nav a { font-size: .8rem; color: #c8b89a; border: 1px solid rgba(200,184,154,.3); border-radius: 30px; padding: 7px 16px; text-decoration: none; transition: all .2s; }
+    .hero-nav a:hover { background: rgba(200,184,154,.12); color: #fff; }
+
+    .container { max-width: 860px; margin: 0 auto; padding: 0 24px; }
+    .section { padding: 60px 0; }
+    .section + .section { border-top: 1px solid var(--border); }
+
+    .section-eyebrow { font-size: .7rem; letter-spacing: .2em; text-transform: uppercase; color: var(--rust); font-weight: 600; margin-bottom: 8px; }
+    .section-title { font-family: 'Playfair Display', serif; font-size: clamp(1.5rem, 3vw, 2rem); color: var(--text); margin-bottom: 6px; line-height: 1.25; }
+    .section-intro { font-size: .95rem; color: var(--muted); margin-bottom: 32px; max-width: 640px; line-height: 1.7; }
+
+    .prose { font-size: .95rem; line-height: 1.75; color: #2a2016; margin-bottom: 24px; }
+    .prose strong { color: var(--text); font-weight: 600; }
+
+    /* KEY BOX */
+    .key-box { background: var(--sand); border-left: 4px solid var(--rust2); border-radius: 0 var(--radius) var(--radius) 0; padding: 18px 22px; margin-bottom: 28px; }
+    .key-box h4 { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--rust); margin-bottom: 10px; }
+    .key-box p { font-size: .88rem; color: #4a3a2a; line-height: 1.65; }
+    .key-box dl { font-size: .88rem; color: #4a3a2a; display: flex; flex-direction: column; gap: 8px; }
+    .key-box dt { font-weight: 600; color: var(--text); display: inline; }
+    .key-box dd { display: inline; margin: 0; }
+    .key-box .term-row { line-height: 1.6; }
+
+    /* DIAGRAM */
+    .diagram-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; margin-bottom: 28px; overflow-x: auto; max-width: 700px; margin-left: auto; margin-right: auto; }
+
+    .diagram-caption { font-size: .78rem; color: var(--muted); text-align: center; margin-top: 12px; font-style: italic; }
+
+.diagram-wrap svg {
+  display: block;
+  margin: 0 auto;
+}
+
+
+
+    /* COMPARE TABLE */
+    .compare-table { width: 100%; border-collapse: collapse; margin-bottom: 32px; font-size: .88rem; }
+    .compare-table th { background: #1a1612; color: #e8dcc8; padding: 12px 16px; text-align: left; font-weight: 600; font-family: 'Playfair Display', serif; }
+    .compare-table th:first-child { border-radius: 8px 0 0 0; }
+    .compare-table th:last-child { border-radius: 0 8px 0 0; }
+    .compare-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); vertical-align: top; }
+    .compare-table tr:nth-child(even) td { background: var(--sand); }
+    .compare-table tr:last-child td { border-bottom: none; }
+    .compare-table td:first-child { font-weight: 600; color: var(--text); }
+
+    /* ANALOGY BOX */
+    .analogy-box { background: #1a1612; border-radius: var(--radius); padding: 28px 32px; margin-bottom: 32px; }
+    .analogy-box h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: #e8dcc8; margin-bottom: 14px; }
+    .analogy-box p { font-size: .9rem; color: #a09080; line-height: 1.7; }
+    .analogy-box strong { color: #e8dcc8; }
+
+    /* TWO COLUMN */
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 28px; }
+    .col-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px; }
+    .col-card h4 { font-family: 'Playfair Display', serif; font-size: 1rem; margin-bottom: 10px; }
+    .col-card p { font-size: .87rem; color: var(--muted); line-height: 1.6; }
+    .col-card.accent-rust { border-top: 3px solid var(--rust2); }
+    .col-card.accent-teal { border-top: 3px solid var(--teal); }
+    .col-card.accent-blue { border-top: 3px solid var(--blue); }
+
+    /* IMAGE PLACEHOLDER */
+    .img-placeholder { background: var(--sand); border: 2px dashed var(--border); border-radius: var(--radius); padding: 32px; text-align: center; margin-bottom: 28px; color: var(--muted); font-size: .9rem; }
+    .img-placeholder span { display: block; font-size: 2rem; margin-bottom: 8px; }
+
+    /* SELF-CHECK */
+    .q-card { background: #1a1612; border: 1px solid #2a2018; border-radius: var(--radius); padding: 22px 26px; margin-bottom: 18px; }
+    .q-num { font-size: .68rem; letter-spacing: .18em; text-transform: uppercase; color: #d4a060; margin-bottom: 7px; font-weight: 600; }
+    .q-text { font-family: 'Playfair Display', serif; font-size: .95rem; color: #f0e8d8; margin-bottom: 14px; line-height: 1.5; }
+    .q-textarea { width: 100%; background: #0f0c08; border: 1.5px solid #2a2018; border-radius: 6px; color: #e8dcc8; font-family: 'Mulish', sans-serif; font-size: .9rem; padding: 11px 13px; resize: vertical; min-height: 80px; outline: none; transition: border-color .2s; line-height: 1.6; }
+    .q-textarea:focus { border-color: #d4703a; }
+    .q-btn { margin-top: 10px; font-family: 'Mulish', sans-serif; font-size: .84rem; font-weight: 600; padding: 8px 20px; border-radius: 6px; border: none; cursor: pointer; background: #d4703a; color: #fff; transition: background .2s; }
+    .q-btn:hover { background: #b85c2a; }
+    .q-model { margin-top: 14px; display: none; background: #0f0c08; border: 1px solid #2a2018; border-radius: 6px; overflow: hidden; }
+    .q-model.shown { display: block; }
+    .q-model-header { background: #2a2018; padding: 8px 16px; font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: #d4a060; font-weight: 600; }
+    .q-model-body { padding: 14px 18px; font-size: .88rem; color: #c8b89a; line-height: 1.75; }
+    .q-model-body strong { color: #f0e8d8; }
+    .q-model-body ul { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+    .q-model-body li { padding-left: 16px; position: relative; }
+    .q-model-body li::before { content: '→'; position: absolute; left: 0; color: #d4703a; font-size: .8rem; }
+    .q-self-check { margin-top: 12px; padding-top: 12px; border-top: 1px solid #2a2018; display: flex; align-items: center; gap: 10px; font-size: .82rem; color: #8a7a60; cursor: pointer; }
+    .q-self-check input { accent-color: #d4703a; width: 16px; height: 16px; cursor: pointer; }
+    .q-retry { margin-top: 10px; font-size: .78rem; color: #6a5a40; background: none; border: none; cursor: pointer; font-family: 'Mulish', sans-serif; text-decoration: underline; padding: 0; display: block; }
+    .q-score-bar { background: #0f0c08; border: 1px solid #2a2018; border-radius: var(--radius); padding: 20px 24px; margin-top: 32px; display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+    .q-score-num { font-family: 'Playfair Display', serif; font-size: 2rem; color: #d4703a; }
+    .q-score-label { font-size: .85rem; color: #8a7a60; }
+    .q-score-msg { font-size: .88rem; color: #c8b89a; }
+
+    footer { border-top: 1px solid var(--border); padding: 28px 24px; text-align: center; font-size: .78rem; color: var(--muted); margin-top: 40px; }
+    footer a { color: var(--teal); text-decoration: none; }
+
+    @media(max-width: 580px) {
+      .hero { padding: 44px 20px 36px; }
+      .container { padding: 0 16px; }
+      .two-col { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="top-bar">
+  <a href="nk1b-genetik.html" class="back-link">← Genetik</a>
+  <div class="top-title">NK1b &mdash; <span>Ärftlighet</span></div>
+</div>
+
+<div class="hero">
+  <p class="hero-eyebrow">Genetik &middot; NK1b</p>
+  <h1>Ärftlighet</h1>
+  <p class="hero-sub">Varför ser du ut som du gör? Hur fungerar det att egenskaper förs vidare från föräldrar till barn – och varför ser inte syskon alltid likadana ut?</p>
+  <nav class="hero-nav">
+    <a href="#vad-ar-arftlighet">Vad är ärftlighet?</a>
+    <a href="#gener-alleler">Gener & alleler</a>
+    <a href="#dominant-recessiv">Dominant & recessiv</a>
+    <a href="#genotyp-fenotyp">Genotyp & fenotyp</a>
+    <a href="#homo-hetero">Homo- & heterozygot</a>
+    <a href="#andra-typer">Andra typer</a>
+    <a href="#konsbundet">Könsbundet arv</a>
+    <a href="#mutation">Mutation</a>
+    <a href="#kolla">Kolla att du kan</a>
+  </nav>
+</div>
+
+<main>
+
+<!-- ══════════════════════════════════════
+     SEKTION 1 – VAD ÄR ÄRFTLIGHET?
+══════════════════════════════════════ -->
+<div class="section" id="vad-ar-arftlighet">
+<div class="container">
+  <p class="section-eyebrow">Introduktion</p>
+  <h2 class="section-title">Vad menas med ärftlighet?</h2>
+  <p class="section-intro">Du liknar förmodligen dina föräldrar på något sätt – kanske har du samma ögonfärg som din mamma eller samma hårfärg som din pappa. Det är ärftlighet i praktiken.</p>
+
+  <p class="prose">Ärftlighet handlar om hur egenskaper förs vidare från föräldrar till avkomma. Informationen bärs av <strong>gener</strong> – korta avsnitt av DNA som fungerar som instruktioner för hur kroppen ska byggas och fungera. Du har fått hälften av dina gener från din mamma och hälften från din pappa.</p>
+
+  <p class="prose">Ärftlighet gäller inte bara människor. En svart katt kan få svarta ungar. En röd blomma kan ge upphov till röda blommor. Mönstret är detsamma genom hela naturen: egenskaper ärvs via gener, och vilka egenskaper som syns beror på vilka varianter av generna man har fått.</p>
+
+  <!-- Bild: Översikt arv från föräldrar till avkomma -->
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:700px;display:block;margin:0 auto">
+      <defs>
+        <marker id="a1" markerWidth="8" markerHeight="6" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#6a5e52"/></marker>
+      </defs>
+
+      <!-- Förälder 1 -->
+      <ellipse cx="120" cy="80" rx="80" ry="50" fill="#f2ece0" stroke="#b85c2a" stroke-width="2"/>
+      <text x="120" y="68" text-anchor="middle" font-family="Playfair Display,serif" font-size="13" fill="#1a1612" font-weight="700">Förälder 1</text>
+      <text x="120" y="86" text-anchor="middle" font-family="Mulish,sans-serif" font-size="10" fill="#6a5e52">Bär på gener</text>
+      <text x="120" y="100" text-anchor="middle" font-family="Mulish,sans-serif" font-size="10" fill="#b85c2a">t.ex. blå ögon</text>
+
+      <!-- Förälder 2 -->
+      <ellipse cx="580" cy="80" rx="80" ry="50" fill="#f2ece0" stroke="#2a4a7a" stroke-width="2"/>
+      <text x="580" y="68" text-anchor="middle" font-family="Playfair Display,serif" font-size="13" fill="#1a1612" font-weight="700">Förälder 2</text>
+      <text x="580" y="86" text-anchor="middle" font-family="Mulish,sans-serif" font-size="10" fill="#6a5e52">Bär på gener</text>
+      <text x="580" y="100" text-anchor="middle" font-family="Mulish,sans-serif" font-size="10" fill="#2a4a7a">t.ex. bruna ögon</text>
+
+      <!-- Arrows down to child -->
+      <line x1="180" y1="112" x2="310" y2="162" stroke="#6a5e52" stroke-width="1.5" marker-end="url(#a1)"/>
+      <line x1="520" y1="112" x2="390" y2="162" stroke="#6a5e52" stroke-width="1.5" marker-end="url(#a1)"/>
+
+      <!-- Child -->
+      <ellipse cx="350" cy="175" rx="90" ry="22" fill="#1a1612" stroke="#d4703a" stroke-width="1.5"/>
+      <text x="350" y="172" text-anchor="middle" font-family="Playfair Display,serif" font-size="12" fill="#f0e8d8" font-weight="700">Avkomma</text>
+      <text x="350" y="185" text-anchor="middle" font-family="Mulish,sans-serif" font-size="9" fill="#c8b89a">får gener från båda föräldrarna</text>
+
+      <!-- 50% labels -->
+      <text x="280" y="130" text-anchor="middle" font-family="Mulish,sans-serif" font-size="9" fill="#b85c2a" font-style="italic">50 % av generna</text>
+      <text x="428" y="130" text-anchor="middle" font-family="Mulish,sans-serif" font-size="9" fill="#2a4a7a" font-style="italic">50 % av generna</text>
+    </svg>
+    <p class="diagram-caption">Figur 1. Avkomman får hälften av sina gener från varje förälder – men vilken kombination som bildas är slumpmässig.</p>
+  </div>
+
+  <div class="key-box">
+    <h4>📌 Några vardagliga exempel på ärftliga egenskaper</h4>
+    <dl>
+      <div class="term-row"><dt>Ögonfärg</dt><dd> – styrs av flera gener; bruna ögon är vanligare än blå.</dd></div>
+      <div class="term-row"><dt>Blomfärg hos ärtväxter</dt><dd> – lila eller vita blommor, beroende på vilka anlag växten har fått.</dd></div>
+      <div class="term-row"><dt>Pälsfärg hos katter</dt><dd> – svart, orange eller blandad päls ärvs enligt bestämda mönster.</dd></div>
+      <div class="term-row"><dt>Blodgrupp</dt><dd> – A, B, AB eller 0, beroende på vilka alleler man ärvt från mamma och pappa.</dd></div>
+    </dl>
+  </div>
+
+</div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SEKTION 2 – GENER OCH ALLELER
+══════════════════════════════════════ -->
+<div class="section" id="gener-alleler">
+<div class="container">
+  <p class="section-eyebrow">Grundbegrepp</p>
+  <h2 class="section-title">Gener, alleler och anlag</h2>
+  <p class="section-intro">En gen är en instruktion i DNA:t. Men samma gen kan se lite olika ut hos olika individer – och det är just det som gör att vi ser olika ut.</p>
+
+  <p class="prose">Tänk dig en gen som en fråga: <em>"Vilken färg ska blomman ha?"</em> Svaret på den frågan – alltså den specifika variant av genen – kallas en <strong>allel</strong>. Det kan till exempel finnas en allel som säger "lila" och en annan som säger "vit".</p>
+
+  <p class="prose">Eftersom du har <strong>dubbla uppsättningar</strong> av kromosomerna (en från mamma, en från pappa) har du också <strong>två alleler</strong> för varje gen – en på varje kromosom. Ibland är de likadana, ibland är de olika. Det är kombinationen av alleler som avgör vilken egenskap du får.</p>
+
+  <!-- SVG: Gen med två alleler -->
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 700 210" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:700px;display:block;margin:0 auto">
+
+      <text x="350" y="20" text-anchor="middle" font-family="Playfair Display,serif" font-size="13" fill="#1a1612" font-weight="700">En gen – två möjliga alleler</text>
+
+      <!-- Chromosome 1 (from mum) -->
+      <rect x="100" y="40" width="22" height="130" rx="11" fill="#e8e0d0"/>
+      <!-- Gene region on chr 1 -->
+      <rect x="100" y="88" width="22" height="36" rx="0" fill="#d4703a"/>
+      <text x="80" y="110" text-anchor="end" font-family="Mulish,sans-serif" font-size="10" fill="#b85c2a" font-weight="600">Gen: ögonfärg</text>
+      <text x="80" y="123" text-anchor="end" font-family="Mulish,sans-serif" font-size="9" fill="#b85c2a" font-style="italic">allel B (Brun)</text>
+      <!-- Label -->
+      <text x="111" y="188" text-anchor="middle" font-family="Mulish,sans-serif" font-size="10" fill="#6a5e52">Kromosom</text>
+      <text x="111" y="200" text-anchor="middle" font-family="Mulish,sans-serif" font-size="10" fill="#6a5e52">från mamma</text>
+
+      <!-- vs -->
+      <text x="200" y="115" text-anchor="middle" font-family="Playfair Display,serif" font-size="22" fill="#e8e0d0">eller</text>
+
+      <!-- Chromosome 2 (from dad) -->
+      <rect x="290" y="40" width="22" height="130" rx="11" fill="#e8e0d0"/>
+      <!-- Gene region on chr 2 -->
+      <rect x="290" y="88" width="22" height="36" rx="0" fill="#2a4a7a"/>
+      <text x="330" y="110" font-family="Mulish,sans-serif" font-size="10" fill="#2a4a7a" font-weight="600">Gen: ögonfärg</text>
+      <text x="330" y="123" font-family="Mulish,sans-serif" font-size="9" fill="#2a4a7a" font-style="italic">allel b (blå)</text>
+      <text x="301" y="188" text-anchor="middle" font-family="Mulish,sans-serif" font-size="10" fill="#6a5e52">Kromosom</text>
+      <text x="301" y="200" text-anchor="middle" font-family="Mulish,sans-serif" font-size="10" fill="#6a5e52">från pappa</text>
+
+      <!-- Summary box -->
+      <rect x="470" y="60" width="200" height="100" rx="10" fill="#f2ece0" stroke="#e8e0d0" stroke-width="1.5"/>
+      <text x="570" y="83" text-anchor="middle" font-family="Playfair Display,serif" font-size="12" fill="#1a1612" font-weight="700">Kom ihåg</text>
+      <text x="570" y="101" text-anchor="middle" font-family="Mulish,sans-serif" font-size="10" fill="#6a5e52">Gen = frågan</text>
+      <text x="570" y="116" text-anchor="middle" font-family="Mulish,sans-serif" font-size="10" fill="#b85c2a">"Vilken ögonfärg?"</text>
+      <text x="570" y="135" text-anchor="middle" font-family="Mulish,sans-serif" font-size="10" fill="#6a5e52">Allel = svaret</text>
+      <text x="570" y="150" text-anchor="middle" font-family="Mulish,sans-serif" font-size="10" fill="#6a5e52">"Brun" eller "blå"</text>
+    </svg>
+    <p class="diagram-caption">Figur 2. Samma gen kan finnas i olika varianter – alleler. Här finns allelen för Brun ögonfärg (B) och allelen för blå ögonfärg (b).</p>
+  </div>
+
+  <div class="key-box">
+    <h4>🔑 Gen och allel – skillnaden</h4>
+    <dl>
+      <div class="term-row"><dt>Gen</dt><dd> – en specifik position i DNA:t som styr en viss egenskap, t.ex. blomfärg eller ögonfärg.</dd></div>
+      <div class="term-row"><dt>Allel</dt><dd> – en variant av en gen. Samma gen kan ha flera olika alleler, t.ex. "lila" och "vit".</dd></div>
+      <div class="term-row"><dt>Du har två alleler per gen</dt><dd> – en från mamma och en från pappa. De kan vara lika eller olika.</dd></div>
+    </dl>
+  </div>
+
+</div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SEKTION 3 – DOMINANT OCH RECESSIV
+══════════════════════════════════════ -->
+<div class="section" id="dominant-recessiv">
+<div class="container">
+  <p class="section-eyebrow">Nedärvningsmönster</p>
+  <h2 class="section-title">Dominant och recessiv nedärvning</h2>
+  <p class="section-intro">När en individ har två olika alleler – en från mamma och en från pappa – vilken av dem "vinner" och syns? Det beror på om allelen är dominant eller recessiv.</p>
+
+  <p class="prose">En <strong>dominant allel</strong> syns alltid, oavsett vad den andra allelen säger. En <strong>recessiv allel</strong> döljs om det finns en dominant allel i paret – den syns bara om individen har två recessiva alleler.</p>
+
+  <div class="analogy-box">
+    <h3>En liknelse</h3>
+    <p>Tänk dig att du och en kompis ska välja film. Om din kompis är dominant – säger hen alltid till och får bestämma, oavsett vad du tycker. Du (den recessiva) får bara bestämma om kompisen inte är med. Så fungerar det med alleler: den dominanta "tar över" när de båda är med.</p>
+  </div>
+
+  <p class="prose">Mendel ärter är det klassiska exemplet. Lila blomfärg är dominant (L) och vit blomfärg är recessiv (l). En ärtplanta som har allelerna <strong>Ll</strong> – en lila och en vit – får <em>lila</em> blommor. Den vita allelen är dold. Bara en planta med <strong>ll</strong> (två vita alleler) får vita blommor.</p>
+
+
+<!-- SVG: Klassisk korsning Ll × Ll med föräldrakoppling och färg -->
+<div class="diagram-wrap">
+  <svg viewBox="-40 0 560 380" xmlns="http://www.w3.org/2000/svg"
+       style="width:100%;max-width:520px;display:block;margin:0 auto">
+
+    <!-- Titel -->
+    <text x="260" y="22" text-anchor="middle"
+          font-family="Playfair Display, serif"
+          font-size="14" font-weight="700" fill="#1a1612">
+      Korsningsschema – Ll × Ll
+    </text>
+
+    <text x="260" y="42" text-anchor="middle"
+          font-family="Mulish, sans-serif"
+          font-size="10" fill="#6a5e52">
+      Båda föräldrarna är heterozygota och har lila blommor
+    </text>
+
+<g transform="translate(-40, 0)">
+
+    <!-- Förälder 1 (ovan) -->
+    <rect x="230" y="60" width="140" height="48" rx="10"
+          fill="#d470b8" stroke="#1a1612" stroke-width="1.5"/>
+    <text x="300" y="80" text-anchor="middle"
+          font-family="Mulish, sans-serif"
+          font-size="11" font-weight="700" fill="#1a1612">
+      Förälder 1
+    </text>
+    <text x="300" y="98" text-anchor="middle"
+          font-family="Mulish, sans-serif"
+          font-size="10" fill="#1a1612">
+      Ll (lila blomma)
+    </text>
+
+    <!-- Förälder 2 (vänster) -->
+    <rect x="30" y="190" width="140" height="48" rx="10"
+          fill="#d470b8" stroke="#1a1612" stroke-width="1.5"/>
+    <text x="100" y="208" text-anchor="middle"
+          font-family="Mulish, sans-serif"
+          font-size="11" font-weight="700" fill="#1a1612">
+      Förälder 2
+    </text>
+    <text x="100" y="226" text-anchor="middle"
+          font-family="Mulish, sans-serif"
+          font-size="10" fill="#1a1612">
+      Ll (lila blomma)
+    </text>
+
+    <!-- Pilar -->
+    <line x1="300" y1="108" x2="260" y2="140"
+          stroke="#6a5e52" stroke-width="1.2"/>
+<line x1="300" y1="108" x2="340" y2="140"
+          stroke="#6a5e52" stroke-width="1.2"/>
+    <line x1="170" y1="214" x2="205" y2="194"
+          stroke="#6a5e52" stroke-width="1.2"/>
+	<line x1="170" y1="214" x2="205" y2="234"
+          stroke="#6a5e52" stroke-width="1.2"/>
+
+    <!-- Rad- och kolumnetiketter -->
+    <text x="260" y="155" font-size="11" font-weight="600">L</text>
+    <text x="340" y="155" font-size="11" font-weight="600">l</text>
+    <text x="210" y="190" font-size="11" font-weight="600">L</text>
+    <text x="210" y="250" font-size="11" font-weight="600">l</text>
+
+    <!-- Korsningsrutor -->
+    <!-- LL -->
+    <rect x="220" y="160" width="80" height="50" rx="10"
+          fill="#d470b8" stroke="#1a1612" stroke-width="1.5"/>
+    <text x="260" y="192" text-anchor="middle"
+          font-size="12" font-weight="700">LL</text>
+
+    <!-- Ll -->
+    <rect x="300" y="160" width="80" height="50" rx="10"
+          fill="#d470b8" stroke="#1a1612" stroke-width="1.5"/>
+    <text x="340" y="192" text-anchor="middle"
+          font-size="12" font-weight="700">Ll</text>
+
+    <!-- Ll -->
+    <rect x="220" y="220" width="80" height="50" rx="10"
+          fill="#d470b8" stroke="#1a1612" stroke-width="1.5"/>
+    <text x="260" y="252" text-anchor="middle"
+          font-size="12" font-weight="700">Ll</text>
+
+    <!-- ll -->
+    <rect x="300" y="220" width="80" height="50" rx="10"
+          fill="#ffffff" stroke="#1a1612" stroke-width="1.5"/>
+    <text x="340" y="252" text-anchor="middle"
+          font-size="12" font-weight="700">ll</text>
+
+    <!-- Förklaring -->
+    <text x="260" y="320" text-anchor="middle"
+          font-family="Mulish, sans-serif"
+          font-size="11" fill="#6a5e52">
+      3 av 4 möjliga kombinationer ger lila blommor (L är dominant),
+      1 ger vit blomma (ll)
+    </text>
+
+  </svg>
+
+  <p class="diagram-caption">
+    Figur 3. Klassisk korsning (Punnett square) med tydlig koppling
+    mellan föräldrarnas alleler (Ll) och avkommans möjliga genotyper.
+    L är dominant och ger lila blomfärg.
+  </p>
+</div>
+
+  <div class="key-box">
+    <h4>🔑 Dominant och recessiv</h4>
+    <dl>
+      <div class="term-row"><dt>Dominant allel</dt><dd> – syns alltid om den finns, oavsett vad den andra allelen är. Betecknas med stor bokstav, t.ex. L.</dd></div>
+      <div class="term-row"><dt>Recessiv allel</dt><dd> – syns bara om individen har två recessiva alleler. Betecknas med liten bokstav, t.ex. l.</dd></div>
+    </dl>
+  </div>
+
+</div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SEKTION 6 – ANDRA TYPER AV NEDÄRVNING
+══════════════════════════════════════ -->
+<div class="section" id="andra-typer">
+<div class="container">
+  <p class="section-eyebrow">Variationer</p>
+  <h2 class="section-title">Andra typer av nedärvning</h2>
+  <p class="section-intro">Dominant–recessiv är det vanligaste mönstret, men det finns fler. Ibland är allelerna mer jämlika – ingen dominerar helt.</p>
+
+  <div class="two-col">
+    <div class="col-card accent-rust">
+      <h4>Kodominanta anlag – båda syns</h4>
+      <p>Om ingen allel dominerar den andra kan <strong>båda</strong> synas samtidigt i fenotypen. Ett tydligt exempel är blodgrupp AB – individen har fått en A-allel och en B-allel, och kroppen uttrycker <em>båda</em>. Ingen av dem "vinner".</p>
+      <p style="margin-top:10px;font-size:.83rem;color:#b85c2a;">Tänk: svart + vit päls → prickig päls</p>
+    </div>
+    <div class="col-card accent-teal">
+      <h4>Intermediära anlag – blandning syns</h4>
+      <p>Ibland ger kombinationen av två alleler ett <strong>mellanting</strong> – ingen av föräldrarnas egenskaper utan något mitt emellan. En röd blomma korsad med en vit blomma kan ge <em>rosa</em> avkomma.</p>
+      <p style="margin-top:10px;font-size:.83rem;color:#2a7a6a;">Tänk: röd + vit → rosa</p>
+    </div>
+  </div>
+
+
+<!-- Platshållare för illustration -->
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 700 130" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:700px;display:block;margin:0 auto">
+
+
+  <!-- Rubrik -->
+  <text x="350" y="18" text-anchor="middle"
+        font-family="Playfair Display,serif"
+        font-size="12" font-weight="700">
+    Kodominant nedärvning
+  </text>
+
+      <!-- KODOMINANS -->
+<g transform="translate(90,0)">
+
+      <ellipse cx="90" cy="72" rx="52" ry="32" fill="#e05535"/>
+      <text x="90" y="77" text-anchor="middle" font-family="Mulish,sans-serif" font-size="11" fill="#fff" font-weight="600">A-blodgrupp</text>
+
+      <text x="175" y="77" text-anchor="middle" font-family="Mulish,sans-serif" font-size="18" fill="#c8b89a">+</text>
+
+      <ellipse cx="260" cy="72" rx="52" ry="32" fill="#2a4a7a"/>
+      <text x="260" y="77" text-anchor="middle" font-family="Mulish,sans-serif" font-size="11" fill="#fff" font-weight="600">B-blodgrupp</text>
+
+      <text x="342" y="77" text-anchor="middle" font-family="Mulish,sans-serif" font-size="18" fill="#c8b89a">→</text>
+
+      <ellipse cx="425" cy="72" rx="52" ry="32" fill="#6a4a7a"/>
+      <text x="425" y="72" text-anchor="middle" font-family="Mulish,sans-serif" font-size="11" fill="#fff" font-weight="600">AB-blodgrupp</text>
+      <text x="425" y="85" text-anchor="middle" font-family="Mulish,sans-serif" font-size="9" fill="#e0c0f0">båda syns</text>
+	</g>
+</svg>
+<p class="diagram-caption">Figur 5. Kodominans: båda alleler syns (A + B = AB).</p>
+
+  </div>
+
+</div>
+
+<!-- Platshållare för illustration -->
+  
+<div class="diagram-wrap">
+  <svg viewBox="0 0 700 130" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:700px;display:block;margin:0 auto">
+
+
+
+  <!-- Rubrik -->
+  <text x="350" y="18" text-anchor="middle"
+        font-family="Playfair Display,serif"
+        font-size="12" font-weight="700">
+    Intermediär nedärvning
+  </text>
+
+      <!-- INTERMEDIÄRT -->
+<g transform="translate(90,0)">
+
+      <ellipse cx="90" cy="72" rx="52" ry="32" fill="#f00" stroke="#1a1612" stroke-width="1.5"/>
+      <text x="90" y="77" text-anchor="middle" font-family="Mulish,sans-serif" font-size="11" fill="#fff" font-weight="600">Röd blomma</text>
+
+      <text x="175" y="77" text-anchor="middle" font-family="Mulish,sans-serif" font-size="18" fill="#c8b89a">+</text>
+
+      <ellipse cx="260" cy="72" rx="52" ry="32" fill="#ffffff" stroke="#1a1612" stroke-width="1.5"/>
+      <text x="260" y="77" text-anchor="middle" font-family="Mulish,sans-serif" font-size="11" fill="#00000" font-weight="600">Vit blomma</text>
+
+      <text x="342" y="77" text-anchor="middle" font-family="Mulish,sans-serif" font-size="18" fill="#c8b89a">→</text>
+
+      <ellipse cx="425" cy="72" rx="52" ry="32" fill="#f88379" stroke="#1a1612" stroke-width="1.5"/>
+      <text x="425" y="72" text-anchor="middle" font-family="Mulish,sans-serif" font-size="11" fill="#fff" font-weight="600">Rosa blomma</text>
+      <text x="425" y="85" text-anchor="middle" font-family="Mulish,sans-serif" font-size="9" fill="#fff">egenskaper blandas</text>
+	</g>
+</svg>
+
+  <p class="diagram-caption">
+    Figur 6. Intermediär nedärvning: ingen allel dominerar helt.
+  </p>
+ <p class="diagram-caption">
+När en röd blomma (RR) korsas med en vit blomma (WW) blir avkomman rosa (RW).
+</p>
+</div>
+
+
+</div>
+
+<!-- ══════════════════════════════════════
+     SEKTION 4 – GENOTYP OCH FENOTYP
+══════════════════════════════════════ -->
+<div class="section" id="genotyp-fenotyp">
+<div class="container">
+  <p class="section-eyebrow">Två viktiga begrepp</p>
+  <h2 class="section-title">Genotyp och fenotyp</h2>
+  <p class="section-intro">Dessa två begrepp skiljer på vad som faktiskt finns i arvsmassan och vad som syns utanpå.</p>
+
+  <div class="two-col">
+    <div class="col-card accent-rust">
+      <h4>🧬 Genotyp</h4>
+      <p>Din <strong>genotyp</strong> är den faktiska kombinationen av alleler du bär på – det som finns i ditt DNA. Det syns inte utanpå. En ärtplanta med genotypen <strong>Ll</strong> bär på en lila och en vit allel, men bara den lila syns.</p>
+    </div>
+    <div class="col-card accent-teal">
+      <h4>👁️ Fenotyp</h4>
+      <p>Din <strong>fenotyp</strong> är den egenskap som faktiskt syns – det du kan mäta, se eller känna. Blomfärgen lila är en fenotyp. Blå ögon är en fenotyp. Fenotypen beror på genotypen, men ibland beror den också på miljön.</p>
+    </div>
+  </div>
+
+  <p class="prose">Det viktiga att förstå är att <strong>olika genotyper ibland kan ge samma fenotyp</strong>. Både LL och Ll ger lila blomfärg – men de har alltså olika genotyper. Du kan inte alltid avgöra genotypen bara genom att titta på fenotypen.</p>
+
+  <!-- Tabell: Genotyp → Fenotyp -->
+  <table class="compare-table">
+    <thead><tr>
+      <th>Genotyp</th>
+      <th>Vad det innebär</th>
+      <th>Fenotyp (blomfärg)</th>
+    </tr></thead>
+    <tbody>
+      <tr>
+        <td>LL</td>
+        <td>Två lila alleler – homozygot dominant</td>
+        <td>🟣 Lila blomma</td>
+      </tr>
+      <tr>
+        <td>Ll</td>
+        <td>En lila och en vit allel – heterozygot</td>
+        <td>🟣 Lila blomma (L dominerar)</td>
+      </tr>
+      <tr>
+        <td>ll</td>
+        <td>Två vita alleler – homozygot recessiv</td>
+        <td>⚪ Vit blomma</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="key-box">
+    <h4>📌 Kom ihåg</h4>
+    <p>LL och Ll ser likadana ut (lila blomma) men är <em>genetiskt</em> olika. Det är möjligt att ha en dold recessiv allel som kan skickas vidare till nästa generation – även om den aldrig syns hos dig.</p>
+  </div>
+
+</div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SEKTION 5 – HOMO- OCH HETEROZYGOT
+══════════════════════════════════════ -->
+<div class="section" id="homo-hetero">
+<div class="container">
+  <p class="section-eyebrow">Begrepp</p>
+  <h2 class="section-title">Homozygot och heterozygot</h2>
+  <p class="section-intro">Beroende på om allelerna i ett par är lika eller olika kallas individen homozygot eller heterozygot.</p>
+
+  <div class="two-col">
+    <div class="col-card accent-blue">
+      <h4>Homozygot – lika alleler</h4>
+      <p>Om de två allelerna för en gen är <strong>lika</strong> kallas individen homozygot för den egenskapen. Det kan vara homozygot dominant (LL) eller homozygot recessiv (ll).</p>
+      <p style="margin-top:10px;font-size:.83rem;color:#b85c2a;font-weight:600">Exempel: LL eller ll</p>
+    </div>
+    <div class="col-card accent-rust">
+      <h4>Heterozygot – olika alleler</h4>
+      <p>Om de två allelerna är <strong>olika</strong> kallas individen heterozygot. Individen bär då på en dominant och en recessiv allel. Bara den dominanta syns.</p>
+      <p style="margin-top:10px;font-size:.83rem;color:#b85c2a;font-weight:600">Exempel: Ll</p>
+    </div>
+  </div>
+
+  <!-- SVG: Homo vs hetero -->
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 700 140" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:700px;display:block;margin:0 auto">
+
+      <!-- Homozygot dominant: LL -->
+      <rect x="30" y="20" width="160" height="100" rx="10" fill="#f2ece0" stroke="#d4703a" stroke-width="1.5"/>
+      <text x="110" y="44" text-anchor="middle" font-family="Playfair Display,serif" font-size="12" fill="#1a1612" font-weight="700">Homozygot dominant</text>
+      <text x="110" y="75" text-anchor="middle" font-family="Mulish,sans-serif" font-size="22" fill="#d4703a" font-weight="700">LL</text>
+      <text x="110" y="96" text-anchor="middle" font-family="Mulish,sans-serif" font-size="10" fill="#6a5e52">lila blomma</text>
+      <text x="110" y="110" text-anchor="middle" font-family="Mulish,sans-serif" font-size="9" fill="#b85c2a" font-style="italic">kan ej få vita blommor*</text>
+
+      <!-- Heterozygot: Ll -->
+      <rect x="270" y="20" width="160" height="100" rx="10" fill="#f2ece0" stroke="#b85c2a" stroke-width="1.5"/>
+      <text x="350" y="44" text-anchor="middle" font-family="Playfair Display,serif" font-size="12" fill="#1a1612" font-weight="700">Heterozygot</text>
+      <text x="350" y="75" text-anchor="middle" font-family="Mulish,sans-serif" font-size="22" fill="#b85c2a" font-weight="700">Ll</text>
+      <text x="350" y="96" text-anchor="middle" font-family="Mulish,sans-serif" font-size="10" fill="#6a5e52">lila blomma</text>
+      <text x="350" y="110" text-anchor="middle" font-family="Mulish,sans-serif" font-size="9" fill="#b85c2a" font-style="italic">kan få vita blommor</text>
+
+      <!-- Homozygot recessiv: ll -->
+      <rect x="510" y="20" width="160" height="100" rx="10" fill="#f2ece0" stroke="#2a4a7a" stroke-width="1.5"/>
+      <text x="590" y="44" text-anchor="middle" font-family="Playfair Display,serif" font-size="12" fill="#1a1612" font-weight="700">Homozygot recessiv</text>
+      <text x="590" y="75" text-anchor="middle" font-family="Mulish,sans-serif" font-size="22" fill="#2a4a7a" font-weight="700">ll</text>
+      <text x="590" y="96" text-anchor="middle" font-family="Mulish,sans-serif" font-size="10" fill="#6a5e52">vit blomma</text>
+      <text x="590" y="110" text-anchor="middle" font-family="Mulish,sans-serif" font-size="9" fill="#2a4a7a" font-style="italic">alla blommor vita*</text>
+    </svg>
+    <p class="diagram-caption">Figur 4. LL och Ll ser likadana ut (lila blomma), men bär på olika genotyper. Bara ll ger vit blomma. * Gäller om den bägge föräldern har ll.</p>
+  </div>
+
+<div class="key-box">
+    <h4>🔑 En enkel regel att komma ihåg</h4>
+    <p>En <strong>heterozygot</strong> individ med en dominant allel <em>ser alltid ut</em> som om den bara har den dominanta egenskapen – men den bär ändå på den recessiva allelen och kan skicka den vidare till sina barn.</p>
+  </div>
+
+</div>
+</div>
+
+
+<!-- ══════════════════════════════════════
+     SEKTION 7 – KÖNSBUNDET ARV
+══════════════════════════════════════ -->
+<div class="section" id="konsbundet">
+<div class="container">
+  <p class="section-eyebrow">Speciellt fall</p>
+  <h2 class="section-title">Könsbundet arv</h2>
+  <p class="section-intro">De flesta av våra 46 kromosomer finns i matchande par. Men ett par – könskromosomerna – ser olika ut hos tjejer och killar, och det påverkar hur vissa egenskaper ärvs.</p>
+
+  <p class="prose">Tjejer har könskromosomerna <strong>XX</strong> och killar har <strong>XY</strong>. Y-kromosomen är kortare och bär färre gener än X-kromosomen. Det innebär att killar bara har <em>en</em> kopia av många gener på X-kromosomen – det finns ingen "reserv" på Y-kromosomen som kan dölja en recessiv allel.</p>
+
+  <p class="prose">Det gör att recessiva egenskaper på X-kromosomen syns <strong>mycket oftare hos killar</strong> än hos tjejer. Färgblindhet är ett välkänt exempel – ungefär 8 % av alla killar har en form av röd–grön-färgblindhet, men bara ca 0,5 % av tjejer. Tjejer behöver två recessiva alleler (en på varje X) för att egenskapen ska synas; killar behöver bara en.</p>
+
+  <div class="key-box">
+    <h4>🔑 Könsbundet arv – det viktigaste</h4>
+    <dl>
+      <div class="term-row"><dt>Könskromosomer</dt><dd> – XX hos tjejer, XY hos killar.</dd></div>
+      <div class="term-row"><dt>Könsbundet arv</dt><dd> – när en gen sitter på X-kromosomen och inte på Y. Killar saknar "reserv" och visar recessiva egenskaper lättare.</dd></div>
+      <div class="term-row"><dt>Bärare</dt><dd> – en tjej med en recessiv allel på ett X-kromosom som inte syns hos henne men kan föras vidare till barn.</dd></div>
+    </dl>
+  </div>
+
+</div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SEKTION 8 – MUTATION
+══════════════════════════════════════ -->
+<div class="section" id="mutation">
+<div class="container">
+  <p class="section-eyebrow">Förändringar i arvsmassan</p>
+  <h2 class="section-title">Mutation</h2>
+  <p class="section-intro">All nedärvning sker inte felfritt. Ibland ändras DNA:t – och det kallas en mutation.</p>
+
+  <p class="prose">En <strong>mutation</strong> är en förändring i DNA-sekvensen. Det kan röra sig om att en enda bas byter plats, att ett avsnitt av DNA försvinner, eller att ett nytt avsnitt läggs till. Mutationer kan uppstå av sig självt vid kopiering av DNA, eller orsakas av yttre faktorer som stark UV-strålning, röntgenstrålning eller vissa kemikalier.</p>
+
+  <div class="two-col">
+    <div class="col-card accent-teal">
+      <h4>Neutral mutation</h4>
+      <p>De flesta mutationer märks inte alls – de sitter på ställen i DNA:t som inte kodar för något viktigt, eller så ändras inte proteinets funktion. Kroppen fungerar precis som vanligt.</p>
+    </div>
+    <div class="col-card accent-rust">
+      <h4>Skadlig mutation</h4>
+      <p>En mutation kan göra att ett protein inte fungerar som det ska, vilket kan orsaka sjukdom. Om mutationen sitter i en könscell kan den föras vidare till nästa generation.</p>
+    </div>
+  </div>
+
+  <p class="prose">Det finns också <strong>gynnsamma mutationer</strong> – förändringar som av en slump gör att organismen klarar sin miljö lite bättre. En välkänd sådan är mutationen som gör att vissa människor kan bryta ner mjölksocker även i vuxen ålder. Den gav en fördel i samhällen där man drack mycket mjölk.
+Ett annat exempel är bakterier som genom mutation blivit motståndskraftiga mot antibiotika. För bakterien är mutationen gynnsam, eftersom den överlever – men för människan är det ett stort problem.</p>
+
+<p class="prose">Gynnsamma mutationer är grunden för evolution: individer som råkar få en mutation som ger en fördel i sin miljö har större chans att överleva och föra den vidare. Det är sådana mutationer som driver evolutionen framåt: de individer som råkat få en fördelaktig mutation har lättare att överleva och föra den vidare. Det ska dock nämnas att endast <strong>mutationer som uppstår i könsceller</strong> (ägg eller spermier)<strong> kan ärvas</strong>.
+Mutationer som sker i kroppsceller påverkar bara den individ där de uppstår och kan till exempel leda till cancer, men de förs inte vidare till barn.
+Ärftliga mutationer skapar variation i populationen och gör evolution möjlig.</p>
+
+  <div class="key-box">
+    <h4>🔑 Mutation – kort och gott</h4>
+    <p>En mutation är en förändring i DNA:t. Den kan vara <strong>neutral</strong> (märks inte), <strong>skadlig</strong> (kan orsaka sjukdom) eller <strong>gynnsam</strong> (kan ge en fördel och driva evolution). Mutation är en av drivkrafterna bakom biologisk variation.</p>
+  </div>
+
+</div>
+</div>
+
+<!-- ══════════════════════════════════════
+     NYCKELBEGREPP
+══════════════════════════════════════ -->
+<div class="section" id="nyckelbegrepp">
+<div class="container">
+  <p class="section-eyebrow">Sammanfattning</p>
+  <h2 class="section-title">Nyckelbegrepp</h2>
+  <p class="section-intro">Här är de viktigaste begreppen från det här avsnittet samlade.</p>
+
+  <div class="key-box">
+    <h4>🔑 Alla nyckelbegrepp</h4>
+    <dl>
+      <div class="term-row"><dt>Allel</dt><dd> – en variant av en gen. Samma gen kan finnas i olika varianter hos olika individer.</dd></div>
+      <div class="term-row"><dt>Dominant</dt><dd> – en allel som alltid syns i fenotypen om den finns, oavsett vad den andra allelen säger.</dd></div>
+      <div class="term-row"><dt>Recessiv</dt><dd> – en allel som bara syns om individen har två recessiva alleler (homozygot recessiv).</dd></div>
+      <div class="term-row"><dt>Homozygot</dt><dd> – individen bär på två lika alleler för en gen (t.ex. LL eller ll).</dd></div>
+      <div class="term-row"><dt>Heterozygot</dt><dd> – individen bär på två olika alleler för en gen (t.ex. Ll).</dd></div>
+      <div class="term-row"><dt>Genotyp</dt><dd> – den faktiska allel-kombinationen i DNA:t, t.ex. LL, Ll eller ll.</dd></div>
+      <div class="term-row"><dt>Fenotyp</dt><dd> – den egenskap som faktiskt syns eller kan mätas, t.ex. lila eller vit blomfärg.</dd></div>
+      <div class="term-row"><dt>Kodominanta anlag</dt><dd> – båda alleler uttrycks fullt ut i fenotypen, t.ex. blodgrupp AB.</dd></div>
+      <div class="term-row"><dt>Intermediära anlag</dt><dd> – ingen allel dominerar; fenotypen blir ett mellanting av de två, t.ex. röd × vit = rosa.</dd></div>
+      <div class="term-row"><dt>Könsbundet arv</dt><dd> – gen som sitter på X-kromosomen; recessiva egenskaper syns oftare hos killar (XY) eftersom de bara har ett X.</dd></div>
+      <div class="term-row"><dt>Mutation</dt><dd> – en förändring i DNA-sekvensen; kan vara neutral, skadlig eller gynnsam.</dd></div>
+    </dl>
+  </div>
+
+  <div class="analogy-box">
+    <h3>📖 Kort sammanfattning</h3>
+    <p>Egenskaper ärvs via <strong>gener</strong> som kan finnas i olika varianter – <strong>alleler</strong>. Du har fått en allel från varje förälder, och kombinationen av alleler (din <strong>genotyp</strong>) avgör hur du ser ut (din <strong>fenotyp</strong>). Dominanta alleler döljer recessiva. Om du är <strong>heterozygot</strong> bär du på en dold recessiv allel som kan föras vidare. Ibland syns båda allelerna (kodominans) eller uppstår ett mellanting (intermediär). Vissa gener sitter på könskromosomerna och ärvs därför olika av tjejer och killar. Och ibland uppstår <strong>mutationer</strong> – förändringar i DNA:t som kan vara allt från harmlösa till drivkraften bakom evolutionen.</p>
+  </div>
+
+</div>
+</div>
+
+<!-- ══════════════════════════════════════
+     KOLLA ATT DU KAN
+══════════════════════════════════════ -->
+<div class="section" id="kolla">
+<div class="container">
+  <p class="section-eyebrow">Självbedömning</p>
+  <h2 class="section-title">Kolla att du kan</h2>
+  <p class="section-intro">Försök svara utan att titta i texten. Visa sedan mallsvaret och bocka i om du hade med det viktigaste.</p>
+  <div id="q-wrap"></div>
+</div>
+</div>
+
+</main>
+
+<footer>
+  <a href="nk1b-genetik.html">← Tillbaka till Genetik</a> &middot; NK1b &middot; Ärftlighet
+</footer>
+
+<script src="shared.js"></script>
+<script>
+requireLogin('NK1b');
+
+const QUESTIONS = [
+  {
+    q: "Förklara vad en gen är och vad en allel är. Vad är skillnaden?",
+    model: [
+      "En <strong>gen</strong> är ett avsnitt i DNA:t som styr en viss egenskap, till exempel blomfärg eller ögonfärg.",
+      "En <strong>allel</strong> är en specifik variant av den genen – till exempel 'lila' eller 'vit' blomfärg.",
+      "Samma gen kan alltså finnas i flera olika varianter (alleler).",
+      "Varje individ bär på två alleler per gen – en från mamma och en från pappa."
+    ]
+  },
+  {
+    q: "Vad menas med att en allel är dominant respektive recessiv?",
+    model: [
+      "En <strong>dominant</strong> allel syns alltid i fenotypen om den finns, oavsett vad den andra allelen är.",
+      "En <strong>recessiv</strong> allel döljs om det finns en dominant allel – den syns bara när individen har två recessiva alleler.",
+      "Dominant betecknas med stor bokstav (t.ex. L), recessiv med liten (t.ex. l).",
+      "Exempel: Ll ger lila blomma (L dominerar), ll ger vit blomma."
+    ]
+  },
+  {
+    q: "Vad är skillnaden mellan genotyp och fenotyp? Ge ett exempel.",
+    model: [
+      "<strong>Genotyp</strong> är den faktiska kombinationen av alleler i DNA:t – det man bär på men som inte alltid syns.",
+      "<strong>Fenotyp</strong> är egenskapen som faktiskt syns eller kan mätas.",
+      "Exempel: En ärtplanta med genotypen Ll har fenotypen 'lila blomma' – den vita allelen är dold.",
+      "Viktigt: olika genotyper kan ge samma fenotyp (LL och Ll ser båda lila ut)."
+    ]
+  },
+  {
+    q: "Förklara skillnaden mellan homozygot och heterozygot. Varför spelar det roll om man är heterozygot?",
+    model: [
+      "<strong>Homozygot</strong> = man bär på två lika alleler för en gen (t.ex. LL eller ll).",
+      "<strong>Heterozygot</strong> = man bär på två olika alleler (t.ex. Ll).",
+      "En heterozygot individ med en dominant allel ser ut som om den bara har den dominanta egenskapen – men bär på en dold recessiv allel.",
+      "Den dolda recessiva allelen kan föras vidare till barn och dyka upp i nästa generation."
+    ]
+  },
+  {
+    q: "Vad är skillnaden mellan kodominanta och intermediära anlag? Ge ett exempel på vardera.",
+    model: [
+      "<strong>Kodominanta anlag</strong>: båda allelerna uttrycks fullt ut i fenotypen. Exempel: blodgrupp AB – en person med en A-allel och en B-allel uttrycker båda.",
+      "<strong>Intermediära anlag</strong>: ingen allel dominerar; fenotypen blir ett mellanting. Exempel: röd blomma korsad med vit blomma kan ge rosa avkomma.",
+      "Skillnaden: kodominans = båda syns helt. Intermediär = ett mellanting uppstår."
+    ]
+  },
+  {
+    q: "Varför är recessiva könsbundna egenskaper vanligare hos killar än hos tjejer?",
+    model: [
+      "Killar har könskromosomerna XY och tjejer XX.",
+      "Många gener sitter bara på X-kromosomen och saknar motsvarighet på Y.",
+      "Killar har därför bara <em>en</em> kopia av dessa gener – om den recessiva allelen finns där syns egenskapen direkt.",
+      "Tjejer behöver ha den recessiva allelen på <em>båda</em> sina X-kromosomer för att egenskapen ska synas – det är mycket ovanligare."
+    ]
+  },
+  {
+    q: "Vad är en mutation och vad kan den ha för konsekvenser?",
+    model: [
+      "En <strong>mutation</strong> är en förändring i DNA-sekvensen.",
+      "Den kan uppstå spontant vid kopiering av DNA eller orsakas av yttre faktorer som UV-strålning.",
+      "Mutationer kan vara <strong>neutrala</strong> (märks inte), <strong>skadliga</strong> (kan orsaka sjukdom) eller <strong>gynnsamma</strong> (kan ge en fördel).",
+      "Gynnsamma mutationer är en av drivkrafterna bakom evolutionen."
+    ]
+  }
+];
+
+let checked = new Array(QUESTIONS.length).fill(false);
+
+function buildQuestions() {
+  const wrap = document.getElementById('q-wrap');
+  QUESTIONS.forEach((q, i) => {
+    const items = q.model.map(m => `<li>${m}</li>`).join('');
+    wrap.innerHTML += `
+      <div class="q-card">
+        <div class="q-num">Fråga ${i+1} av ${QUESTIONS.length}</div>
+        <div class="q-text">${q.q}</div>
+        <textarea class="q-textarea" id="qta-${i}" placeholder="Skriv ditt svar här..."></textarea>
+        <button class="q-btn" onclick="showModel(${i})">Visa mallsvar →</button>
+        <div class="q-model" id="qmodel-${i}">
+          <div class="q-model-header">📋 Mallsvar</div>
+          <div class="q-model-body">
+            <ul>${items}</ul>
+            <div class="q-self-check">
+              <input type="checkbox" id="qcheck-${i}" onchange="toggleCheck(${i})"/>
+              <label for="qcheck-${i}">Jag hade med det viktigaste</label>
+            </div>
+          </div>
+        </div>
+        <button class="q-retry" onclick="resetQuestion(${i})">↩ Rensa och försök igen</button>
+      </div>`;
+  });
+  updateScore();
+}
+
+function showModel(i) { document.getElementById(`qmodel-${i}`).classList.add('shown'); }
+function toggleCheck(i) { checked[i] = document.getElementById(`qcheck-${i}`).checked; updateScore(); }
+function resetQuestion(i) {
+  document.getElementById(`qta-${i}`).value = '';
+  document.getElementById(`qmodel-${i}`).classList.remove('shown');
+  document.getElementById(`qcheck-${i}`).checked = false;
+  checked[i] = false;
+  updateScore();
+}
+
+function updateScore() {
+  const n = checked.filter(Boolean).length;
+  const total = QUESTIONS.length;
+  const msg = n === total ? '🎉 Utmärkt – du kan hela avsnittet!'
+    : n >= 5 ? '👍 Bra jobbat! Kika igenom de du missat.'
+    : n >= 3 ? '📖 Bra start – fortsätt öva på resten.'
+    : '🔍 Gå tillbaka till materialet och försök igen.';
+  let bar = document.getElementById('q-scorebar');
+  if (!bar) {
+    document.getElementById('q-wrap').insertAdjacentHTML('afterend',
+      `<div class="q-score-bar" id="q-scorebar">
+        <div class="q-score-num" id="qs-num">${n}/${total}</div>
+        <div><div class="q-score-label">Självskattning</div><div class="q-score-msg" id="qs-msg">${msg}</div></div>
+      </div>`);
+  } else {
+    document.getElementById('qs-num').textContent = `${n}/${total}`;
+    document.getElementById('qs-msg').textContent = msg;
+  }
+}
+
+buildQuestions();
+</script>
+
+</body>
+</html>
