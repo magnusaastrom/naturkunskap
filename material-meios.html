@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Meios och könsceller – NK1b</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Mulish:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #faf7f2; --surface: #ffffff; --border: #e8e0d0;
+      --sand: #f2ece0; --rust: #b85c2a; --rust2: #d4703a;
+      --teal: #2a7a6a; --blue: #2a4a7a; --text: #1a1612;
+      --muted: #6a5e52; --radius: 10px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Mulish', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; font-size: 16px; }
+
+    .top-bar { background: #1a1612; padding: 14px 28px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; position: sticky; top: 0; z-index: 100; }
+    .back-link { color: #c8b89a; text-decoration: none; font-size: .82rem; transition: color .2s; }
+    .back-link:hover { color: #fff; }
+    .top-title { font-family: 'Playfair Display', serif; font-size: 1rem; color: #e8dcc8; }
+    .top-title span { color: #d4a060; }
+
+    .hero { background: linear-gradient(135deg, #1a1612 0%, #1a2820 60%, #1a1612 100%); padding: 64px 32px 56px; text-align: center; position: relative; overflow: hidden; }
+    .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 60% 60% at 30% 50%, rgba(42,122,106,.12) 0%, transparent 60%), radial-gradient(ellipse 50% 70% at 80% 30%, rgba(180,92,42,.06) 0%, transparent 55%); pointer-events: none; }
+    .hero-eyebrow { font-size: .72rem; letter-spacing: .22em; text-transform: uppercase; color: #d4a060; margin-bottom: 12px; }
+    .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 5vw, 3rem); font-weight: 900; color: #f0e8d8; margin-bottom: 16px; line-height: 1.15; }
+    .hero-sub { font-size: 1rem; color: #a09080; max-width: 580px; margin: 0 auto 32px; line-height: 1.7; }
+    .hero-nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+    .hero-nav a { font-size: .8rem; color: #c8b89a; border: 1px solid rgba(200,184,154,.3); border-radius: 30px; padding: 7px 16px; text-decoration: none; transition: all .2s; }
+    .hero-nav a:hover { background: rgba(200,184,154,.12); color: #fff; }
+
+    .container { max-width: 860px; margin: 0 auto; padding: 0 24px; }
+    .section { padding: 60px 0; }
+    .section + .section { border-top: 1px solid var(--border); }
+
+    .section-eyebrow { font-size: .7rem; letter-spacing: .2em; text-transform: uppercase; color: var(--rust); font-weight: 600; margin-bottom: 8px; }
+    .section-title { font-family: 'Playfair Display', serif; font-size: clamp(1.5rem, 3vw, 2rem); color: var(--text); margin-bottom: 6px; line-height: 1.25; }
+    .section-intro { font-size: .95rem; color: var(--muted); margin-bottom: 32px; max-width: 640px; line-height: 1.7; }
+
+    .prose { font-size: .95rem; line-height: 1.75; color: #2a2016; margin-bottom: 24px; }
+    .prose strong { color: var(--text); font-weight: 600; }
+
+    .key-box { background: var(--sand); border-left: 4px solid var(--rust2); border-radius: 0 var(--radius) var(--radius) 0; padding: 18px 22px; margin-bottom: 28px; }
+    .key-box h4 { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--rust); margin-bottom: 10px; }
+    .key-box p { font-size: .88rem; color: #4a3a2a; line-height: 1.65; }
+    .key-box dl { font-size: .88rem; color: #4a3a2a; display: flex; flex-direction: column; gap: 8px; }
+    .key-box dt { font-weight: 600; color: var(--text); display: inline; }
+    .key-box dd { display: inline; margin: 0; }
+    .key-box .term-row { line-height: 1.6; }
+
+    .diagram-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; margin-bottom: 28px; overflow-x: auto; }
+    .diagram-caption { font-size: .78rem; color: var(--muted); text-align: center; margin-top: 12px; font-style: italic; }
+
+    .compare-table { width: 100%; border-collapse: collapse; margin-bottom: 32px; font-size: .88rem; }
+    .compare-table th { background: #1a1612; color: #e8dcc8; padding: 12px 16px; text-align: left; font-weight: 600; font-family: 'Playfair Display', serif; }
+    .compare-table th:first-child { border-radius: 8px 0 0 0; }
+    .compare-table th:last-child { border-radius: 0 8px 0 0; }
+    .compare-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); vertical-align: top; }
+    .compare-table tr:nth-child(even) td { background: var(--sand); }
+    .compare-table tr:last-child td { border-bottom: none; }
+    .compare-table td:first-child { font-weight: 600; color: var(--text); }
+
+    .analogy-box { background: #1a1612; border-radius: var(--radius); padding: 28px 32px; margin-bottom: 32px; }
+    .analogy-box h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: #e8dcc8; margin-bottom: 14px; }
+    .analogy-box p { font-size: .9rem; color: #a09080; line-height: 1.7; }
+    .analogy-box strong { color: #e8dcc8; }
+
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 28px; }
+    .col-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px; }
+    .col-card h4 { font-family: 'Playfair Display', serif; font-size: 1rem; margin-bottom: 10px; }
+    .col-card p { font-size: .87rem; color: var(--muted); line-height: 1.6; }
+    .col-card.accent-rust { border-top: 3px solid var(--rust2); }
+    .col-card.accent-teal { border-top: 3px solid var(--teal); }
+    .col-card.accent-blue { border-top: 3px solid var(--blue); }
+
+    /* SELF-CHECK */
+    .q-card { background: #1a1612; border: 1px solid #2a2018; border-radius: var(--radius); padding: 22px 26px; margin-bottom: 18px; }
+    .q-num { font-size: .68rem; letter-spacing: .18em; text-transform: uppercase; color: #d4a060; margin-bottom: 7px; font-weight: 600; }
+    .q-text { font-family: 'Playfair Display', serif; font-size: .95rem; color: #f0e8d8; margin-bottom: 14px; line-height: 1.5; }
+    .q-textarea { width: 100%; background: #0f0c08; border: 1.5px solid #2a2018; border-radius: 6px; color: #e8dcc8; font-family: 'Mulish', sans-serif; font-size: .9rem; padding: 11px 13px; resize: vertical; min-height: 80px; outline: none; transition: border-color .2s; line-height: 1.6; }
+    .q-textarea:focus { border-color: #d4703a; }
+    .q-btn { margin-top: 10px; font-family: 'Mulish', sans-serif; font-size: .84rem; font-weight: 600; padding: 8px 20px; border-radius: 6px; border: none; cursor: pointer; background: #d4703a; color: #fff; transition: background .2s; }
+    .q-btn:hover { background: #b85c2a; }
+    .q-model { margin-top: 14px; display: none; background: #0f0c08; border: 1px solid #2a2018; border-radius: 6px; overflow: hidden; }
+    .q-model.shown { display: block; }
+    .q-model-header { background: #2a2018; padding: 8px 16px; font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: #d4a060; font-weight: 600; }
+    .q-model-body { padding: 14px 18px; font-size: .88rem; color: #c8b89a; line-height: 1.75; }
+    .q-model-body strong { color: #f0e8d8; }
+    .q-model-body ul { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+    .q-model-body li { padding-left: 16px; position: relative; }
+    .q-model-body li::before { content: '→'; position: absolute; left: 0; color: #d4703a; font-size: .8rem; }
+    .q-self-check { margin-top: 12px; padding-top: 12px; border-top: 1px solid #2a2018; display: flex; align-items: center; gap: 10px; font-size: .82rem; color: #8a7a60; cursor: pointer; }
+    .q-self-check input { accent-color: #d4703a; width: 16px; height: 16px; cursor: pointer; }
+    .q-retry { margin-top: 10px; font-size: .78rem; color: #6a5a40; background: none; border: none; cursor: pointer; font-family: 'Mulish', sans-serif; text-decoration: underline; padding: 0; display: block; }
+    .q-score-bar { background: #0f0c08; border: 1px solid #2a2018; border-radius: var(--radius); padding: 20px 24px; margin-top: 32px; display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+    .q-score-num { font-family: 'Playfair Display', serif; font-size: 2rem; color: #d4703a; }
+    .q-score-label { font-size: .85rem; color: #8a7a60; }
+    .q-score-msg { font-size: .88rem; color: #c8b89a; }
+
+    footer { border-top: 1px solid var(--border); padding: 28px 24px; text-align: center; font-size: .78rem; color: var(--muted); margin-top: 40px; }
+    footer a { color: var(--teal); text-decoration: none; }
+
+    @media(max-width: 580px) {
+      .hero { padding: 44px 20px 36px; }
+      .container { padding: 0 16px; }
+      .two-col { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="top-bar">
+  <a href="nk1b-genetik.html" class="back-link">← Genetik</a>
+  <div class="top-title">NK1b &mdash; <span>Meios och könsceller</span></div>
+</div>
+
+<div class="hero">
+  <p class="hero-eyebrow">Genetik &middot; NK1b</p>
+  <h1>Meios och könsceller</h1>
+  <p class="hero-sub">Hur bildas ägg och spermier – och varför måste de ha halva kromosomuppsättningen? Här hänger celldelning, befruktning och ärftlighet ihop.</p>
+  <nav class="hero-nav">
+    <a href="#varfor-konsceller">Varför könsceller?</a>
+    <a href="#haploid-diploid">Haploid & diploid</a>
+    <a href="#meios-oversikt">Meios</a>
+    <a href="#kopiering">DNA-kopiering</a>
+    <a href="#rekombination">Rekombination</a>
+    <a href="#sambandet">Sambandet</a>
+    <a href="#kolla">Kolla att du kan</a>
+  </nav>
+</div>
+
+<main>
+
+<!-- ══════════════════════════════════════
+     SEKTION 1 – VARFÖR BEHÖVS KÖNSCELLER?
+══════════════════════════════════════ -->
+<div class="section" id="varfor-konsceller">
+<div class="container">
+  <p class="section-eyebrow">Bakgrund</p>
+  <h2 class="section-title">Varför behövs könsceller?</h2>
+  <p class="section-intro">Alla celler i kroppen delar sig för att kroppen ska kunna växa och laga sig. Men könsceller – ägg och spermier – bildas på ett helt annat sätt, och det finns en viktig anledning till det.</p>
+
+  <p class="prose">En vanlig kroppscell innehåller <strong>hela</strong> din arvsmassa. Om ett ägg och en spermie innehöll hela arvsmassan, skulle det befruktade ägget ha dubbelt för mycket DNA – och varje ny generation skulle ha ännu mer. Det skulle snabbt bli ohållbart.</p>
+
+  <p class="prose">Lösningen är att könscellerna bara innehåller <strong>halva</strong> arvsmassan. När ett ägg och en spermie möts vid befruktning adderas de ihop – och det nybefruktade ägget får återigen en komplett, normal uppsättning av arvsmassan. Det nybefruktade ägget kallas en <strong>zygot</strong>, och det är startpunkten för ett nytt liv.</p>
+
+  <!-- SVG: Befruktning – ägg + spermie → zygot -->
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 700 170" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:700px;display:block;margin:0 auto">
+      <defs>
+        <marker id="a1" markerWidth="8" markerHeight="6" refX="6" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L8,3 z" fill="#6a5e52"/>
+        </marker>
+      </defs>
+
+      <!-- Ägg -->
+      <ellipse cx="130" cy="85" rx="80" ry="60" fill="#f2ece0" stroke="#d4703a" stroke-width="2"/>
+      <text x="130" y="72" text-anchor="middle" font-family="Playfair Display,serif" font-size="14" fill="#1a1612" font-weight="700">Ägg</text>
+      <text x="130" y="90" text-anchor="middle" font-family="Mulish,sans-serif" font-size="11" fill="#b85c2a" font-weight="600">½ arvsmassa</text>
+      <text x="130" y="106" text-anchor="middle" font-family="Mulish,sans-serif" font-size="10" fill="#6a5e52">haploid könscell</text>
+
+      <!-- Plus -->
+      <text x="253" y="92" text-anchor="middle" font-family="Playfair Display,serif" font-size="30" fill="#c8b89a">+</text>
+
+      <!-- Spermie -->
+      <ellipse cx="360" cy="85" rx="68" ry="46" fill="#e8f0f8" stroke="#2a4a7a" stroke-width="2"/>
+      <!-- Spermie svans -->
+      <path d="M428,85 Q470,60 490,95 Q510,125 540,105" stroke="#2a4a7a" stroke-width="2" fill="none"/>
+      <text x="360" y="76" text-anchor="middle" font-family="Playfair Display,serif" font-size="14" fill="#1a1612" font-weight="700">Spermie</text>
+      <text x="360" y="94" text-anchor="middle" font-family="Mulish,sans-serif" font-size="11" fill="#2a4a7a" font-weight="600">½ arvsmassa</text>
+      <text x="360" y="110" text-anchor="middle" font-family="Mulish,sans-serif" font-size="10" fill="#6a5e52">haploid könscell</text>
+
+      <!-- Arrow -->
+      <line x1="508" y1="85" x2="548" y2="85" stroke="#6a5e52" stroke-width="2" marker-end="url(#a1)"/>
+      <text x="532" y="76" text-anchor="middle" font-family="Mulish,sans-serif" font-size="9" fill="#b85c2a" font-style="italic">befruktning</text>
+
+      <!-- Zygot -->
+      <ellipse cx="645" cy="85" rx="52" ry="52" fill="#1a1612" stroke="#d4703a" stroke-width="2"/>
+      <text x="645" y="78" text-anchor="middle" font-family="Playfair Display,serif" font-size="13" fill="#f0e8d8" font-weight="700">Zygot</text>
+      <text x="645" y="94" text-anchor="middle" font-family="Mulish,sans-serif" font-size="10" fill="#d4a060" font-weight="600">hel arvsmassa</text>
+      <text x="645" y="108" text-anchor="middle" font-family="Mulish,sans-serif" font-size="9" fill="#a09080">diploid</text>
+    </svg>
+    <p class="diagram-caption">Figur 1. Ägg och spermie bär vardera på halva arvsmassan. Vid befruktning bildas en zygot med en komplett, normal arvsmassa.</p>
+  </div>
+
+  <div class="key-box">
+    <h4>🔑 Könscell och zygot</h4>
+    <dl>
+      <div class="term-row"><dt>Könscell (gamet)</dt><dd> – ägg eller spermie; bär på halva arvsmassan (23 kromosomer).</dd></div>
+      <div class="term-row"><dt>Zygot</dt><dd> – det nybefruktade ägget som bildas när ägg och spermie smälter samman; har återigen en hel arvsmassa.</dd></div>
+    </dl>
+  </div>
+
+</div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SEKTION 2 – HAPLOID OCH DIPLOID
+══════════════════════════════════════ -->
+<div class="section" id="haploid-diploid">
+<div class="container">
+  <p class="section-eyebrow">Begrepp</p>
+  <h2 class="section-title">Haploid och diploid</h2>
+  <p class="section-intro">Det finns ett smidigt språk för att beskriva om en cell har hel eller halv uppsättning av arvsmassan.</p>
+
+  <div class="two-col">
+    <div class="col-card accent-rust">
+      <h4>Diploid – hel uppsättning</h4>
+      <p>En <strong>diploid</strong> cell har en <em>hel</em> uppsättning av arvsmassan – alltså kromosomerna i par, en från mamma och en från pappa. Alla vanliga kroppsceller hos människan är diploida.</p>
+      <p style="margin-top:10px;font-size:.83rem;color:#b85c2a;font-weight:600">Exempel: hudcell, muskelcell, nervcell</p>
+    </div>
+    <div class="col-card accent-teal">
+      <h4>Haploid – halv uppsättning</h4>
+      <p>En <strong>haploid</strong> cell har bara <em>halv</em> uppsättning – alltså bara en kromosom från varje par, inte båda. Könsceller är alltid haploida.</p>
+      <p style="margin-top:10px;font-size:.83rem;color:#2a7a6a;font-weight:600">Exempel: äggcell, spermiecell</p>
+    </div>
+  </div>
+
+  <!-- SVG: Diploid vs haploid cell -->
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 700 190" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:700px;display:block;margin:0 auto">
+
+      <text x="350" y="18" text-anchor="middle" font-family="Playfair Display,serif" font-size="13" fill="#1a1612" font-weight="700">Diploid kroppscell vs haploid könscell</text>
+
+      <!-- Diploid cell -->
+      <ellipse cx="185" cy="108" rx="140" ry="68" fill="#f2ece0" stroke="#d4703a" stroke-width="2"/>
+      <text x="185" y="60" text-anchor="middle" font-family="Playfair Display,serif" font-size="13" fill="#b85c2a" font-weight="700">Kroppscell – diploid</text>
+      <!-- Chromosome pairs (simplified: 3 pairs shown) -->
+      <!-- Pair 1 -->
+      <rect x="112" y="82" width="12" height="48" rx="6" fill="#d4703a"/>
+      <rect x="128" y="82" width="12" height="48" rx="6" fill="#d4703a" opacity=".45"/>
+      <!-- Pair 2 -->
+      <rect x="152" y="86" width="12" height="40" rx="6" fill="#2a4a7a"/>
+      <rect x="168" y="86" width="12" height="40" rx="6" fill="#2a4a7a" opacity=".45"/>
+      <!-- Pair 3 -->
+      <rect x="192" y="90" width="12" height="34" rx="6" fill="#2a7a6a"/>
+      <rect x="208" y="90" width="12" height="34" rx="6" fill="#2a7a6a" opacity=".45"/>
+      <!-- Pair 4 -->
+      <rect x="232" y="88" width="12" height="38" rx="6" fill="#8a4020"/>
+      <rect x="248" y="88" width="12" height="38" rx="6" fill="#8a4020" opacity=".45"/>
+
+      <text x="185" y="155" text-anchor="middle" font-family="Mulish,sans-serif" font-size="10" fill="#b85c2a">Kromosomerna i par</text>
+      <text x="185" y="168" text-anchor="middle" font-family="Mulish,sans-serif" font-size="9" fill="#6a5e52">(hel uppsättning)</text>
+
+      <!-- VS -->
+      <text x="360" y="115" text-anchor="middle" font-family="Playfair Display,serif" font-size="20" fill="#c8b89a">vs</text>
+
+      <!-- Haploid cell -->
+      <ellipse cx="515" cy="108" rx="125" ry="61" fill="#e8f0f8" stroke="#2a4a7a" stroke-width="2"/>
+      <text x="515" y="70" text-anchor="middle" font-family="Playfair Display,serif" font-size="13" fill="#2a4a7a" font-weight="700">Könscell – haploid</text>
+      <!-- Single chromosomes (no pairs) -->
+      <rect x="455" y="84" width="12" height="48" rx="6" fill="#d4703a"/>
+      <rect x="490" y="88" width="12" height="40" rx="6" fill="#2a4a7a"/>
+      <rect x="525" y="92" width="12" height="34" rx="6" fill="#2a7a6a"/>
+      <rect x="560" y="90" width="12" height="38" rx="6" fill="#8a4020"/>
+
+      <text x="515" y="145" text-anchor="middle" font-family="Mulish,sans-serif" font-size="10" fill="#2a4a7a">Bara en kromosom per par</text>
+      <text x="515" y="158" text-anchor="middle" font-family="Mulish,sans-serif" font-size="9" fill="#6a5e52">(halv uppsättning)</text>
+    </svg>
+    <p class="diagram-caption">Figur 2. Kroppscellen (diploid) har kromosomerna i par. Könscellen (haploid) har bara en kromosom från varje par.</p>
+  </div>
+
+  <div class="analogy-box">
+    <h3>🃏 En bra liknelse</h3>
+    <p>Tänk dig att arvsmassan är en komplett kortlek med 52 kort. En <strong>diploid</strong> cell har en hel kortlek. En <strong>haploid</strong> könscell har bara <strong>hälften</strong> av kortleken – 26 kort. När ett ägg (26 kort) och en spermie (26 kort) möts vid befruktning bildas en zygot med en komplett ny kortlek på 52 kort igen.</p>
+  </div>
+
+</div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SEKTION 3 – MEIOS ÖVERSIKT
+══════════════════════════════════════ -->
+<div class="section" id="meios-oversikt">
+<div class="container">
+  <p class="section-eyebrow">Speciell celldelning</p>
+  <h2 class="section-title">Meios – celldelning för könsceller</h2>
+  <p class="section-intro">Vanliga celler delar sig genom mitos och ger upphov till exakta kopior. Könsceller bildas på ett annat sätt – genom meios.</p>
+
+  <p class="prose">Meios är en speciell form av celldelning som bara sker i de organ som tillverkar könsceller – äggstockarna hos tjejer och testiklarna hos killar.
+Till skillnad från vanlig celldelning består meios av två på varandra följande delningar. Resultatet blir därför inte identiska kopior, utan <strong>fyra unika haploida celler</stong> – könsceller som var och en bär på halva arvsmassan jämfört med den ursprungliga cellen.</p>
+
+  <!-- SVG: Mitos vs meios jämförelse -->
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 700 230" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:700px;display:block;margin:0 auto">
+      <defs>
+        <marker id="a2" markerWidth="7" markerHeight="5" refX="5" refY="2.5" orient="auto">
+          <path d="M0,0 L0,5 L7,2.5 z" fill="#6a5e52"/>
+        </marker>
+      </defs>
+
+      <!-- MITOS sida -->
+      <text x="175" y="20" text-anchor="middle" font-family="Playfair Display,serif" font-size="13" fill="#b85c2a" font-weight="700">Mitos</text>
+      <text x="175" y="35" text-anchor="middle" font-family="Mulish,sans-serif" font-size="10" fill="#6a5e52">(vanlig celldelning)</text>
+
+      <!-- Start cell mitos -->
+      <ellipse cx="175" cy="80" rx="52" ry="36" fill="#f2ece0" stroke="#d4703a" stroke-width="1.5"/>
+      <text x="175" y="76" text-anchor="middle" font-family="Mulish,sans-serif" font-size="10" fill="#b85c2a" font-weight="600">Diploid cell</text>
+      <text x="175" y="90" text-anchor="middle" font-family="Mulish,sans-serif" font-size="9" fill="#6a5e52">hel arvsmassa</text>
+
+      <line x1="175" y1="116" x2="175" y2="138" stroke="#6a5e52" stroke-width="1.5" marker-end="url(#a2)"/>
+
+      <!-- Two result cells mitos -->
+      <ellipse cx="120" cy="175" rx="44" ry="30" fill="#f2ece0" stroke="#d4703a" stroke-width="1.5"/>
+      <text x="120" y="171" text-anchor="middle" font-family="Mulish,sans-serif" font-size="9" fill="#b85c2a" font-weight="600">Diploid</text>
+      <text x="120" y="184" text-anchor="middle" font-family="Mulish,sans-serif" font-size="8" fill="#6a5e52">hel arvsmassa</text>
+
+      <ellipse cx="230" cy="175" rx="44" ry="30" fill="#f2ece0" stroke="#d4703a" stroke-width="1.5"/>
+      <text x="230" y="171" text-anchor="middle" font-family="Mulish,sans-serif" font-size="9" fill="#b85c2a" font-weight="600">Diploid</text>
+      <text x="230" y="184" text-anchor="middle" font-family="Mulish,sans-serif" font-size="8" fill="#6a5e52">hel arvsmassa</text>
+
+      <text x="175" y="218" text-anchor="middle" font-family="Mulish,sans-serif" font-size="9" fill="#b85c2a" font-style="italic">2 identiska dotterceller</text>
+
+      <!-- MEIOS sida -->
+      <text x="525" y="20" text-anchor="middle" font-family="Playfair Display,serif" font-size="13" fill="#2a4a7a" font-weight="700">Meios</text>
+      <text x="525" y="35" text-anchor="middle" font-family="Mulish,sans-serif" font-size="10" fill="#6a5e52">(bildning av könsceller)</text>
+
+      <!-- Start cell meios -->
+      <ellipse cx="525" cy="80" rx="52" ry="36" fill="#e8f0f8" stroke="#2a4a7a" stroke-width="1.5"/>
+      <text x="525" y="76" text-anchor="middle" font-family="Mulish,sans-serif" font-size="10" fill="#2a4a7a" font-weight="600">Diploid cell</text>
+      <text x="525" y="90" text-anchor="middle" font-family="Mulish,sans-serif" font-size="9" fill="#6a5e52">hel arvsmassa</text>
+
+      <line x1="525" y1="116" x2="525" y2="138" stroke="#6a5e52" stroke-width="1.5" marker-end="url(#a2)"/>
+
+      <!-- Four result cells meios -->
+      <ellipse cx="420" cy="178" rx="36" ry="26" fill="#e8f0f8" stroke="#2a4a7a" stroke-width="1.5"/>
+      <text x="420" y="175" text-anchor="middle" font-family="Mulish,sans-serif" font-size="9" fill="#2a4a7a" font-weight="600">Haploid</text>
+      <text x="420" y="187" text-anchor="middle" font-family="Mulish,sans-serif" font-size="8" fill="#6a5e52">½ arvsmassa</text>
+
+      <ellipse cx="490" cy="178" rx="36" ry="26" fill="#e8f0f8" stroke="#2a4a7a" stroke-width="1.5"/>
+      <text x="490" y="175" text-anchor="middle" font-family="Mulish,sans-serif" font-size="9" fill="#2a4a7a" font-weight="600">Haploid</text>
+      <text x="490" y="187" text-anchor="middle" font-family="Mulish,sans-serif" font-size="8" fill="#6a5e52">½ arvsmassa</text>
+
+      <ellipse cx="560" cy="178" rx="36" ry="26" fill="#e8f0f8" stroke="#2a4a7a" stroke-width="1.5"/>
+      <text x="560" y="175" text-anchor="middle" font-family="Mulish,sans-serif" font-size="9" fill="#2a4a7a" font-weight="600">Haploid</text>
+      <text x="560" y="187" text-anchor="middle" font-family="Mulish,sans-serif" font-size="8" fill="#6a5e52">½ arvsmassa</text>
+
+      <ellipse cx="630" cy="178" rx="36" ry="26" fill="#e8f0f8" stroke="#2a4a7a" stroke-width="1.5"/>
+      <text x="630" y="175" text-anchor="middle" font-family="Mulish,sans-serif" font-size="9" fill="#2a4a7a" font-weight="600">Haploid</text>
+      <text x="630" y="187" text-anchor="middle" font-family="Mulish,sans-serif" font-size="8" fill="#6a5e52">½ arvsmassa</text>
+
+      <text x="525" y="218" text-anchor="middle" font-family="Mulish,sans-serif" font-size="9" fill="#2a4a7a" font-style="italic">4 unika könsceller</text>
+
+      <!-- Dividing line -->
+      <line x1="350" y1="15" x2="350" y2="225" stroke="#e8e0d0" stroke-width="1.5" stroke-dasharray="5,4"/>
+    </svg>
+    <p class="diagram-caption">Figur 3. Mitos ger 2 identiska diploida dotterceller. Meios ger 4 unika haploida könsceller med halva arvsmassan.</p>
+  </div>
+
+  <table class="compare-table">
+    <thead><tr>
+      <th>Egenskap</th>
+      <th>Mitos</th>
+      <th>Meios</th>
+    </tr></thead>
+    <tbody>
+      <tr><td>Syfte</td><td>Tillväxt och reparation av kroppen</td><td>Bildning av könsceller</td></tr>
+      <tr><td>Var sker det?</td><td>I alla kroppens vävnader</td><td>I äggstockar och testiklar</td></tr>
+      <tr><td>Antal nya celler</td><td>2 dotterceller</td><td>4 könsceller</td></tr>
+      <tr><td>Kromosomantal</td><td>Behålls – diploida celler</td><td>Halveras – haploida celler</td></tr>
+      <tr><td>Genetiskt identiska?</td><td>Ja – kopior av moderncellen</td><td>Nej – varje könscell är unik</td></tr>
+    </tbody>
+  </table>
+
+</div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SEKTION 4 – DNA-KOPIERING
+══════════════════════════════════════ -->
+<div class="section" id="kopiering">
+<div class="container">
+  <p class="section-eyebrow">Förberedelse</p>
+  <h2 class="section-title">DNA-kopiering inför celldelning</h2>
+  <p class="section-intro">Innan en cell delar sig – oavsett om det är mitos eller meios – måste arvsmassan kopieras. Det kallas DNA-replikation.</p>
+
+  <p class="prose">Tanken är enkel: om en cell ska dela sig i två måste varje ny cell få sin egna kompletta kopia av DNA:t. Precis som ett dokument kopieras innan det skickas iväg, kopieras hela cellens DNA innan delningen börjar. Det är en noggrann process – kroppen har inbyggda kontrollsystem som letar efter fel och rättar till dem.</p>
+
+  <p class="prose">Kopieringen är grunden för att <strong>arvsmassan bevaras</strong> från generation till generation av celler. Utan korrekt kopiering skulle information gå förlorad varje gång en cell delar sig.</p>
+
+  <div class="key-box">
+    <h4>🔑 DNA-kopiering (DNA-replikation)</h4>
+    <p>Innan celldelning kopieras hela cellens DNA så att varje dottercell kan få en fullständig kopia av arvsmassan. Processen kallas DNA-replikation. Den sker både inför mitos och inför meios.</p>
+  </div>
+
+</div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SEKTION 5 – REKOMBINATION
+══════════════════════════════════════ -->
+<div class="section" id="rekombination">
+<div class="container">
+  <p class="section-eyebrow">Variation</p>
+  <h2 class="section-title">Rekombination – varför syskon är olika</h2>
+  <p class="section-intro">Meios gör mer än att halvera arvsmassan. Det blandar också om den – och det är en av de viktigaste anledningarna till att alla individer är unika.</p>
+
+  <p class="prose">Under meios sker något som kallas <strong>överkorsning</strong>: kromosompar ligger tätt ihop och byter delar med varandra. Bit för bit av ett kromosom kan hamna på det andra, och tvärtom. Resultatet är kromosomer med nya, unika kombinationer av anlag som inte fanns hos vare sig mamma eller pappa.</p>
+
+  <p class="prose">Det slumpmässiga i hur kromosomerna fördelas till de fyra könscellerna gör saken ännu mer komplex. Slutresultatet kallas <strong>rekombination</strong> – arvsanlagen blandas om på nytt inför varje ny individ. Det är därför syskon som delar samma föräldrar ändå kan se väldigt olika ut.</p>
+
+  <!-- SVG: Överkorsning förenklat -->
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 700 190" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:700px;display:block;margin:0 auto">
+
+      <text x="350" y="18" text-anchor="middle" font-family="Playfair Display,serif" font-size="13" fill="#1a1612" font-weight="700">Överkorsning – kromosomer byter delar med varandra</text>
+
+      <!-- Före -->
+      <text x="140" y="42" text-anchor="middle" font-family="Mulish,sans-serif" font-size="11" fill="#6a5e52" font-weight="600">Före överkorsning</text>
+
+      <!-- Kromosom 1 (från mamma) – tvådelad färg -->
+      <rect x="100" y="52" width="18" height="55" rx="9" fill="#d4703a"/>
+      <rect x="100" y="107" width="18" height="45" rx="9" fill="#d4703a"/>
+      <text x="90" y="88" text-anchor="end" font-family="Mulish,sans-serif" font-size="9" fill="#b85c2a">från mamma</text>
+
+      <!-- Kromosom 2 (från pappa) -->
+      <rect x="124" y="52" width="18" height="55" rx="9" fill="#2a4a7a"/>
+      <rect x="124" y="107" width="18" height="45" rx="9" fill="#2a4a7a"/>
+      <text x="150" y="88" font-family="Mulish,sans-serif" font-size="9" fill="#2a4a7a">från pappa</text>
+
+      <!-- Arrow -->
+      <text x="255" y="100" text-anchor="middle" font-family="Playfair Display,serif" font-size="28" fill="#c8b89a">→</text>
+      <text x="255" y="120" text-anchor="middle" font-family="Mulish,sans-serif" font-size="9" fill="#b85c2a" font-style="italic">överkorsning</text>
+
+      <!-- Efter -->
+      <text x="430" y="42" text-anchor="middle" font-family="Mulish,sans-serif" font-size="11" fill="#6a5e52" font-weight="600">Efter överkorsning</text>
+
+      <!-- Kromosom 1 – blandad -->
+      <rect x="390" y="52" width="18" height="40" rx="9" fill="#d4703a"/>
+      <rect x="390" y="92" width="18" height="60" rx="9" fill="#2a4a7a"/>
+      <text x="380" y="88" text-anchor="end" font-family="Mulish,sans-serif" font-size="9" fill="#6a5e52">blandad</text>
+
+      <!-- Kromosom 2 – blandad omvänt -->
+      <rect x="414" y="52" width="18" height="40" rx="9" fill="#2a4a7a"/>
+      <rect x="414" y="92" width="18" height="60" rx="9" fill="#d4703a"/>
+      <text x="440" y="88" font-family="Mulish,sans-serif" font-size="9" fill="#6a5e52">blandad</text>
+
+      <!-- Förklaring -->
+      <rect x="520" y="52" width="160" height="100" rx="10" fill="#f2ece0" stroke="#e8e0d0" stroke-width="1.5"/>
+      <text x="600" y="74" text-anchor="middle" font-family="Mulish,sans-serif" font-size="10" fill="#6a5e52" font-weight="600">Varje könscell får</text>
+      <text x="600" y="90" text-anchor="middle" font-family="Mulish,sans-serif" font-size="10" fill="#6a5e52">en unik blandning</text>
+      <text x="600" y="106" text-anchor="middle" font-family="Mulish,sans-serif" font-size="10" fill="#6a5e52">av mammas och</text>
+      <text x="600" y="122" text-anchor="middle" font-family="Mulish,sans-serif" font-size="10" fill="#6a5e52">pappas anlag</text>
+      <text x="600" y="141" text-anchor="middle" font-family="Mulish,sans-serif" font-size="9" fill="#b85c2a" font-style="italic">→ genetisk variation</text>
+    </svg>
+    <p class="diagram-caption">Figur 4. Överkorsning innebär att kromosompar byter delar med varandra under meios. Det skapar nya kombinationer av anlag som inte exakt liknar vare sig mammans eller pappans.</p>
+  </div>
+
+  <div class="key-box">
+    <h4>🔑 Rekombination och överkorsning</h4>
+    <dl>
+      <div class="term-row"><dt>Överkorsning</dt><dd> – under meios byter kromosompar delar med varandra, vilket skapar nya kombinationer av anlag.</dd></div>
+      <div class="term-row"><dt>Rekombination</dt><dd> – det övergripande resultatet av att anlag blandas om under meios, så att varje könscell får en unik uppsättning.</dd></div>
+    </dl>
+  </div>
+
+</div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SEKTION 6 – SAMBANDET
+══════════════════════════════════════ -->
+<div class="section" id="sambandet">
+<div class="container">
+  <p class="section-eyebrow">Helheten</p>
+  <h2 class="section-title">Meios, könsceller och ärftlighet – sambandet</h2>
+  <p class="section-intro">Nu hänger allt ihop. Meios är länken mellan hur celler delar sig och varför vi ärver egenskaper på det sätt vi gör.</p>
+
+  <p class="prose">Tack vare meios bär varje ägg och spermie på en <strong>unik blandning</strong> av anlag. Vilken spermie som befruktar vilket ägg är slumpmässigt – och det är den kombinationen som bildar en ny individ. Det är därför två syskon med samma föräldrar kan ha så olika ögonfärg, hårfärg och personlighet: de har fått olika slumpmässiga kombinationer av föräldrarnas anlag.</p>
+
+  <p class="prose">Det är också förklaringen till varför egenskaper kan "hoppa över en generation". En recessiv allel kan gömma sig i en heterozygot förälder, åka med i en könscell via meios, och dyka upp igen i ett barnbarn – om det barnet råkar ärva den recessiva allelen från båda föräldrarna.</p>
+
+  <div class="analogy-box">
+    <h3>🔀 En sammanfattande bild</h3>
+    <p>Tänk dig att varje förälder har en <strong>blandad kortlek</strong> – hälften av korten från deras mamma, hälften från deras pappa (plus lite blandning däremellan tack vare överkorsning). Meios väljer slumpmässigt ut 26 kort ur den kortleken och skickar dem vidare som en könscell. Det nya barnet får 26 kort från en förälder och 26 från den andra – och drar ihop en ny, helt unik 52-korts-kortlek som aldrig funnits förut.</p>
+  </div>
+
+  <!-- Nyckelbegrepp -->
+  <div class="key-box">
+    <h4>🔑 Alla nyckelbegrepp</h4>
+    <dl>
+      <div class="term-row"><dt>Haploid</dt><dd> – en cell med halv uppsättning av arvsmassan; gäller könsceller.</dd></div>
+      <div class="term-row"><dt>Diploid</dt><dd> – en cell med hel uppsättning av arvsmassan; gäller alla vanliga kroppsceller.</dd></div>
+      <div class="term-row"><dt>Könscell (gamet)</dt><dd> – ägg eller spermie; haploid cell som bildas vid meios.</dd></div>
+      <div class="term-row"><dt>Zygot</dt><dd> – det nybefruktade ägget; diploid cell som bildas när ägg och spermie smälter samman.</dd></div>
+      <div class="term-row"><dt>Meios</dt><dd> – speciell celldelning som bildar fyra unika haploida könsceller från en diploid cell.</dd></div>
+      <div class="term-row"><dt>DNA-kopiering (replikation)</dt><dd> – kopiering av hela arvsmassan som sker inför varje celldelning.</dd></div>
+      <div class="term-row"><dt>Rekombination</dt><dd> – att anlag blandas om under meios så att varje könscell får en unik kombination.</dd></div>
+      <div class="term-row"><dt>Överkorsning</dt><dd> – den mekanism under meios där kromosompar byter delar med varandra och skapar nya anlags-kombinationer.</dd></div>
+    </dl>
+  </div>
+
+</div>
+</div>
+
+<!-- ══════════════════════════════════════
+     KOLLA ATT DU KAN
+══════════════════════════════════════ -->
+<div class="section" id="kolla">
+<div class="container">
+  <p class="section-eyebrow">Självbedömning</p>
+  <h2 class="section-title">Kolla att du kan</h2>
+  <p class="section-intro">Försök svara utan att titta i texten. Visa sedan mallsvaret och bocka i om du hade med det viktigaste.</p>
+  <div id="q-wrap"></div>
+</div>
+</div>
+
+</main>
+
+<footer>
+  <a href="nk1b-genetik.html">← Tillbaka till Genetik</a> &middot; NK1b &middot; Meios och könsceller
+</footer>
+
+<script src="shared.js"></script>
+<script>
+requireLogin('NK1b');
+
+const QUESTIONS = [
+  {
+    q: "Varför måste könsceller ha halva arvsmassan – och inte hela?",
+    model: [
+      "Om könscellerna hade hela arvsmassan var, skulle det befruktade ägget ha dubbelt för mycket DNA.",
+      "För varje generation skulle arvsmassan fördubblas – det skulle snabbt bli ohållbart.",
+      "Lösningen är att könsceller bara har <strong>halva</strong> arvsmassan (haploida).",
+      "När ägg och spermie möts vid befruktning adderas de ihop och bildar en zygot med en normal, hel arvsmassa igen."
+    ]
+  },
+  {
+    q: "Förklara skillnaden mellan en haploid och en diploid cell. Ge ett exempel på vardera.",
+    model: [
+      "En <strong>diploid</strong> cell har en hel uppsättning av arvsmassan – kromosomerna i par.",
+      "En <strong>haploid</strong> cell har bara halva uppsättningen – bara en kromosom från varje par.",
+      "Exempel på diploid: alla vanliga kroppsceller, till exempel hudceller och muskelceller.",
+      "Exempel på haploid: könsceller – ägg och spermier."
+    ]
+  },
+  {
+    q: "Vad är meios och vad skiljer det från mitos?",
+    model: [
+      "<strong>Meios</strong> är en speciell celldelning som bara sker i äggstockar och testiklar, och som bildar könsceller.",
+      "Meios ger fyra <strong>haploida</strong> celler – könsceller med halva arvsmassan.",
+      "Mitos däremot ger två <strong>diploida</strong> celler – identiska kopior av moderncellen.",
+      "En annan viktig skillnad: könscellerna från meios är unika och genetiskt olika varandra, medan dottercellerna från mitos är identiska."
+    ]
+  },
+  {
+    q: "Vad menas med rekombination och varför är det viktigt för ärftligheten?",
+    model: [
+      "Rekombination innebär att anlagen blandas om under meios, så att varje könscell får en unik kombination.",
+      "Det sker bland annat genom <strong>överkorsning</strong> – kromosompar byter delar med varandra.",
+      "Resultatet är att ingen könscell är identisk med en annan.",
+      "Det är en av anledningarna till att syskon med samma föräldrar kan se väldigt olika ut – de har fått olika slumpmässiga kombinationer av föräldrarnas anlag."
+    ]
+  },
+  {
+    q: "Beskriv med egna ord sambandet mellan meios, könsceller och ärftlighet.",
+    model: [
+      "Meios bildar könsceller – ägg och spermier – med halv arvsmassa och unika anlags-kombinationer.",
+      "Vid befruktning slås ett ägg och en spermie samman till en zygot med hel arvsmassa.",
+      "Eftersom varje könscell är unik (tack vare rekombination) får varje ny individ en alldeles egen kombination av anlag.",
+      "Det är därför ärftlighet följer mönster – egenskaper ärvs via könscellerna – men ändå ger upphov till variation mellan individer."
+    ]
+  },
+  {
+    q: "Varför kan en egenskap hoppa över en generation och dyka upp hos ett barnbarn?",
+    model: [
+      "En recessiv allel kan bäras av en heterozygot förälder utan att synas – den dominanta allelen döljer den.",
+      "Vid meios kan den recessiva allelen råka hamna i en könscell och föras vidare.",
+      "Om barnets andra förälder <em>också</em> bär på samma recessiva allel, kan barnet ärva den från båda håll.",
+      "Då har barnet två recessiva alleler och egenskapen syns – den har 'hoppat' fram efter att ha varit dold en generation."
+    ]
+  }
+];
+
+let checked = new Array(QUESTIONS.length).fill(false);
+
+function buildQuestions() {
+  const wrap = document.getElementById('q-wrap');
+  QUESTIONS.forEach((q, i) => {
+    const items = q.model.map(m => `<li>${m}</li>`).join('');
+    wrap.innerHTML += `
+      <div class="q-card">
+        <div class="q-num">Fråga ${i+1} av ${QUESTIONS.length}</div>
+        <div class="q-text">${q.q}</div>
+        <textarea class="q-textarea" id="qta-${i}" placeholder="Skriv ditt svar här..."></textarea>
+        <button class="q-btn" onclick="showModel(${i})">Visa mallsvar →</button>
+        <div class="q-model" id="qmodel-${i}">
+          <div class="q-model-header">📋 Mallsvar</div>
+          <div class="q-model-body">
+            <ul>${items}</ul>
+            <div class="q-self-check">
+              <input type="checkbox" id="qcheck-${i}" onchange="toggleCheck(${i})"/>
+              <label for="qcheck-${i}">Jag hade med det viktigaste</label>
+            </div>
+          </div>
+        </div>
+        <button class="q-retry" onclick="resetQuestion(${i})">↩ Rensa och försök igen</button>
+      </div>`;
+  });
+  updateScore();
+}
+
+function showModel(i) { document.getElementById(`qmodel-${i}`).classList.add('shown'); }
+function toggleCheck(i) { checked[i] = document.getElementById(`qcheck-${i}`).checked; updateScore(); }
+function resetQuestion(i) {
+  document.getElementById(`qta-${i}`).value = '';
+  document.getElementById(`qmodel-${i}`).classList.remove('shown');
+  document.getElementById(`qcheck-${i}`).checked = false;
+  checked[i] = false;
+  updateScore();
+}
+
+function updateScore() {
+  const n = checked.filter(Boolean).length;
+  const total = QUESTIONS.length;
+  const msg = n === total ? '🎉 Utmärkt – du kan hela avsnittet!'
+    : n >= 4 ? '👍 Bra jobbat! Kika igenom de du missat.'
+    : n >= 2 ? '📖 Bra start – fortsätt öva på resten.'
+    : '🔍 Gå tillbaka till materialet och försök igen.';
+  let bar = document.getElementById('q-scorebar');
+  if (!bar) {
+    document.getElementById('q-wrap').insertAdjacentHTML('afterend',
+      `<div class="q-score-bar" id="q-scorebar">
+        <div class="q-score-num" id="qs-num">${n}/${total}</div>
+        <div><div class="q-score-label">Självskattning</div><div class="q-score-msg" id="qs-msg">${msg}</div></div>
+      </div>`);
+  } else {
+    document.getElementById('qs-num').textContent = `${n}/${total}`;
+    document.getElementById('qs-msg').textContent = msg;
+  }
+}
+
+buildQuestions();
+</script>
+
+</body>
+</html>
