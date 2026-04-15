@@ -1,138 +1,430 @@
 <!DOCTYPE html>
 <html lang="sv">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NK2 – Periodiska systemet</title>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Periodiska systemet – NK2</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root{
+      --bg:#0b1219;
+      --surface:#111c27;
+      --card:#172233;
+      --border:#243548;
+      --teal:#3ecfb2;
+      --teal2:#27a890;
+      --amber:#f0b040;
+      --red:#e05555;
+      --green:#4caf82;
+      --text:#dde8f0;
+      --muted:#7a8ca0;
+      --radius:10px;
+    }
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{
+      font-family:'DM Sans',sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      min-height:100vh;
+    }
 
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    /* TOP BAR */
+    .top-bar{
+      background:var(--surface);
+      border-bottom:1px solid var(--border);
+      padding:16px 32px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      gap:12px;
+      position:sticky;
+      top:0;
+      z-index:50;
+    }
+    .top-left{display:flex;align-items:center;gap:14px;}
+    .back-link{
+      font-size:.82rem;
+      color:var(--muted);
+      text-decoration:none;
+    }
+    .back-link:hover{color:var(--teal);}
+    .top-title{
+      font-family:'Fraunces',serif;
+      font-size:1.15rem;
+    }
+    .user-chip{
+      background:var(--card);
+      border:1px solid var(--border);
+      padding:5px 12px;
+      border-radius:30px;
+      font-size:.78rem;
+      color:var(--muted);
+    }
 
-<style>
-body{
-  font-family:'DM Sans',sans-serif;
-  background:#0f1a24;
-  color:#dde8f0;
-  margin:0;
-}
-header{
-  background:#162030;
-  border-bottom:1px solid #2a3f54;
-  padding:24px;
-}
-header h1{
-  margin:0;
-  font-family:'Fraunces',serif;
-  color:#3ecfb2;
-}
-.container{
-  max-width:900px;
-  margin:0 auto;
-  padding:36px 20px 80px;
-}
-h2{
-  font-family:'Fraunces',serif;
-  color:#3ecfb2;
-  margin:40px 0 20px;
-}
-.grid{
+    /* HERO */
+    .hero{
+      padding:56px 32px 40px;
+      max-width:900px;
+      margin:0 auto;
+      text-align:center;
+    }
+    .hero-eyebrow{
+      font-size:.75rem;
+      letter-spacing:.22em;
+      text-transform:uppercase;
+      color:var(--teal);
+      margin-bottom:12px;
+    }
+    .hero h1{
+      font-size:clamp(2rem,5vw,3.2rem);
+      font-family:'Fraunces',serif;
+      font-weight:900;
+      margin-bottom:14px;
+    }
+    .hero p{
+      max-width:620px;
+      margin:0 auto;
+      color:var(--muted);
+      font-size:1rem;
+      line-height:1.7;
+    }
+
+    /* TABS */
+    .tabs{
+      display:flex;
+      justify-content:center;
+      border-bottom:1px solid var(--border);
+      background:var(--surface);
+      margin-bottom:32px;
+      flex-wrap:wrap;
+    }
+    .tab{
+      padding:14px 20px;
+      font-size:.88rem;
+      color:var(--muted);
+      cursor:pointer;
+      border-bottom:2px solid transparent;
+      transition:.2s;
+    }
+    .tab.active{
+      color:var(--teal);
+      border-bottom-color:var(--teal);
+    }
+    .tab:hover:not(.active){color:var(--text);}
+
+    .panel{
+      display:none;
+      max-width:900px;
+      margin:0 auto;
+      padding:0 32px 80px;
+    }
+    .panel.active{display:block;}
+
+    /* CARDS */
+    .cards{
+      display:grid;
+      grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+      gap:14px;
+    }
+    .card{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      padding:22px;
+      transition:.2s;
+    }
+    .card:hover{
+      border-color:var(--teal);
+      transform:translateY(-2px);
+    }
+    .card h4{
+      margin-bottom:8px;
+      font-family:'Fraunces',serif;
+      font-size:1rem;
+    }
+    .card p{
+      color:var(--muted);
+      font-size:.88rem;
+      line-height:1.6;
+    }
+
+
+#material .cards{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
-  gap:20px;
+  grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+  gap:14px;
+  align-items:stretch;
 }
-.tile{
-  background:#162030;
-  border:1px solid #2a3f54;
-  border-radius:12px;
-  padding:26px;
-  text-decoration:none;
-  color:#dde8f0;
-  transition:.2s;
-  display:block;
-}
-.tile:hover{
-  background:#1c2d3f;
-  border-color:#3ecfb2;
-  transform:translateY(-3px);
-}
-.tile h3{
-  margin:0 0 10px;
-  font-family:'Fraunces',serif;
-  color:#3ecfb2;
-}
-.tile p{
-  margin:0;
-  font-size:.9rem;
-  color:#a6c4d3;
-}
-.coming{
-  margin-top:6px;
-  font-size:.8rem;
-  font-style:italic;
-  color:#7a9ab0;
-}
-</style>
-</head>
 
+#material .card{
+  display:flex;
+  flex-direction:column;
+  height:100%;
+}
+
+#material .link-btn{
+  margin-top:auto;
+  align-self:flex-start;
+}
+
+#material .card p{
+  margin-bottom:14px;
+}
+
+
+
+    .mat-link{
+      color:var(--teal);
+      font-size:.82rem;
+      font-weight:600;
+      text-decoration:none;
+      margin-top:12px;
+      display:inline-block;
+    }
+    .video-card {
+  	border-left: 3px solid var(--amber);
+	}
+    .video-card .mat-link {
+  	color: var(--amber);
+	}
+    .video-btn{
+  	display:inline-block;
+  	margin-top:12px;
+  	padding:8px 14px;
+  	border:1px solid var(--amber);
+  	border-radius:10px;
+  	background:rgba(45, 212, 191, 0.12);
+  	color:var(--teal);
+  	text-decoration:none;
+  	font-weight:600;
+  	transition:all .2s ease;
+     }
+
+     .video-btn:hover{
+  	background:rgba(45, 212, 191, 0.22);
+  	transform:translateY(-1px);
+     }
+
+     .link-btn{
+  	display:inline-block;
+  	margin-top:12px;
+  	padding:8px 14px;
+  	border:1px solid var(--teal);
+  	border-radius:10px;
+  	background:rgba(245, 158, 11, 0.12);
+  	color:var(--teal);
+  	text-decoration:none;
+  	font-weight:600;
+  	transition:all .2s ease;
+     }
+
+     .link-btn:hover{
+  	background:rgba(245, 158, 11, 0.22);
+  	transform:translateY(-1px);
+     }
+
+    /* COMING SOON */
+    .coming-soon{
+      background:var(--card);
+      border:1px dashed var(--border);
+      padding:32px;
+      text-align:center;
+      color:var(--muted);
+      border-radius:var(--radius);
+    }
+
+    @media(max-width:700px){
+      .top-bar{padding:14px 18px;}
+      .hero{padding:40px 18px 28px;}
+      .panel{padding:0 18px 60px;}
+    }
+
+
+
+  </style>
+</head>
 <body>
 
-<header>
+<!-- TOP BAR -->
+<nav class="top-bar">
+  <div class="top-left">
+    <a href="nk2.html" class="back-link">← NK2</a>
+    <div class="top-title">Moment — Periodiska systemet</div>
+  </div>
+  <div class="user-chip" id="user-chip">Laddar…</div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <p class="hero-eyebrow">NK2 — Periodiska systemet</p>
   <h1>Periodiska systemet</h1>
-</header>
+  <p>
+    Fördjupning i atomens uppbyggnad, periodiska systemets struktur,
+    kemiska bindningar och hur ämnens egenskaper kan förstås utifrån
+    deras uppbyggnad.
+  </p>
+</div>
 
-<div class="container">
-
-<h2>🃏 Flashcards</h2>
-<div class="grid">
-  <a href="flashcards-kemisk bindning.html" class="tile">
-    <h3>Kemisk bindning</h3>
-    <p>Jonbindning, kovalent bindning och metallbindning.</p>
-  </a>
-
-  <a class="tile">
-    <h3>Atomens byggnad</h3>
-    <p>Protoner, neutroner och elektronskal.</p>
-    <div class="coming">Flashcards kommer</div>
-  </a>
-
-  <a class="tile">
-    <h3>Periodiska systemet</h3>
-    <p>Grupper, perioder och reaktivitet.</p>
-    <div class="coming">Flashcards kommer</div>
-  </a>
+<!-- TABS -->
+<div class="tabs">
+  <div class="tab active" data-tab="material">📚 Material</div>
+  <div class="tab" data-tab="flashcards">🃏 Flashcards</div>
+  <div class="tab" data-tab="uppgifter">✏️ Uppgifter</div>
+  <div class="tab" data-tab="video">🎬 Video</div>
+  <div class="tab" data-tab="quiz">🧠 Quiz</div>
 </div>
 
 <!-- MATERIAL -->
-<h2>📘 Material</h2>
+<div class="panel active" id="material">
+  <div class="cards">
+    <div class="card">
+      <h4>Atomens uppbyggnad</h4>
+      <p>Protoner, neutroner, elektronskal och hur atomen är organiserad.</p>
+      <a href="material-atomens-uppbyggnad.html" class="mat-link link-btn"> Öppna →</a>
+    </div>
 
-<div class="grid">
+    <div class="card">
+      <h4>Periodiska systemet</h4>
+      <p>Grupper, perioder, valenselektroner och hur ämnens egenskaper hänger ihop med platsen i systemet.</p>
+      <a href="material-periodiska-systemet.html" class="mat-link link-btn"> Öppna →</a>
+    </div>
 
-  <!-- 1. Atomens uppbyggnad -->
-  <a href="material-atomens-uppbyggnad.html" class="tile">
-    <h3>Atomens uppbyggnad</h3>
-    <p>
-      Atomkärnan, elektronskal och valenselektroner.
-    </p>
-  </a>
+    <div class="card">
+      <h4>Intramolekylära bindningar</h4>
+      <p>Jonbindning, kovalent bindning och metallbindning.</p>
+      <a class="mat-link link-btn" a href="material-intramolekylarabindningar.html" class="mat-link link-btn"> Öppna →</a>
+    </div>
 
-  <!-- 2. Intramolekylära bindningar -->
-<a href="intramolekylarabindningar.html" class="tile">
-  <h3>Intramolekylära bindningar</h3>
-  <p>Jonbindning, kovalent bindning och metallbindning.</p>
-</a>
-
-
-  <!-- 3. Intermolekylära bindningar -->
-  <a href="material-intermolekylarabindningar.html" class="tile">
-    <h3>Intermolekylära bindningar</h3>
-    <p>
-      Van der Waals-bindningar, dipol–dipol-bindning och vätebindning.
-    </p>
-    <div class="coming">Material kommer</div>
-  </a>
-
-</div>
+    <div class="card">
+      <h4>Intermolekylära bindningar</h4>
+      <p>Vätebindning, dipol–dipol-bindning och van der Waals-bindningar.</p>
+      <a class="mat-link link-btn" a href="material-intermolekylarabindningar.html" class="mat-link link-btn"> Öppna →</a>
+    </div>
+  </div>
 </div>
 
+<!-- FLASHCARDS -->
+<div class="panel" id="flashcards">
+  <div class="cards">
+    <div class="card">
+      <h4>Flashcards – Kemisk bindning</h4>
+      <p>Träna begrepp som jonbindning, kovalent bindning och metallbindning.</p>
+      <a class="mat-link link-btn" a href="flashcards-kemisk bindning.html" class="mat-link">Starta →</a>
+    </div>
+
+    <div class="card">
+      <h4>Flashcards – Atomens byggnad</h4>
+      <p>Protoner, neutroner, elektroner och elektronskal.</p>
+      <span class="mat-link" style="color:var(--muted);">Kommer snart</span>
+    </div>
+
+    <div class="card">
+      <h4>Flashcards – Periodiska systemet</h4>
+      <p>Grupper, perioder, valenselektroner och reaktivitet.</p>
+      <span class="mat-link" style="color:var(--muted);">Kommer snart</span>
+    </div>
+  </div>
 </div>
+
+<!-- UPPGIFTER -->
+<div class="panel" id="uppgifter">
+  <div class="coming-soon">✏️ Uppgifter kommer här.</div>
+</div>
+
+<!-- VIDEO -->
+<div class="panel" id="video">
+  <div class="video-list">
+
+    <div class="card video-card">
+      <h4>Atomens uppbyggnad – genomgång</h4>
+      <p>Kort repetition av protoner, neutroner, elektroner och elektronskal.</p>
+      <a class="mat-link video-btn" href="https://app.begreppa.se/videos/kemi/atomen/hur-ar-en-atom-uppbyggd" target="_blank" rel="noopener noreferrer">
+        Öppna video ↗
+      </a>
+    </div>
+
+    <div class="card video-card">
+      <h4>Periodiska systemet – del 1</h4>
+      <p>Grupper, perioder och grundläggande struktur.</p>
+      <a class="mat-link video-btn" href="https://app.begreppa.se/videos/kemi/kemiska-bindningar-och-periodiska-systemet/periodiska-systemet-del-1" target="_blank" rel="noopener noreferrer">
+        Öppna video ↗
+      </a>
+    </div>
+
+    <div class="card video-card">
+      <h4>Periodiska systemet – del 2</h4>
+      <p>Fördjupning och samband i systemet.</p>
+      <a class="mat-link video-btn" href="https://app.begreppa.se/videos/kemi/kemiska-bindningar-och-periodiska-systemet/periodiska-systemet-del-2" target="_blank" rel="noopener noreferrer">
+        Öppna video ↗
+      </a>
+    </div>
+
+    <div class="card video-card">
+      <h4>Jonbindning</h4>
+      <p>Hur joner bildas och varför jonbindning uppstår.</p>
+      <a class="mat-link video-btn" href="https://app.begreppa.se/videos/kemi/kemiska-bindningar-och-periodiska-systemet/kemiska-bindningar-1-jonbindning" target="_blank" rel="noopener noreferrer">
+        Öppna video ↗
+      </a>
+    </div>
+
+    <div class="card video-card">
+      <h4>Molekyl- och metallbindning</h4>
+      <p>Kovalent bindning och metallbindning förklaras.</p>
+      <a class="mat-link video-btn" href="https://app.begreppa.se/videos/kemi/kemiska-bindningar-och-periodiska-systemet/kemiska-bindningar-2-molekyl-och-metallbindning" target="_blank" rel="noopener noreferrer">
+        Öppna video ↗
+      </a>
+    </div>
+
+    <div class="card video-card">
+      <h4>Lärargenomgång 1 - youtube</h4>
+      <p>Genomgång - van Waals-bindningar, går något djupare än behvoet i denna kurs.</p>
+      <a class="mat-link video-btn" href="https://www.youtube.com/watch?v=sbiCfdFpAjE" target="_blank" rel="noopener noreferrer">
+        Öppna video ↗
+      </a>
+    </div>
+
+    <div class="card video-card">
+      <h4>Lärargenomgång 2 - youtube</h4>
+      <p>Genomgång kring vätebindning, går något djupare än behvoet i denna kurs.</p>
+      <a class="mat-link video-btn" href="https://www.youtube.com/watch?v=Kc5Ja9ESoxw" target="_blank" rel="noopener noreferrer">
+        Öppna video ↗
+      </a>
+    </div>
+
+    <div class="card video-card">
+      <h4>Lärargenomgång 3 - youtube</h4>
+      <p>Genomgång - dipolbindning, går något djupare än behvoet i denna kurs.</p>
+      <a class="mat-link video-btn" href="https://www.youtube.com/watch?v=OPmIWfE7GAU" target="_blank" rel="noopener noreferrer">
+        Öppna video ↗
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<!-- QUIZ -->
+<div class="panel" id="quiz">
+  <div class="coming-soon">🧠 Quiz kommer här.</div>
+</div>
+
+<script src="shared.js"></script>
+<script>
+  const s = requireLogin('NK2');
+  if (!s) window.location.href = 'index.html';
+  document.getElementById('user-chip').textContent = s.name;
+
+  const tabs = document.querySelectorAll('.tab');
+  const panels = document.querySelectorAll('.panel');
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      panels.forEach(p => p.classList.remove('active'));
+      document.getElementById(tab.dataset.tab).classList.add('active');
+    });
+  });
+</script>
 </body>
 </html>

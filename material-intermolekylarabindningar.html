@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Intermolekylära bindningar – NK2</title>
+  https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Mulish:wght@300;400;500;600&display=swap
+  <style>
+    :root {
+      --bg: #faf7f2; --surface: #ffffff; --border: #e8e0d0;
+      --sand: #f2ece0; --rust: #b85c2a; --rust2: #d4703a;
+      --teal: #2a7a6a; --blue: #2a4a7a; --text: #1a1612;
+      --muted: #6a5e52; --radius: 10px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Mulish', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; font-size: 16px; }
+
+    .top-bar { background: #1a1612; padding: 14px 28px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; position: sticky; top: 0; z-index: 100; }
+    .back-link { color: #c8b89a; text-decoration: none; font-size: .82rem; transition: color .2s; }
+    .back-link:hover { color: #fff; }
+    .top-title { font-family: 'Playfair Display', serif; font-size: 1rem; color: #e8dcc8; }
+    .top-title span { color: #d4a060; }
+
+    .hero { background: linear-gradient(135deg, #1a1612 0%, #1a2820 60%, #1a1612 100%); padding: 64px 32px 56px; text-align: center; position: relative; overflow: hidden; }
+    .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 60% 60% at 30% 50%, rgba(42,122,106,.12) 0%, transparent 60%), radial-gradient(ellipse 50% 70% at 80% 30%, rgba(180,92,42,.06) 0%, transparent 55%); pointer-events: none; }
+    .hero-eyebrow { font-size: .72rem; letter-spacing: .22em; text-transform: uppercase; color: #d4a060; margin-bottom: 12px; }
+    .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 5vw, 3rem); font-weight: 900; color: #f0e8d8; margin-bottom: 16px; line-height: 1.15; }
+    .hero-sub { font-size: 1rem; color: #a09080; max-width: 620px; margin: 0 auto 32px; line-height: 1.7; }
+    .hero-nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+    .hero-nav a { font-size: .8rem; color: #c8b89a; border: 1px solid rgba(200,184,154,.3); border-radius: 30px; padding: 7px 16px; text-decoration: none; transition: all .2s; }
+    .hero-nav a:hover { background: rgba(200,184,154,.12); color: #fff; }
+
+    .container { max-width: 860px; margin: 0 auto; padding: 0 24px; }
+    .section { padding: 60px 0; }
+    .section + .section { border-top: 1px solid var(--border); }
+
+    .section-eyebrow { font-size: .7rem; letter-spacing: .2em; text-transform: uppercase; color: var(--rust); font-weight: 600; margin-bottom: 8px; }
+    .section-title { font-family: 'Playfair Display', serif; font-size: clamp(1.5rem, 3vw, 2rem); color: var(--text); margin-bottom: 6px; line-height: 1.25; }
+    .section-intro { font-size: .95rem; color: var(--muted); margin-bottom: 32px; max-width: 640px; line-height: 1.7; }
+
+    .prose { font-size: .95rem; line-height: 1.75; color: #2a2016; margin-bottom: 24px; }
+    .prose strong { color: var(--text); font-weight: 600; }
+
+    .key-box { background: var(--sand); border-left: 4px solid var(--rust2); border-radius: 0 var(--radius) var(--radius) 0; padding: 18px 22px; margin-bottom: 28px; }
+    .key-box h4 { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--rust); margin-bottom: 10px; }
+    .key-box p { font-size: .88rem; color: #4a3a2a; line-height: 1.65; }
+    .key-box dl { font-size: .88rem; color: #4a3a2a; display: flex; flex-direction: column; gap: 8px; }
+    .key-box dt { font-weight: 600; color: var(--text); display: inline; }
+    .key-box dd { display: inline; margin: 0; }
+    .key-box .term-row { line-height: 1.6; }
+
+    .diagram-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; margin-bottom: 28px; overflow-x: auto; }
+    .diagram-caption { font-size: .78rem; color: var(--muted); text-align: center; margin-top: 12px; font-style: italic; }
+
+    .compare-table { width: 100%; border-collapse: collapse; margin-bottom: 32px; font-size: .88rem; }
+    .compare-table th { background: #1a1612; color: #e8dcc8; padding: 12px 16px; text-align: left; font-weight: 600; font-family: 'Playfair Display', serif; }
+    .compare-table th:first-child { border-radius: 8px 0 0 0; }
+    .compare-table th:last-child { border-radius: 0 8px 0 0; }
+    .compare-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); vertical-align: top; }
+    .compare-table tr:nth-child(even) td { background: var(--sand); }
+    .compare-table tr:last-child td { border-bottom: none; }
+    .compare-table td:first-child { font-weight: 600; color: var(--text); }
+
+    .analogy-box { background: #1a1612; border-radius: var(--radius); padding: 28px 32px; margin-bottom: 32px; }
+    .analogy-box h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: #e8dcc8; margin-bottom: 14px; }
+    .analogy-box p { font-size: .9rem; color: #a09080; line-height: 1.7; }
+    .analogy-box strong { color: #e8dcc8; }
+
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 28px; }
+    .col-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px; }
+    .col-card h4 { font-family: 'Playfair Display', serif; font-size: 1rem; margin-bottom: 10px; }
+    .col-card p { font-size: .87rem; color: var(--muted); line-height: 1.6; }
+    .col-card.accent-rust { border-top: 3px solid var(--rust2); }
+    .col-card.accent-teal { border-top: 3px solid var(--teal); }
+    .col-card.accent-blue { border-top: 3px solid var(--blue); }
+
+    /* SELF-CHECK */
+    .q-card { background: #1a1612; border: 1px solid #2a2018; border-radius: var(--radius); padding: 22px 26px; margin-bottom: 18px; }
+    .q-num { font-size: .68rem; letter-spacing: .18em; text-transform: uppercase; color: #d4a060; margin-bottom: 7px; font-weight: 600; }
+    .q-text { font-family: 'Playfair Display', serif; font-size: .95rem; color: #f0e8d8; margin-bottom: 14px; line-height: 1.5; }
+    .q-textarea { width: 100%; background: #0f0c08; border: 1.5px solid #2a2018; border-radius: 6px; color: #e8dcc8; font-family: 'Mulish', sans-serif; font-size: .9rem; padding: 11px 13px; resize: vertical; min-height: 80px; outline: none; transition: border-color .2s; line-height: 1.6; }
+    .q-textarea:focus { border-color: #d4703a; }
+    .q-btn { margin-top: 10px; font-family: 'Mulish', sans-serif; font-size: .84rem; font-weight: 600; padding: 8px 20px; border-radius: 6px; border: none; cursor: pointer; background: #d4703a; color: #fff; transition: background .2s; }
+    .q-btn:hover { background: #b85c2a; }
+    .q-model { margin-top: 14px; display: none; background: #0f0c08; border: 1px solid #2a2018; border-radius: 6px; overflow: hidden; }
+    .q-model.shown { display: block; }
+    .q-model-header { background: #2a2018; padding: 8px 16px; font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: #d4a060; font-weight: 600; }
+    .q-model-body { padding: 14px 18px; font-size: .88rem; color: #c8b89a; line-height: 1.75; }
+    .q-model-body strong { color: #f0e8d8; }
+    .q-model-body ul { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+    .q-model-body li { padding-left: 16px; position: relative; }
+    .q-model-body li::before { content: '→'; position: absolute; left: 0; color: #d4703a; font-size: .8rem; }
+    .q-self-check { margin-top: 12px; padding-top: 12px; border-top: 1px solid #2a2018; display: flex; align-items: center; gap: 10px; font-size: .82rem; color: #8a7a60; cursor: pointer; }
+    .q-self-check input { accent-color: #d4703a; width: 16px; height: 16px; cursor: pointer; }
+    .q-retry { margin-top: 10px; font-size: .78rem; color: #6a5a40; background: none; border: none; cursor: pointer; font-family: 'Mulish', sans-serif; text-decoration: underline; padding: 0; display: block; }
+    .q-score-bar { background: #0f0c08; border: 1px solid #2a2018; border-radius: var(--radius); padding: 20px 24px; margin-top: 32px; display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+    .q-score-num { font-family: 'Playfair Display', serif; font-size: 2rem; color: #d4703a; }
+    .q-score-label { font-size: .85rem; color: #8a7a60; }
+    .q-score-msg { font-size: .88rem; color: #c8b89a; }
+
+    footer { border-top: 1px solid var(--border); padding: 28px 24px; text-align: center; font-size: .78rem; color: var(--muted); margin-top: 40px; }
+    footer a { color: var(--teal); text-decoration: none; }
+
+    @media(max-width: 580px) {
+      .hero { padding: 44px 20px 36px; }
+      .container { padding: 0 16px; }
+      .two-col { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="top-bar">
+  <a href="nk2-periodiska.html" class="back-link">← Periodiska systemet</a>
+  <div class="top-title">NK2 &mdash; <span>Intermolekylära bindningar</span></div>
+</div>
+
+<div class="hero">
+  <p class="hero-eyebrow">Kemi &middot; NK2</p>
+  <h1>Intermolekylära bindningar</h1>
+  <p class="hero-sub">Varför kokar vissa ämnen lätt medan andra kräver mycket energi? Här kopplas vätebindningar, dipol–dipol-bindningar och van der Waals-bindningar till smältpunkt, kokpunkt och aggregationstillstånd.</p>
+  <nav class="hero-nav">
+    #vad-arVad är det?</a>
+    #jamforelseIntra vs inter</a>
+    #vatebindningVätebindning</a>
+    #dipolDipol–dipol</a>
+    #vdwVan der Waals</a>
+    #aggregationAggregationstillstånd</a>
+    #kollaKolla att du kan</a>
+  </nav>
+</div>
+
+<main>
+
+<!-- ══════════════════════════════════════
+     SEKTION 1 – VAD ÄR INTERMOLEKYLÄRA BINDNINGAR?
+══════════════════════════════════════ -->
+<div class="section" id="vad-ar">
+<div class="container">
+  <p class="section-eyebrow">Grundidé</p>
+  <h2 class="section-title">Vad är intermolekylära bindningar?</h2>
+  <p class="section-intro">Intermolekylära bindningar är attraktionskrafter som verkar mellan molekyler. De avgör hur lätt molekyler kan röra sig bort från varandra och påverkar därför bland annat smältpunkt, kokpunkt och aggregationstillstånd.</p>
+
+  <p class="prose">Det är viktigt att skilja på bindningar <strong>inom</strong> en molekyl och bindningar <strong>mellan</strong> molekyler. När man talar om intermolekylära bindningar menar man alltså inte de kemiska bindningar som håller ihop själva molekylen, utan de svagare krafter som gör att molekyler attraherar varandra i ett ämne.</p>
+
+  <p class="prose">Dessa krafter är avgörande för om ett ämne uppträder som gas, vätska eller fast ämne vid en viss temperatur. Ju starkare de intermolekylära bindningarna är, desto mer energi krävs för att molekylerna ska separeras från varandra.</p>
+
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 700 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:700px;display:block;margin:0 auto">
+      <text x="350" y="20" text-anchor="middle" font-family="Playfair Display,serif" font-size="13" fill="#1a1612" font-weight="700">Bindning inom molekyl och krafter mellan molekyler</text>
+
+      <!-- Molekyl vänster -->
+      <circle cx="170" cy="95" r="24" fill="#d4703a"/>
+      <circle cx="230" cy="95" r="24" fill="#2a4a7a"/>
+      <line x1="194" y1="95" x2="206" y2="95" stroke="#1a1612" stroke-width="3"/>
+      <text x="200" y="70" text-anchor="middle" font-family="Mulish,sans-serif" font-size="10" fill="#6a5e52">intramolekylär bindning</text>
+
+      <!-- Molekyl höger -->
+      <circle cx="430" cy="95" r="24" fill="#d4703a"/>
+      <circle cx="490" cy="95" r="24" fill="#2a4a7a"/>
+      <line x1="454" y1="95" x2="466" y2="95" stroke="#1a1612" stroke-width="3"/>
+
+      <!-- Mellan molekyler -->
+      <line x1="254" y1="95" x2="406" y2="95" stroke="#6a5e52" stroke-width="2" stroke-dasharray="5,4"/>
+      <text x="330" y="82" text-anchor="middle" font-family="Mulish,sans-serif" font-size="10" fill="#b85c2a">intermolekylär kraft</text>
+
+      <!-- Förklaringsruta -->
+      <rect x="155" y="145" width="390" height="48" rx="10" fill="#f2ece0" stroke="#e8e0d0" stroke-width="1.5"/>
+      <text x="350" y="165" text-anchor="middle" font-family="Mulish,sans-serif" font-size="10" fill="#6a5e52">Molekylen hålls ihop av starka bindningar inom sig</text>
+      <text x="350" y="180" text-anchor="middle" font-family="Mulish,sans-serif" font-size="10" fill="#6a5e52">men attraheras också av andra molekyler genom svagare krafter</text>
+    </svg>
+    <p class="diagram-caption">Figur 1. De kemiska bindningarna inom molekylen är starka. Intermolekylära bindningar verkar mellan olika molekyler och är svagare.</p>
+  </div>
+
+  <div class="key-box">
+    <h4>🔑 Det viktigaste först</h4>
+    <p>Intermolekylära bindningar verkar <strong>mellan molekyler</strong>. De påverkar hur ämnen beter sig som fasta, flytande eller gasformiga och hur mycket energi som krävs för att smälta eller koka ett ämne.</p>
+  </div>
+
+</div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SEKTION 2 – INTRAMOLEKYLÄRA VS INTERMOLEKYLÄRA
+══════════════════════════════════════ -->
+<div class="section" id="jamforelse">
+<div class="container">
+  <p class="section-eyebrow">Jämförelse</p>
+  <h2 class="section-title">Intramolekylära och intermolekylära bindningar</h2>
+  <p class="section-intro">För att förstå smältning, kokning och aggregationstillstånd måste man tydligt skilja mellan bindningar inom molekylen och krafter mellan molekylerna.</p>
+
+  <div class="two-col">
+    <div class="col-card accent-rust">
+      <h4>Intramolekylära bindningar</h4>
+      <p>Intramolekylära bindningar håller ihop atomerna i en molekyl eller i ett kristallgitter. Exempel är <strong>kovalenta bindningar</strong> och <strong>jonbindning</strong>. Dessa bindningar är generellt mycket starka.</p>
+      <p style="margin-top:10px;font-size:.83rem;color:#b85c2a;font-weight:600">Exempel: O–H-bindningen i vatten</p>
+    </div>
+    <div class="col-card accent-teal">
+      <h4>Intermolekylära bindningar</h4>
+      <p>Intermolekylära bindningar verkar mellan molekyler. De är svagare än intramolekylära bindningar, men de avgör ändå om molekyler hålls tätt ihop eller lätt kan separeras.</p>
+      <p style="margin-top:10px;font-size:.83rem;color:#2a7a6a;font-weight:600">Exempel: vätebindningar mellan vattenmolekyler</p>
+    </div>
+  </div>
+
+  <p class="prose">Vid smältning och kokning bryts inte själva molekylerna sönder. I stället tillförs energi som används för att övervinna de <strong>intermolekylära</strong> bindningarna. Det betyder att ämnet byter aggregationstillstånd utan att den kemiska identiteten förändras.</p>
+
+  <table class="compare-table">
+    <thead><tr>
+      <th>Typ av bindning</th>
+      <th>Var verkar den?</th>
+      <th>Relativ styrka</th>
+      <th>Vad händer vid energitillförsel?</th>
+    </tr></thead>
+    <tbody>
+      <tr>
+        <td>Intramolekylär bindning</td>
+        <td>Inom en molekyl eller mellan joner i ett gitter</td>
+        <td>Generellt stark</td>
+        <td>Bryts inte vid vanlig smältning eller kokning</td>
+      </tr>
+      <tr>
+        <td>Intermolekylär bindning</td>
+        <td>Mellan molekyler</td>
+        <td>Generellt svagare</td>
+        <td>Övervinns vid smältning och kokning</td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SEKTION 3 – VÄTEBINDNING
+══════════════════════════════════════ -->
+<div class="section" id="vatebindning">
+<div class="container">
+  <p class="section-eyebrow">Starkast av de svaga</p>
+  <h2 class="section-title">Vätebindning</h2>
+  <p class="section-intro">Vätebindning är den starkaste typen av intermolekylär bindning. Den uppstår när väte sitter bundet till ett starkt elektronegativt ämne som syre, kväve eller fluor.</p>
+
+  <p class="prose">För att vätebindning ska kunna uppstå krävs att elektronerna dras starkt åt den ena sidan av bindningen. Då får väteatomen en tydlig partiell positiv laddning och kan attraheras av en negativt laddad del av en annan molekyl. De vanligaste fallen i kemin på denna nivå är när väte är bundet till <strong>syre, kväve eller fluor</strong>.</p>
+
+  <p class="prose">Vatten är det viktigaste vardagliga exemplet. Vätebindningar mellan vattenmolekyler gör att vatten har en ovanligt hög kokpunkt jämfört med andra små molekyler. Därför är vatten flytande vid rumstemperatur trots att molekylen är liten.</p>
+
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 700 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:700px;display:block;margin:0 auto">
+      <text x="350" y="20" text-anchor="middle" font-family="Playfair Display,serif" font-size="13" fill="#1a1612" font-weight="700">Vätebindningar mellan vattenmolekyler</text>
+
+      <!-- Molekyl 1 -->
+      <circle cx="220" cy="110" r="28" fill="#d4703a"/>
+      <circle cx="180" cy="80" r="16" fill="#e8f0f8" stroke="#2a4a7a" stroke-width="1"/>
+      <circle cx="260" cy="80" r="16" fill="#e8f0f8" stroke="#2a4a7a" stroke-width="1"/>
+      <line x1="205" y1="98" x2="192" y2="90" stroke="#1a1612" stroke-width="2"/>
+      <line x1="235" y1="98" x2="248" y2="90" stroke="#1a1612" stroke-width="2"/>
+
+      <!-- Molekyl 2 -->
+      <circle cx="450" cy="110" r="28" fill="#d4703a"/>
+      <circle cx="420" cy="70" r="16" fill="#e8f0f8" stroke="#2a4a7a" stroke-width="1"/>
+      <circle cx="500" cy="90" r="16" fill="#e8f0f8" stroke="#2a4a7a" stroke-width="1"/>
+      <line x1="438" y1="94" x2="430" y2="84" stroke="#1a1612" stroke-width="2"/>
+      <line x1="485" y1="98" x2="473" y2="104" stroke="#1a1612" stroke-width="2"/>
+
+      <!-- Vätebindning -->
+      <line x1="276" y1="80" x2="418" y2="120" stroke="#2a7a6a" stroke-width="2" stroke-dasharray="5,4"/>
+      <text x="345" y="68" text-anchor="middle" font-family="Mulish,sans-serif" font-size="10" fill="#2a7a6a">vätebindning</text>
+
+      <!-- Laddningar -->
+      <text x="220" y="150" text-anchor="middle" font-family="Mulish,sans-serif" font-size="11" fill="#b85c2a">δ−</text>
+      <text x="180" y="55" text-anchor="middle" font-family="Mulish,sans-serif" font-size="11" fill="#2a4a7a">δ+</text>
+      <text x="260" y="55" text-anchor="middle" font-family="Mulish,sans-serif" font-size="11" fill="#2a4a7a">δ+</text>
+
+      <text x="440" y="150" text-anchor="middle" font-family="Mulish,sans-serif" font-size="11" fill="#b85c2a">δ−</text>
+      <text x="425" y="50" text-anchor="middle" font-family="Mulish,sans-serif" font-size="11" fill="#2a4a7a">δ+</text>
+      <text x="510" y="70" text-anchor="middle" font-family="Mulish,sans-serif" font-size="11" fill="#2a4a7a">δ+</text>
+
+      <rect x="170" y="170" width="360" height="30" rx="8" fill="#f2ece0" stroke="#e8e0d0" stroke-width="1.5"/>
+      <text x="350" y="189" text-anchor="middle" font-family="Mulish,sans-serif" font-size="10" fill="#6a5e52">Väte i en vattenmolekyl attraheras av syret i en annan vattenmolekyl</text>
+    </svg>
+    <p class="diagram-caption">Figur 2. Vätebindningar uppstår mellan molekyler där väte är bundet till syre, kväve eller fluor. I vatten ger dessa bindningar en ovanligt hög kokpunkt.</p>
+  </div>
+
+  <div class="key-box">
+    <h4>🔑 Vätebindning i korthet</h4>
+    <p>Vätebindning är den starkaste av de intermolekylära bindningarna. Den kräver att väte är bundet till <strong>syre, kväve eller fluor</strong>, och den bidrar starkt till ämnens höga kok- och smältpunkter.</p>
+  </div>
+
+</div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SEKTION 4 – DIPOL–DIPOL-BINDNING
+══════════════════════════════════════ -->
+<div class="section" id="dipol">
+<div class="container">
+  <p class="section-eyebrow">Polära molekyler</p>
+  <h2 class="section-title">Dipol–dipol-bindningar</h2>
+  <p class="section-intro">Dipol–dipol-bindningar uppstår mellan polära molekyler. Då attraherar den positiva sidan hos en molekyl den negativa sidan hos en annan.</p>
+
+  <p class="prose">En <strong>dipol</strong> är en molekyl där elektronerna är ojämnt fördelade. Då uppstår en svagt negativ sida och en svagt positiv sida. Om två sådana molekyler kommer nära varandra kan motsatta laddningssidor attrahera varandra och ge upphov till dipol–dipol-bindningar.</p>
+
+  <p class="prose">Dipol–dipol-bindningar är generellt svagare än vätebindningar men starkare än van der Waals-bindningar. De spelar därför stor roll för många polära ämnens kokpunkter och andra fysikaliska egenskaper.</p>
+
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:700px;display:block;margin:0 auto">
+      <text x="350" y="20" text-anchor="middle" font-family="Playfair Display,serif" font-size="13" fill="#1a1612" font-weight="700">Dipol–dipol-bindning mellan polära molekyler</text>
+
+      <!-- Molekyl 1 -->
+      <ellipse cx="230" cy="100" rx="90" ry="34" fill="#f2ece0" stroke="#b85c2a" stroke-width="1.5"/>
+      <text x="185" y="104" text-anchor="middle" font-family="Mulish,sans-serif" font-size="12" fill="#2a4a7a" font-weight="700">δ−</text>
+      <text x="275" y="104" text-anchor="middle" font-family="Mulish,sans-serif" font-size="12" fill="#b85c2a" font-weight="700">δ+</text>
+
+      <!-- Molekyl 2 -->
+      <ellipse cx="470" cy="100" rx="90" ry="34" fill="#f2ece0" stroke="#2a4a7a" stroke-width="1.5"/>
+      <text x="425" y="104" text-anchor="middle" font-family="Mulish,sans-serif" font-size="12" fill="#2a4a7a" font-weight="700">δ−</text>
+      <text x="515" y="104" text-anchor="middle" font-family="Mulish,sans-serif" font-size="12" fill="#b85c2a" font-weight="700">δ+</text>
+
+      <!-- Attraktion -->
+      <line x1="320" y1="100" x2="380" y2="100" stroke="#6a5e52" stroke-width="2" stroke-dasharray="5,4"/>
+      <text x="350" y="70" text-anchor="middle" font-family="Mulish,sans-serif" font-size="10" fill="#6a5e52">attraktion mellan motsatta poler</text>
+
+      <rect x="165" y="148" width="370" height="30" rx="8" fill="#f2ece0" stroke="#e8e0d0" stroke-width="1.5"/>
+      <text x="350" y="167" text-anchor="middle" font-family="Mulish,sans-serif" font-size="10" fill="#6a5e52">Polära molekyler orienterar sig så att positiva och negativa sidor dras mot varandra</text>
+    </svg>
+    <p class="diagram-caption">Figur 3. Dipol–dipol-bindningar uppstår när polära molekyler attraherar varandra genom sina motsatta laddningssidor.</p>
+  </div>
+
+</div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SEKTION 5 – VAN DER WAALS-BINDNINGAR
+══════════════════════════════════════ -->
+<div class="section" id="vdw">
+<div class="container">
+  <p class="section-eyebrow">Svagast – men alltid närvarande</p>
+  <h2 class="section-title">Van der Waals-bindningar</h2>
+  <p class="section-intro">Van der Waals-bindningar uppstår därför att elektroner alltid rör sig. Då kan laddningen tillfälligt bli ojämnt fördelad, vilket gör att tillfälliga dipoler uppstår.</p>
+
+  <p class="prose">Även molekyler som i genomsnitt är opolära kan under korta ögonblick få en ojämn elektronfördelning. Då blir den ena sidan av molekylen tillfälligt lite mer negativ och den andra lite mer positiv. Denna tillfälliga dipol kan i sin tur påverka närliggande molekyler och ge upphov till en svag attraktionskraft.</p>
+
+  <p class="prose">Van der Waals-bindningar finns mellan <strong>alla molekyler</strong>, men de är svagast av de intermolekylära bindningarna. De blir ändå viktiga, särskilt i större molekyler där många sådana svaga krafter tillsammans kan få stor effekt.</p>
+
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 700 210" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:700px;display:block;margin:0 auto">
+      <text x="350" y="20" text-anchor="middle" font-family="Playfair Display,serif" font-size="13" fill="#1a1612" font-weight="700">Tillfälliga dipoler och van der Waals-bindningar</text>
+
+      <!-- Molekyl 1 -->
+      <ellipse cx="240" cy="110" rx="75" ry="30" fill="#e8f0f8" stroke="#2a4a7a" stroke-width="1.5"/>
+      <text x="205" y="114" text-anchor="middle" font-family="Mulish,sans-serif" font-size="11" fill="#2a4a7a">δ−</text>
+      <text x="275" y="114" text-anchor="middle" font-family="Mulish,sans-serif" font-size="11" fill="#b85c2a">δ+</text>
+
+      <!-- Molekyl 2 -->
+      <ellipse cx="460" cy="110" rx="75" ry="30" fill="#e8f0f8" stroke="#2a4a7a" stroke-width="1.5"/>
+      <text x="425" y="114" text-anchor="middle" font-family="Mulish,sans-serif" font-size="11" fill="#b85c2a">δ+</text>
+      <text x="495" y="114" text-anchor="middle" font-family="Mulish,sans-serif" font-size="11" fill="#2a4a7a">δ−</text>
+
+      <!-- Attraktion -->
+      <line x1="315" y1="110" x2="385" y2="110" stroke="#6a5e52" stroke-width="2" stroke-dasharray="4,4"/>
+      <text x="350" y="88" text-anchor="middle" font-family="Mulish,sans-serif" font-size="10" fill="#6a5e52">svag, tillfällig attraktion</text>
+
+      <rect x="150" y="155" width="400" height="30" rx="8" fill="#f2ece0" stroke="#e8e0d0" stroke-width="1.5"/>
+      <text x="350" y="174" text-anchor="middle" font-family="Mulish,sans-serif" font-size="10" fill="#6a5e52">Elektronrörelsen gör att tillfälliga dipoler uppstår även i opolära molekyler</text>
+    </svg>
+    <p class="diagram-caption">Figur 4. Van der Waals-bindningar beror på tillfälliga dipoler som uppstår när elektronerna rör sig och fördelas ojämnt under korta ögonblick.</p>
+  </div>
+
+</div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SEKTION 6 – BINDNINGAR, ENERGI OCH AGGREGATIONSTILLSTÅND
+══════════════════════════════════════ -->
+<div class="section" id="aggregation">
+<div class="container">
+  <p class="section-eyebrow">Konsekvenser</p>
+  <h2 class="section-title">Bindningar, energi och aggregationstillstånd</h2>
+  <p class="section-intro">Intermolekylära bindningars styrka påverkar hur mycket energi som krävs för att separera molekyler. Därför påverkar de också om ett ämne är fast, flytande eller gasformigt vid en viss temperatur.</p>
+
+  <p class="prose">När ett ämne smälter eller kokar tillförs energi. Den energin används inte till att bryta sönder molekylerna kemiskt, utan till att övervinna de intermolekylära bindningarna mellan dem. Därför förändras <strong>aggregationstillståndet</strong>, men inte själva molekylens kemiska sammansättning.</p>
+
+  <p class="prose">Om de intermolekylära bindningarna är starka behövs mer energi för att få molekylerna att lämna varandra. Då blir både <strong>smältpunkten</strong> och <strong>kokpunkten</strong> högre. Om bindningarna är svaga krävs mindre energi, och ämnet smälter eller kokar lättare.</p>
+
+  <div class="analogy-box">
+    <h3>🧷 En enkel liknelse</h3>
+    <p>Tänk dig att molekylerna är som klossar som sitter ihop med kardborre. Om kardborrens grepp är svagt går det lätt att dra isär klossarna. Om kardborrens grepp är starkt krävs mycket mer kraft. På samma sätt kräver starkare intermolekylära bindningar mer energi för att ett ämne ska smälta eller koka.</p>
+  </div>
+
+  <table class="compare-table">
+    <thead><tr>
+      <th>Bindningstyp</th>
+      <th>Relativ styrka</th>
+      <th>Typisk konsekvens</th>
+      <th>Exempel</th>
+    </tr></thead>
+    <tbody>
+      <tr>
+        <td>Vätebindning</td>
+        <td>Starkast av de intermolekylära</td>
+        <td>Högre kokpunkt och smältpunkt</td>
+        <td>Vatten</td>
+      </tr>
+      <tr>
+        <td>Dipol–dipol-bindning</td>
+        <td>Mellan</td>
+        <td>Starkare attraktion än i opolära ämnen</td>
+        <td>Polära molekyler</td>
+      </tr>
+      <tr>
+        <td>Van der Waals-bindning</td>
+        <td>Svagast</td>
+        <td>Lägre kokpunkt hos små opolära molekyler</td>
+        <td>Ädelgaser, opolära molekyler</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="key-box">
+    <h4>🔑 Sambandet att komma ihåg</h4>
+    <p>Vid smältning och kokning bryts inte molekylernas inre bindningar. Det är de <strong>intermolekylära</strong> bindningarna som övervinns. Därför ändras aggregationstillståndet utan att ämnet byter identitet.</p>
+  </div>
+
+  <div class="key-box">
+    <h4>🔑 Nyckelbegrepp</h4>
+    <dl>
+      <div class="term-row"><dt>Intermolekylär bindning</dt><dd> – attraktionskraft mellan olika molekyler.</dd></div>
+      <div class="term-row"><dt>Intramolekylär bindning</dt><dd> – bindning inom en molekyl eller i ett joniskt gitter.</dd></div>
+      <div class="term-row"><dt>Vätebindning</dt><dd> – stark intermolekylär bindning som uppstår när väte är bundet till syre, kväve eller fluor.</dd></div>
+      <div class="term-row"><dt>Dipol–dipol-bindning</dt><dd> – attraktionskraft mellan polära molekyler.</dd></div>
+      <div class="term-row"><dt>Van der Waals-bindning</dt><dd> – svag attraktionskraft som beror på tillfälliga dipoler.</dd></div>
+      <div class="term-row"><dt>Dipol</dt><dd> – molekyl med ojämn laddningsfördelning.</dd></div>
+      <div class="term-row"><dt>Smältpunkt</dt><dd> – den temperatur där ett ämne går från fast till flytande form.</dd></div>
+      <div class="term-row"><dt>Kokpunkt</dt><dd> – den temperatur där ett ämne går från vätska till gas.</dd></div>
+      <div class="term-row"><dt>Aggregationstillstånd</dt><dd> – fast, flytande eller gasformigt tillstånd.</dd></div>
+    </dl>
+  </div>
+
+</div>
+</div>
+
+<!-- ══════════════════════════════════════
+     KOLLA ATT DU KAN
+══════════════════════════════════════ -->
+<div class="section" id="kolla">
+<div class="container">
+  <p class="section-eyebrow">Självbedömning</p>
+  <h2 class="section-title">Kolla att du kan</h2>
+  <p class="section-intro">Försök svara utan att titta i texten. Visa sedan mallsvaret och bocka i om du hade med det viktigaste.</p>
+  <div id="q-wrap"></div>
+</div>
+</div>
+
+</main>
+
+<footer>
+  <a href="nk2-periodiska.html" class="back-link">← Periodiska systemet</a></a> &middot; NK2 &middot; Intermolekylära bindningar
+</footer>
+
+<script src="shared.js"></script>
+<script>
+requireLogin('NK2');
+
+const QUESTIONS = [
+  {
+    q: "Förklara skillnaden mellan intramolekylära och intermolekylära bindningar.",
+    model: [
+      "<strong>Intramolekylära bindningar</strong> verkar inom en molekyl eller i ett joniskt gitter och håller ihop ämnets grundstruktur.",
+      "<strong>Intermolekylära bindningar</strong> verkar mellan olika molekyler.",
+      "Intramolekylära bindningar är generellt starkare än intermolekylära bindningar.",
+      "Vid smältning och kokning är det främst de intermolekylära bindningarna som övervinns."
+    ]
+  },
+  {
+    q: "Vad krävs för att en vätebindning ska kunna uppstå?",
+    model: [
+      "Väte måste vara bundet till ett starkt elektronegativt ämne.",
+      "I praktiken handlar det om <strong>syre, kväve eller fluor</strong>.",
+      "Det gör att väte får en tydlig partiell positiv laddning.",
+      "Den positiva delen kan då attraheras av en negativ del i en annan molekyl."
+    ]
+  },
+  {
+    q: "Varför har vatten en ovanligt hög kokpunkt jämfört med många andra små molekyler?",
+    model: [
+      "Vattenmolekyler kan bilda <strong>vätebindningar</strong> med varandra.",
+      "Vätebindningar är relativt starka intermolekylära bindningar.",
+      "Det krävs därför mycket energi för att separera vattenmolekylerna.",
+      "Det ger vatten en högre kokpunkt än många andra små molekyler."
+    ]
+  },
+  {
+    q: "Vad menas med att en molekyl är en dipol?",
+    model: [
+      "En dipol är en molekyl där elektronerna är ojämnt fördelade.",
+      "Det gör att en del av molekylen blir svagt negativ och en annan del svagt positiv.",
+      "Polära molekyler är alltså dipoler.",
+      "Dipoler kan ge upphov till dipol–dipol-bindningar."
+    ]
+  },
+  {
+    q: "Hur uppstår van der Waals-bindningar?",
+    model: [
+      "Elektroner rör sig hela tiden i molekyler.",
+      "Det kan skapa en tillfällig ojämn laddningsfördelning.",
+      "Då uppstår tillfälliga dipoler.",
+      "Dessa kan attrahera andra molekyler och ge upphov till van der Waals-bindningar."
+    ]
+  },
+  {
+    q: "Vad händer med molekylerna när ett ämne smälter eller kokar?",
+    model: [
+      "Molekylerna bryts inte sönder kemiskt.",
+      "I stället övervinns de <strong>intermolekylära</strong> bindningarna mellan molekylerna.",
+      "Det gör att ämnet byter aggregationstillstånd.",
+      "Ämnets kemiska identitet är fortfarande densamma."
+    ]
+  },
+  {
+    q: "Hur hänger styrkan hos intermolekylära bindningar ihop med smältpunkt och kokpunkt?",
+    model: [
+      "Ju starkare de intermolekylära bindningarna är, desto mer energi krävs för att separera molekylerna.",
+      "Det leder till högre smältpunkt och kokpunkt.",
+      "Svaga intermolekylära bindningar ger lägre smältpunkt och kokpunkt.",
+      "Vätebindning ger därför ofta högre kokpunkt än van der Waals-bindningar."
+    ]
+  }
+];
+
+let checked = new Array(QUESTIONS.length).fill(false);
+
+function buildQuestions() {
+  const wrap = document.getElementById('q-wrap');
+  QUESTIONS.forEach((q, i) => {
+    const items = q.model.map(m => `<li>${m}</li>`).join('');
+    wrap.innerHTML += `
+      <div class="q-card">
+        <div class="q-num">Fråga ${i+1} av ${QUESTIONS.length}</div>
+        <div class="q-text">${q.q}</div>
+        <textarea class="q-textarea" id="qta-${i}" placeholder="Skriv ditt svar här..."></textarea>
+        <button class="q-btn" onclick="showModel(${i})">Visa mallsvar →</button>
+        <div class="q-model" id="qmodel-${i}">
+          <div class="q-model-header">📋 Mallsvar</div>
+          <div class="q-model-body">
+            <ul>${items}</ul>
+            <div class="q-self-check">
+              <input type="checkbox" id="qcheck-${i}" onchange="toggleCheck(${i})"/>
+              <label for="qcheck-${i}">Jag hade med det viktigaste</label>
+            </div>
+          </div>
+        </div>
+        <button class="q-retry" onclick="resetQuestion(${i})">↩ Rensa och försök igen</button>
+      </div>`;
+  });
+  updateScore();
+}
+
+function showModel(i) { document.getElementById(`qmodel-${i}`).classList.add('shown'); }
+function toggleCheck(i) { checked[i] = document.getElementById(`qcheck-${i}`).checked; updateScore(); }
+function resetQuestion(i) {
+  document.getElementById(`qta-${i}`).value = '';
+  document.getElementById(`qmodel-${i}`).classList.remove('shown');
+  document.getElementById(`qcheck-${i}`).checked = false;
+  checked[i] = false;
+  updateScore();
+}
+
+function updateScore() {
+  const n = checked.filter(Boolean).length;
+  const total = QUESTIONS.length;
+  const msg = n === total ? '🎉 Utmärkt – du kan hela avsnittet!'
+    : n >= 5 ? '👍 Bra jobbat! Kika igenom de du missat.'
+    : n >= 3 ? '📖 Bra start – fortsätt öva på resten.'
+    : '🔍 Gå tillbaka till materialet och försök igen.';
+  let bar = document.getElementById('q-scorebar');
+  if (!bar) {
+    document.getElementById('q-wrap').insertAdjacentHTML('afterend',
+      `<div class="q-score-bar" id="q-scorebar">
+        <div class="q-score-num" id="qs-num">${n}/${total}</div>
+        <div><div class="q-score-label">Självskattning</div><div class="q-score-msg" id="qs-msg">${msg}</div></div>
+      </div>`);
+  } else {
+    document.getElementById('qs-num').textContent = `${n}/${total}`;
+    document.getElementById('qs-msg').textContent = msg;
+  }
+}
+
+buildQuestions();
+</script>
+
+</body>
+</html>
