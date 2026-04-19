@@ -1,0 +1,1764 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Instuderingsfrågor – Genetik | NK1b</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root{
+      --bg:#07111d;
+      --bg-soft:#0b1726;
+      --card:#14233a;
+      --card-2:#0f1b2d;
+      --border:rgba(120,155,191,.22);
+      --text:#e8f0fb;
+      --muted:#9fb2c9;
+      --teal:#2dd4bf;
+      --teal-soft:rgba(45,212,191,.12);
+      --teal-soft-2:rgba(45,212,191,.18);
+      --amber:#f59e0b;
+      --amber-soft:rgba(245,158,11,.14);
+      --pink:#f472b6;
+      --pink-soft:rgba(244,114,182,.14);
+      --red:#fb7185;
+      --red-soft:rgba(251,113,133,.14);
+      --green:#34d399;
+      --green-soft:rgba(52,211,153,.14);
+      --yellow:#fbbf24;
+      --yellow-soft:rgba(251,191,36,.14);
+      --shadow:0 20px 60px rgba(0,0,0,.28);
+      --radius:18px;
+      --radius-sm:12px;
+      --max:1180px;
+
+    }
+
+    *{box-sizing:border-box;}
+    html{scroll-behavior:smooth;}
+
+    body{
+      margin:0;
+      color:var(--text);
+      font-family:'Inter',system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(45,212,191,.09), transparent 34%),
+        radial-gradient(circle at top right, rgba(244,114,182,.08), transparent 28%),
+        linear-gradient(180deg, #07111d 0%, #06101b 100%);
+      min-height:100vh;
+    }
+
+    a{color:inherit;}
+
+    /* TOP BAR */
+    .top-bar{
+      position:sticky;
+      top:0;
+      z-index:1000;
+      backdrop-filter:saturate(160%) blur(14px);
+      background:rgba(6,16,27,.76);
+      border-bottom:1px solid rgba(120,155,191,.14);
+    }
+
+    .top-bar-inner{
+      max-width:var(--max);
+      margin:0 auto;
+      padding:14px 24px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+    }
+
+    .crumbs{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+      color:var(--muted);
+      font-size:.9rem;
+    }
+
+    .crumb-link{
+      text-decoration:none;
+      color:var(--muted);
+      transition:.2s;
+    }
+
+    .crumb-link:hover{color:var(--text);}
+
+    .page-pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 12px;
+      background:rgba(45,212,191,.08);
+      border:1px solid rgba(45,212,191,.24);
+      border-radius:999px;
+      color:var(--teal);
+      font-size:.82rem;
+      font-weight:700;
+      white-space:nowrap;
+    }
+
+    /* HERO */
+    .hero{
+      max-width:var(--max);
+      margin:0 auto;
+      padding:42px 24px 20px;
+    }
+
+    .hero-shell{
+      background:linear-gradient(180deg, rgba(20,35,58,.92), rgba(12,24,40,.92));
+      border:1px solid var(--border);
+      border-radius:calc(var(--radius) + 6px);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+
+    .hero-top{
+      padding:30px 28px 24px;
+      background:
+        radial-gradient(circle at right top, rgba(45,212,191,.12), transparent 30%),
+        radial-gradient(circle at left bottom, rgba(244,114,182,.08), transparent 22%);
+    }
+
+    .eyebrow{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      color:var(--teal);
+      font-weight:700;
+      font-size:.82rem;
+      letter-spacing:.02em;
+      text-transform:uppercase;
+    }
+
+    .hero h1{
+      margin:12px 0 10px;
+      font-family:'Fraunces',serif;
+      font-size:clamp(1.9rem, 4vw, 3rem);
+      line-height:1.08;
+      letter-spacing:-.02em;
+    }
+
+    .hero p{
+      margin:0;
+      max-width:78ch;
+      color:var(--muted);
+      line-height:1.75;
+      font-size:1rem;
+    }
+
+    .hero-badges{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top:18px;
+    }
+
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:9px 12px;
+      border-radius:999px;
+      font-size:.82rem;
+      font-weight:700;
+      border:1px solid var(--border);
+      background:rgba(255,255,255,.03);
+      color:var(--text);
+    }
+
+    /* STICKY OVERVIEW */
+    .sticky-study{
+      position:sticky;
+      top:64px;
+      z-index:900;
+      max-width:var(--max);
+      margin:0 auto;
+      padding:0 24px;
+    }
+
+    .sticky-study-inner{
+      margin-top:12px;
+      background:rgba(12,24,40,.86);
+      border:1px solid rgba(120,155,191,.18);
+      border-radius:16px;
+      backdrop-filter:saturate(170%) blur(14px);
+      display:grid;
+      grid-template-columns:1.1fr 1.6fr auto;
+      gap:14px;
+      align-items:center;
+      padding:14px 16px;
+      box-shadow:0 12px 30px rgba(0,0,0,.18);
+    }
+
+    .progress-box{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      min-width:0;
+    }
+
+    .progress-label{
+      color:var(--muted);
+      font-size:.82rem;
+      font-weight:600;
+    }
+
+    .progress-value{
+      font-size:.95rem;
+      font-weight:700;
+    }
+
+    .progress-bar{
+      width:100%;
+      max-width:260px;
+      height:8px;
+      border-radius:999px;
+      background:rgba(255,255,255,.08);
+      overflow:hidden;
+    }
+
+    .progress-fill{
+      width:0%;
+      height:100%;
+      background:linear-gradient(90deg, var(--teal), #5eead4);
+      border-radius:999px;
+    }
+
+    .overview-chips{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+
+    .overview-chip{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 10px;
+      background:rgba(255,255,255,.03);
+      border:1px solid var(--border);
+      border-radius:999px;
+      font-size:.8rem;
+      color:var(--muted);
+      white-space:nowrap;
+    }
+
+    .overview-dot{
+      width:8px;
+      height:8px;
+      border-radius:999px;
+      background:rgba(255,255,255,.22);
+      flex:0 0 auto;
+    }
+
+    .sticky-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+
+    .ghost-btn,
+    .primary-btn,
+    .link-btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      text-decoration:none;
+      border-radius:12px;
+      padding:10px 14px;
+      font-weight:700;
+      font-size:.88rem;
+      transition:.2s;
+      cursor:pointer;
+      border:1px solid transparent;
+      white-space:nowrap;
+    }
+
+    .ghost-btn{
+      background:rgba(255,255,255,.04);
+      border-color:var(--border);
+      color:var(--text);
+    }
+
+    .ghost-btn:hover{
+      transform:translateY(-1px);
+      border-color:rgba(45,212,191,.28);
+      color:var(--teal);
+    }
+
+    .primary-btn{
+      background:var(--teal-soft);
+      border-color:rgba(45,212,191,.32);
+      color:var(--teal);
+    }
+
+    .primary-btn:hover{
+      background:var(--teal-soft-2);
+      transform:translateY(-1px);
+    }
+
+    /* MAIN LAYOUT */
+    .panel{
+      max-width:var(--max);
+      margin:0 auto;
+      padding:24px 24px 72px;
+    }
+
+    .layout{
+      display:grid;
+      grid-template-columns:minmax(0, 1fr) 320px;
+      gap:18px;
+      align-items:start;
+    }
+
+    .main-column{min-width:0;}
+
+    .section-card{
+      background:linear-gradient(180deg, rgba(20,35,58,.92), rgba(12,24,40,.96));
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+
+    .section-head{
+      padding:20px 22px;
+      border-bottom:1px solid rgba(120,155,191,.14);
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:16px;
+      background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,0));
+    }
+
+    .section-head h2{
+      margin:0;
+      font-family:'Fraunces',serif;
+      font-size:1.35rem;
+    }
+
+    .section-head p{
+      margin:8px 0 0;
+      color:var(--muted);
+      line-height:1.7;
+      font-size:.94rem;
+      max-width:68ch;
+    }
+
+    .section-label{
+      flex:0 0 auto;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 12px;
+      border-radius:999px;
+      border:1px solid rgba(45,212,191,.22);
+      background:rgba(45,212,191,.08);
+      color:var(--teal);
+      font-size:.78rem;
+      font-weight:700;
+      margin-top:2px;
+    }
+
+    .question-list{
+      padding:18px;
+      display:grid;
+      gap:14px;
+    }
+
+    .question-card{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:16px;
+      padding:18px;
+      transition:.2s;
+    }
+
+    .question-card:hover{
+      border-color:rgba(45,212,191,.34);
+      transform:translateY(-1px);
+    }
+
+    .question-meta{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      align-items:flex-start;
+      margin-bottom:10px;
+      flex-wrap:wrap;
+    }
+
+    .question-number{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-width:34px;
+      height:34px;
+      padding:0 10px;
+      border-radius:999px;
+      background:rgba(45,212,191,.1);
+      border:1px solid rgba(45,212,191,.2);
+      color:var(--teal);
+      font-weight:800;
+      font-size:.82rem;
+    }
+
+    .tag-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      justify-content:flex-end;
+    }
+
+    .tag{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding:7px 10px;
+      border-radius:999px;
+      font-size:.76rem;
+      font-weight:700;
+      border:1px solid var(--border);
+      background:rgba(255,255,255,.03);
+      color:var(--muted);
+    }
+
+    .tag.teal{
+      border-color:rgba(45,212,191,.22);
+      background:rgba(45,212,191,.08);
+      color:var(--teal);
+    }
+
+    .tag.amber{
+      border-color:rgba(245,158,11,.24);
+      background:rgba(245,158,11,.1);
+      color:#fdc66a;
+    }
+
+    .tag.pink{
+      border-color:rgba(244,114,182,.24);
+      background:rgba(244,114,182,.1);
+      color:#f7a3cf;
+    }
+
+    .question-card h3{
+      margin:0 0 10px;
+      font-family:'Fraunces',serif;
+      font-size:1.1rem;
+      line-height:1.3;
+    }
+
+    .question-prompt{
+      margin:0 0 14px;
+      color:var(--muted);
+      line-height:1.7;
+      font-size:.95rem;
+    }
+
+    .answer-stack{
+      display:grid;
+      gap:10px;
+      margin-bottom:14px;
+    }
+
+    details.answer{
+      border:1px solid rgba(120,155,191,.16);
+      border-radius:14px;
+      background:rgba(255,255,255,.02);
+      overflow:hidden;
+    }
+
+    details.answer[open]{
+      border-color:rgba(45,212,191,.24);
+      background:rgba(255,255,255,.03);
+    }
+
+    details.answer summary{
+      list-style:none;
+      cursor:pointer;
+      padding:14px 16px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      font-weight:700;
+      font-size:.92rem;
+      color:var(--text);
+    }
+
+    details.answer summary::-webkit-details-marker{display:none;}
+
+    .summary-left{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      min-width:0;
+    }
+
+    .answer-badge{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding:6px 10px;
+      border-radius:999px;
+      font-size:.73rem;
+      font-weight:800;
+      flex:0 0 auto;
+    }
+
+    .answer-badge.basic{
+      background:var(--amber-soft);
+      color:#fdc66a;
+      border:1px solid rgba(245,158,11,.22);
+    }
+
+    .answer-badge.extended{
+      background:var(--teal-soft);
+      color:var(--teal);
+      border:1px solid rgba(45,212,191,.22);
+    }
+
+    .chev{
+      color:var(--muted);
+      font-size:.85rem;
+      flex:0 0 auto;
+    }
+
+    .answer-content{
+      padding:0 16px 16px;
+      color:var(--muted);
+      line-height:1.75;
+      font-size:.94rem;
+    }
+
+    .self-check{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      align-items:center;
+    }
+
+    .self-check-label{
+      color:var(--muted);
+      font-size:.82rem;
+      font-weight:700;
+      margin-right:2px;
+    }
+
+    .level-btn{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:10px 12px;
+      border-radius:12px;
+      border:1px solid var(--border);
+      background:rgba(255,255,255,.03);
+      color:var(--text);
+      font-weight:700;
+      font-size:.84rem;
+      cursor:pointer;
+      transition:.2s;
+    }
+
+    .level-btn:hover{transform:translateY(-1px);}
+
+    .level-btn[data-level="can"]:hover{
+      border-color:rgba(52,211,153,.32);
+      background:var(--green-soft);
+      color:#9ef0cb;
+    }
+
+    .level-btn[data-level="unsure"]:hover{
+      border-color:rgba(251,191,36,.32);
+      background:var(--yellow-soft);
+      color:#ffd977;
+    }
+
+    .level-btn[data-level="cannot"]:hover{
+      border-color:rgba(251,113,133,.32);
+      background:var(--red-soft);
+      color:#fca3b2;
+    }
+
+    /* ASIDE */
+    .aside-stack{
+      display:grid;
+      gap:18px;
+      position:sticky;
+      top:164px;
+    }
+
+    .mini-card{
+      background:linear-gradient(180deg, rgba(20,35,58,.92), rgba(12,24,40,.96));
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+
+    .mini-card-head{
+      padding:18px 18px 14px;
+      border-bottom:1px solid rgba(120,155,191,.14);
+    }
+
+    .mini-card-head h3{
+      margin:0;
+      font-family:'Fraunces',serif;
+      font-size:1.1rem;
+    }
+
+    .mini-card-head p{
+      margin:8px 0 0;
+      color:var(--muted);
+      line-height:1.7;
+      font-size:.9rem;
+    }
+
+    .mini-card-body{
+      padding:16px 18px 18px;
+    }
+
+    .checklist{
+      display:grid;
+      gap:10px;
+      margin:0;
+      padding:0;
+      list-style:none;
+    }
+
+    .check-item{
+      display:grid;
+      grid-template-columns:1fr auto;
+      gap:10px;
+      align-items:start;
+      padding:12px 0;
+      border-bottom:1px dashed rgba(120,155,191,.14);
+    }
+
+    .check-item:last-child{
+      border-bottom:none;
+      padding-bottom:0;
+    }
+
+    .check-text{
+      color:var(--text);
+      font-size:.9rem;
+      line-height:1.55;
+    }
+
+    .check-state{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:7px 10px;
+      border-radius:999px;
+      border:1px solid var(--border);
+      background:rgba(255,255,255,.03);
+      color:var(--muted);
+      font-size:.75rem;
+      font-weight:700;
+      white-space:nowrap;
+    }
+
+    .tip-list{
+      display:grid;
+      gap:10px;
+    }
+
+    .tip-item{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      padding:14px;
+      border-radius:14px;
+      border:1px solid var(--border);
+      background:rgba(255,255,255,.03);
+    }
+
+    .tip-item strong{
+      font-size:.9rem;
+    }
+
+    .tip-item p{
+      margin:0;
+      color:var(--muted);
+      font-size:.85rem;
+      line-height:1.65;
+    }
+
+    .tip-item .link-btn{
+      width:max-content;
+      margin-top:2px;
+      background:rgba(45,212,191,.08);
+      border:1px solid rgba(45,212,191,.24);
+      color:var(--teal);
+      padding:9px 12px;
+      border-radius:10px;
+    }
+
+    .tip-item .link-btn:hover{
+      background:rgba(45,212,191,.16);
+      transform:translateY(-1px);
+    }
+
+    .footer-note{
+      max-width:var(--max);
+      margin:0 auto;
+      padding:0 24px 56px;
+      color:var(--muted);
+      font-size:.9rem;
+      line-height:1.7;
+    }
+
+    @media (max-width: 1040px){
+      .layout{
+        grid-template-columns:1fr;
+      }
+      .aside-stack{
+        position:static;
+      }
+    }
+
+    @media (max-width: 920px){
+      .sticky-study{
+        top:61px;
+      }
+      .sticky-study-inner{
+        grid-template-columns:1fr;
+        align-items:start;
+      }
+      .sticky-actions{
+        justify-content:flex-start;
+      }
+    }
+
+    @media (max-width: 720px){
+      .top-bar-inner,
+      .hero,
+      .sticky-study,
+      .panel,
+      .footer-note{
+        padding-left:18px;
+        padding-right:18px;
+      }
+
+      .hero-top{
+        padding:24px 20px 20px;
+      }
+
+      .section-head{
+        padding:18px;
+        flex-direction:column;
+      }
+
+      .question-list{
+        padding:14px;
+      }
+
+      .question-card{
+        padding:16px;
+      }
+
+      .question-meta{
+        flex-direction:column;
+        align-items:flex-start;
+      }
+
+      .tag-row{
+        justify-content:flex-start;
+      }
+
+      .self-check{
+        align-items:stretch;
+      }
+
+      .level-btn{
+        width:100%;
+        justify-content:center;
+      }
+
+      .ghost-btn,
+      .primary-btn{
+        width:100%;
+      }
+
+
+/* === Samma bredd på alla huvudsektioner === */
+.sticky-study,
+.panel,
+.bottom-panels{
+  max-width: var(--max);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+}
+
+/* ===== Bottom panels (självskattning + materialtips längst ner) ===== */
+.bottom-panels{
+  max-width:var(--max);
+  margin:0 auto;
+  padding:0 24px 56px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:18px;
+}
+
+/* På mindre skärmar stackas de */
+@media (max-width: 1040px){
+  .bottom-panels{
+    grid-template-columns:1fr;
+  }
+}
+
+/* === Samma bredd på desktop också === */
+.sticky-study,
+.panel,
+.bottom-panels{
+  max-width: var(--max);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+/* === Frågedelen ska vara full bredd (ingen sidokolumn längre) === */
+.layout{
+  grid-template-columns: 1fr;
+}
+
+
+  </style>
+</head>
+<body>
+
+  <header class="top-bar">
+    <div class="top-bar-inner">
+      <nav class="crumbs" aria-label="Brödsmulor">
+        <a href="index.html" class="crumb-link">Naturkunskap</a>
+        <span>•</span>
+        <a href="nk1b.html" class="crumb-link">NK1b</a>
+        <span>•</span>
+        <a href="nk1b-genetik.html" class="crumb-link">Genetik</a>
+      </nav>
+
+      <span class="page-pill">🧬 Instuderingsfrågor</span>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-shell">
+      <div class="hero-top">
+        <span class="eyebrow">Inför provet</span>
+        <h1>Instuderingsfrågor – Genetik</h1>
+        <p>
+          Använd frågorna för att testa dig själv inför provet. Försök att svara utan att titta på svaren först.
+          Öppna sedan <strong>Grundläggande svar</strong> och därefter <strong>Utförligt svar</strong>.
+          Markera till sist om du <strong>kan detta</strong>, är <strong>osäker</strong> eller <strong>inte kan alls</strong>.
+        </p>
+
+        <div class="hero-badges">
+          <span class="badge">18 frågor</span>
+          <span class="badge">Två nivåer av mallsvar</span>
+          <span class="badge">Självskattning per område</span>
+          <span class="badge">Materialtips för repetition</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sticky-study" aria-label="Löpande översikt">
+    <div class="sticky-study-inner">
+      <div class="progress-box">
+        <span class="progress-label">Din översikt</span>
+        <div class="progress-value">
+          <span><strong id="progressText">0 / 18</strong> frågor bedömda</span>
+        </div>
+        <div class="progress-bar" aria-hidden="true">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+      </div>
+
+      <div class="overview-chips">
+        <span class="overview-chip" data-area-summary="cell">
+          <span class="overview-dot"></span>Cellens delar
+        </span>
+        <span class="overview-chip" data-area-summary="protein">
+          <span class="overview-dot"></span>Proteinsyntesen
+        </span>
+        <span class="overview-chip" data-area-summary="division">
+          <span class="overview-dot"></span>Celldelning
+        </span>
+        <span class="overview-chip" data-area-summary="inheritance">
+          <span class="overview-dot"></span>Ärftlighet
+        </span>
+        <span class="overview-chip" data-area-summary="evolution">
+          <span class="overview-dot"></span>Evolution & mutationer
+        </span>
+        <span class="overview-chip" data-area-summary="genteknik">
+          <span class="overview-dot"></span>Genteknik
+        </span>
+      </div>
+
+      <div class="sticky-actions">
+        <a href="#overview" class="ghost-btn">Visa självskattning</a>
+        <a href="#materialtips" class="primary-btn">Materialtips</a>
+	<button class="ghost-btn" type="button" data-study-reset>
+   	Rensa svar
+  	</button>
+
+      </div>
+    </div>
+  </section>
+
+  <main class="panel">
+    <div class="layout">
+      <div class="main-column">
+
+        <!-- CELLENS DELAR -->
+        <section class="section-card" id="cellens-delar">
+          <div class="section-head">
+            <div>
+              <h2>Cellens delar & DNA</h2>
+              <p>Fokusera på att kunna vad de viktigaste celldelarna gör och hur DNA, gener och kromosomer hänger ihop.</p>
+            </div>
+            <span class="section-label">Område 1</span>
+          </div>
+
+          <div class="question-list">
+
+            <article class="question-card" id="q1" data-area="cell">
+  <div class="question-meta">
+    <span class="question-number">Fråga 1</span>
+    <div class="tag-row">
+      <span class="tag teal">Cellens delar</span>
+      <span class="tag">Begrepp</span>
+    </div>
+  </div>
+
+  <h3>Vad är DNA och vilken funktion har DNA i cellen?</h3>
+  <p class="question-prompt">
+    Svara med egna ord. Försök att få med både vad DNA är och varför det är viktigt.
+  </p>
+
+  <div class="answer-stack">
+    <details class="answer">
+      <summary>
+        <span class="summary-left">
+          <span class="answer-badge basic">Grundläggande</span>
+          <span>Visa grundläggande svar</span>
+        </span>
+        <span class="chev">▾</span>
+      </summary>
+      <div class="answer-content">
+        DNA är arvsmassan. Det innehåller information om hur cellen ska fungera och vilka egenskaper en organism får.
+      </div>
+    </details>
+
+    <details class="answer">
+      <summary>
+        <span class="summary-left">
+          <span class="answer-badge extended">Utförligt</span>
+          <span>Visa utförligt svar</span>
+        </span>
+        <span class="chev">▾</span>
+      </summary>
+      <div class="answer-content">
+        DNA är en molekyl som finns i cellkärnan och som innehåller organismens genetiska information.
+        I DNA finns gener som fungerar som instruktioner för att cellen ska kunna tillverka proteiner.
+        Eftersom proteiner styr många funktioner i cellen påverkar DNA både hur cellen fungerar och vilka egenskaper organismen får.
+      </div>
+    </details>
+  </div>
+
+  <div class="self-check">
+    <span class="self-check-label">Självskattning:</span>
+    <button class="level-btn" type="button" data-level="can" data-question="q1">✅ Kan detta</button>
+    <button class="level-btn" type="button" data-level="unsure" data-question="q1">🟡 Osäker</button>
+    <button class="level-btn" type="button" data-level="cannot" data-question="q1">🔴 Kan inte alls</button>
+  </div>
+</article>
+
+            <article class="question-card" id="q2" data-area="cell">
+              <div class="question-meta">
+                <span class="question-number">Fråga 2</span>
+                <div class="tag-row">
+                  <span class="tag teal">Cellens delar</span>
+                  <span class="tag">DNA & kromosomer</span>
+                </div>
+              </div>
+              <h3>Hur hänger DNA, gen och kromosom ihop?</h3>
+              <p class="question-prompt">Förklara sambandet mellan begreppen i rätt ordning.</p>
+              <div class="answer-stack">
+                <details class="answer">
+                  <summary>
+                    <span class="summary-left"><span class="answer-badge basic">Grundläggande</span><span>Visa grundläggande svar</span></span>
+                    <span class="chev">▾</span>
+                  </summary>
+                  <div class="answer-content">En gen är en del av DNA. DNA är upppackat i kromosomer.</div>
+                </details>
+                <details class="answer">
+                  <summary>
+                    <span class="summary-left"><span class="answer-badge extended">Utförligt</span><span>Visa utförligt svar</span></span>
+                    <span class="chev">▾</span>
+                  </summary>
+                  <div class="answer-content">DNA är den molekyl som bär den genetiska informationen. En gen är ett bestämt avsnitt av DNA som innehåller instruktioner för att tillverka ett visst protein. För att DNA ska få plats i cellkärnan packas det tätt tillsammans med proteiner och bildar kromosomer.</div>
+                </details>
+              </div>
+              <div class="self-check">
+                <span class="self-check-label">Självskattning:</span>
+                <button class="level-btn" type="button" data-level="can" data-question="q2">✅ Kan detta</button>
+                <button class="level-btn" type="button" data-level="unsure" data-question="q2">🟡 Osäker</button>
+                <button class="level-btn" type="button" data-level="cannot" data-question="q2">🔴 Kan inte alls</button>
+              </div>
+            </article>
+
+            <article class="question-card" id="q3" data-area="cell">
+              <div class="question-meta">
+                <span class="question-number">Fråga 3</span>
+                <div class="tag-row">
+                  <span class="tag teal">Cellens delar</span>
+                  <span class="tag amber">Organeller</span>
+                </div>
+              </div>
+              <h3>Vilken funktion har cellkärnan, ribosomerna och mitokondrierna?</h3>
+              <p class="question-prompt">Försök att nämna alla tre och vad de gör i cellen.</p>
+              <div class="answer-stack">
+                <details class="answer">
+                  <summary>
+                    <span class="summary-left"><span class="answer-badge basic">Grundläggande</span><span>Visa grundläggande svar</span></span>
+                    <span class="chev">▾</span>
+                  </summary>
+                  <div class="answer-content">Cellkärnan innehåller DNA. Ribosomerna tillverkar proteiner. Mitokondrierna frigör energi till cellen.</div>
+                </details>
+                <details class="answer">
+                  <summary>
+                    <span class="summary-left"><span class="answer-badge extended">Utförligt</span><span>Visa utförligt svar</span></span>
+                    <span class="chev">▾</span>
+                  </summary>
+                  <div class="answer-content">Cellkärnan fungerar som cellens kontrollcentrum och innehåller DNA. I ribosomerna sker proteinsyntesen, alltså tillverkningen av proteiner utifrån information från mRNA. Mitokondrierna brukar kallas cellens kraftverk eftersom de omvandlar energirika ämnen till ATP som cellen kan använda.</div>
+                </details>
+              </div>
+              <div class="self-check">
+                <span class="self-check-label">Självskattning:</span>
+                <button class="level-btn" type="button" data-level="can" data-question="q3">✅ Kan detta</button>
+                <button class="level-btn" type="button" data-level="unsure" data-question="q3">🟡 Osäker</button>
+                <button class="level-btn" type="button" data-level="cannot" data-question="q3">🔴 Kan inte alls</button>
+              </div>
+            </article>
+
+          </div>
+        </section>
+
+        <!-- PROTEINSYNTESEN -->
+        <section class="section-card" id="proteinsyntesen" style="margin-top:18px;">
+          <div class="section-head">
+            <div>
+              <h2>Proteinsyntesen</h2>
+              <p>Här tränar du på att beskriva hur information i DNA används för att bygga proteiner genom transkription och translation.</p>
+            </div>
+            <span class="section-label">Område 2</span>
+          </div>
+
+          <div class="question-list">
+
+            <article class="question-card" id="q4" data-area="protein">
+              <div class="question-meta">
+                <span class="question-number">Fråga 4</span>
+                <div class="tag-row">
+                  <span class="tag teal">Proteinsyntesen</span>
+                  <span class="tag">Översikt</span>
+                </div>
+              </div>
+              <h3>Förklara vad som menas med proteinsyntes.</h3>
+              <p class="question-prompt">Försök att få med både att informationen kommer från DNA och att resultatet blir ett protein.</p>
+              <div class="answer-stack">
+                <details class="answer">
+                  <summary>
+                    <span class="summary-left"><span class="answer-badge basic">Grundläggande</span><span>Visa grundläggande svar</span></span>
+                    <span class="chev">▾</span>
+                  </summary>
+                  <div class="answer-content">Proteinsyntes är processen där cellen tillverkar proteiner med hjälp av information från DNA.</div>
+                </details>
+                <details class="answer">
+                  <summary>
+                    <span class="summary-left"><span class="answer-badge extended">Utförligt</span><span>Visa utförligt svar</span></span>
+                    <span class="chev">▾</span>
+                  </summary>
+                  <div class="answer-content">Proteinsyntes är den process där den genetiska informationen i en gen används för att bygga ett protein. Först kopieras informationen från DNA till mRNA i cellkärnan genom transkription. Därefter läses mRNA av i ribosomen under translation, där aminosyror sätts ihop till ett protein.</div>
+                </details>
+              </div>
+              <div class="self-check">
+                <span class="self-check-label">Självskattning:</span>
+                <button class="level-btn" type="button" data-level="can" data-question="q4">✅ Kan detta</button>
+                <button class="level-btn" type="button" data-level="unsure" data-question="q4">🟡 Osäker</button>
+                <button class="level-btn" type="button" data-level="cannot" data-question="q4">🔴 Kan inte alls</button>
+              </div>
+            </article>
+
+            <article class="question-card" id="q5" data-area="protein">
+              <div class="question-meta">
+                <span class="question-number">Fråga 5</span>
+                <div class="tag-row">
+                  <span class="tag teal">Proteinsyntesen</span>
+                  <span class="tag amber">Transkription</span>
+                </div>
+              </div>
+              <h3>Vad händer vid transkription?</h3>
+              <p class="question-prompt">Beskriv var i cellen det sker och vad som bildas.</p>
+              <div class="answer-stack">
+                <details class="answer">
+                  <summary>
+                    <span class="summary-left"><span class="answer-badge basic">Grundläggande</span><span>Visa grundläggande svar</span></span>
+                    <span class="chev">▾</span>
+                  </summary>
+                  <div class="answer-content">Vid transkription kopieras en gen från DNA till mRNA i cellkärnan.</div>
+                </details>
+                <details class="answer">
+                  <summary>
+                    <span class="summary-left"><span class="answer-badge extended">Utförligt</span><span>Visa utförligt svar</span></span>
+                    <span class="chev">▾</span>
+                  </summary>
+                  <div class="answer-content">Vid transkription öppnas en del av DNA-molekylen i cellkärnan. En av DNA-strängarna används som mall och en komplementär mRNA-molekyl byggs upp. mRNA fungerar sedan som en kopia av genen och transporterar informationen vidare till ribosomen.</div>
+                </details>
+              </div>
+              <div class="self-check">
+                <span class="self-check-label">Självskattning:</span>
+                <button class="level-btn" type="button" data-level="can" data-question="q5">✅ Kan detta</button>
+                <button class="level-btn" type="button" data-level="unsure" data-question="q5">🟡 Osäker</button>
+                <button class="level-btn" type="button" data-level="cannot" data-question="q5">🔴 Kan inte alls</button>
+              </div>
+            </article>
+
+            <article class="question-card" id="q6" data-area="protein">
+              <div class="question-meta">
+                <span class="question-number">Fråga 6</span>
+                <div class="tag-row">
+                  <span class="tag teal">Proteinsyntesen</span>
+                  <span class="tag amber">Translation</span>
+                </div>
+              </div>
+              <h3>Vad händer vid translation?</h3>
+              <p class="question-prompt">Få gärna med begreppen ribosom, mRNA, tRNA och aminosyror.</p>
+              <div class="answer-stack">
+                <details class="answer">
+                  <summary>
+                    <span class="summary-left"><span class="answer-badge basic">Grundläggande</span><span>Visa grundläggande svar</span></span>
+                    <span class="chev">▾</span>
+                  </summary>
+                  <div class="answer-content">Vid translation läses mRNA av i ribosomen och ett protein byggs upp av aminosyror.</div>
+                </details>
+                <details class="answer">
+                  <summary>
+                    <span class="summary-left"><span class="answer-badge extended">Utförligt</span><span>Visa utförligt svar</span></span>
+                    <span class="chev">▾</span>
+                  </summary>
+                  <div class="answer-content">Vid translation fäster mRNA vid en ribosom i cytoplasman. Ribosomen läser av mRNA:s kodon, och tRNA hämtar rätt aminosyror utifrån kodens ordning. Aminosyrorna kopplas sedan ihop till en kedja som veckas till ett färdigt protein.</div>
+                </details>
+              </div>
+              <div class="self-check">
+                <span class="self-check-label">Självskattning:</span>
+                <button class="level-btn" type="button" data-level="can" data-question="q6">✅ Kan detta</button>
+                <button class="level-btn" type="button" data-level="unsure" data-question="q6">🟡 Osäker</button>
+                <button class="level-btn" type="button" data-level="cannot" data-question="q6">🔴 Kan inte alls</button>
+              </div>
+            </article>
+
+          </div>
+        </section>
+
+        <!-- CELLDDELNING -->
+        <section class="section-card" id="celldelning" style="margin-top:18px;">
+          <div class="section-head">
+            <div>
+              <h2>Celldelning</h2>
+              <p>Här tränar du på att skilja mellan mitos och meios och att förstå varför meios ger genetisk variation.</p>
+            </div>
+            <span class="section-label">Område 3</span>
+          </div>
+
+          <div class="question-list">
+
+            <article class="question-card" id="q7" data-area="division">
+              <div class="question-meta">
+                <span class="question-number">Fråga 7</span>
+                <div class="tag-row">
+                  <span class="tag teal">Celldelning</span>
+                  <span class="tag">Mitos</span>
+                </div>
+              </div>
+              <h3>Vad är mitos och varför är mitos viktig i kroppen?</h3>
+              <p class="question-prompt">Svara både vad som händer och varför processen behövs.</p>
+              <div class="answer-stack">
+                <details class="answer">
+                  <summary>
+                    <span class="summary-left"><span class="answer-badge basic">Grundläggande</span><span>Visa grundläggande svar</span></span>
+                    <span class="chev">▾</span>
+                  </summary>
+                  <div class="answer-content">Mitos är vanlig celldelning där en cell delar sig och blir två identiska celler. Den behövs för tillväxt och reparation.</div>
+                </details>
+                <details class="answer">
+                  <summary>
+                    <span class="summary-left"><span class="answer-badge extended">Utförligt</span><span>Visa utförligt svar</span></span>
+                    <span class="chev">▾</span>
+                  </summary>
+                  <div class="answer-content">Mitos är den celldelning som sker i kroppens vanliga celler. Innan delningen kopieras DNA, och därefter fördelas kromosomerna så att två genetiskt identiska dotterceller bildas. Mitos är viktig för att organismen ska kunna växa, ersätta skadade celler och reparera vävnad.</div>
+                </details>
+              </div>
+              <div class="self-check">
+                <span class="self-check-label">Självskattning:</span>
+                <button class="level-btn" type="button" data-level="can" data-question="q7">✅ Kan detta</button>
+                <button class="level-btn" type="button" data-level="unsure" data-question="q7">🟡 Osäker</button>
+                <button class="level-btn" type="button" data-level="cannot" data-question="q7">🔴 Kan inte alls</button>
+              </div>
+            </article>
+
+            <article class="question-card" id="q8" data-area="division">
+              <div class="question-meta">
+                <span class="question-number">Fråga 8</span>
+                <div class="tag-row">
+                  <span class="tag teal">Celldelning</span>
+                  <span class="tag">Meios</span>
+                </div>
+              </div>
+              <h3>Vad är meios och varför behövs meios?</h3>
+              <p class="question-prompt">Få gärna med begreppen könscell, haploid och genetisk variation.</p>
+              <div class="answer-stack">
+                <details class="answer">
+                  <summary>
+                    <span class="summary-left"><span class="answer-badge basic">Grundläggande</span><span>Visa grundläggande svar</span></span>
+                    <span class="chev">▾</span>
+                  </summary>
+                  <div class="answer-content">Meios är reduktionsdelning där könsceller bildas. De får halva antalet kromosomer.</div>
+                </details>
+                <details class="answer">
+                  <summary>
+                    <span class="summary-left"><span class="answer-badge extended">Utförligt</span><span>Visa utförligt svar</span></span>
+                    <span class="chev">▾</span>
+                  </summary>
+                  <div class="answer-content">Meios är en särskild form av celldelning som sker när könsceller, alltså ägg och spermier, bildas. Under meios delas kromosomantalet så att cellerna blir haploida och bara innehåller en uppsättning kromosomer. Processen behövs för sexuell fortplantning och bidrar också till genetisk variation.</div>
+                </details>
+              </div>
+              <div class="self-check">
+                <span class="self-check-label">Självskattning:</span>
+                <button class="level-btn" type="button" data-level="can" data-question="q8">✅ Kan detta</button>
+                <button class="level-btn" type="button" data-level="unsure" data-question="q8">🟡 Osäker</button>
+                <button class="level-btn" type="button" data-level="cannot" data-question="q8">🔴 Kan inte alls</button>
+              </div>
+            </article>
+
+            <article class="question-card" id="q9" data-area="division">
+              <div class="question-meta">
+                <span class="question-number">Fråga 9</span>
+                <div class="tag-row">
+                  <span class="tag teal">Celldelning</span>
+                  <span class="tag pink">Jämförelse</span>
+                </div>
+              </div>
+              <h3>Förklara två viktiga skillnader mellan mitos och meios.</h3>
+              <p class="question-prompt">Du kan till exempel jämföra antal celler, kromosomantal och genetisk variation.</p>
+              <div class="answer-stack">
+                <details class="answer">
+                  <summary>
+                    <span class="summary-left"><span class="answer-badge basic">Grundläggande</span><span>Visa grundläggande svar</span></span>
+                    <span class="chev">▾</span>
+                  </summary>
+                  <div class="answer-content">Mitos ger två identiska kroppsceller med samma kromosomantal som modercellen. Meios ger könsceller med halva kromosomantalet och större genetisk variation.</div>
+                </details>
+                <details class="answer">
+                  <summary>
+                    <span class="summary-left"><span class="answer-badge extended">Utförligt</span><span>Visa utförligt svar</span></span>
+                    <span class="chev">▾</span>
+                  </summary>
+                  <div class="answer-content">En viktig skillnad är att mitos bara innebär en delning och leder till två diploida, genetiskt identiska dotterceller, medan meios består av två delningar och leder till fyra haploida könsceller. En annan viktig skillnad är att meios skapar genetisk variation genom överkorsning och slumpmässig fördelning av kromosomer, medan mitos i princip bevarar samma genetiska information.</div>
+                </details>
+              </div>
+              <div class="self-check">
+                <span class="self-check-label">Självskattning:</span>
+                <button class="level-btn" type="button" data-level="can" data-question="q9">✅ Kan detta</button>
+                <button class="level-btn" type="button" data-level="unsure" data-question="q9">🟡 Osäker</button>
+                <button class="level-btn" type="button" data-level="cannot" data-question="q9">🔴 Kan inte alls</button>
+              </div>
+            </article>
+
+          </div>
+        </section>
+
+        <!-- ÄRFTLIGHET -->
+        <section class="section-card" id="arftlighet" style="margin-top:18px;">
+          <div class="section-head">
+            <div>
+              <h2>Ärftlighet</h2>
+              <p>Här tränar du på alleler, dominant/recessiv nedärvning, genotyp, fenotyp och hur korsningsscheman används.</p>
+            </div>
+            <span class="section-label">Område 4</span>
+          </div>
+
+          <div class="question-list">
+
+            <article class="question-card" id="q10" data-area="inheritance">
+              <div class="question-meta">
+                <span class="question-number">Fråga 10</span>
+                <div class="tag-row">
+                  <span class="tag teal">Ärftlighet</span>
+                  <span class="tag">Dominant/recessiv</span>
+                </div>
+              </div>
+              <h3>Vad menas med en dominant allel och en recessiv allel?</h3>
+              <p class="question-prompt">Försök att använda begreppen allel och fenotyp i ditt svar.</p>
+              <div class="answer-stack">
+                <details class="answer">
+                  <summary>
+                    <span class="summary-left"><span class="answer-badge basic">Grundläggande</span><span>Visa grundläggande svar</span></span>
+                    <span class="chev">▾</span>
+                  </summary>
+                  <div class="answer-content">En dominant allel syns i fenotypen även om den bara finns i en kopia. En recessiv allel syns bara om individen har två recessiva alleler.</div>
+                </details>
+                <details class="answer">
+                  <summary>
+                    <span class="summary-left"><span class="answer-badge extended">Utförligt</span><span>Visa utförligt svar</span></span>
+                    <span class="chev">▾</span>
+                  </summary>
+                  <div class="answer-content">En allel är en variant av en gen. En dominant allel påverkar fenotypen även hos en heterozygot individ, eftersom det räcker med en kopia för att egenskapen ska uttryckas. En recessiv allel uttrycks däremot bara i fenotypen om individen är homozygot recessiv och alltså har två sådana alleler.</div>
+                </details>
+              </div>
+              <div class="self-check">
+                <span class="self-check-label">Självskattning:</span>
+                <button class="level-btn" type="button" data-level="can" data-question="q10">✅ Kan detta</button>
+                <button class="level-btn" type="button" data-level="unsure" data-question="q10">🟡 Osäker</button>
+                <button class="level-btn" type="button" data-level="cannot" data-question="q10">🔴 Kan inte alls</button>
+              </div>
+            </article>
+
+            <article class="question-card" id="q11" data-area="inheritance">
+              <div class="question-meta">
+                <span class="question-number">Fråga 11</span>
+                <div class="tag-row">
+                  <span class="tag teal">Ärftlighet</span>
+                  <span class="tag amber">Genotyp/fenotyp</span>
+                </div>
+              </div>
+              <h3>Vad är skillnaden mellan genotyp och fenotyp?</h3>
+              <p class="question-prompt">Om du vill kan du också ta med vad homozygot och heterozygot betyder.</p>
+              <div class="answer-stack">
+                <details class="answer">
+                  <summary>
+                    <span class="summary-left"><span class="answer-badge basic">Grundläggande</span><span>Visa grundläggande svar</span></span>
+                    <span class="chev">▾</span>
+                  </summary>
+                  <div class="answer-content">Genotyp är de alleler en individ har. Fenotyp är hur egenskapen syns eller uttrycks.</div>
+                </details>
+                <details class="answer">
+                  <summary>
+                    <span class="summary-left"><span class="answer-badge extended">Utförligt</span><span>Visa utförligt svar</span></span>
+                    <span class="chev">▾</span>
+                  </summary>
+                  <div class="answer-content">Genotyp beskriver individens genetiska uppsättning för en viss egenskap, till exempel AA, Aa eller aa. Fenotyp beskriver det synliga eller mätbara uttrycket av genotypen, till exempel vilken färg en blomma får. En homozygot individ har två likadana alleler, medan en heterozygot individ har två olika alleler.</div>
+                </details>
+              </div>
+              <div class="self-check">
+                <span class="self-check-label">Självskattning:</span>
+                <button class="level-btn" type="button" data-level="can" data-question="q11">✅ Kan detta</button>
+                <button class="level-btn" type="button" data-level="unsure" data-question="q11">🟡 Osäker</button>
+                <button class="level-btn" type="button" data-level="cannot" data-question="q11">🔴 Kan inte alls</button>
+              </div>
+            </article>
+
+            <article class="question-card" id="q12" data-area="inheritance">
+              <div class="question-meta">
+                <span class="question-number">Fråga 12</span>
+                <div class="tag-row">
+                  <span class="tag teal">Ärftlighet</span>
+                  <span class="tag pink">Korsningsschema</span>
+                </div>
+              </div>
+              <h3>Vad används ett korsningsschema till?</h3>
+              <p class="question-prompt">Försök att få med sannolikhet och möjliga genotyper eller fenotyper hos avkomman.</p>
+              <div class="answer-stack">
+                <details class="answer">
+                  <summary>
+                    <span class="summary-left"><span class="answer-badge basic">Grundläggande</span><span>Visa grundläggande svar</span></span>
+                    <span class="chev">▾</span>
+                  </summary>
+                  <div class="answer-content">Ett korsningsschema används för att visa vilka genotyper eller fenotyper avkomman kan få.</div>
+                </details>
+                <details class="answer">
+                  <summary>
+                    <span class="summary-left"><span class="answer-badge extended">Utförligt</span><span>Visa utförligt svar</span></span>
+                    <span class="chev">▾</span>
+                  </summary>
+                  <div class="answer-content">Ett korsningsschema används för att förutsäga vilka kombinationer av alleler som är möjliga hos avkomman utifrån föräldrarnas genotyper. Med hjälp av schemat kan man också beräkna sannolikheten för olika genotyper och fenotyper, till exempel hur stor chans det är att en egenskap ska uttryckas.</div>
+                </details>
+              </div>
+              <div class="self-check">
+                <span class="self-check-label">Självskattning:</span>
+                <button class="level-btn" type="button" data-level="can" data-question="q12">✅ Kan detta</button>
+                <button class="level-btn" type="button" data-level="unsure" data-question="q12">🟡 Osäker</button>
+                <button class="level-btn" type="button" data-level="cannot" data-question="q12">🔴 Kan inte alls</button>
+              </div>
+            </article>
+
+            <article class="question-card" id="q13" data-area="inheritance">
+              <div class="question-meta">
+                <span class="question-number">Fråga 13</span>
+                <div class="tag-row">
+                  <span class="tag teal">Ärftlighet</span>
+                  <span class="tag amber">Kodominans/intermediärt</span>
+                </div>
+              </div>
+              <h3>Vad är skillnaden mellan kodominanta och intermediära anlag?</h3>
+              <p class="question-prompt">Försök att förklara hur egenskaperna uttrycks i fenotypen.</p>
+              <div class="answer-stack">
+                <details class="answer">
+                  <summary>
+                    <span class="summary-left"><span class="answer-badge basic">Grundläggande</span><span>Visa grundläggande svar</span></span>
+                    <span class="chev">▾</span>
+                  </summary>
+                  <div class="answer-content">Vid kodominans syns båda allelerna samtidigt. Vid intermediär nedärvning blir resultatet ett mellanting.</div>
+                </details>
+                <details class="answer">
+                  <summary>
+                    <span class="summary-left"><span class="answer-badge extended">Utförligt</span><span>Visa utförligt svar</span></span>
+                    <span class="chev">▾</span>
+                  </summary>
+                  <div class="answer-content">Kodominanta anlag innebär att båda allelerna uttrycks fullt ut samtidigt i fenotypen, till exempel blodgrupp AB. Intermediära anlag innebär i stället att ingen av allelerna dominerar helt, så fenotypen blir ett mellanting mellan de två, till exempel röd och vit blomma som ger rosa blomma.</div>
+                </details>
+              </div>
+              <div class="self-check">
+                <span class="self-check-label">Självskattning:</span>
+                <button class="level-btn" type="button" data-level="can" data-question="q13">✅ Kan detta</button>
+                <button class="level-btn" type="button" data-level="unsure" data-question="q13">🟡 Osäker</button>
+                <button class="level-btn" type="button" data-level="cannot" data-question="q13">🔴 Kan inte alls</button>
+              </div>
+            </article>
+
+            <article class="question-card" id="q14" data-area="inheritance">
+              <div class="question-meta">
+                <span class="question-number">Fråga 14</span>
+                <div class="tag-row">
+                  <span class="tag teal">Ärftlighet</span>
+                  <span class="tag pink">Resonemang</span>
+                </div>
+              </div>
+              <h3>Varför kan två föräldrar utan en viss egenskap ändå få ett barn som har den?</h3>
+              <p class="question-prompt">Förklara med hjälp av recessiva anlag och alleler.</p>
+              <div class="answer-stack">
+                <details class="answer">
+                  <summary>
+                    <span class="summary-left"><span class="answer-badge basic">Grundläggande</span><span>Visa grundläggande svar</span></span>
+                    <span class="chev">▾</span>
+                  </summary>
+                  <div class="answer-content">Föräldrarna kan bära på en recessiv allel utan att själva visa egenskapen. Om barnet får två recessiva alleler kan egenskapen synas.</div>
+                </details>
+                <details class="answer">
+                  <summary>
+                    <span class="summary-left"><span class="answer-badge extended">Utförligt</span><span>Visa utförligt svar</span></span>
+                    <span class="chev">▾</span>
+                  </summary>
+                  <div class="answer-content">Om båda föräldrarna är heterozygota bärare av en recessiv allel kan de själva ha den dominanta egenskapen i fenotypen. Men vid befruktningen kan barnet råka få den recessiva allelen från båda föräldrarna och därmed bli homozygot recessivt. Då uttrycks den recessiva egenskapen hos barnet trots att den inte syntes hos föräldrarna.</div>
+                </details>
+              </div>
+              <div class="self-check">
+                <span class="self-check-label">Självskattning:</span>
+                <button class="level-btn" type="button" data-level="can" data-question="q14">✅ Kan detta</button>
+                <button class="level-btn" type="button" data-level="unsure" data-question="q14">🟡 Osäker</button>
+                <button class="level-btn" type="button" data-level="cannot" data-question="q14">🔴 Kan inte alls</button>
+              </div>
+            </article>
+
+          </div>
+        </section>
+
+        <!-- EVOLUTION & MUTATIONER -->
+        <section class="section-card" id="evolution-mutationer" style="margin-top:18px;">
+          <div class="section-head">
+            <div>
+              <h2>Evolution & mutationer</h2>
+              <p>Här tränar du på vad mutationer är, skillnaden mellan synliga och tysta mutationer samt hur naturligt urval fungerar.</p>
+            </div>
+            <span class="section-label">Område 5</span>
+          </div>
+
+          <div class="question-list">
+
+            <article class="question-card" id="q15" data-area="evolution">
+              <div class="question-meta">
+                <span class="question-number">Fråga 15</span>
+                <div class="tag-row">
+                  <span class="tag teal">Evolution & mutationer</span>
+                  <span class="tag">Mutation</span>
+                </div>
+              </div>
+              <h3>Vad är en mutation?</h3>
+              <p class="question-prompt">Förklara gärna både vad som förändras och att mutationer kan få olika konsekvenser.</p>
+              <div class="answer-stack">
+                <details class="answer">
+                  <summary>
+                    <span class="summary-left"><span class="answer-badge basic">Grundläggande</span><span>Visa grundläggande svar</span></span>
+                    <span class="chev">▾</span>
+                  </summary>
+                  <div class="answer-content">En mutation är en förändring i DNA-sekvensen.</div>
+                </details>
+                <details class="answer">
+                  <summary>
+                    <span class="summary-left"><span class="answer-badge extended">Utförligt</span><span>Visa utförligt svar</span></span>
+                    <span class="chev">▾</span>
+                  </summary>
+                  <div class="answer-content">En mutation är en förändring i DNA:s ordningsföljd av kvävebaser. En sådan förändring kan påverka hur ett protein byggs upp och därmed påverka en egenskap. Mutationer kan vara neutrala, skadliga eller ibland gynnsamma, beroende på vilken effekt de får.</div>
+                </details>
+              </div>
+              <div class="self-check">
+                <span class="self-check-label">Självskattning:</span>
+                <button class="level-btn" type="button" data-level="can" data-question="q15">✅ Kan detta</button>
+                <button class="level-btn" type="button" data-level="unsure" data-question="q15">🟡 Osäker</button>
+                <button class="level-btn" type="button" data-level="cannot" data-question="q15">🔴 Kan inte alls</button>
+              </div>
+            </article>
+
+            <article class="question-card" id="q16" data-area="evolution">
+              <div class="question-meta">
+                <span class="question-number">Fråga 16</span>
+                <div class="tag-row">
+                  <span class="tag teal">Evolution & mutationer</span>
+                  <span class="tag amber">Synlig/tyst mutation</span>
+                </div>
+              </div>
+              <h3>Vad är skillnaden mellan en synlig mutation och en tyst mutation?</h3>
+              <p class="question-prompt">Jämför hur de påverkar protein eller fenotyp.</p>
+              <div class="answer-stack">
+                <details class="answer">
+                  <summary>
+                    <span class="summary-left"><span class="answer-badge basic">Grundläggande</span><span>Visa grundläggande svar</span></span>
+                    <span class="chev">▾</span>
+                  </summary>
+                  <div class="answer-content">En synlig mutation påverkar fenotypen, medan en tyst mutation inte gör det.</div>
+                </details>
+                <details class="answer">
+                  <summary>
+                    <span class="summary-left"><span class="answer-badge extended">Utförligt</span><span>Visa utförligt svar</span></span>
+                    <span class="chev">▾</span>
+                  </summary>
+                  <div class="answer-content">En synlig mutation leder till att proteinet eller dess funktion förändras så att det märks i organismens fenotyp. En tyst mutation innebär att DNA förändras, men att förändringen inte påverkar proteinets uppbyggnad eller funktion på ett sätt som märks i fenotypen.</div>
+                </details>
+              </div>
+              <div class="self-check">
+                <span class="self-check-label">Självskattning:</span>
+                <button class="level-btn" type="button" data-level="can" data-question="q16">✅ Kan detta</button>
+                <button class="level-btn" type="button" data-level="unsure" data-question="q16">🟡 Osäker</button>
+                <button class="level-btn" type="button" data-level="cannot" data-question="q16">🔴 Kan inte alls</button>
+              </div>
+            </article>
+
+            <article class="question-card" id="q17" data-area="evolution">
+              <div class="question-meta">
+                <span class="question-number">Fråga 17</span>
+                <div class="tag-row">
+                  <span class="tag teal">Evolution & mutationer</span>
+                  <span class="tag pink">Naturligt urval</span>
+                </div>
+              </div>
+              <h3>Förklara vad naturligt urval eller selektion innebär.</h3>
+              <p class="question-prompt">Försök att få med variation, överlevnad och fortplantning i ditt svar.</p>
+              <div class="answer-stack">
+                <details class="answer">
+                  <summary>
+                    <span class="summary-left"><span class="answer-badge basic">Grundläggande</span><span>Visa grundläggande svar</span></span>
+                    <span class="chev">▾</span>
+                  </summary>
+                  <div class="answer-content">Naturligt urval betyder att individer med egenskaper som passar miljön bättre har större chans att överleva och få avkomma.</div>
+                </details>
+                <details class="answer">
+                  <summary>
+                    <span class="summary-left"><span class="answer-badge extended">Utförligt</span><span>Visa utförligt svar</span></span>
+                    <span class="chev">▾</span>
+                  </summary>
+                  <div class="answer-content">Naturligt urval, eller selektion, bygger på att det finns variation i en population. Om vissa egenskaper ger fördelar i en viss miljö kommer individer med dessa egenskaper oftare att överleva och fortplanta sig. På så sätt förs de gynnsamma egenskaperna vidare oftare till nästa generation.</div>
+                </details>
+              </div>
+              <div class="self-check">
+                <span class="self-check-label">Självskattning:</span>
+                <button class="level-btn" type="button" data-level="can" data-question="q17">✅ Kan detta</button>
+                <button class="level-btn" type="button" data-level="unsure" data-question="q17">🟡 Osäker</button>
+                <button class="level-btn" type="button" data-level="cannot" data-question="q17">🔴 Kan inte alls</button>
+              </div>
+            </article>
+
+          </div>
+        </section>
+
+        <!-- GENTEKNIK -->
+        <section class="section-card" id="genteknik" style="margin-top:18px;">
+          <div class="section-head">
+            <div>
+              <h2>Genteknik</h2>
+              <p>Här tränar du på att förklara vad genteknik är och att resonera kring möjliga positiva och negativa konsekvenser.</p>
+            </div>
+            <span class="section-label">Område 6</span>
+          </div>
+
+          <div class="question-list">
+
+            <article class="question-card" id="q18" data-area="genteknik">
+              <div class="question-meta">
+                <span class="question-number">Fråga 18</span>
+                <div class="tag-row">
+                  <span class="tag teal">Genteknik</span>
+                  <span class="tag pink">Resonemang</span>
+                </div>
+              </div>
+              <h3>Resonera kring en möjlig positiv och en möjlig negativ konsekvens av genteknik.</h3>
+              <p class="question-prompt">Försök att utveckla ditt svar med exempel och resonemang.</p>
+              <div class="answer-stack">
+                <details class="answer">
+                  <summary>
+                    <span class="summary-left"><span class="answer-badge basic">Grundläggande</span><span>Visa grundläggande svar</span></span>
+                    <span class="chev">▾</span>
+                  </summary>
+                  <div class="answer-content">En positiv konsekvens är att genteknik kan hjälpa till att behandla sjukdomar. En negativ konsekvens är att den kan väcka etiska frågor eller få oväntade följder.</div>
+                </details>
+                <details class="answer">
+                  <summary>
+                    <span class="summary-left"><span class="answer-badge extended">Utförligt</span><span>Visa utförligt svar</span></span>
+                    <span class="chev">▾</span>
+                  </summary>
+                  <div class="answer-content">En möjlig positiv konsekvens är att genteknik kan användas för att behandla genetiska sjukdomar eller utveckla grödor som klarar torka bättre. Det kan förbättra människors hälsa och öka livsmedelsproduktionen. En möjlig negativ konsekvens är att tekniken kan skapa etiska problem, till exempel frågor om var gränsen går för att ändra arvsmassa. Det kan också finnas risk för oavsiktliga effekter på ekosystem eller att tekniken inte blir tillgänglig på ett rättvist sätt.</div>
+                </details>
+              </div>
+              <div class="self-check">
+                <span class="self-check-label">Självskattning:</span>
+                <button class="level-btn" type="button" data-level="can" data-question="q18">✅ Kan detta</button>
+                <button class="level-btn" type="button" data-level="unsure" data-question="q18">🟡 Osäker</button>
+                <button class="level-btn" type="button" data-level="cannot" data-question="q18">🔴 Kan inte alls</button>
+              </div>
+            </article>
+
+          </div>
+        </section>
+
+      </div>
+    </div>
+  </main>
+<section class="bottom-panels" aria-label="Självskattning och materialtips">
+
+        <section class="mini-card" id="overview">
+          <div class="mini-card-head">
+            <h3>Självskattning</h3>
+            <p>Här kan din översikt visas område för område när vi kopplar på <code>shared.js</code>.</p>
+          </div>
+          <div class="mini-card-body">
+            <ul class="checklist">
+              <li class="check-item" data-skill="dna-gener-kromosomer">
+                <span class="check-text">Jag kan förklara vad DNA, gener och kromosomer är.</span>
+                <span class="check-state">Inte bedömt</span>
+              </li>
+              <li class="check-item" data-skill="organeller">
+                <span class="check-text">Jag kan beskriva viktiga celldelar och vad de gör.</span>
+                <span class="check-state">Inte bedömt</span>
+              </li>
+              <li class="check-item" data-skill="proteinsyntes">
+                <span class="check-text">Jag kan förklara proteinsyntesen med transkription och translation.</span>
+                <span class="check-state">Inte bedömt</span>
+              </li>
+              <li class="check-item" data-skill="mitos-meios">
+                <span class="check-text">Jag kan skilja mellan mitos och meios.</span>
+                <span class="check-state">Inte bedömt</span>
+              </li>
+              <li class="check-item" data-skill="dominant-recessiv">
+                <span class="check-text">Jag kan använda begreppen dominant och recessiv korrekt.</span>
+                <span class="check-state">Inte bedömt</span>
+              </li>
+              <li class="check-item" data-skill="korsningsschema">
+                <span class="check-text">Jag kan använda och tolka korsningsscheman.</span>
+                <span class="check-state">Inte bedömt</span>
+              </li>
+              <li class="check-item" data-skill="kodominans-intermediar">
+                <span class="check-text">Jag kan förklara kodominanta och intermediära anlag.</span>
+                <span class="check-state">Inte bedömt</span>
+              </li>
+              <li class="check-item" data-skill="mutationer-urval">
+                <span class="check-text">Jag kan förklara mutationer och naturligt urval.</span>
+                <span class="check-state">Inte bedömt</span>
+              </li>
+              <li class="check-item" data-skill="genteknik">
+                <span class="check-text">Jag kan resonera om genteknikens möjliga konsekvenser.</span>
+                <span class="check-state">Inte bedömt</span>
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        <section class="mini-card" id="materialtips">
+          <div class="mini-card-head">
+            <h3>Materialtips för repetition</h3>
+            <p>När du senare markerar flera frågor som <strong>Kan inte alls</strong> kan <code>shared.js</code> lyfta fram rätt område här.</p>
+          </div>
+          <div class="mini-card-body">
+            <div class="tip-list">
+
+              <div class="tip-item" data-material-area="cell">
+                <strong>Cellens delar & DNA</strong>
+                <p>Repetera organeller, DNA, gener och kromosomer.</p>
+                <a href="nk1b-genetik.html" class="link-btn">Öppna genetikmaterial →</a>
+              </div>
+
+              <div class="tip-item" data-material-area="protein">
+                <strong>Proteinsyntesen</strong>
+                <p>Repetera mRNA, tRNA, ribosom, transkription och translation.</p>
+                <a href="nk1b-genetik.html" class="link-btn">Öppna genetikmaterial →</a>
+              </div>
+
+              <div class="tip-item" data-material-area="division">
+                <strong>Celldelning</strong>
+                <p>Repetera mitos, meios, könsceller, haploid och diploid.</p>
+                <a href="nk1b-genetik.html" class="link-btn">Öppna genetikmaterial →</a>
+              </div>
+
+              <div class="tip-item" data-material-area="inheritance">
+                <strong>Ärftlighet</strong>
+                <p>Repetera alleler, genotyp, fenotyp, dominant/recessiv och korsningsschema.</p>
+                <a href="nk1b-genetik.html" class="link-btn">Öppna genetikmaterial →</a>
+              </div>
+
+              <div class="tip-item" data-material-area="evolution">
+                <strong>Evolution & mutationer</strong>
+                <p>Repetera mutationer, variation, anpassning och naturligt urval.</p>
+                <a href="nk1b-genetik.html" class="link-btn">Öppna genetikmaterial →</a>
+              </div>
+
+              <div class="tip-item" data-material-area="genteknik">
+                <strong>Genteknik</strong>
+                <p>Repetera exempel på genteknik och möjliga positiva och negativa konsekvenser.</p>
+                <a href="nk1b-genetik.html" class="link-btn">Öppna genetikmaterial →</a>
+              </div>
+
+            </div>
+          </div>
+        </section>
+
+      </section>
+  <section class="footer-note">
+    <p>
+      Tips: Försök svara högt eller skriva korta stödord innan du öppnar svaren. Jämför sedan ditt svar med de två nivåerna.
+      Målet är inte bara att känna igen svaret, utan att kunna plocka fram det själv.
+    </p>
+  </section>
+
+
+<script src="shared.js"></script>
+<script>
+requireLogin('NK1b');
+</script>
+<script src="instudering-genetik.js">
+</script>
+
+</body>
+</html>
