@@ -402,6 +402,21 @@ footer{
 
 .en-max .pt-en{ color:#fff; }
 
+
+/* Synkad betoning när elektronparet är på plats */
+.bond-emph{
+  font-weight: 700;
+  transition: none;
+  animation: emphBond 3.2s linear infinite;
+}
+
+/* 0–0.34 normal, 0.34–0.75 “på plats”, sen normal igen */
+@keyframes emphBond{
+  0%, 32%   { font-weight: 700; filter:none; }
+  34%, 75%  { font-weight: 900; filter: drop-shadow(0 0 0.6px rgba(45,212,191,.9)); }
+  79%, 100% { font-weight: 700; filter:none; }
+}
+
 </style>
 </head>
 
@@ -459,14 +474,146 @@ Vilken strategi som används beror till stor del på var ämnet finns i det peri
 </p>
 </div>
 
+
+  <circle cx="575" cy="85" r="6" class="e"/>
 <!-- JONBINDNING -->
 <div class="section">
 <p class="section-eyebrow">Bindningstyp 1</p>
 <h2 class="section-title">Jonbindning</h2>
 <p class="section-intro">
 Jonbindning uppstår när elektroner <strong>överlåts</strong> från en atom till en annan.
-Den ena blir då positivt laddad och den andra negativt laddad.
+Den ena blir då positivt laddad och den andra negativt laddad. I exemplet nedan så 
+lämnar natrium en elektron som tas upp av klor. Då bildas en Natriumjon (Na⁺) och en kloridjon (Cl⁻).
 </p>
+
+<div class="diagram-wrap">
+<svg viewBox="0 0 720 240" xmlns="http://www.w3.org/2000/svg"
+     style="width:100%;max-width:720px;display:block;margin:auto">
+
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L10,3 L0,6 Z" fill="#444"/>
+    </marker>
+
+    <style>
+      .atom  { fill:#f2ece0; stroke:#222; stroke-width:1.5; }
+
+      /* befintliga elektroner (Cl:s 7 st) */
+      .e     { fill:#2a4a7a; }
+
+      /* flytt-elektronen */
+      .e-move{ fill:#2a4a7a; }
+
+      .label { font-family: Mulish, sans-serif; font-size:13px; fill:#222; }
+      .muted { font-family: Mulish, sans-serif; fill:#666; font-size:11px; }
+
+      /* Respektera reduced motion */
+      @media (prefers-reduced-motion: reduce) {
+        .anim { display:none; }
+        .final { opacity:1 !important; }
+      }
+    </style>
+  </defs>
+
+  <text x="360" y="22" text-anchor="middle" class="label" font-weight="700">
+    Jonbindning – elektronen flyttas (Na → Cl)
+  </text>
+
+  <!-- Na -->
+  <circle cx="180" cy="120" r="38" class="atom"/>
+
+  <!-- NA: före (neutral) -->
+  <text x="180" y="125" text-anchor="middle" class="label" font-weight="700">
+    Na
+    <animate attributeName="opacity" dur="2.8s" repeatCount="indefinite"
+      values="1;1;0;0;1"
+      keyTimes="0;0.30;0.34;0.66;1"/>
+  </text>
+
+  <!-- NA: efter (jon) -->
+  <text x="180" y="125" text-anchor="middle" class="label" font-weight="700" opacity="0">
+    Na⁺
+    <animate attributeName="opacity" dur="2.8s" repeatCount="indefinite"
+      values="0;0;1;1;0"
+      keyTimes="0;0.34;0.38;0.66;1"/>
+  </text>
+
+  <text x="180" y="190" text-anchor="middle" class="muted">
+    1 valenselektron
+  </text>
+
+  <!-- Cl -->
+  <circle cx="540" cy="120" r="38" class="atom"/>
+
+  <!-- CL: före (neutral) -->
+  <text x="540" y="125" text-anchor="middle" class="label" font-weight="700">
+    Cl
+    <animate attributeName="opacity" dur="2.8s" repeatCount="indefinite"
+      values="1;1;0;0;1"
+      keyTimes="0;0.30;0.34;0.66;1"/>
+  </text>
+
+  <!-- CL: efter (jon) -->
+  <text x="540" y="125" text-anchor="middle" class="label" font-weight="700" opacity="0">
+    Cl⁻
+    <animate attributeName="opacity" dur="2.8s" repeatCount="indefinite"
+      values="0;0;1;1;0"
+      keyTimes="0;0.34;0.38;0.66;1"/>
+  </text>
+
+  <!-- Elektroner runt Cl (7 st, dina positioner) -->
+  <circle cx="590" cy="120" r="6" class="e"/>
+  <circle cx="575" cy="155" r="6" class="e"/>
+  <circle cx="540" cy="175" r="6" class="e"/>
+  <circle cx="505" cy="155" r="6" class="e"/>
+  <circle cx="505" cy="85" r="6" class="e"/>
+  <circle cx="540" cy="65" r="6" class="e"/>
+  <circle cx="575" cy="85" r="6" class="e"/>
+
+  <text x="540" y="190" text-anchor="middle" class="muted">
+    7 valenselektroner → 8 när e⁻ tas upp
+  </text>
+
+  <!-- Pil -->
+  <line x1="250" y1="120" x2="470" y2="120"
+        stroke="#444" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <text x="360" y="105" text-anchor="middle" class="muted">
+    elektronen flyttas
+  </text>
+
+  <!-- Mål-ring på “klockan nio” (din position) -->
+  <circle cx="490" cy="120" r="12"
+          fill="none" stroke="#2a7a6a" stroke-width="2" opacity=".55"/>
+
+  <!-- ===== Flytt-elektronen (start 230,120 → mål 490,120) ===== -->
+  <circle r="6" class="e-move anim">
+    <animateTransform attributeName="transform" type="translate"
+      dur="2.8s" repeatCount="indefinite"
+      values="
+        230 120;
+        490 120;
+        490 120;
+        230 120;
+        230 120"
+      keyTimes="0;0.32;0.75;0.96;1"/>
+    <!-- lite “sätter sig” när den är upptagen av Cl -->
+    <animate attributeName="r" dur="2.8s" repeatCount="indefinite"
+      values="6;6;6.7;6.7;6"
+      keyTimes="0;0.32;0.40;0.75;1"/>
+  </circle>
+
+  <!-- ===== Slutläge: åttonde elektron synlig på klor kl 9 ===== -->
+  <g class="final" opacity="0">
+    <circle cx="490" cy="120" r="6.7" class="e"/>
+    <animate attributeName="opacity"
+      dur="2.8s" repeatCount="indefinite"
+      values="0;0;1;1;0;0"
+      keyTimes="0;0.30;0.34;0.75;0.66;1"/>
+  </g>
+
+</svg>
+</div>
+
 
 <div class="key-box">
 <h4>📌 Typiskt för jonbindning</h4>
@@ -488,6 +635,133 @@ Kovalent bindning uppstår när atomer delar elektroner med varandra.
 På så sätt upplever båda atomerna att de får ett fullt yttersta skal.
 <strong>Orsaken</strong> till att dessa ämnen delar valenselektroner är för att de ofta har liknande attraktionskraft.
 </p>
+
+<div class="diagram-wrap">
+  <svg viewBox="0 0 760 200" xmlns="http://www.w3.org/2000/svg"
+       style="width:100%;max-width:760px;display:block;margin:0 auto">
+    <defs>
+      <style>
+        .shell { fill: none; stroke: #bdbdbd; stroke-width: 2; }
+        .nucleus { fill: #e85b8b; stroke: #c94573; stroke-width: 1.5; }
+
+        /* Flytt-elektroner + delat par (blå) */
+        .e-move { fill: #2a4a7a; }
+
+        .sym { font-family: Mulish, sans-serif; fill: #6b6b6b; font-weight: 700; }
+        .coreText { font-family: Mulish, sans-serif; fill: #fff; font-weight: 800; }
+      </style>
+
+      <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+        <path d="M0,0 L10,3 L0,6 Z" fill="#6b6b6b"></path>
+      </marker>
+
+      <!-- Respektera reduced motion -->
+      <style>
+        @media (prefers-reduced-motion: reduce) {
+          .anim { display:none; }
+          .final { opacity:1 !important; }
+        }
+      </style>
+    </defs>
+
+    <!-- ===== VÄNSTER: H (före) ===== -->
+    <g transform="translate(120,100)">
+      <circle r="44" class="shell"></circle>
+      <circle r="14" class="nucleus"></circle>
+      <text x="0" y="5" text-anchor="middle" font-size="12" class="coreText">+1</text>
+    </g>
+
+    <!-- plus -->
+    <text x="210" y="110" text-anchor="middle" font-size="26" class="sym">+</text>
+
+    <!-- ===== MITTEN: H (före) ===== -->
+    <g transform="translate(300,100)">
+      <circle r="44" class="shell"></circle>
+      <circle r="14" class="nucleus"></circle>
+      <text x="0" y="5" text-anchor="middle" font-size="12" class="coreText">+1</text>
+    </g>
+
+    <!-- pil -->
+    <line x1="380" y1="100" x2="500" y2="100" stroke="#6b6b6b" stroke-width="2.2" marker-end="url(#arrow)"></line>
+
+    <!-- ===== HÖGER: H2 (efter) ===== -->
+    <g transform="translate(600,100)">
+      <circle cx="-35" cy="0" r="44" class="shell"></circle>
+      <circle cx="35" cy="0" r="44" class="shell"></circle>
+
+      <circle cx="-30" cy="0" r="14" class="nucleus"></circle>
+      <circle cx="30" cy="0" r="14" class="nucleus"></circle>
+
+      <text x="-30" y="5" text-anchor="middle" font-size="12" class="coreText">+1</text>
+      <text x="30" y="5" text-anchor="middle" font-size="12" class="coreText">+1</text>
+
+      <!-- DELAT ELEKTRONPAR I ÖVERLAPPNINGEN (syns under “hold” och tonas ut vid retur) -->
+      <g class="final" opacity="0">
+        <circle cx="0" cy="-25" r="5.5" class="e-move"></circle>
+        <circle cx="0" cy="25" r="5.5" class="e-move"></circle>
+
+        <animate attributeName="opacity"
+                 dur="3.2s" repeatCount="indefinite"
+                 values="0;0;1;1;0;0"
+                 keyTimes="0;0.30;0.34;0.75;0.79;1" />
+      </g>
+    </g>
+
+    <!-- =========================================================
+         FLYTT-ELEKTRONER (baserat på dina positioner)
+         Start:
+           vänster elektron: (120+44,100+0) = (164,100)
+           mitten elektron:  (300-44,100+0) = (256,100)
+         Mål (delat par):
+           (600+0,100-25) = (600,75)
+           (600+0,100+25) = (600,125)
+         Hold till 0.75, dur 3.2s
+         ========================================================= -->
+
+    <!-- Elektron 1: vänster → övre i paret -->
+    <circle r="5.5" class="e-move anim">
+      <animateTransform attributeName="transform" type="translate"
+        dur="3.2s" repeatCount="indefinite"
+        values="
+          164 100;
+          600 75;
+          600 75;
+          164 100;
+          164 100"
+        keyTimes="0;0.32;0.75;0.96;1"/>
+      <!-- Försvinner när paret syns (så man inte ser dubbelt) -->
+      <animate attributeName="opacity"
+        dur="3.2s" repeatCount="indefinite"
+        values="1;1;0;0;1"
+        keyTimes="0;0.32;0.34;0.75;0.79"/>
+    </circle>
+
+    <!-- Elektron 2: mitten → nedre i paret -->
+    <circle r="5.5" class="e-move anim">
+      <animateTransform attributeName="transform" type="translate"
+        dur="3.2s" repeatCount="indefinite"
+        values="
+          256 100;
+          600 125;
+          600 125;
+          256 100;
+          256 100"
+        keyTimes="0;0.32;0.75;0.96;1"/>
+      <animate attributeName="opacity"
+        dur="3.2s" repeatCount="indefinite"
+        values="1;1;0;0;1"
+        keyTimes="0;0.32;0.34;0.75;0.79"/>
+    </circle>
+
+  </svg>
+
+  <p class="diagram-caption">
+    Två väteatomer (1 valenselektron var) delar ett elektronpar. Elektronparet ligger mellan kärnorna och tillhör båda → 
+    <span class="bond-emph">kovalent bindning</span>. Det delade elektronparet visas ofta som en bindning (-) mellan atomerna.
+  </p>
+</div>
+
+
 
 <div class="key-box">
 <h4>📌 Typiskt för kovalent bindning</h4>
