@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Instuderingsfrågor – Kemisk bindning (NK2)</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="shared.css" />
+</head>
+
+<body>
+
+<header class="top-bar">
+  <div class="top-bar-inner">
+    <nav class="crumbs">
+      <a href="index.html">Naturkunskap</a>
+      <span>•</span>
+      <a href="nk2.html">NK2</a>
+      <span>•</span>
+      <span>Kemisk bindning</span>
+    </nav>
+    <span class="page-pill">⚛️ Instuderingsfrågor</span>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-shell">
+    <div class="hero-top">
+      <span class="eyebrow">Inför provet</span>
+      <h1>Instuderingsfrågor – Kemisk bindning</h1>
+      <p>
+        Använd frågorna för att testa dina kunskaper om atomer, kemiska bindningar
+        och hur dessa påverkar ämnens egenskaper. Försök svara själv först, öppna
+        sedan svaren och gör en ärlig självskattning.
+      </p>
+
+      <div class="hero-badges">
+        <span class="badge">17 frågor</span>
+        <span class="badge">Två nivåer av svar</span>
+        <span class="badge">Självskattning per område</span>
+        <span class="badge">Materialtips</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Sticky översikt ===== -->
+<section class="sticky-study">
+  <div class="sticky-study-inner">
+
+    <div class="progress-box">
+      <span class="progress-label">Din översikt</span>
+      <div class="progress-value">
+        <strong id="progressText">0 / 18</strong> frågor bedömda
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+    </div>
+
+    <div class="overview-chips">
+      <span class="overview-chip" data-area-summary="atom">
+        <span class="overview-dot"></span>Atom & periodiska systemet
+      </span>
+      <span class="overview-chip" data-area-summary="model">
+        <span class="overview-dot"></span>Atommodellens historia
+      </span>
+      <span class="overview-chip" data-area-summary="particles">
+        <span class="overview-dot"></span>Molekyler & joner
+      </span>
+      <span class="overview-chip" data-area-summary="intra">
+        <span class="overview-dot"></span>Intramolekylära bindningar
+      </span>
+      <span class="overview-chip" data-area-summary="en">
+        <span class="overview-dot"></span>Elektronegativitet & polaritet
+      </span>
+      <span class="overview-chip" data-area-summary="inter">
+        <span class="overview-dot"></span>Intermolekylära bindningar
+      </span>
+    </div>
+
+    <div class="sticky-actions">
+      <a href="#overview" class="ghost-btn">Visa självskattning</a>
+      <a href="#materialtips" class="primary-btn">Materialtips</a>
+      <button class="ghost-btn" type="button" data-study-reset>
+        Rensa svar
+      </button>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===== Frågor ===== -->
+<main class="panel">
+  <div class="layout">
+    <div class="main-column">
+
+      <!-- Område 1 -->
+      <section class="section-card">
+        <div class="section-head">
+          <div>
+            <h2>Atomens byggnad & periodiska systemet</h2>
+            <p>Grunderna om atomen och hur grundämnen är organiserade.</p>
+          </div>
+          <span class="section-label">Område 1</span>
+        </div>
+
+        <div class="question-list">
+
+          <!-- Q1 -->
+          <article class="question-card" id="q1" data-area="atom">
+            <h3>Vad är en atom och vad består den av?</h3>
+            <p class="question-prompt">
+              Beskriv atomens uppbyggnad och var protoner, neutroner och elektroner finns.
+            </p>
+
+            <div class="answer-stack">
+              <details class="answer">
+                <summary><span>Grundläggande svar</span></summary>
+                <div class="answer-content">
+                  En atom består av protoner och neutroner i kärnan och elektroner runt omkring.
+                </div>
+              </details>
+              <details class="answer">
+                <summary><span>Utförligt svar</span></summary>
+                <div class="answer-content">
+                  En atom består av en atomkärna med protoner (positivt laddade)
+                  och neutroner (oladdade). Runt kärnan rör sig elektroner som är
+                  negativt laddade.
+                </div>
+              </details>
+            </div>
+
+            <div class="self-check">
+              <span class="self-check-label">Självskattning:</span>
+              <button class="level-btn" data-level="can" data-question="q1">✅ Kan</button>
+              <button class="level-btn" data-level="unsure" data-question="q1">🟡 Osäker</button>
+              <button class="level-btn" data-level="cannot" data-question="q1">🔴 Kan inte</button>
+            </div>
+          </article>
+
+          <!-- Q2 -->
+          <article class="question-card" id="q2" data-area="atom">
+            <h3>Vad betyder atomnummer och masstal?</h3>
+            <p class="question-prompt">
+              Förklara begreppen och hur man kan räkna ut antalet neutroner.
+            </p>
+
+            <div class="answer-stack">
+              <details class="answer">
+                <summary>Grundläggande svar</summary>
+                <div class="answer-content">
+                  Atomnummer är antal protoner. Masstal är protoner + neutroner.
+                </div>
+              </details>
+              <details class="answer">
+                <summary>Utförligt svar</summary>
+                <div class="answer-content">
+                  Atomnumret anger hur många protoner som finns i kärnan.
+                  Masstalet är summan av protoner och neutroner.
+                  Antalet neutroner får man genom masstal minus atomnummer.
+                </div>
+              </details>
+            </div>
+
+            <div class="self-check">
+              <span class="self-check-label">Självskattning:</span>
+              <button class="level-btn" data-level="can" data-question="q2">✅ Kan</button>
+              <button class="level-btn" data-level="unsure" data-question="q2">🟡 Osäker</button>
+              <button class="level-btn" data-level="cannot" data-question="q2">🔴 Kan inte</button>
+            </div>
+          </article>
+
+          <!-- Q3 -->
+          <article class="question-card" id="q3" data-area="atom">
+            <h3>Vad är period och grupp i periodiska systemet?</h3>
+            <p class="question-prompt">
+              Förklara vad man kan läsa ut om valenselektroner.
+            </p>
+
+            <div class="answer-stack">
+              <details class="answer">
+                <summary>Grundläggande svar</summary>
+                <div class="answer-content">
+                  Period är rad och grupp är kolumn i periodiska systemet.
+                </div>
+              </details>
+              <details class="answer">
+                <summary>Utförligt svar</summary>
+                <div class="answer-content">
+                  Period anger hur många elektronskal atomen har.
+                  Grupp anger hur många valenselektroner atomen har,
+                  vilket påverkar hur den reagerar kemiskt.
+                </div>
+              </details>
+            </div>
+
+            <div class="self-check">
+              <span class="self-check-label">Självskattning:</span>
+              <button class="level-btn" data-level="can" data-question="q3">✅ Kan</button>
+              <button class="level-btn" data-level="unsure" data-question="q3">🟡 Osäker</button>
+              <button class="level-btn" data-level="cannot" data-question="q3">🔴 Kan inte</button>
+            </div>
+          </article>
+
+        </div>
+      </section>
+<!-- Jag fyller dem i nästa meddelande så detta inte blir ohanterligt långt -->
+
+    
+<section class="section-card" style="margin-top:18px;">
+  <div class="section-head">
+    <div>
+      <h2>Atommodellens utveckling</h2>
+      <p>Hur synen på atomen har förändrats över tid.</p>
+    </div>
+    <span class="section-label">Område 2</span>
+  </div>
+
+  <div class="question-list">
+
+    <article class="question-card" id="q4" data-area="model">
+      <h3>Vad var Daltons atommodell och vilka begränsningar hade den?</h3>
+      <p class="question-prompt">Beskriv Daltons idé och varför den senare behövde utvecklas.</p>
+      <div class="answer-stack">
+        <details class="answer">
+          <summary>Grundläggande svar</summary>
+          <div class="answer-content">
+            Dalton tänkte att atomer var små, odelbara kulor.
+          </div>
+        </details>
+        <details class="answer">
+          <summary>Utförligt svar</summary>
+          <div class="answer-content">
+            Dalton beskrev atomer som små, massiva och odelbara kulor. Modellen kunde inte
+            förklara elektroner, laddning eller hur atomer kan delas i mindre partiklar.
+          </div>
+        </details>
+      </div>
+      <div class="self-check">
+        <span class="self-check-label">Självskattning:</span>
+        <button class="level-btn" data-level="can" data-question="q4">✅ Kan</button>
+        <button class="level-btn" data-level="unsure" data-question="q4">🟡 Osäker</button>
+        <button class="level-btn" data-level="cannot" data-question="q4">🔴 Kan inte</button>
+      </div>
+    </article>
+
+    <article class="question-card" id="q5" data-area="model">
+      <h3>Vad visade Rutherfords experiment om atomens uppbyggnad?</h3>
+      <p class="question-prompt">Förklara vad som var nytt jämfört med tidigare modeller.</p>
+      <div class="answer-stack">
+        <details class="answer">
+          <summary>Grundläggande svar</summary>
+          <div class="answer-content">
+            Att atomen har en liten, positiv kärna.
+          </div>
+        </details>
+        <details class="answer">
+          <summary>Utförligt svar</summary>
+          <div class="answer-content">
+            Rutherford visade genom sitt guldfolieexperiment att nästan all massa och positiv
+            laddning finns i en liten kärna, medan resten av atomen mest är tomrum.
+          </div>
+        </details>
+      </div>
+      <div class="self-check">
+        <span class="self-check-label">Självskattning:</span>
+        <button class="level-btn" data-level="can" data-question="q5">✅ Kan</button>
+        <button class="level-btn" data-level="unsure" data-question="q5">🟡 Osäker</button>
+        <button class="level-btn" data-level="cannot" data-question="q5">🔴 Kan inte</button>
+      </div>
+    </article>
+
+    <article class="question-card" id="q6" data-area="model">
+      <h3>Vad menas med den kvantmekaniska atommodellen?</h3>
+      <p class="question-prompt">Förklara begreppet orbital och hur modellen skiljer sig från Bohrs.</p>
+      <div class="answer-stack">
+        <details class="answer">
+          <summary>Grundläggande svar</summary>
+          <div class="answer-content">
+            Elektroner beskrivs som sannolikhetsmoln.
+          </div>
+        </details>
+        <details class="answer">
+          <summary>Utförligt svar</summary>
+          <div class="answer-content">
+            I den kvantmekaniska modellen rör sig elektroner inte i bestämda banor,
+            utan i orbitaler som visar var sannolikheten är störst att hitta dem.
+          </div>
+        </details>
+      </div>
+      <div class="self-check">
+        <span class="self-check-label">Självskattning:</span>
+        <button class="level-btn" data-level="can" data-question="q6">✅ Kan</button>
+        <button class="level-btn" data-level="unsure" data-question="q6">🟡 Osäker</button>
+        <button class="level-btn" data-level="cannot" data-question="q6">🔴 Kan inte</button>
+      </div>
+    </article>
+
+  </div>
+</section>
+<section class="section-card" style="margin-top:18px;">
+  <div class="section-head">
+    <div>
+      <h2>Molekyler och joner</h2>
+      <p>Hur partiklar bildas och hur de skiljer sig åt.</p>
+    </div>
+    <span class="section-label">Område 3</span>
+  </div>
+
+  <div class="question-list">
+
+    <article class="question-card" id="q7" data-area="particles">
+      <h3>Vad är skillnaden mellan en molekyl och en jon?</h3>
+      <p class="question-prompt">Ge ett exempel på varje.</p>
+      <div class="answer-stack">
+        <details class="answer">
+          <summary>Grundläggande svar</summary>
+          <div class="answer-content">
+            En molekyl är neutral, en jon är laddad.
+          </div>
+        </details>
+        <details class="answer">
+          <summary>Utförligt svar</summary>
+          <div class="answer-content">
+            En molekyl består av atomer som sitter ihop med kovalenta bindningar och är neutral.
+            En jon är en laddad partikel som bildats när en atom tagit upp eller lämnat elektroner.
+          </div>
+        </details>
+      </div>
+      <div class="self-check">
+        <span class="self-check-label">Självskattning:</span>
+        <button class="level-btn" data-level="can" data-question="q7">✅ Kan</button>
+        <button class="level-btn" data-level="unsure" data-question="q7">🟡 Osäker</button>
+        <button class="level-btn" data-level="cannot" data-question="q7">🔴 Kan inte</button>
+      </div>
+    </article>
+
+    <article class="question-card" id="q8" data-area="particles">
+      <h3>Hur bildas positiva och negativa joner?</h3>
+      <p class="question-prompt">Koppla till elektroner och ädelgasstruktur.</p>
+      <div class="answer-stack">
+        <details class="answer">
+          <summary>Grundläggande svar</summary>
+          <div class="answer-content">
+            Genom att atomer tar upp eller lämnar elektroner.
+          </div>
+        </details>
+        <details class="answer">
+          <summary>Utförligt svar</summary>
+          <div class="answer-content">
+            Om en atom lämnar elektroner bildas en positiv jon.
+            Om den tar upp elektroner bildas en negativ jon.
+            Detta sker för att uppnå ett stabilt yttersta elektronskal.
+          </div>
+        </details>
+      </div>
+      <div class="self-check">
+        <span class="self-check-label">Självskattning:</span>
+        <button class="level-btn" data-level="can" data-question="q8">✅ Kan</button>
+        <button class="level-btn" data-level="unsure" data-question="q8">🟡 Osäker</button>
+        <button class="level-btn" data-level="cannot" data-question="q8">🔴 Kan inte</button>
+      </div>
+    </article>
+
+    <article class="question-card" id="q9" data-area="particles">
+      <h3>Vad är en jonförening och hur skrivs dess formel?</h3>
+      <p class="question-prompt">Jämför med molekylformler.</p>
+      <div class="answer-stack">
+        <details class="answer">
+          <summary>Grundläggande svar</summary>
+          <div class="answer-content">
+            Ett ämne som består av joner, t.ex. NaCl.
+          </div>
+        </details>
+        <details class="answer">
+          <summary>Utförligt svar</summary>
+          <div class="answer-content">
+            En jonförening består av positiva och negativa joner i ett gitter.
+            Formeln visar förhållandet mellan joner, inte enskilda molekyler.
+          </div>
+        </details>
+      </div>
+      <div class="self-check">
+        <span class="self-check-label">Självskattning:</span>
+        <button class="level-btn" data-level="can" data-question="q9">✅ Kan</button>
+        <button class="level-btn" data-level="unsure" data-question="q9">🟡 Osäker</button>
+        <button class="level-btn" data-level="cannot" data-question="q9">🔴 Kan inte</button>
+      </div>
+    </article>
+
+  </div>
+</section>
+<section class="section-card" style="margin-top:18px;">
+  <div class="section-head">
+    <div>
+      <h2>Intramolekylära bindningar</h2>
+      <p>
+        Bindningar som håller ihop atomer till molekyler, jonföreningar och metaller.
+      </p>
+    </div>
+    <span class="section-label">Område 4</span>
+  </div>
+
+  <div class="question-list">
+
+    <!-- Q10 -->
+    <article class="question-card" id="q10" data-area="intra">
+      <h3>Vad är en intramolekylär bindning?</h3>
+      <p class="question-prompt">
+        Förklara vad som menas med intramolekylär bindning och ge exempel.
+      </p>
+
+      <div class="answer-stack">
+        <details class="answer">
+          <summary>Grundläggande svar</summary>
+          <div class="answer-content">
+            Intramolekylära bindningar är bindningar som håller ihop atomer i ett ämne.
+          </div>
+        </details>
+
+        <details class="answer">
+          <summary>Utförligt svar</summary>
+          <div class="answer-content">
+            Intramolekylära bindningar är de kemiska bindningar som håller ihop atomer
+            till molekyler eller jonföreningar. Exempel på intramolekylära bindningar
+            är jonbindning, kovalent bindning och metallbindning.
+            Dessa bindningar är starka och avgör vilket ämne som bildas.
+          </div>
+        </details>
+      </div>
+
+      <div class="self-check">
+        <span class="self-check-label">Självskattning:</span>
+        <button class="level-btn" type="button" data-level="can" data-question="q10">✅ Kan</button>
+        <button class="level-btn" type="button" data-level="unsure" data-question="q10">🟡 Osäker</button>
+        <button class="level-btn" type="button" data-level="cannot" data-question="q10">🔴 Kan inte</button>
+      </div>
+    </article>
+
+    <!-- Q11 -->
+    <article class="question-card" id="q11" data-area="intra">
+      <h3>Förklara skillnaden mellan jonbindning och kovalent bindning.</h3>
+      <p class="question-prompt">
+        Beskriv vad som händer med elektronerna i respektive bindning.
+      </p>
+
+      <div class="answer-stack">
+        <details class="answer">
+          <summary>Grundläggande svar</summary>
+          <div class="answer-content">
+            Vid jonbindning flyttas elektroner, vid kovalent bindning delas elektroner.
+          </div>
+        </details>
+
+        <details class="answer">
+          <summary>Utförligt svar</summary>
+          <div class="answer-content">
+            Vid jonbindning lämnar en atom ifrån sig elektroner och en annan tar upp dem,
+            så att positiva och negativa joner bildas. Dessa joner attraherar varandra.
+            Vid kovalent bindning delas ett eller flera elektronpar mellan atomer,
+            så att elektronerna ligger mellan kärnorna och tillhör båda atomerna.
+          </div>
+        </details>
+      </div>
+
+      <div class="self-check">
+        <span class="self-check-label">Självskattning:</span>
+        <button class="level-btn" type="button" data-level="can" data-question="q11">✅ Kan</button>
+        <button class="level-btn" type="button" data-level="unsure" data-question="q11">🟡 Osäker</button>
+        <button class="level-btn" type="button" data-level="cannot" data-question="q11">🔴 Kan inte</button>
+      </div>
+    </article>
+
+   
+  </div>
+</section>
+<section class="section-card" style="margin-top:18px;">
+  <div class="section-head">
+    <div>
+      <h2>Elektronegativitet & polaritet</h2>
+      <p>Hur elektronegativitet styr bindningstyp, polaritet och dipoler.</p>
+    </div>
+    <span class="section-label">Område 5</span>
+  </div>
+
+  <div class="question-list">
+
+    <article class="question-card" id="q13" data-area="en">
+      <h3>Vad är elektronegativitet och hur kan den hjälpa oss avgöra bindningstyp?</h3>
+      <p class="question-prompt">Koppla till jonbindning, polär kovalent och opolär kovalent bindning.</p>
+
+      <div class="answer-stack">
+        <details class="answer">
+          <summary>Grundläggande svar</summary>
+          <div class="answer-content">
+            Elektronegativitet är hur starkt en atom drar i elektroner i en bindning.
+          </div>
+        </details>
+
+        <details class="answer">
+          <summary>Utförligt svar</summary>
+          <div class="answer-content">
+            Stor skillnad i elektronegativitet gör att elektroner i praktiken flyttas → jonbindning.
+            Mindre skillnad gör att elektroner delas ojämnt → polär kovalent bindning.
+            Liten eller ingen skillnad gör att elektroner delas ungefär lika → opolär kovalent bindning.
+          </div>
+        </details>
+      </div>
+
+      <div class="self-check">
+        <span class="self-check-label">Självskattning:</span>
+        <button class="level-btn" type="button" data-level="can" data-question="q13">✅ Kan</button>
+        <button class="level-btn" type="button" data-level="unsure" data-question="q13">🟡 Osäker</button>
+        <button class="level-btn" type="button" data-level="cannot" data-question="q13">🔴 Kan inte</button>
+      </div>
+    </article>
+
+    <article class="question-card" id="q14" data-area="en">
+      <h3>Vad menas med en dipol och hur uppstår den i en molekyl?</h3>
+      <p class="question-prompt">Förklara med δ+ och δ− och koppla till polaritet.</p>
+
+      <div class="answer-stack">
+        <details class="answer">
+          <summary>Grundläggande svar</summary>
+          <div class="answer-content">
+            En dipol är en molekyl som har en positiv och en negativ sida.
+          </div>
+        </details>
+
+        <details class="answer">
+          <summary>Utförligt svar</summary>
+          <div class="answer-content">
+            Om elektroner dras mer mot en atom blir den sidan svagt negativ (δ−) och den andra svagt positiv (δ+).
+            Om molekylens form gör att laddningarna inte tar ut varandra får hela molekylen en dipol.
+          </div>
+        </details>
+      </div>
+
+      <div class="self-check">
+        <span class="self-check-label">Självskattning:</span>
+        <button class="level-btn" type="button" data-level="can" data-question="q14">✅ Kan</button>
+        <button class="level-btn" type="button" data-level="unsure" data-question="q14">🟡 Osäker</button>
+        <button class="level-btn" type="button" data-level="cannot" data-question="q14">🔴 Kan inte</button>
+      </div>
+    </article>
+
+    <article class="question-card" id="q15" data-area="en">
+      <h3>Vad är bindningsenergi och vad säger den om bindningars styrka?</h3>
+      <p class="question-prompt">Jämför att bryta bindningar med att separera molekyler vid kokning/smältning.</p>
+
+      <div class="answer-stack">
+        <details class="answer">
+          <summary>Grundläggande svar</summary>
+          <div class="answer-content">
+            Bindningsenergi är energin som krävs för att bryta en kemisk bindning.
+          </div>
+        </details>
+
+        <details class="answer">
+          <summary>Utförligt svar</summary>
+          <div class="answer-content">
+            Bindningsenergi gäller intramolekylära bindningar (t.ex. kovalent/jonbindning) och är ofta mycket hög.
+            Vid smältning och kokning övervinns vanligen intermolekylära krafter, inte molekylens inre bindningar,
+            vilket kräver mindre energi än att bryta en kemisk bindning.
+          </div>
+        </details>
+      </div>
+
+      <div class="self-check">
+        <span class="self-check-label">Självskattning:</span>
+        <button class="level-btn" type="button" data-level="can" data-question="q15">✅ Kan</button>
+        <button class="level-btn" type="button" data-level="unsure" data-question="q15">🟡 Osäker</button>
+        <button class="level-btn" type="button" data-level="cannot" data-question="q15">🔴 Kan inte</button>
+      </div>
+    </article>
+
+  </div>
+</section>
+<section class="section-card" style="margin-top:18px;">
+  <div class="section-head">
+    <div>
+      <h2>Intermolekylära bindningar & ämnens egenskaper</h2>
+      <p>Krafter mellan molekyler och hur de påverkar kokpunkt, löslighet och aggregationstillstånd.</p>
+    </div>
+    <span class="section-label">Område 6</span>
+  </div>
+
+  <div class="question-list">
+
+    <article class="question-card" id="q16" data-area="inter">
+      <h3>Vad är skillnaden mellan intramolekylära och intermolekylära bindningar?</h3>
+      <p class="question-prompt">Ge exempel och koppla till vad som sker vid smältning och kokning.</p>
+
+      <div class="answer-stack">
+        <details class="answer">
+          <summary>Grundläggande svar</summary>
+          <div class="answer-content">
+            Intramolekylära bindningar håller ihop atomer, intermolekylära verkar mellan molekyler.
+          </div>
+        </details>
+
+        <details class="answer">
+          <summary>Utförligt svar</summary>
+          <div class="answer-content">
+            Intramolekylära bindningar är de kemiska bindningarna som bygger molekyler eller jon‑gitter (jon/kovalent/metall).
+            Intermolekylära bindningar är svagare krafter mellan molekyler (van der Waals, dipol–dipol, vätebindning).
+            Vid smältning/kokning övervinns oftast de intermolekylära krafterna, medan molekylens inre bindningar består.
+          </div>
+        </details>
+      </div>
+
+      <div class="self-check">
+        <span class="self-check-label">Självskattning:</span>
+        <button class="level-btn" type="button" data-level="can" data-question="q16">✅ Kan</button>
+        <button class="level-btn" type="button" data-level="unsure" data-question="q16">🟡 Osäker</button>
+        <button class="level-btn" type="button" data-level="cannot" data-question="q16">🔴 Kan inte</button>
+      </div>
+    </article>
+
+    <article class="question-card" id="q17" data-area="inter">
+      <h3>Förklara van der Waals-bindningar och varför de kan finnas i opolära molekyler.</h3>
+      <p class="question-prompt">Förklara med tillfälliga laddningsförskjutningar och när de blir viktiga.</p>
+
+      <div class="answer-stack">
+        <details class="answer">
+          <summary>Grundläggande svar</summary>
+          <div class="answer-content">
+            Van der Waals är svaga krafter mellan molekyler som beror på tillfälliga dipoler.
+          </div>
+        </details>
+
+        <details class="answer">
+          <summary>Utförligt svar</summary>
+          <div class="answer-content">
+            Elektroner rör sig hela tiden och kan fördelas ojämnt under korta ögonblick. Då uppstår en tillfällig dipol som kan påverka andra molekyler.
+            Detta ger en svag attraktionskraft (van der Waals). De blir extra viktiga i större molekyler där många svaga krafter tillsammans kan få stor effekt.
+          </div>
+        </details>
+      </div>
+
+      <div class="self-check">
+        <span class="self-check-label">Självskattning:</span>
+        <button class="level-btn" type="button" data-level="can" data-question="q17">✅ Kan</button>
+        <button class="level-btn" type="button" data-level="unsure" data-question="q17">🟡 Osäker</button>
+        <button class="level-btn" type="button" data-level="cannot" data-question="q17">🔴 Kan inte</button>
+      </div>
+    </article>
+
+    <article class="question-card" id="q18" data-area="inter">
+      <h3>Jämför dipol–dipol-bindning och vätebindning och koppla till egenskaper.</h3>
+      <p class="question-prompt">När uppstår de, och hur påverkar de kokpunkt, löslighet och aggregationstillstånd?</p>
+
+      <div class="answer-stack">
+        <details class="answer">
+          <summary>Grundläggande svar</summary>
+          <div class="answer-content">
+            Dipol–dipol uppstår mellan polära molekyler. Vätebindning är starkare och kräver H bundet till t.ex. O, N eller F.
+          </div>
+        </details>
+
+        <details class="answer">
+          <summary>Utförligt svar</summary>
+          <div class="answer-content">
+            Dipol–dipol-bindning uppstår när polära molekyler orienterar sig så att positiva och negativa sidor attraherar varandra.
+            Vätebindning är en starkare variant som uppstår när väte är bundet till mycket elektronegativa atomer (ofta O, N eller F) och kan attrahera en negativ del i en annan molekyl.
+            Starkare intermolekylära krafter ger ofta högre kokpunkt och smältpunkt, påverkar löslighet (“lika löser lika”) och kan avgöra aggregationstillstånd.
+          </div>
+        </details>
+      </div>
+
+      <div class="self-check">
+        <span class="self-check-label">Självskattning:</span>
+        <button class="level-btn" type="button" data-level="can" data-question="q18">✅ Kan</button>
+        <button class="level-btn" type="button" data-level="unsure" data-question="q18">🟡 Osäker</button>
+        <button class="level-btn" type="button" data-level="cannot" data-question="q18">🔴 Kan inte</button>
+      </div>
+    </article>
+
+  </div>
+</section>
+</div>
+  </div>
+</main>
+<section class="bottom-panels">
+
+  <section class="mini-card" id="overview">
+    <div class="mini-card-head">
+      <h3>Självskattning</h3>
+      <p>Översikt över vad du kan inom varje delområde.</p>
+    </div>
+    <div class="mini-card-body">
+      <ul class="checklist">
+        <li class="check-item" data-skill="atom">
+          <span class="check-text">Atom & periodiska systemet</span>
+          <span class="check-state">Inte bedömt</span>
+        </li>
+        <li class="check-item" data-skill="model">
+          <span class="check-text">Atommodellens historia</span>
+          <span class="check-state">Inte bedömt</span>
+        </li>
+        <li class="check-item" data-skill="particles">
+          <span class="check-text">Molekyler & joner</span>
+          <span class="check-state">Inte bedömt</span>
+        </li>
+        <li class="check-item" data-skill="intra">
+          <span class="check-text">Intramolekylära bindningar</span>
+          <span class="check-state">Inte bedömt</span>
+        </li>
+        <li class="check-item" data-skill="en">
+          <span class="check-text">Elektronegativitet & polaritet</span>
+          <span class="check-state">Inte bedömt</span>
+        </li>
+        <li class="check-item" data-skill="inter">
+          <span class="check-text">Intermolekylära bindningar</span>
+          <span class="check-state">Inte bedömt</span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+
+  <section class="mini-card" id="materialtips">
+    <div class="mini-card-head">
+      <h3>Materialtips</h3>
+      <p>Repetition utifrån det du markerar som osäkert.</p>
+    </div>
+    <div class="mini-card-body">
+      <!-- samma struktur som genetiksidan -->
+    </div>
+  </section>
+ <section class="footer-note">
+    <p>
+      Tips: Försök svara högt eller skriva korta stödord innan du öppnar svaren. Jämför sedan ditt svar med de två nivåerna.
+      Målet är inte bara att känna igen svaret, utan att kunna plocka fram det själv.
+    </p>
+</section>
+
+<script src="shared.js"></script>
+<script>
+  requireLogin('NK2');
+</script>
+<script src="instudering-kemisk-bindning.js">
+</script>
+
+</body>
+</html>
+
+
+
+
+
