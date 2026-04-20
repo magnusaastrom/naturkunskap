@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Intramolekylära bindningar – NK2</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Mulish:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg:#faf7f2; --surface:#fff; --border:#e8e0d0; --sand:#f2ece0;
+  --rust:#b85c2a; --rust2:#d4703a; --teal:#2a7a6a;
+  --text:#1a1612; --muted:#6a5e52; --radius:10px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+  font-family:'Mulish',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.7;
+}
+
+.top-bar{
+  background:#1a1612;
+  padding:14px 28px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.back-link{
+  color:#c8b89a;
+  text-decoration:none;
+  font-size:.82rem;
+}
+.top-title{
+  font-family:'Playfair Display',serif;
+  color:#e8dcc8;
+}
+
+.hero{
+  background:linear-gradient(135deg,#1a1612,#2a1e10);
+  padding:52px 32px;
+  text-align:center;
+}
+.hero-eyebrow{
+  color:#d4a060;
+  font-size:.72rem;
+  letter-spacing:.22em;
+  text-transform:uppercase;
+}
+.hero h1{
+  font-family:'Playfair Display',serif;
+  color:#f0e8d8;
+  font-size:2.2rem;
+  margin:12px 0;
+}
+.hero p{
+  color:#a09080;
+  max-width:560px;
+  margin:auto;
+}
+
+.container{
+  max-width:860px;
+  margin:auto;
+  padding:52px 24px;
+}
+.section{
+  padding:52px 0;
+}
+.section+.section{
+  border-top:1px solid var(--border);
+}
+.section-eyebrow{
+  color:var(--rust);
+  font-size:.7rem;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+}
+.section-title{
+  font-family:'Playfair Display',serif;
+  font-size:1.6rem;
+  margin:6px 0;
+}
+.section-intro{
+  color:var(--muted);
+  margin-bottom:28px;
+  max-width:640px;
+}
+
+.key-box{
+  background:var(--sand);
+  border-left:4px solid var(--rust2);
+  border-radius:0 var(--radius) var(--radius) 0;
+  padding:16px 20px;
+  margin-bottom:28px;
+}
+.key-box h4{
+  font-family:'Playfair Display',serif;
+  font-size:.95rem;
+  color:var(--rust);
+  margin-bottom:10px;
+}
+.key-box ul{
+  list-style:none;
+  padding-left:0;
+}
+.key-box li{
+  margin-bottom:6px;
+}
+
+.compare-table{
+  width:100%;
+  border-collapse:collapse;
+  margin-bottom:28px;
+  font-size:.85rem;
+}
+.compare-table th{
+  background:#1a1612;
+  color:#e8dcc8;
+  padding:10px;
+  text-align:left;
+}
+.compare-table td{
+  padding:9px;
+  border-bottom:1px solid var(--border);
+}
+.compare-table tr:nth-child(even) td{
+  background:var(--sand);
+}
+
+footer{
+  text-align:center;
+  border-top:1px solid var(--border);
+  padding:24px;
+  font-size:.78rem;
+  color:var(--muted);
+}
+/* ============================
+   KOLLA ATT DU KAN – FRÅGESTIL
+   (matchar immunförsvaret)
+   ============================ */
+
+.q-card{
+  background:#1a1612;
+  border:1px solid #2a2018;
+  border-radius:var(--radius);
+  padding:22px 26px;
+  margin-bottom:18px;
+}
+
+.q-num{
+  font-size:.68rem;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:#d4a060;
+  margin-bottom:7px;
+  font-weight:600;
+}
+
+.q-text{
+  font-family:'Playfair Display',serif;
+  font-size:.95rem;
+  color:#f0e8d8;
+  margin-bottom:14px;
+  line-height:1.5;
+}
+
+/* SEND IN RÄTT TEXTAREA-STIL */
+.q-textarea{
+  width:100%;
+  background:#0f0c08;
+  border:1.5px solid #2a2018;
+  border-radius:6px;
+  color:#e8dcc8;
+  font-family:'Mulish',sans-serif;
+  font-size:.9rem;
+  padding:11px 13px;
+  resize:vertical;
+  min-height:80px;
+  outline:none;
+  transition:border-color .2s;
+  line-height:1.6;
+}
+
+.q-textarea:focus{
+  border-color:#d4703a;
+}
+
+/* KNAPPAR */
+.q-btn{
+  margin-top:10px;
+  font-family:'Mulish',sans-serif;
+  font-size:.84rem;
+  font-weight:600;
+  padding:8px 20px;
+  border-radius:6px;
+  border:none;
+  cursor:pointer;
+  background:#d4703a;
+  color:#fff;
+}
+
+.q-btn:hover{
+  background:#b85c2a;
+}
+
+/* MALLSVAR – DOLDA FRÅN START */
+.q-model{
+  margin-top:14px;
+  display:none;               /* ★ VIKTIG RAD */
+  background:#0f0c08;
+  border:1px solid #2a2018;
+  border-radius:6px;
+  overflow:hidden;
+}
+
+.q-model.shown{
+  display:block;
+}
+
+.q-model-header{
+  background:#2a2018;
+  padding:7px 14px;
+  font-size:.72rem;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  color:#d4a060;
+  font-weight:600;
+}
+
+.q-model-body{
+  padding:13px 16px;
+  font-size:.86rem;
+  color:#c8b89a;
+  line-height:1.7;
+}
+
+.q-model-body ul{
+  list-style:none;
+  padding:0;
+  display:flex;
+  flex-direction:column;
+  gap:5px;
+}
+
+.q-model-body li{
+  padding-left:14px;
+  position:relative;
+}
+
+.q-model-body li::before{
+  content:'→';
+  position:absolute;
+  left:0;
+  color:#d4703a;
+}
+
+/* SJÄLVSKATTNING */
+.q-self-check{
+  margin-top:10px;
+  padding-top:10px;
+  border-top:1px solid #2a2018;
+  display:flex;
+  align-items:center;
+  gap:9px;
+  font-size:.8rem;
+  color:#8a7a60;
+  cursor:pointer;
+}
+
+.q-self-check input{
+  accent-color:#d4703a;
+  width:15px;
+  height:15px;
+  cursor:pointer;
+}
+
+.q-retry{
+  margin-top:8px;
+  font-size:.76rem;
+  color:#6a5a40;
+  background:none;
+  border:none;
+  cursor:pointer;
+  font-family:'Mulish',sans-serif;
+  text-decoration:underline;
+  padding:0;
+  display:block;
+}
+
+/* RESULTATBAR */
+.q-score-bar{
+  background:#0f0c08;
+  border:1px solid #2a2018;
+  border-radius:var(--radius);
+  padding:18px 22px;
+  margin-top:28px;
+  display:flex;
+  align-items:center;
+  gap:18px;
+  flex-wrap:wrap;
+}
+
+.q-score-num{
+  font-family:'Playfair Display',serif;
+  font-size:1.8rem;
+  color:#d4703a;
+}
+
+.q-score-label{
+  font-size:.8rem;
+  color:#8a7a60;
+}
+
+.q-score-msg{
+  font-size:.86rem;
+  color:#c8b89a;
+}
+
+/* PERIODISKA SYSTEMET – ELEKTRONEGATIVITET */
+
+.en-table {
+  display:grid;
+  grid-template-columns:repeat(8,1fr);
+  gap:8px;
+  margin:24px 0;
+}
+
+.en-cell {
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:6px;
+  padding:10px 6px;
+  text-align:center;
+  font-size:.85rem;
+}
+
+.en-symbol {
+  font-weight:700;
+  font-size:1rem;
+}
+
+.en-value {
+  font-size:.78rem;
+  color:var(--muted);
+}
+
+/* Färgskala */
+.en-low { background:#f5f1ea; }
+.en-mid { background:#f7d9c4; }
+.en-high{ background:#f3b18e; }
+.en-max { background:#e0704c; color:#fff; }
+.en-max .en-value{ color:#fff; }
+
+/* ===============================
+   PERIODISKA SYSTEMET – 20 FÖRSTA
+   ELEKTRONEGATIVITET (PAULING)
+   =============================== */
+
+.pt-wrapper{
+  overflow-x:auto;
+  margin:24px 0;
+}
+
+.pt{
+  display:grid;
+  grid-template-columns:repeat(11, minmax(58px,1fr));
+  grid-auto-rows:70px;
+  gap:8px;
+  min-width:630px; /* tvingar scroll på mobil */
+}
+
+.pt-cell{
+  border:1px solid var(--border);
+  border-radius:6px;
+  background:#fff;
+  text-align:center;
+  padding:6px 4px;
+  font-size:.8rem;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+
+.pt-symbol{
+  font-weight:700;
+  font-size:1.05rem;
+}
+
+.pt-en{
+  font-size:.75rem;
+  color:var(--muted);
+}
+
+/* färg efter elektronegativitet */
+.en-low { background:#f5f1ea; }
+.en-mid { background:#f7d9c4; }
+.en-high{ background:#f3b18e; }
+.en-max { background:#e0704c; color:#fff; }
+
+.en-max .pt-en{ color:#fff; }
+
+</style>
+</head>
+
+<body>
+
+<div class="top-bar">
+  <a href="nk2-periodiska.html" class="back-link">← Periodiska systemet</a>
+  <div class="top-title">NK2 — <span>Intramolekylära bindningar</span></div>
+</div>
+
+<div class="hero">
+  <p class="hero-eyebrow">NK2 · Kemi</p>
+  <h1>Intramolekylära bindningar</h1>
+  <p>
+    Bindningar som håller ihop atomer till molekyler och jonföreningar.
+    Dessa bindningar är starka och avgör vilket ämne som bildas.
+  </p>
+</div>
+
+<div class="container">
+
+<!-- GRUNDIDÉ -->
+<div class="section">
+<p class="section-eyebrow">Grundidé</p>
+<h2 class="section-title">Varför bildas intramolekylära bindningar?</h2>
+<p class="section-intro">
+Alla atomer kan förenklat sägas sträva efter att få ett <strong>fullt yttersta elektronskal</strong>.
+För att nå dit reagerar de med andra atomer och bildar kemiska bindningar.
+</p>
+
+<div class="key-box">
+<h4>🔑 Tumregel för elektronskal</h4>
+<ul>
+<li>2 elektroner om yttersta skalet är <strong>K‑skalet</strong></li>
+<li>8 elektroner om yttersta skalet är något annat skal</li>
+</ul>
+</div>
+</div>
+
+<!-- TRE STRATEGIER -->
+<div class="section">
+<p class="section-eyebrow">Strategier</p>
+<h2 class="section-title">Hur kan atomer få fulla elektronskal?</h2>
+
+<div class="key-box">
+<ul>
+<li><strong>Lämna ifrån sig elektroner</strong> → blir en <strong>positiv jon</strong></li>
+<li><strong>Ta upp elektroner</strong> → blir en <strong>negativ jon</strong></li>
+<li><strong>Dela elektroner</strong> → bildar en <strong>molekyl</strong></li>
+</ul>
+</div>
+
+<p class="section-intro">
+Vilken strategi som används beror till stor del på var ämnet finns i det periodiska systemet.
+</p>
+</div>
+
+<!-- JONBINDNING -->
+<div class="section">
+<p class="section-eyebrow">Bindningstyp 1</p>
+<h2 class="section-title">Jonbindning</h2>
+<p class="section-intro">
+Jonbindning uppstår när elektroner <strong>överlåts</strong> från en atom till en annan.
+Den ena blir då positivt laddad och den andra negativt laddad.
+</p>
+
+<div class="key-box">
+<h4>📌 Typiskt för jonbindning</h4>
+<ul>
+<li>Metall + icke‑metall</li>
+<li>Elektroner flyttas helt</li>
+<li>Attraktion mellan motsatta laddningar</li>
+<li>Bildar <strong>jonföreningar</strong> (salter)</li>
+</ul>
+</div>
+</div>
+
+<!-- KOVALENT -->
+<div class="section">
+<p class="section-eyebrow">Bindningstyp 2</p>
+<h2 class="section-title">Kovalent bindning</h2>
+<p class="section-intro">
+Kovalent bindning uppstår när atomer delar elektroner med varandra.
+På så sätt upplever båda atomerna att de får ett fullt yttersta skal.
+<strong>Orsaken</strong> till att dessa ämnen delar valenselektroner är för att de ofta har liknande attraktionskraft.
+</p>
+
+<div class="key-box">
+<h4>📌 Typiskt för kovalent bindning</h4>
+<ul>
+<li>Ofta mellan två icke‑metaller</li>
+<li>Elektroner delas i gemensamma elektronpar</li>
+<li>Bildar <strong>molekyler</strong>, t.ex. H₂O, CO₂</li>
+</ul>
+</div>
+</div>
+
+<!-- METALL -->
+<div class="section">
+<p class="section-eyebrow">Bindningstyp 3</p>
+<h2 class="section-title">Metallbindning</h2>
+<p class="section-intro">
+I metallbindning hålls positiva metalljoner samman av ett gemensamt
+<strong>elektronmoln</strong> av rörliga valenselektroner.
+</p>
+
+<div class="key-box">
+<h4>📌 Konsekvenser av metallbindning</h4>
+<ul>
+<li>Metaller leder elektricitet</li>
+<li>Metaller är formbara</li>
+<li>Gemensamt elektronhav</li>
+</ul>
+</div>
+</div>
+
+<!-- ELEKTRONEGATIVITET -->
+<div class="section">
+  <p class="section-eyebrow">Fördjupning</p>
+  <h2 class="section-title">Elektronegativitet</h2>
+
+  <p class="section-intro">
+    När atomer reagerar är det inte bara antalet elektroner som spelar roll,
+    utan också <strong>hur starkt atomerna drar i elektroner</strong>.
+    Denna egenskap kallas <strong>elektronegativitet</strong>.
+  </p>
+
+  <div class="key-box">
+    <h4>🔑 Elektronegativitet betyder:</h4>
+    <ul>
+      <li>Hur starkt en atom drar till sig elektroner i en bindning</li>
+      <li>Högt värde → drar elektroner starkt</li>
+      <li>Lågt värde → släpper elektroner lätt</li>
+    </ul>
+  </div>
+
+  <div class="section">
+  <p class="section-eyebrow">Översikt</p>
+  <h2 class="section-title">Periodiska systemet och elektronegativitet</h2>
+
+  <p class="section-intro">
+    Tabellen visar de 20 första grundämnena placerade på sina
+    <strong>korrekta platser i periodiska systemet</strong>.
+    Varje ruta visar ämnets <strong>kemiska beteckning</strong> och dess
+    <strong>elektronegativitet enligt Paulingskalan</strong>.
+  </p>
+
+<div class="pt-wrapper">
+  <div class="pt">
+
+    <!-- Period 1 -->
+    <div class="pt-cell en-mid" style="grid-column:1;grid-row:1">
+      <div class="pt-symbol">H</div><div class="pt-en">2,1</div>
+    </div>
+    <div class="pt-cell en-low" style="grid-column:11;grid-row:1">
+      <div class="pt-symbol">He</div><div class="pt-en">–</div>
+    </div>
+
+    <!-- Period 2 -->
+    <div class="pt-cell en-low" style="grid-column:1;grid-row:2">
+      <div class="pt-symbol">Li</div><div class="pt-en">1,0</div>
+    </div>
+    <div class="pt-cell en-low" style="grid-column:2;grid-row:2">
+      <div class="pt-symbol">Be</div><div class="pt-en">1,5</div>
+    </div>
+
+    <div class="pt-cell en-mid" style="grid-column:6;grid-row:2">
+      <div class="pt-symbol">B</div><div class="pt-en">2,0</div>
+    </div>
+    <div class="pt-cell en-mid" style="grid-column:7;grid-row:2">
+      <div class="pt-symbol">C</div><div class="pt-en">2,5</div>
+    </div>
+    <div class="pt-cell en-high" style="grid-column:8;grid-row:2">
+      <div class="pt-symbol">N</div><div class="pt-en">3,0</div>
+    </div>
+    <div class="pt-cell en-high" style="grid-column:9;grid-row:2">
+      <div class="pt-symbol">O</div><div class="pt-en">3,4</div>
+    </div>
+    <div class="pt-cell en-max" style="grid-column:10;grid-row:2">
+      <div class="pt-symbol">F</div><div class="pt-en">4,0</div>
+    </div>
+    <div class="pt-cell en-low" style="grid-column:11;grid-row:2">
+      <div class="pt-symbol">Ne</div><div class="pt-en">–</div>
+    </div>
+
+    <!-- Period 3 -->
+    <div class="pt-cell en-low" style="grid-column:1;grid-row:3">
+      <div class="pt-symbol">Na</div><div class="pt-en">0,9</div>
+    </div>
+    <div class="pt-cell en-low" style="grid-column:2;grid-row:3">
+      <div class="pt-symbol">Mg</div><div class="pt-en">1,2</div>
+    </div>
+
+    <div class="pt-cell en-mid" style="grid-column:6;grid-row:3">
+      <div class="pt-symbol">Al</div><div class="pt-en">1,5</div>
+    </div>
+    <div class="pt-cell en-mid" style="grid-column:7;grid-row:3">
+      <div class="pt-symbol">Si</div><div class="pt-en">1,8</div>
+    </div>
+    <div class="pt-cell en-mid" style="grid-column:8;grid-row:3">
+      <div class="pt-symbol">P</div><div class="pt-en">2,1</div>
+    </div>
+    <div class="pt-cell en-high" style="grid-column:9;grid-row:3">
+      <div class="pt-symbol">S</div><div class="pt-en">2,5</div>
+    </div>
+    <div class="pt-cell en-high" style="grid-column:10;grid-row:3">
+      <div class="pt-symbol">Cl</div><div class="pt-en">3,0</div>
+    </div>
+    <div class="pt-cell en-low" style="grid-column:11;grid-row:3">
+      <div class="pt-symbol">Ar</div><div class="pt-en">–</div>
+    </div>
+
+    <!-- Period 4 -->
+    <div class="pt-cell en-low" style="grid-column:1;grid-row:4">
+      <div class="pt-symbol">K</div><div class="pt-en">0,8</div>
+    </div>
+    <div class="pt-cell en-low" style="grid-column:2;grid-row:4">
+      <div class="pt-symbol">Ca</div><div class="pt-en">1,0</div>
+    </div>
+
+  </div>
+</div>
+</div>
+
+  <div class="key-box">
+    <h4>📌 Viktig trend i periodiska systemet</h4>
+    <ul>
+      <li>Elektronegativiteten ökar <strong>åt höger</strong></li>
+      <li>Elektronegativiteten ökar <strong>uppåt</strong></li>
+      <li>Fluor har högst elektronegativitet</li>
+    </ul>
+  </div>
+</div>
+<div class="section">
+  <p class="section-eyebrow">Tillämpning</p>
+  <h2 class="section-title">Hur avgör elektronegativitet vilken bindning som bildas?</h2>
+
+  <p class="section-intro">
+    Elektronegativiteten hjälper oss att förstå hur elektronerna
+    fördelas mellan atomer när en bindning bildas.
+    Det är <strong>skillnaden i elektronegativitet</strong> som är avgörande.
+  </p>
+
+  <div class="key-box">
+    <h4>📐 Steg-för-steg</h4>
+    <ul>
+      <li>Slå upp elektronegativiteten för båda atomerna i tabellen</li>
+      <li>Beräkna skillnaden: ΔEN = |EN₁ − EN₂|</li>
+      <li>Jämför med gränsvärdena nedan</li>
+    </ul>
+  </div>
+
+  <table class="compare-table">
+    <thead>
+      <tr>
+        <th>Skillnad i elektronegativitet</th>
+        <th>Bindningstyp</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>&ge; ca 1,7</td>
+        <td>Jonbindning</td>
+      </tr>
+      <tr>
+        <td>0,4 – 1,7</td>
+        <td>Polär kovalent bindning</td>
+      </tr>
+      <tr>
+        <td>&lt; 0,4</td>
+        <td>Opolär kovalent bindning</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p class="section-intro">
+    Exempel: Natrium (0,9) och klor (3,0) ger ΔEN = 2,1 → <strong>jonbindning</strong>.
+  </p>
+</div>
+
+
+<!-- SAMMANFATTNING -->
+<div class="section">
+<p class="section-eyebrow">Sammanfattning</p>
+<h2 class="section-title">Översikt: intramolekylära bindningar</h2>
+
+<table class="compare-table">
+<thead>
+<tr>
+<th>Bindning</th>
+<th>Vad händer med elektronerna?</th>
+<th>Exempel</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Jonbindning</td>
+<td>Elektroner överförs</td>
+<td>NaCl</td>
+</tr>
+<tr>
+<td>Kovalent bindning</td>
+<td>Elektroner delas</td>
+<td>H₂O</td>
+</tr>
+<tr>
+<td>Metallbindning</td>
+<td>Delokaliserat elektronmoln</td>
+<td>Cu, Fe</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<!-- KOLLA ATT DU KAN -->
+<div class="section" id="kolla">
+  <p class="section-eyebrow">Självbedömning</p>
+  <h2 class="section-title">Kolla att du kan</h2>
+  <p class="section-intro">
+    Skriv ditt svar på frågorna och jämför sedan med mallsvaren.  
+    Bocka i om du hade med det viktigaste.
+  </p>
+
+  <div id="q-wrap"></div>
+</div> <!-- slutar .container -->
+
+<footer>
+NK2 · Intramolekylära bindningar
+</footer>
+
+<script src="shared.js"></script>
+
+<script>
+requireLogin('NK2');
+
+const QUESTIONS = [
+  {
+    q: "Varför bildar atomer intramolekylära bindningar?",
+    model: [
+      "Atomer strävar efter att få ett fullt yttersta elektronskal (2 elektroner i K‑skalet och 8 i andra skal).",
+      "De kan nå detta genom att lämna ifrån sig, ta upp eller dela elektroner.",
+      "När detta sker bildas intramolekylära bindningar som håller ihop atomer till molekyler eller jonföreningar."
+    ]
+  },
+  {
+    q: "Vad är skillnaden mellan jonbindning och kovalent bindning?",
+    model: [
+      "Vid jonbindning överförs elektroner från en atom till en annan.",
+      "Då bildas positiva och negativa joner som hålls ihop av elektrisk attraktion.",
+      "Vid kovalent bindning delas elektroner mellan atomerna så att båda får tillgång till ett fullt yttersta skal.",
+      "Jonbindning sker oftast mellan metaller och icke‑metaller, medan kovalent bindning sker mellan icke‑metaller."
+    ]
+  },
+  {
+    q: "Hur kan det periodiska systemet hjälpa oss att förutsäga vilken bindning som bildas?",
+    model: [
+      "Metaller till vänster i periodiska systemet har få valenselektroner och lämnar ofta ifrån sig elektroner.",
+      "Icke‑metaller till höger har nästan fulla skal och tar upp eller delar elektroner.",
+      "Metall + icke‑metall ger ofta jonbindning.",
+      "Icke‑metall + icke‑metall ger oftast kovalent bindning."
+    ]
+  },
+  {
+    q: "Vad kännetecknar metallbindning och vilka egenskaper ger den?",
+    model: [
+      "Metalljoner sitter i ett gitter omgivet av ett gemensamt elektronmoln.",
+      "Valenselektronerna är rörliga och inte bundna till en viss atom.",
+      "Det gör att metaller leder elektricitet.",
+      "Det gör också metaller formbara eftersom bindningen inte bryts när jonerna glider."
+    ]
+  },
+{
+  q: "Vad menas med elektronegativitet?",
+  model: [
+    "Elektronegativitet är ett mått på hur starkt en atom drar till sig elektroner i en kemisk bindning.",
+    "Atomer med hög elektronegativitet drar elektroner starkt.",
+    "Atomer med låg elektronegativitet släpper elektroner lätt."
+  ]
+},
+{
+  q: "Hur används Pauling-skalan för att avgöra vilken bindning som bildas?",
+  model: [
+    "Man slår upp elektronegativiteten för respektive atom enligt Pauling-skalan.",
+    "Skillnaden i elektronegativitet beräknas.",
+    "En stor skillnad ger jonbindning, medan liten skillnad ger kovalent bindning.",
+    "Mellanstora skillnader ger polära kovalenta bindningar."
+  ]
+},
+{
+  q: "Förklara varför bindningen i vatten (H₂O) är polär kovalent.",
+  model: [
+    "Syre har högre elektronegativitet än väte.",
+    "Elektronerna delas men dras mer mot syreatomen.",
+    "Detta ger en ojämn laddningsfördelning.",
+    "Bindningen är därför polär kovalent och inte jonisk."
+  ]
+}
+
+];
+
+let checked = new Array(QUESTIONS.length).fill(false);
+
+function buildQuestions() {
+  const wrap = document.getElementById('q-wrap');
+
+  QUESTIONS.forEach((q, i) => {
+    const items = q.model.map(m => `<li>${m}</li>`).join('');
+
+    wrap.innerHTML += `
+      <div class="q-card">
+        <div class="q-num">Fråga ${i+1} av ${QUESTIONS.length}</div>
+        <div class="q-text">${q.q}</div>
+
+        <textarea class="q-textarea" id="qta-${i}" placeholder="Skriv ditt svar här..."></textarea>
+
+        <button class="q-btn" onclick="showModel(${i})">Visa mallsvar →</button>
+
+        <div class="q-model" id="qmodel-${i}">
+          <div class="q-model-header">📋 Mallsvar</div>
+          <div class="q-model-body">
+            <ul>${items}</ul>
+
+            <div class="q-self-check">
+              <input type="checkbox" id="qcheck-${i}" onchange="toggleCheck(${i})">
+              <label for="qcheck-${i}">Jag hade med det viktigaste</label>
+            </div>
+          </div>
+        </div>
+
+        <button class="q-retry" onclick="resetQuestion(${i})">↩ Rensa och försök igen</button>
+      </div>
+    `;
+  });
+
+  updateScore();
+}
+
+function showModel(i) {
+  document.getElementById(`qmodel-${i}`).classList.add('shown');
+}
+
+function toggleCheck(i) {
+  checked[i] = document.getElementById(`qcheck-${i}`).checked;
+  updateScore();
+}
+
+function resetQuestion(i) {
+  document.getElementById(`qta-${i}`).value = '';
+  document.getElementById(`qmodel-${i}`).classList.remove('shown');
+  document.getElementById(`qcheck-${i}`).checked = false;
+  checked[i] = false;
+  updateScore();
+}
+
+function updateScore() {
+  const n = checked.filter(Boolean).length;
+  const t = QUESTIONS.length;
+
+  const msg =
+    n === t ? "🎉 Utmärkt – du har koll på intramolekylära bindningar!"
+    : n >= t * 0.7 ? "👍 Bra jobbat! Repetera det du missade."
+    : "📖 Fortsätt öva – jämför dina svar med mallsvaren.";
+
+  let bar = document.getElementById('q-scorebar');
+
+  if (!bar) {
+    document.getElementById('q-wrap').insertAdjacentHTML(
+      'afterend',
+      `<div class="q-score-bar" id="q-scorebar">
+        <div class="q-score-num">${n}/${t}</div>
+        <div>
+          <div class="q-score-label">Självskattning</div>
+          <div class="q-score-msg">${msg}</div>
+        </div>
+      </div>`
+    );
+  } else {
+    bar.querySelector('.q-score-num').textContent = `${n}/${t}`;
+    bar.querySelector('.q-score-msg').textContent = msg;
+  }
+}
+
+buildQuestions();
+</script>
+
+</body>
+</html>
