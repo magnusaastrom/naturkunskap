@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Atomens uppbyggnad – NK2</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Mulish:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+
+<style>
+/* =======================
+   FÄRGSCHEMA & GRUND
+   ======================= */
+:root{
+  --bg:#faf7f2;--surface:#ffffff;--border:#e8e0d0;
+  --sand:#f2ece0;--rust:#b85c2a;--rust2:#d4703a;
+  --teal:#2a7a6a;--blue:#2a4a7a;
+  --text:#1a1612;--muted:#6a5e52;
+  --radius:10px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:'Mulish',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.7;
+  font-size:16px;
+}
+
+/* =======================
+   TOP BAR
+   ======================= */
+.top-bar{
+  background:#1a1612;
+  padding:14px 28px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  position:sticky;
+  top:0;
+  z-index:100;
+}
+.back-link{
+  color:#c8b89a;
+  text-decoration:none;
+  font-size:.82rem;
+}
+.back-link:hover{color:#fff}
+.top-title{
+  font-family:'Playfair Display',serif;
+  font-size:1rem;
+  color:#e8dcc8;
+}
+.top-title span{color:#d4a060}
+
+/* =======================
+   HERO
+   ======================= */
+.hero{
+  background:linear-gradient(135deg,#1a1612 0%,#1a2820 60%,#1a1612 100%);
+  padding:64px 32px 56px;
+  text-align:center;
+  position:relative;
+}
+
+.hero::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(ellipse 60% 60% at 30% 50%,rgba(42,122,106,.12),transparent 60%),
+    radial-gradient(ellipse 50% 70% at 80% 30%,rgba(180,92,42,.06),transparent 55%);
+  pointer-events:none; /* <-- VIKTIGT: gör att länkar går att klicka */
+}
+.hero-eyebrow{
+  font-size:.72rem;
+  letter-spacing:.22em;
+  text-transform:uppercase;
+  color:#d4a060;
+  margin-bottom:12px;
+}
+.hero h1{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(2rem,5vw,3rem);
+  font-weight:900;
+  color:#f0e8d8;
+  margin-bottom:16px;
+}
+.hero-sub{
+  font-size:1rem;
+  color:#a09080;
+  max-width:720px;
+  margin:0 auto 32px;
+}
+.hero-nav{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:10px;
+}
+.hero-nav a{
+  font-size:.8rem;
+  color:#c8b89a;
+  border:1px solid rgba(200,184,154,.3);
+  border-radius:30px;
+  padding:7px 16px;
+  text-decoration:none;
+}
+.hero-nav a:hover{
+  background:rgba(200,184,154,.12);
+  color:#fff;
+}
+
+footer{
+  border-top: 1px solid var(--border);
+  padding: 28px 24px;
+  text-align: center;
+  font-size: .78rem;
+  color: var(--muted);
+  margin-top: 40px; /* matchar original */
+}
+
+footer a{
+  color: var(--teal);        /* matchar original: teal-länk */
+  text-decoration: none;
+}
+
+footer a:hover{
+  text-decoration: underline;
+}
+
+
+/* =======================
+   LAYOUT
+   ======================= */
+.container{max-width:860px;margin:0 auto;padding:0 24px}
+.section{padding:60px 0}
+.section+.section{border-top:1px solid var(--border)}
+.section-eyebrow{
+  font-size:.7rem;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+  color:var(--rust);
+  font-weight:600;
+  margin-bottom:8px;
+}
+.section-title{
+  font-family:'Playfair Display',serif;
+  font-size:clamp(1.5rem,3vw,2rem);
+  margin-bottom:6px;
+}
+.section-intro{
+  font-size:.95rem;
+  color:var(--muted);
+  margin-bottom:32px;
+  max-width:650px;
+}
+.prose{
+  font-size:.95rem;
+  line-height:1.75;
+  color:#2a2016;
+  margin-bottom:24px;
+}
+.key-box{
+  background:var(--sand);
+  border-left:4px solid var(--rust2);
+  border-radius:0 var(--radius) var(--radius) 0;
+  padding:18px 22px;
+  margin-bottom:28px;
+}
+.diagram-wrap{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:24px;
+  margin-bottom:28px;
+  overflow-x:auto;
+}
+.diagram-caption{
+  font-size:.78rem;
+  color:var(--muted);
+  text-align:center;
+  margin-top:12px;
+  font-style:italic;
+}
+.compare-table{
+  width:100%;
+  border-collapse:collapse;
+  margin-bottom:32px;
+  font-size:.88rem;
+}
+.compare-table th{
+  background:#1a1612;
+  color:#e8dcc8;
+  padding:12px 16px;
+  text-align:left;
+  font-family:'Playfair Display',serif;
+}
+.compare-table td{
+  padding:11px 16px;
+  border-bottom:1px solid var(--border);
+}
+.compare-table tr:nth-child(even) td{background:var(--sand)}
+.analogy-box{
+  background:#1a1612;
+  border-radius:var(--radius);
+  padding:28px 32px;
+  margin-bottom:32px;
+}
+.analogy-box h3{
+  font-family:'Playfair Display',serif;
+  color:#e8dcc8;
+  margin-bottom:14px;
+}
+.analogy-box p{color:#a09080}
+
+/* ============================
+   KOLLA ATT DU KAN – FRÅGESTIL
+   (matchar referens-sidorna)
+   ============================ */
+.q-card{
+  background:#1a1612;
+  border:1px solid #2a2018;
+  border-radius:var(--radius);
+  padding:22px 26px;
+  margin-bottom:18px;
+}
+.q-num{
+  font-size:.68rem;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:#d4a060;
+  margin-bottom:7px;
+  font-weight:600;
+}
+.q-text{
+  font-family:'Playfair Display',serif;
+  font-size:.95rem;
+  color:#f0e8d8;
+  margin-bottom:14px;
+  line-height:1.5;
+}
+.q-textarea{
+  width:100%;
+  background:#0f0c08;
+  border:1.5px solid #2a2018;
+  border-radius:6px;
+  color:#e8dcc8;
+  font-family:'Mulish',sans-serif;
+  font-size:.9rem;
+  padding:11px 13px;
+  resize:vertical;
+  min-height:90px;
+  outline:none;
+  transition:border-color .2s;
+  line-height:1.6;
+}
+.q-textarea:focus{ border-color:#d4703a; }
+
+.q-btn{
+  margin-top:10px;
+  font-family:'Mulish',sans-serif;
+  font-size:.84rem;
+  font-weight:600;
+  padding:8px 20px;
+  border-radius:6px;
+  border:none;
+  cursor:pointer;
+  background:#d4703a;
+  color:#fff;
+  transition:background .2s;
+}
+.q-btn:hover{ background:#b85c2a; }
+
+/* extra knappstil för "Rensa allt" */
+.q-btn-ghost{
+  background:transparent;
+  border:1px solid rgba(200,184,154,.28);
+  color:#c8b89a;
+}
+.q-btn-ghost:hover{
+  background:rgba(200,184,154,.10);
+  color:#fff;
+}
+
+/* MALLSVAR – DOLDA FRÅN START */
+.q-model{
+  margin-top:14px;
+  display:none;
+  background:#0f0c08;
+  border:1px solid #2a2018;
+  border-radius:6px;
+  overflow:hidden;
+}
+.q-model.shown{ display:block; }
+
+.q-model-header{
+  background:#2a2018;
+  padding:8px 16px;
+  font-size:.72rem;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  color:#d4a060;
+  font-weight:600;
+}
+.q-model-body{
+  padding:14px 18px;
+  font-size:.88rem;
+  color:#c8b89a;
+  line-height:1.75;
+}
+.q-model-body strong{ color:#f0e8d8; }
+.q-model-body ul{
+  list-style:none;
+  padding:0;
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+.q-model-body li{
+  padding-left:16px;
+  position:relative;
+}
+.q-model-body li::before{
+  content:'→';
+  position:absolute;
+  left:0;
+  color:#d4703a;
+  font-size:.8rem;
+}
+
+/* SJÄLVSKATTNING (checkbox) */
+.q-self-check{
+  margin-top:12px;
+  padding-top:12px;
+  border-top:1px solid #2a2018;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-size:.82rem;
+  color:#8a7a60;
+}
+.q-self-check input{
+  accent-color:#d4703a;
+  width:16px;
+  height:16px;
+  cursor:pointer;
+}
+
+/* Rensa per fråga */
+.q-retry{
+  margin-top:10px;
+  font-size:.78rem;
+  color:#6a5a40;
+  background:none;
+  border:none;
+  cursor:pointer;
+  font-family:'Mulish',sans-serif;
+  text-decoration:underline;
+  padding:0;
+  display:block;
+}
+
+/* SCORE BAR */
+.q-score-bar{
+  background:#0f0c08;
+  border:1px solid #2a2018;
+  border-radius:var(--radius);
+  padding:20px 24px;
+  margin-top:32px;
+  display:flex;
+  align-items:center;
+  gap:20px;
+  flex-wrap:wrap;
+}
+.q-score-num{
+  font-family:'Playfair Display',serif;
+  font-size:2rem;
+  color:#d4703a;
+}
+.q-score-label{
+  font-size:.85rem;
+  color:#8a7a60;
+}
+.q-score-msg{
+  font-size:.88rem;
+  color:#c8b89a;
+}
+
+/* === Mikroövningar / details snyggt (matchar sidan) === */
+.micro-task{
+  margin: 12px 0 26px;
+  border: 1px dashed var(--border);
+  border-radius: var(--radius);
+  background: rgba(242,236,224,.55);
+  padding: 12px 14px;
+}
+.micro-task summary{
+  cursor: pointer;
+  font-weight: 700;
+  color: var(--text);
+  list-style: none;
+}
+.micro-task summary::-webkit-details-marker{display:none;}
+.micro-task p{ margin-top: 10px; color: var(--muted); font-size: .9rem; line-height: 1.7; }
+
+.misconception{
+  border: 1px solid rgba(184,92,42,.25);
+  background: rgba(212,112,58,.08);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+  margin: 12px 0 28px;
+}
+.misconception h4{
+  margin: 0 0 10px;
+  font-family: 'Playfair Display', serif;
+  color: var(--rust);
+  font-size: 1rem;
+}
+.misconception ul{ margin-left: 18px; color: #4a3a2a; font-size: .9rem; line-height: 1.7; }
+
+</style>
+</head>
+
+<body>
+
+<div class="top-bar">
+  <a href="nk2-periodiska.html" class="back-link">← Periodiska systemet</a>
+  <div class="top-title">NK2 — <span>Atomens uppbyggnad</span></div>
+</div>
+
+<div class="hero">
+  <p class="hero-eyebrow">Kemi · NK2</p>
+  <h1>Atomens uppbyggnad</h1>
+  <p class="hero-sub">
+    För att förstå kemisk bindning måste du först förstå hur en atom är uppbyggd.
+    Här används Bohrs atommodell för att koppla samman kärnpartiklar,
+    elektronskal och periodiska systemet.
+  </p>
+  <nav class="hero-nav">
+    <a href="#grund">Grundidé</a>
+    <a href="#karnan">Kärnpartiklar</a>
+    <a href="#skal">Elektronskal</a>
+    <a href="#exempel">Exempelatomer</a>
+    <a href="#jon">Jon & isotop</a>
+    <a href="#kolla">Kolla att du kan</a>
+  </nav>
+</div>
+
+<main>
+
+<!-- ===== SEKTION 1 ===== -->
+<div class="section" id="grund">
+<div class="container">
+<p class="section-eyebrow">Grundidé</p>
+<h2 class="section-title">Atomen – materiens minsta byggsten</h2>
+<p class="section-intro">
+All materia är uppbyggd av atomer. Atomens inre struktur avgör hur ämnen reagerar,
+binder till varandra och vilka egenskaper de får.
+</p>
+<p class="prose">
+Atomkärnan är positivt laddad och drar elektronerna till sig. Protoner som finns i atomkärnan är plusladdade och elektroner minusladdade, och motsatta laddningar dras till varandra.
+De elektroner som ligger längst bort från kärnan påverkas minst av denna dragningskraft – därför “sitter de lösast” och är de som lättast kan flyttas eller delas när en kemisk reaktion sker.
+</p>
+
+<div class="key-box">
+<h4>🔑 Valenselektroner = reaktivitet</h4>
+<p>
+Elektronerna i yttersta skalet kallas <strong>valenselektroner</strong>. Det är de som i första hand deltar i kemiska reaktioner och avgör hur en atom binder till andra atomer.
+</p>
+</div>
+
+<details class="micro-task">
+  <summary>🧠 Mikroövning: varför är valenselektroner viktigare än inner-elektroner?</summary>
+  <p>
+    <strong>Facit:</strong> Valenselektronerna ligger längst från kärnan och påverkas minst av kärnans dragningskraft,
+    så de kan lättare flyttas eller delas vid reaktioner.
+  </p>
+</details>
+
+</div>
+</div>
+
+<!-- ===== SEKTION 2 ===== -->
+<div class="section" id="karnan">
+<div class="container">
+<p class="section-eyebrow">Förklaring</p>
+<h2 class="section-title">Kärnpartiklar och laddning</h2>
+
+<table class="compare-table">
+<thead>
+<tr>
+<th>Partikel</th><th>Laddning</th><th>Plats</th><th>Roll</th>
+</tr>
+</thead>
+<tbody>
+<tr><td>Proton</td><td>+</td><td>Kärnan</td><td>Avgör atomnummer</td></tr>
+<tr><td>Neutron</td><td>0</td><td>Kärnan</td><td>Påverkar masstal</td></tr>
+<tr><td>Elektron</td><td>−</td><td>Skal</td><td>Kemisk reaktivitet</td></tr>
+</tbody>
+</table>
+
+<div class="key-box">
+📌 <strong>Atomnummer</strong> = antal protoner<br>
+📌 <strong>Masstal</strong> = protoner + neutroner
+</div>
+
+<details>
+<summary>🧠 Mikroövning: Hur många neutroner har en väteatom med masstalet 3?</summary>
+<strong>Svar:</strong> 2 neutroner (väte har 1 proton).
+</details>
+
+</div>
+</div>
+
+<!-- ===== SEKTION 3 ===== -->
+<div class="section" id="skal">
+<div class="container">
+<p class="section-eyebrow">Modell</p>
+<h2 class="section-title">Bohrs elektronskalsmodell</h2>
+<p class="prose">
+I Bohrs modell är elektronerna ordnade i skal runt kärnan.
+Varje nytt skal innebär en högre energinivå. 
+</p>
+
+<div class="key-box">
+<h4>📌 Hur många elektroner får plats i skalen?</h4>
+<p>
+I kursen använder vi Bohrs modell och tumregeln: <strong>K-skalet rymmer 2</strong> och <strong>L-skalet rymmer 8</strong>.
+För de första 20 ämnena räcker det att räkna <strong>M-skalet som 8</strong> (större atomer fyller mer komplext). 
+</p>
+</div>
+
+<p class="prose">
+Elektronerna placerar sig så nära kärnan som möjligt. När ett skal är fullt fyller elektronerna på nästa skal utanför.
+Det betyder att du ofta kan räkna ut skalfördelningen genom att fylla K först, sedan L och därefter M. 
+</p>
+
+<table class="compare-table">
+  <thead>
+    <tr>
+      <th>Atom</th>
+      <th>Atomnummer</th>
+      <th>Skalfördelning (Bohr)</th>
+      <th>Valenselektroner</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>H</td><td>1</td><td>1</td><td>1</td>
+    </tr>
+    <tr>
+      <td>He</td><td>2</td><td>2</td><td>2 (fullt K)</td>
+    </tr>
+    <tr>
+      <td>Li</td><td>3</td><td>2,1</td><td>1</td>
+    </tr>
+    <tr>
+      <td>O</td><td>8</td><td>2,6</td><td>6</td>
+    </tr>
+    <tr>
+      <td>Na</td><td>11</td><td>2,8,1</td><td>1</td>
+    </tr>
+  </tbody>
+</table>
+
+<details class="micro-task">
+  <summary>🧠 Mikroövning: vilka av exemplen har “ädelgasstruktur” i sitt yttersta skal?</summary>
+
+  <p>
+    <strong>Facit:</strong> Helium (He) har fullt K-skal (2). (Neon och argon är också ädelgaser men finns inte i tabellen ovan.)
+  </p>
+</details>
+
+
+<div class="misconception">
+  <h4>Vanlig missuppfattning</h4>
+  <ul>
+    <li><strong>Period</strong> visar hur många skal atomen har (inte grupp). </li>
+  <li>Inner-elektroner avgör inte i första hand reaktivitet – det gör <strong>valenselektronerna</strong>
+
+  </ul>
+</div>
+
+<div class="diagram-wrap">
+  <h3>Exempel: kolatom i Bohrs modell</h3>
+
+  <p class="prose">
+    En kolatom kan ritas med två skal: <strong>K-skalet</strong> har 2 elektroner och <strong>L-skalet</strong> har 4 elektroner.
+    De fyra i yttersta skalet är <strong>valenselektroner</strong>.
+  </p>
+
+  <svg viewBox="0 0 720 250" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:720px;display:block;margin:0 auto">
+    <defs>
+      <style>
+        .shell{fill:none;stroke:#b9b0a3;stroke-width:2}
+        .nucleus{fill:#d4703a}
+        .e{fill:#2a4a7a}
+        .lbl{font-family:Mulish,sans-serif;fill:#6a5e52;font-size:11px}
+        .big{font-family:'Playfair Display',serif;fill:#1a1612;font-size:14px;font-weight:700}
+      </style>
+    </defs>
+
+    <text x="360" y="22" text-anchor="middle" class="big">Kol (C) – 2,4</text>
+
+    <!-- Skal -->
+    <circle cx="230" cy="135" r="42" class="shell"/>
+    <circle cx="230" cy="135" r="78" class="shell"/>
+
+    <!-- Kärna -->
+    <circle cx="230" cy="135" r="16" class="nucleus"/>
+    <text x="230" y="140" text-anchor="middle" font-family="Mulish,sans-serif" font-size="10" fill="#fff">kärna</text>
+
+    <!-- Elektroner K (2 st) -->
+    <circle cx="230" cy="93" r="5" class="e"/>
+    <circle cx="230" cy="177" r="5" class="e"/>
+
+    <!-- Elektroner L (4 st) -->
+    <circle cx="308" cy="135" r="5" class="e"/>
+    <circle cx="152" cy="135" r="5" class="e"/>
+    <circle cx="270" cy="67" r="5" class="e"/>
+    <circle cx="190" cy="203" r="5" class="e"/>
+
+    <text x="230" y="230" text-anchor="middle" class="lbl">K-skal: 2 e⁻ (fullt) · L-skal: 4 e⁻ (valenselektroner)</text>
+
+    <!-- Förklaring höger -->
+    <rect x="380" y="70" width="300" height="120" rx="10" fill="#f2ece0" stroke="#e8e0d0"/>
+    <text x="530" y="92" text-anchor="middle" class="lbl" font-weight="700" fill="#1a1612">Varför är valenselektroner viktiga?</text>
+    <text x="390" y="115" class="lbl">• De ligger längst från kärnan</text>
+    <text x="390" y="135" class="lbl">• De påverkas minst av kärnans drag</text>
+    <text x="390" y="155" class="lbl">• De kan lättare delas/flyttas vid reaktion</text>
+    <text x="390" y="175" class="lbl">→ De styr kemiska egenskaper</text>
+  </svg>
+
+  <p class="diagram-caption">
+    Kol har 4 valenselektroner – därför kan kol bilda många olika bindningar och ingå i mycket många ämnen. 
+  </p>
+</div>
+
+
+<!-- ===== SEKTION 5 ===== -->
+<div class="section" id="jon">
+<div class="container">
+<p class="section-eyebrow">Tillämpning</p>
+<h2 class="section-title">Jon, isotop och stabilitet</h2>
+
+<!-- Tillägg: fördjupning som gör sektionen matigare utan textvägg -->
+<div class="key-box">
+  <h4>🔑 Jon eller isotop – två olika “ändringar”</h4>
+  <p>
+    En <strong>jon</strong> bildas när en atom <strong>tar upp</strong> eller <strong>lämnar</strong> elektroner. Då ändras atomens laddning, men atomens protoner är oförändrade.
+    En <strong>isotop</strong> är samma grundämne som vanligt (samma antal protoner), men med olika antal neutroner – då ändras <strong>masstalet</strong>.
+  </p>
+</div>
+
+<p class="prose">
+Det som ofta förvirrar är att båda orden handlar om “olika varianter” av en atom – men de varierar i helt olika delar av atomen.
+Vid kemi (bindningar och reaktioner) är det nästan alltid <strong>elektronerna</strong> och särskilt <strong>valenselektronerna</strong> som spelar huvudrollen, eftersom de sitter längst från kärnan och påverkas minst av kärnans dragningskraft.
+</p>
+
+<div class="diagram-wrap">
+  <h3>Jon: elektroner flyttas · Isotop: neutroner ändras</h3>
+
+  <svg viewBox="0 0 740 265" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:740px;display:block;margin:0 auto">
+    <defs>
+      <marker id="arr" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+        <path d="M0,0 L10,3 L0,6 Z" fill="#6a5e52"></path>
+      </marker>
+      <style>
+        .box{fill:#f2ece0;stroke:#e8e0d0;stroke-width:1.5}
+        .t{font-family:Mulish,sans-serif;fill:#1a1612}
+        .m{font-family:Mulish,sans-serif;fill:#6a5e52}
+        .e{fill:#2a4a7a}
+        .p{fill:#d4703a}
+        .n{fill:#1a1612}
+      </style>
+    </defs>
+
+    <!-- Rubriker -->
+    <text x="185" y="28" text-anchor="middle" class="t" font-weight="700">Jonbildning (laddning ändras)</text>
+    <text x="555" y="28" text-anchor="middle" class="t" font-weight="700">Isotoper (masstal ändras)</text>
+
+    <!-- Vänster box: Na -> Na+ + e- -->
+    <rect x="45" y="45" width="280" height="190" rx="12" class="box"></rect>
+    <text x="70" y="72" class="m" font-size="12">Exempel: natrium lämnar en valenselektron</text>
+
+    <circle cx="120" cy="150" r="26" fill="#fff" stroke="#e8e0d0"></circle>
+    <text x="120" y="155" text-anchor="middle" class="t" font-weight="700">Na</text>
+
+    <!-- elektron som flyttas -->
+    <circle cx="200" cy="150" r="6" class="e"></circle>
+    <text x="200" y="172" text-anchor="middle" class="m" font-size="11">e⁻</text>
+
+    <line x1="150" y1="150" x2="245" y2="150" stroke="#6a5e52" stroke-width="2" marker-end="url(#arr)"></line>
+    <text x="200" y="137" text-anchor="middle" class="m" font-size="11">elektron flyttas</text>
+
+    <circle cx="275" cy="150" r="26" fill="#fff" stroke="#e8e0d0"></circle>
+    <text x="275" y="155" text-anchor="middle" class="t" font-weight="700">Na⁺</text>
+
+    <text x="70" y="210" class="m" font-size="12">
+      Laddning ändras när elektroner flyttas
+    </text>
+
+    <!-- Höger box: C-12 vs C-14 -->
+    <rect x="415" y="45" width="280" height="190" rx="12" class="box"></rect>
+    <text x="440" y="72" class="m" font-size="12">Exempel: två isotoper av kol</text>
+
+    <!-- C-12 -->
+    <circle cx="485" cy="150" r="28" fill="#fff" stroke="#e8e0d0"></circle>
+    <text x="485" y="155" text-anchor="middle" class="t" font-weight="700">¹²C</text>
+    <!-- kärna: symboliskt -->
+ 
+    <text x="485" y="196" text-anchor="middle" class="m" font-size="11">6 p⁺, 6 n⁰</text>
+
+    <!-- pil -->
+    <line x1="520" y1="150" x2="590" y2="150" stroke="#6a5e52" stroke-width="2" marker-end="url(#arr)"></line>
+    <text x="555" y="137" text-anchor="middle" class="m" font-size="11">fler neutroner</text>
+
+    <!-- C-14 -->
+    <circle cx="625" cy="150" r="28" fill="#fff" stroke="#e8e0d0"></circle>
+    <text x="625" y="155" text-anchor="middle" class="t" font-weight="700">¹⁴C</text>
+    <text x="625" y="196" text-anchor="middle" class="m" font-size="11">6 p⁺, 8 n⁰</text>
+
+    <text x="440" y="210" class="m" font-size="12">
+      Samma grundämne – olika antal neutroner.
+    </text>
+  </svg>
+
+  <p class="diagram-caption">
+    Joner handlar om elektroner (laddning). Isotoper handlar om neutroner (masstal).
+  </p>
+</div>
+
+<div class="key-box">
+  <h4>📌 Varför “håller” kärnan ihop?</h4>
+  <p>
+    Protoner är positivt laddade och skulle kunna stöta bort varandra. Neutroner kan man förenklat se som ett slags “stabiliserande klister” i kärnan som hjälper till att hålla ihop den.
+  </p>
+</div>
+
+<details class="micro-task">
+  <summary>🧠 Mikroövning:  En partikel har 11 protoner och 10 elektroner. Vad är det och vilken laddning har den?</summary>
+  <p>
+    <strong>Facit:</strong> En jon med laddning +1 (färre elektroner än protoner).<br><br>
+  </p>
+</details>
+
+<!-- ===== KOLLA ===== -->
+<div class="section" id="kolla">
+<div class="container">
+<p class="section-eyebrow">Självbedömning</p>
+<h2 class="section-title">Kolla att du kan</h2>
+<div id="q-wrap"></div>
+</div>
+</div>
+
+</main>
+
+<footer>
+	<a href="nk2-periodiska.html" class="back-link">← Periodiska systemet</a> &middot; NK2 &middot;  Atomens uppbyggnad
+</footer>
+
+<script src="shared.js"></script>
+<script>
+requireLogin('NK2');
+</script>
+
+<script>
+const QUESTIONS = [
+  {
+    q: "Vad består atomkärnan av?",
+    model: [
+      "Atomkärnan innehåller <strong>protoner</strong> och <strong>neutroner</strong>.",
+      "Protonerna är positivt laddade och neutronerna saknar laddning.",
+      "Nästan hela atomens massa finns i kärnan."
+    ]
+  },
+  {
+    q: "Vad avgör atomens atomnummer?",
+    model: [
+      "Atomnumret bestäms av <strong>antalet protoner</strong> i kärnan.",
+      "Atomnumret ändras aldrig vid kemiska reaktioner."
+    ]
+  },
+  {
+    q: "Vad menas med valenselektroner?",
+    model: [
+      "Valenselektroner är elektronerna i atomens <strong>yttersta skal</strong>.",
+      "De avgör hur reaktiv atomen är och vilka bindningar den kan bilda."
+    ]
+  },
+  {
+    q: "Vad visar periodnumret i periodiska systemet?",
+    model: [
+      "Periodnumret visar <strong>antalet elektronskal</strong> i atomen.",
+      "När man går till en ny period tillkommer ett nytt skal."
+    ]
+  },
+  {
+    q: "Vad är skillnaden mellan en jon och en isotop?",
+    model: [
+      "En <strong>jon</strong> bildas när en atom tar upp eller lämnar elektroner.",
+      "En <strong>isotop</strong> har olika antal neutroner men samma antal protoner."
+    ]
+  },
+  {
+    q: "Varför bildar natrium ofta en positiv jon (Na⁺)?",
+    model: [
+      "Natrium har en valenselektron.",
+      "Genom att lämna ifrån sig den får natrium fullt yttersta skal.",
+      "Det gör jonen stabilare."
+    ]
+  },
+  {
+    q: "Hur många neutroner har natrium-23?",
+    model: [
+      "Atomnummer för natrium är 11.",
+      "23 − 11 = <strong>12 neutroner</strong>."
+    ]
+  },
+  {
+    q: "Varför används Bohrs modell i undervisningen trots att den är förenklad?",
+    model: [
+      "Bohrs modell ger en <strong>tydlig bild av elektronskal</strong>.",
+      "Den räcker för att förstå reaktivitet och bindning på NK2-nivå."
+    ]
+  }
+];
+
+let checked = new Array(QUESTIONS.length).fill(false);
+
+function buildQuestions() {
+  const wrap = document.getElementById('q-wrap');
+  wrap.innerHTML = '';
+
+  QUESTIONS.forEach((q, i) => {
+    const items = q.model.map(m => `<li>${m}</li>`).join('');
+    wrap.innerHTML += `
+      <div class="q-card">
+        <div class="q-num">Fråga ${i + 1} av ${QUESTIONS.length}</div>
+        <div class="q-text">${q.q}</div>
+
+        <textarea class="q-textarea" id="qta-${i}" placeholder="Skriv ditt svar här..."></textarea>
+
+        <button class="q-btn" onclick="showModel(${i})">Visa mallsvar →</button>
+
+        <div class="q-model" id="qmodel-${i}">
+          <div class="q-model-header">📋 Mallsvar</div>
+          <div class="q-model-body">
+            <ul>${items}</ul>
+
+            <div class="q-self-check">
+              <input type="checkbox" id="qcheck-${i}" onchange="toggleCheck(${i})">
+              <label for="qcheck-${i}">Jag hade med det viktigaste</label>
+            </div>
+          </div>
+        </div>
+
+        <button class="q-retry" onclick="resetQuestion(${i})">↩ Rensa och försök igen</button>
+      </div>
+    `;
+  });
+
+  updateScore();
+}
+
+function showModel(i) {
+  document.getElementById(`qmodel-${i}`).classList.add('shown');
+}
+
+function toggleCheck(i) {
+  checked[i] = document.getElementById(`qcheck-${i}`).checked;
+  updateScore();
+}
+
+function resetQuestion(i) {
+  document.getElementById(`qta-${i}`).value = '';
+  document.getElementById(`qmodel-${i}`).classList.remove('shown');
+  document.getElementById(`qcheck-${i}`).checked = false;
+  checked[i] = false;
+  updateScore();
+}
+
+function updateScore() {
+  const n = checked.filter(Boolean).length;
+  const total = QUESTIONS.length;
+
+  const msg =
+    n === total ? '🎉 Utmärkt – du kan hela avsnittet!'
+    : n >= 6 ? '👍 Bra jobbat! Kika på de frågor du missat.'
+    : n >= 4 ? '📘 Du är på god väg – fortsätt öva.'
+    : '🔍 Läs igenom materialet och försök igen.';
+
+  let bar = document.getElementById('q-scorebar');
+  if (!bar) {
+    document.getElementById('q-wrap').insertAdjacentHTML(
+      'afterend',
+      `<div class="q-score-bar" id="q-scorebar">
+        <div class="q-score-num">${n}/${total}</div>
+        <div>
+          <div class="q-score-label">Självskattning</div>
+          <div class="q-score-msg">${msg}</div>
+        </div>
+      </div>`
+    );
+  } else {
+    bar.querySelector('.q-score-num').textContent = `${n}/${total}`;
+    bar.querySelector('.q-score-msg').textContent = msg;
+  }
+}
+
+buildQuestions();
+</script>
+
+</body>
+</html>
