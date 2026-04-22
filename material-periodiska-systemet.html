@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Periodiska systemet – NK2</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Mulish:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #faf7f2; --surface: #ffffff; --border: #e8e0d0;
+      --sand: #f2ece0; --rust: #b85c2a; --rust2: #d4703a;
+      --teal: #2a7a6a; --blue: #2a4a7a; --text: #1a1612;
+      --muted: #6a5e52; --radius: 10px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Mulish', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; font-size: 16px; }
+
+    /* ── TOP BAR ── */
+    .top-bar { background: #1a1612; padding: 14px 28px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; position: sticky; top: 0; z-index: 100; }
+    .back-link { color: #c8b89a; text-decoration: none; font-size: .82rem; transition: color .2s; }
+    .back-link:hover { color: #fff; }
+    .top-title { font-family: 'Playfair Display', serif; font-size: 1rem; color: #e8dcc8; }
+    .top-title span { color: #d4a060; }
+
+    /* ── HERO ── */
+    .hero { background: linear-gradient(135deg, #1a1612 0%, #1a2010 60%, #1a1612 100%); padding: 64px 32px 56px; text-align: center; position: relative; overflow: hidden; }
+    .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 60% 60% at 30% 50%, rgba(42,122,106,.1) 0%, transparent 60%), radial-gradient(ellipse 50% 70% at 80% 30%, rgba(180,92,42,.07) 0%, transparent 55%); pointer-events: none; }
+    .hero-eyebrow { font-size: .72rem; letter-spacing: .22em; text-transform: uppercase; color: #d4a060; margin-bottom: 12px; }
+    .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 5vw, 3rem); font-weight: 900; color: #f0e8d8; margin-bottom: 16px; line-height: 1.15; }
+    .hero-sub { font-size: 1rem; color: #a09080; max-width: 580px; margin: 0 auto 32px; line-height: 1.7; }
+    .hero-nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+    .hero-nav a { font-size: .8rem; color: #c8b89a; border: 1px solid rgba(200,184,154,.3); border-radius: 30px; padding: 7px 16px; text-decoration: none; transition: all .2s; }
+    .hero-nav a:hover { background: rgba(200,184,154,.12); color: #fff; }
+
+    /* ── LAYOUT ── */
+    .container { max-width: 860px; margin: 0 auto; padding: 0 24px; }
+    .section { padding: 60px 0; }
+    .section + .section { border-top: 1px solid var(--border); }
+
+    .section-eyebrow { font-size: .7rem; letter-spacing: .2em; text-transform: uppercase; color: var(--rust); font-weight: 600; margin-bottom: 8px; }
+    .section-title { font-family: 'Playfair Display', serif; font-size: clamp(1.5rem, 3vw, 2rem); color: var(--text); margin-bottom: 6px; line-height: 1.25; }
+    .section-intro { font-size: .95rem; color: var(--muted); margin-bottom: 32px; max-width: 640px; line-height: 1.7; }
+
+    .prose { font-size: .95rem; line-height: 1.75; color: #2a2016; margin-bottom: 24px; }
+    .prose strong { color: var(--text); font-weight: 600; }
+
+    /* ── KEY BOX ── */
+    .key-box { background: var(--sand); border-left: 4px solid var(--rust2); border-radius: 0 var(--radius) var(--radius) 0; padding: 18px 22px; margin-bottom: 28px; }
+    .key-box h4 { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--rust); margin-bottom: 10px; }
+    .key-box p { font-size: .88rem; color: #4a3a2a; line-height: 1.65; }
+    .key-box dl { font-size: .88rem; color: #4a3a2a; display: flex; flex-direction: column; gap: 8px; }
+    .key-box dt { font-weight: 600; color: var(--text); display: inline; }
+    .key-box dd { display: inline; margin: 0; }
+    .key-box .term-row { line-height: 1.6; }
+
+    /* ── DIAGRAM ── */
+    .diagram-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; margin-bottom: 28px; overflow-x: auto; }
+    .diagram-caption { font-size: .78rem; color: var(--muted); text-align: center; margin-top: 12px; font-style: italic; }
+
+    /* ── TABLE ── */
+    .compare-table { width: 100%; border-collapse: collapse; margin-bottom: 32px; font-size: .88rem; }
+    .compare-table th { background: #1a1612; color: #e8dcc8; padding: 12px 16px; text-align: left; font-weight: 600; font-family: 'Playfair Display', serif; }
+    .compare-table th:first-child { border-radius: 8px 0 0 0; }
+    .compare-table th:last-child { border-radius: 0 8px 0 0; }
+    .compare-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); vertical-align: top; }
+    .compare-table tr:nth-child(even) td { background: var(--sand); }
+    .compare-table tr:last-child td { border-bottom: none; }
+    .compare-table td:first-child { font-weight: 600; color: var(--text); }
+
+    /* ── ANALOGY BOX ── */
+    .analogy-box { background: #1a1612; border-radius: var(--radius); padding: 28px 32px; margin-bottom: 32px; }
+    .analogy-box h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: #e8dcc8; margin-bottom: 14px; }
+    .analogy-box p { font-size: .9rem; color: #a09080; line-height: 1.7; }
+    .analogy-box strong { color: #e8dcc8; }
+
+    /* ── TWO/THREE COL ── */
+    .three-col { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 28px; }
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 28px; }
+    .col-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; }
+    .col-card h4 { font-family: 'Playfair Display', serif; font-size: 1rem; margin-bottom: 10px; }
+    .col-card p, .col-card li { font-size: .87rem; color: var(--muted); line-height: 1.6; }
+    .col-card ul { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+    .col-card li::before { content: '→ '; color: var(--rust2); }
+    .col-card.accent-rust { border-top: 3px solid var(--rust2); }
+    .col-card.accent-teal { border-top: 3px solid var(--teal); }
+    .col-card.accent-blue { border-top: 3px solid var(--blue); }
+
+    /* ── MICRO TASK ── */
+    .micro-task { border: 1px dashed var(--border); border-radius: var(--radius); background: rgba(242,236,224,.55); padding: 14px 16px; margin: 0 0 28px; }
+    .micro-task summary { cursor: pointer; font-weight: 600; color: var(--text); list-style: none; font-size: .9rem; }
+    .micro-task summary::-webkit-details-marker { display: none; }
+    .micro-task p { margin-top: 10px; color: var(--muted); font-size: .88rem; line-height: 1.7; }
+    .micro-task strong { color: var(--text); }
+
+    /* ── SELF-CHECK ── */
+    .q-card { background: #1a1612; border: 1px solid #2a2018; border-radius: var(--radius); padding: 22px 26px; margin-bottom: 18px; }
+    .q-num { font-size: .68rem; letter-spacing: .18em; text-transform: uppercase; color: #d4a060; margin-bottom: 7px; font-weight: 600; }
+    .q-text { font-family: 'Playfair Display', serif; font-size: .95rem; color: #f0e8d8; margin-bottom: 14px; line-height: 1.5; }
+    .q-textarea { width: 100%; background: #0f0c08; border: 1.5px solid #2a2018; border-radius: 6px; color: #e8dcc8; font-family: 'Mulish', sans-serif; font-size: .9rem; padding: 11px 13px; resize: vertical; min-height: 80px; outline: none; transition: border-color .2s; line-height: 1.6; }
+    .q-textarea:focus { border-color: #d4703a; }
+    .q-btn { margin-top: 10px; font-family: 'Mulish', sans-serif; font-size: .84rem; font-weight: 600; padding: 8px 20px; border-radius: 6px; border: none; cursor: pointer; background: #d4703a; color: #fff; transition: background .2s; }
+    .q-btn:hover { background: #b85c2a; }
+    .q-model { margin-top: 14px; display: none; background: #0f0c08; border: 1px solid #2a2018; border-radius: 6px; overflow: hidden; }
+    .q-model.shown { display: block; }
+    .q-model-header { background: #2a2018; padding: 8px 16px; font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: #d4a060; font-weight: 600; }
+    .q-model-body { padding: 14px 18px; font-size: .88rem; color: #c8b89a; line-height: 1.75; }
+    .q-model-body strong { color: #f0e8d8; }
+    .q-model-body ul { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+    .q-model-body li { padding-left: 16px; position: relative; }
+    .q-model-body li::before { content: '→'; position: absolute; left: 0; color: #d4703a; font-size: .8rem; }
+    .q-self-check { margin-top: 12px; padding-top: 12px; border-top: 1px solid #2a2018; display: flex; align-items: center; gap: 10px; font-size: .82rem; color: #8a7a60; cursor: pointer; }
+    .q-self-check input { accent-color: #d4703a; width: 16px; height: 16px; cursor: pointer; }
+    .q-retry { margin-top: 10px; font-size: .78rem; color: #6a5a40; background: none; border: none; cursor: pointer; font-family: 'Mulish', sans-serif; text-decoration: underline; padding: 0; display: block; }
+    .q-score-bar { background: #0f0c08; border: 1px solid #2a2018; border-radius: var(--radius); padding: 20px 24px; margin-top: 32px; display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+    .q-score-num { font-family: 'Playfair Display', serif; font-size: 2rem; color: #d4703a; }
+    .q-score-label { font-size: .85rem; color: #8a7a60; }
+    .q-score-msg { font-size: .88rem; color: #c8b89a; }
+
+    footer { border-top: 1px solid var(--border); padding: 28px 24px; text-align: center; font-size: .78rem; color: var(--muted); margin-top: 40px; }
+    footer a { color: var(--teal); text-decoration: none; }
+
+    @media(max-width: 680px) {
+      .hero { padding: 44px 20px 36px; }
+      .container { padding: 0 16px; }
+      .three-col { grid-template-columns: 1fr; }
+      .two-col { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="top-bar">
+  <a href="nk2-periodiska.html" class="back-link">← Atomen/periodiska</a>
+  <div class="top-title">NK2 &mdash; <span>Periodiska systemet</span></div>
+</div>
+
+<div class="hero">
+  <p class="hero-eyebrow">NK2 &middot; Kemi</p>
+  <h1>Periodiska systemet</h1>
+  <p class="hero-sub">En tabell med alla grundämnen ordnade i ett mönster som avslöjar samband. Här lär du dig hur man läser den – och varför placeringen berättar så mycket om ett ämnes egenskaper.</p>
+  <nav class="hero-nav">
+    <a href="#vad-ar">Vad är det?</a>
+    <a href="#atomnummer">Atomnummer & masstal</a>
+    <a href="#grupper">Grupper</a>
+    <a href="#perioder">Perioder</a>
+    <a href="#metaller">Metaller & icke-metaller</a>
+    <a href="#trender">Trender</a>
+    <a href="#kolla">Kolla att du kan</a>
+  </nav>
+</div>
+
+<main>
+
+<!-- ══════════════════════════════════════
+     SEKTION 1 – VAD ÄR PERIODISKA SYSTEMET?
+══════════════════════════════════════ -->
+<div class="section" id="vad-ar">
+<div class="container">
+  <p class="section-eyebrow">Introduktion</p>
+  <h2 class="section-title">Vad är periodiska systemet?</h2>
+  <p class="section-intro">Periodiska systemet är en tabell där alla kända grundämnen är placerade i ett ordnat mönster. Det är ett av kemins viktigaste verktyg.</p>
+
+  <p class="prose">Grundämnena är ordnade efter deras <strong>atomnummer</strong> – alltså antalet protoner i kärnan. Men det som gör systemet riktigt kraftfullt är att den ordningen skapar tydliga mönster: ämnen som beter sig på liknande sätt hamnar bredvid varandra. Det betyder att om du vet var ett ämne sitter i tabellen, kan du säga ganska mycket om hur det reagerar och vilka egenskaper det har – utan att ha stött på det förut.</p>
+
+  <p class="prose">Systemet är uppbyggt i rader (perioder) och kolumner (grupper). Periodnumret berättar hur många elektronskal atomen har. Grupptillhörigheten berättar hur många elektroner som sitter i det yttersta skalet – och det är de som avgör hur ämnet reagerar.</p>
+
+  <!-- SVG: Förenklad periodisk tabell med markerade grupper/perioder -->
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 700 320" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:700px;display:block;margin:0 auto">
+
+      <!-- Rubrik -->
+      <text x="350" y="20" text-anchor="middle" font-family="Playfair Display,serif" font-size="13" fill="#1a1612" font-weight="700">Periodiska systemets uppbyggnad – förenklad</text>
+
+      <!-- Period-labels (vänster) -->
+      <text x="18" y="72" text-anchor="middle" font-family="Mulish,sans-serif" font-size="10" fill="#b85c2a" font-weight="700">P1</text>
+      <text x="18" y="122" text-anchor="middle" font-family="Mulish,sans-serif" font-size="10" fill="#b85c2a" font-weight="700">P2</text>
+      <text x="18" y="172" text-anchor="middle" font-family="Mulish,sans-serif" font-size="10" fill="#b85c2a" font-weight="700">P3</text>
+      <text x="18" y="222" text-anchor="middle" font-family="Mulish,sans-serif" font-size="10" fill="#b85c2a" font-weight="700">P4</text>
+
+      <!-- Grupp-labels (toppen) -->
+      <text x="48" y="42" text-anchor="middle" font-family="Mulish,sans-serif" font-size="9" fill="#2a4a7a" font-weight="700">G1</text>
+      <text x="96" y="42" text-anchor="middle" font-family="Mulish,sans-serif" font-size="9" fill="#2a4a7a" font-weight="700">G2</text>
+      <text x="560" y="42" text-anchor="middle" font-family="Mulish,sans-serif" font-size="9" fill="#2a4a7a" font-weight="700">G17</text>
+      <text x="608" y="42" text-anchor="middle" font-family="Mulish,sans-serif" font-size="9" fill="#2a4a7a" font-weight="700">G18</text>
+
+      <!-- Cells: Period 1 -->
+      <!-- H -->
+      <rect x="30" y="50" width="36" height="36" rx="4" fill="#d4703a" opacity=".85"/>
+      <text x="48" y="68" text-anchor="middle" font-family="Mulish,sans-serif" font-size="12" fill="#fff" font-weight="700">H</text>
+      <text x="48" y="80" text-anchor="middle" font-family="Mulish,sans-serif" font-size="8" fill="#ffe0b0">1</text>
+      <!-- He -->
+      <rect x="590" y="50" width="36" height="36" rx="4" fill="#2a7a6a" opacity=".85"/>
+      <text x="608" y="68" text-anchor="middle" font-family="Mulish,sans-serif" font-size="12" fill="#fff" font-weight="700">He</text>
+      <text x="608" y="80" text-anchor="middle" font-family="Mulish,sans-serif" font-size="8" fill="#b0ffe8">2</text>
+
+      <!-- Period 2 -->
+      <rect x="30" y="100" width="36" height="36" rx="4" fill="#d4703a" opacity=".85"/>
+      <text x="48" y="118" text-anchor="middle" font-family="Mulish,sans-serif" font-size="12" fill="#fff" font-weight="700">Li</text>
+      <text x="48" y="130" text-anchor="middle" font-family="Mulish,sans-serif" font-size="8" fill="#ffe0b0">3</text>
+
+      <rect x="78" y="100" width="36" height="36" rx="4" fill="#2a4a7a" opacity=".75"/>
+      <text x="96" y="118" text-anchor="middle" font-family="Mulish,sans-serif" font-size="12" fill="#fff" font-weight="700">Be</text>
+      <text x="96" y="130" text-anchor="middle" font-family="Mulish,sans-serif" font-size="8" fill="#c0d8ff">4</text>
+
+      <!-- Period 2 middle (placeholder) -->
+      <rect x="174" y="100" width="322" height="36" rx="4" fill="#f2ece0" stroke="#e8e0d0" stroke-width="1"/>
+      <text x="335" y="122" text-anchor="middle" font-family="Mulish,sans-serif" font-size="9" fill="#6a5e52" font-style="italic">B → Ne (grupp 13–18)</text>
+
+      <rect x="542" y="100" width="36" height="36" rx="4" fill="#c0522a" opacity=".75"/>
+      <text x="560" y="118" text-anchor="middle" font-family="Mulish,sans-serif" font-size="12" fill="#fff" font-weight="700">F</text>
+      <text x="560" y="130" text-anchor="middle" font-family="Mulish,sans-serif" font-size="8" fill="#ffd0b0">9</text>
+
+      <rect x="590" y="100" width="36" height="36" rx="4" fill="#2a7a6a" opacity=".85"/>
+      <text x="608" y="118" text-anchor="middle" font-family="Mulish,sans-serif" font-size="12" fill="#fff" font-weight="700">Ne</text>
+      <text x="608" y="130" text-anchor="middle" font-family="Mulish,sans-serif" font-size="8" fill="#b0ffe8">10</text>
+
+      <!-- Period 3 -->
+      <rect x="30" y="150" width="36" height="36" rx="4" fill="#d4703a" opacity=".85"/>
+      <text x="48" y="168" text-anchor="middle" font-family="Mulish,sans-serif" font-size="12" fill="#fff" font-weight="700">Na</text>
+      <text x="48" y="180" text-anchor="middle" font-family="Mulish,sans-serif" font-size="8" fill="#ffe0b0">11</text>
+
+      <rect x="78" y="150" width="36" height="36" rx="4" fill="#2a4a7a" opacity=".75"/>
+      <text x="96" y="168" text-anchor="middle" font-family="Mulish,sans-serif" font-size="12" fill="#fff" font-weight="700">Mg</text>
+      <text x="96" y="180" text-anchor="middle" font-family="Mulish,sans-serif" font-size="8" fill="#c0d8ff">12</text>
+
+      <rect x="174" y="150" width="322" height="36" rx="4" fill="#f2ece0" stroke="#e8e0d0" stroke-width="1"/>
+      <text x="335" y="172" text-anchor="middle" font-family="Mulish,sans-serif" font-size="9" fill="#6a5e52" font-style="italic">Al → Ar (grupp 13–18)</text>
+
+      <rect x="542" y="150" width="36" height="36" rx="4" fill="#c0522a" opacity=".75"/>
+      <text x="560" y="168" text-anchor="middle" font-family="Mulish,sans-serif" font-size="12" fill="#fff" font-weight="700">Cl</text>
+      <text x="560" y="180" text-anchor="middle" font-family="Mulish,sans-serif" font-size="8" fill="#ffd0b0">17</text>
+
+      <rect x="590" y="150" width="36" height="36" rx="4" fill="#2a7a6a" opacity=".85"/>
+      <text x="608" y="168" text-anchor="middle" font-family="Mulish,sans-serif" font-size="12" fill="#fff" font-weight="700">Ar</text>
+      <text x="608" y="180" text-anchor="middle" font-family="Mulish,sans-serif" font-size="8" fill="#b0ffe8">18</text>
+
+      <!-- Period 4 (placeholder) -->
+      <rect x="30" y="200" width="36" height="36" rx="4" fill="#d4703a" opacity=".85"/>
+      <text x="48" y="218" text-anchor="middle" font-family="Mulish,sans-serif" font-size="12" fill="#fff" font-weight="700">K</text>
+      <text x="48" y="230" text-anchor="middle" font-family="Mulish,sans-serif" font-size="8" fill="#ffe0b0">19</text>
+
+      <rect x="78" y="200" width="466" height="36" rx="4" fill="#f2ece0" stroke="#e8e0d0" stroke-width="1"/>
+      <text x="311" y="222" text-anchor="middle" font-family="Mulish,sans-serif" font-size="9" fill="#6a5e52" font-style="italic">Ca, Sc–Zn (övergångsmetaller), Ga → Kr</text>
+
+      <rect x="590" y="200" width="36" height="36" rx="4" fill="#2a7a6a" opacity=".85"/>
+      <text x="608" y="218" text-anchor="middle" font-family="Mulish,sans-serif" font-size="12" fill="#fff" font-weight="700">Kr</text>
+      <text x="608" y="230" text-anchor="middle" font-family="Mulish,sans-serif" font-size="8" fill="#b0ffe8">36</text>
+
+      <!-- Legend -->
+      <rect x="30" y="255" width="14" height="14" rx="3" fill="#d4703a"/>
+      <text x="50" y="266" font-family="Mulish,sans-serif" font-size="9" fill="#6a5e52">Alkalimetaller (Grupp 1)</text>
+      <rect x="190" y="255" width="14" height="14" rx="3" fill="#c0522a"/>
+      <text x="210" y="266" font-family="Mulish,sans-serif" font-size="9" fill="#6a5e52">Halogener (Grupp 17)</text>
+      <rect x="360" y="255" width="14" height="14" rx="3" fill="#2a7a6a"/>
+      <text x="380" y="266" font-family="Mulish,sans-serif" font-size="9" fill="#6a5e52">Ädelgaser (Grupp 18)</text>
+      <rect x="510" y="255" width="14" height="14" rx="3" fill="#2a4a7a" opacity=".75"/>
+      <text x="530" y="266" font-family="Mulish,sans-serif" font-size="9" fill="#6a5e52">Grupp 2</text>
+
+      <!-- Pilar: period och grupp riktning -->
+      <line x1="30" y1="292" x2="640" y2="292" stroke="#b85c2a" stroke-width="1.5"/>
+      <polygon points="640,288 648,292 640,296" fill="#b85c2a"/>
+      <text x="340" y="302" text-anchor="middle" font-family="Mulish,sans-serif" font-size="9" fill="#b85c2a" font-weight="600">→ Grupper (kolumner, liknande egenskaper)</text>
+    </svg>
+    <p class="diagram-caption">Figur 1. Förenklad bild av periodiska systemets struktur. Rader = perioder, kolumner = grupper. Atomnumret stiger vänster till höger.</p>
+  </div>
+
+  <div class="key-box">
+    <h4>🔑 Tre grundregler att komma ihåg</h4>
+    <dl>
+      <div class="term-row"><dt>Atomnummer styr platsen</dt><dd> – grundämnena är ordnade i stigande atomnummer (antal protoner) från vänster till höger.</dd></div>
+      <div class="term-row"><dt>Grupp visar likheter</dt><dd> – ämnen i samma grupp (lodrät kolumn) har liknande kemiska egenskaper för att de har lika många valenselektroner.</dd></div>
+      <div class="term-row"><dt>Period visar antal elektronskal</dt><dd> – periodnumret berättar direkt hur många elektronskal atomen har (Bohrs modell).</dd></div>
+    </dl>
+  </div>
+
+  <details class="micro-task">
+    <summary>🧠 Mikroövning – Vad kan man förutsäga av ett ämnes position?</summary>
+    <p><strong>Facit:</strong> Av positionen kan man förutsäga: ungefär hur reaktivt ämnet är, om det liknar grannarnas egenskaper, hur många valenselektroner det troligtvis har, och om det tenderar att bilda positiva eller negativa joner. Perioden ger dessutom en fingervisning om atomens storlek.</p>
+  </details>
+
+</div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SEKTION 2 – ATOMNUMMER OCH MASSTAL
+══════════════════════════════════════ -->
+<div class="section" id="atomnummer">
+<div class="container">
+  <p class="section-eyebrow">Begrepp</p>
+  <h2 class="section-title">Atomnummer och masstal</h2>
+  <p class="section-intro">Varje grundämne har ett atomnummer och ett masstal. De berättar exakt vad som finns inne i atomkärnan.</p>
+
+  <p class="prose"><strong>Atomnumret</strong> (Z) är antalet protoner i kärnan. Det är atomnumret som avgör vilket grundämne det är – har du 6 protoner är det alltid kol, har du 8 är det alltid syre. Inga undantag. Atomnumret är grundämnets "identitetskort".</p>
+
+  <p class="prose"><strong>Masstalet</strong> (A) är summan av protoner och neutroner i kärnan. Eftersom neutroner och protoner väger ungefär lika mycket ger masstalet en god uppskattning av atomens massa. Neutroner bidrar alltså till vikten men påverkar inte vilket grundämne det är.</p>
+
+  <p class="prose">Vill du räkna ut hur många neutroner en atom har är det enkelt: ta masstalet minus atomnumret. Natrium med atomnumret 11 och masstalet 23 har alltså 23 − 11 = 12 neutroner.</p>
+
+  <p class="prose">En kort notering om joner: en <strong>jon</strong> är en atom som tagit upp eller lämnat ifrån sig elektroner och därmed fått en elektrisk laddning. Atomnumret ändras inte – det är fortfarande samma grundämne – men antalet elektroner skiljer sig från antalet protoner.</p>
+
+  <!-- SVG: kärna med p+ och n0 + koppling till Z och A -->
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 700 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:700px;display:block;margin:0 auto">
+      <defs>
+        <marker id="a1" markerWidth="7" markerHeight="5" refX="5" refY="2.5" orient="auto"><path d="M0,0 L0,5 L7,2.5 z" fill="#6a5e52"/></marker>
+      </defs>
+      <text x="350" y="18" text-anchor="middle" font-family="Playfair Display,serif" font-size="13" fill="#1a1612" font-weight="700">Atomnummer och masstal – Natrium (Na)</text>
+
+      <!-- Kärna -->
+      <circle cx="220" cy="108" r="52" fill="#f2ece0" stroke="#d4703a" stroke-width="2"/>
+      <text x="220" y="90" text-anchor="middle" font-family="Mulish,sans-serif" font-size="10" fill="#b85c2a" font-weight="700">Kärnan</text>
+      <!-- Protons -->
+      <circle cx="210" cy="118" r="11" fill="#d4703a"/>
+      <text x="210" y="122" text-anchor="middle" font-family="Mulish,sans-serif" font-size="9" fill="#fff" font-weight="700">11p+</text>
+      <!-- Neutrons -->
+      <circle cx="225" cy="102" r="11" fill="#6a5e52"/>
+      <text x="225" y="106" text-anchor="middle" font-family="Mulish,sans-serif" font-size="9" fill="#fff" font-weight="700">12n⁰</text>
+      
+
+      <text x="220" y="175" text-anchor="middle" font-family="Mulish,sans-serif" font-size="9" fill="#6a5e52" font-style="italic">(förenklad, allt visas inte)</text>
+
+      <!-- Arrow to Z -->
+      <line x1="272" y1="108" x2="340" y2="90" stroke="#d4703a" stroke-width="1.5" marker-end="url(#a1)"/>
+      <rect x="342" y="58" width="180" height="52" rx="8" fill="#f2ece0" stroke="#d4703a" stroke-width="1.5"/>
+      <text x="432" y="80" text-anchor="middle" font-family="Playfair Display,serif" font-size="12" fill="#b85c2a" font-weight="700">Atomnummer = 11</text>
+      <text x="432" y="97" text-anchor="middle" font-family="Mulish,sans-serif" font-size="9" fill="#6a5e52">Antal protoner → bestämmer grundämnet</text>
+
+      <!-- Arrow to A -->
+      <line x1="272" y1="120" x2="340" y2="138" stroke="#6a5e52" stroke-width="1.5" marker-end="url(#a1)"/>
+      <rect x="342" y="128" width="180" height="52" rx="8" fill="#f2ece0" stroke="#6a5e52" stroke-width="1.5"/>
+      <text x="432" y="150" text-anchor="middle" font-family="Playfair Display,serif" font-size="12" fill="#2a2016" font-weight="700">Masstal = 23</text>
+      <text x="432" y="167" text-anchor="middle" font-family="Mulish,sans-serif" font-size="9" fill="#6a5e52">Protoner + neutroner = 11 + 12</text>
+
+      <!-- Na label -->
+      <text x="60" y="95" text-anchor="middle" font-family="Playfair Display,serif" font-size="32" fill="#1a1612" font-weight="900">Na</text>
+      <text x="60" y="115" text-anchor="middle" font-family="Mulish,sans-serif" font-size="11" fill="#6a5e52">Natrium</text>
+    </svg>
+    <p class="diagram-caption">Figur 2. Natriumatom – atomnumret 11 anger antalet protoner, masstalet 23 är protoner + neutroner. Neutroner = 23 − 11 = 12.</p>
+  </div>
+
+  <details class="micro-task">
+    <summary>🧠 Mikroövning – Atomnummer = 1, Masstal = 3. Hur många neutroner?</summary>
+    <p><strong>Facit:</strong> Neutroner = masstal − atomnummer = 3 − 1 = <strong>2 neutroner</strong>. Det är alltid den enkla subtraktionen som gäller.</p>
+  </details>
+
+</div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SEKTION 3 – GRUPPER
+══════════════════════════════════════ -->
+<div class="section" id="grupper">
+<div class="container">
+  <p class="section-eyebrow">Kolumner i systemet</p>
+  <h2 class="section-title">Grupper – lodräta kolumner med liknande egenskaper</h2>
+  <p class="section-intro">Alla grundämnen i en grupp har lika många elektroner i sitt yttersta elektronskal. Det är det som gör att de beter sig på liknande sätt.</p>
+
+  <p class="prose">Antalet elektroner i det yttersta skalet kallas <strong>valenselektroner</strong>. De är de elektroner som deltar i kemiska reaktioner och bindningar. Ämnen i grupp 1 har alla en valenselektron, ämnen i grupp 2 har två, och så vidare upp till grupp 18 som har åtta (ett fullt skal).</p>
+
+  <p class="prose">Tre grupper är särskilt viktiga att känna till på NK2-nivå:</p>
+
+  <!-- SVG: tre kolumner grupp 1, 17, 18 -->
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 700 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:700px;display:block;margin:0 auto">
+      <text x="350" y="18" text-anchor="middle" font-family="Playfair Display,serif" font-size="13" fill="#1a1612" font-weight="700">Tre viktiga grupper – valenselektroner</text>
+
+      <!-- Grupp 1 -->
+      <rect x="35" y="29" width="170" height="180" rx="10" fill="#f2ece0" stroke="#d4703a" stroke-width="2"/>
+      <text x="120" y="56" text-anchor="middle" font-family="Playfair Display,serif" font-size="13" fill="#b85c2a" font-weight="700">Grupp 1</text>
+      <text x="120" y="72" text-anchor="middle" font-family="Mulish,sans-serif" font-size="10" fill="#b85c2a">Alkalimetaller</text>
+      <text x="120" y="88" text-anchor="middle" font-family="Mulish,sans-serif" font-size="10" fill="#6a5e52">1 valenselektron</text>
+
+      <text x="120" y="112" text-anchor="middle" font-family="Mulish,sans-serif" font-size="11" fill="#2a2016">H, Li, Na, K, Rb…</text>
+      <!-- Electron shell illustration -->
+      <circle cx="120" cy="160" r="28" fill="none" stroke="#d4703a" stroke-width="1.5" stroke-dasharray="4,3"/>
+      <circle cx="120" cy="160" r="16" fill="none" stroke="#d4703a" stroke-width="1"/>
+      <circle cx="120" cy="160" r="7" fill="#d4703a"/>
+      <circle cx="148" cy="160" r="5" fill="#d4703a"/>
+      <text x="120" y="200" text-anchor="middle" font-family="Mulish,sans-serif" font-size="9" fill="#b85c2a">1 elektron i yttersta skalet</text>
+
+      <!-- Grupp 17 -->
+      <rect x="265" y="29" width="170" height="180" rx="10" fill="#e8f0f8" stroke="#2a4a7a" stroke-width="2"/>
+      <text x="350" y="56" text-anchor="middle" font-family="Playfair Display,serif" font-size="13" fill="#2a4a7a" font-weight="700">Grupp 17</text>
+      <text x="350" y="72" text-anchor="middle" font-family="Mulish,sans-serif" font-size="10" fill="#2a4a7a">Halogener</text>
+      <text x="350" y="88" text-anchor="middle" font-family="Mulish,sans-serif" font-size="10" fill="#6a5e52">7 valenselektroner</text>
+      <text x="350" y="112" text-anchor="middle" font-family="Mulish,sans-serif" font-size="11" fill="#2a2016">F, Cl, Br, I…</text>
+      <circle cx="350" cy="160" r="28" fill="none" stroke="#2a4a7a" stroke-width="1.5" stroke-dasharray="4,3"/>
+      <circle cx="350" cy="160" r="16" fill="none" stroke="#2a4a7a" stroke-width="1"/>
+      <circle cx="350" cy="160" r="7" fill="#2a4a7a"/>
+      <!-- 7 electrons placed on outer shell -->
+      <circle cx="378" cy="160" r="4" fill="#2a4a7a"/>
+      <circle cx="370" cy="140" r="4" fill="#2a4a7a"/>
+      <circle cx="350" cy="133" r="4" fill="#2a4a7a"/>
+      <circle cx="330" cy="140" r="4" fill="#2a4a7a"/>
+      <circle cx="322" cy="160" r="4" fill="#2a4a7a"/>
+      <circle cx="330" cy="180" r="4" fill="#2a4a7a"/>
+      <circle cx="370" cy="180" r="4" fill="#2a4a7a"/>
+      <text x="350" y="200" text-anchor="middle" font-family="Mulish,sans-serif" font-size="9" fill="#2a4a7a">7 elektroner – saknar 1 för fullt skal</text>
+
+      <!-- Grupp 18 -->
+      <rect x="495" y="29" width="170" height="180" rx="10" fill="#f0ece4" stroke="#2a7a6a" stroke-width="2"/>
+      <text x="580" y="56" text-anchor="middle" font-family="Playfair Display,serif" font-size="13" fill="#2a7a6a" font-weight="700">Grupp 18</text>
+      <text x="580" y="72" text-anchor="middle" font-family="Mulish,sans-serif" font-size="10" fill="#2a7a6a">Ädelgaser</text>
+      <text x="580" y="88" text-anchor="middle" font-family="Mulish,sans-serif" font-size="10" fill="#6a5e52">8 valenselektroner</text>
+      <text x="580" y="112" text-anchor="middle" font-family="Mulish,sans-serif" font-size="11" fill="#2a2016">He, Ne, Ar, Kr…</text>
+      <circle cx="580" cy="160" r="28" fill="none" stroke="#2a7a6a" stroke-width="1.5" stroke-dasharray="4,3"/>
+      <circle cx="580" cy="160" r="16" fill="none" stroke="#2a7a6a" stroke-width="1"/>
+      <circle cx="580" cy="160" r="7" fill="#2a7a6a"/>
+      <!-- 8 electrons -->
+      <circle cx="608" cy="160" r="4" fill="#2a7a6a"/>
+      <circle cx="600" cy="140" r="4" fill="#2a7a6a"/>
+      <circle cx="580" cy="133" r="4" fill="#2a7a6a"/>
+      <circle cx="560" cy="140" r="4" fill="#2a7a6a"/>
+      <circle cx="552" cy="160" r="4" fill="#2a7a6a"/>
+      <circle cx="560" cy="180" r="4" fill="#2a7a6a"/>
+      <circle cx="580" cy="187" r="4" fill="#2a7a6a"/>
+      <circle cx="600" cy="180" r="4" fill="#2a7a6a"/>
+      <text x="580" y="200" text-anchor="middle" font-family="Mulish,sans-serif" font-size="9" fill="#2a7a6a">Fullt yttersta skal – stabila, reagerar inte</text>
+    </svg>
+    <p class="diagram-caption">Figur 3. Tre grupper jämförda. Grupp 1 vill lämna sin valenselektron, grupp 17 vill ta upp en, och grupp 18 är redan stabila med fullt skal.</p>
+  </div>
+
+  <table class="compare-table">
+    <thead><tr>
+      <th>Grupp</th>
+      <th>Namn</th>
+      <th>Valenselektroner</th>
+      <th>Typisk reaktivitet</th>
+      <th>Exempelämnen</th>
+    </tr></thead>
+    <tbody>
+      <tr><td>1</td><td>Alkalimetaller</td><td>1</td><td>Mycket reaktiva, reagerar häftigt med vatten</td><td>Li, Na, K</td></tr>
+      <tr><td>2</td><td>Jordalkalimetaller</td><td>2</td><td>Reaktiva, men mer stabila än grupp 1</td><td>Mg, Ca, Ba</td></tr>
+      <tr><td>17</td><td>Halogener</td><td>7</td><td>Mycket reaktiva, tar gärna upp en elektron</td><td>F, Cl, Br, I</td></tr>
+      <tr><td>18</td><td>Ädelgaser</td><td>8 (fullt skal)</td><td>Mycket stabila, reagerar nästan inte alls</td><td>He, Ne, Ar, Kr</td></tr>
+    </tbody>
+  </table>
+
+</div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SEKTION 4 – PERIODER
+══════════════════════════════════════ -->
+<div class="section" id="perioder">
+<div class="container">
+  <p class="section-eyebrow">Rader i systemet</p>
+  <h2 class="section-title">Perioder – rader som berättar om elektronskal</h2>
+  <p class="section-intro">Perioderna är de vågräta raderna i systemet. De berättar direkt hur många elektronskal en atom har.</p>
+
+  <p class="prose">Periodnumret är enkelt att tolka: en atom i period 1 har ett elektronskal, en atom i period 2 har två skal, i period 3 tre skal, och så vidare. Varje ny period börjar alltså med ett nytt, tomt elektronskal som fylls på med elektroner allteftersom atomnumret ökar.</p>
+
+  <p class="prose">Det förklarar varför atomer blir större ju längre ner i en grupp man kommer – de har fler skal. En kaliumatom (period 4) är alltså större än en natriumatom (period 3), som i sin tur är större än en litiumatom (period 2) – trots att de alla tillhör grupp 1 och har liknande kemiska egenskaper.</p>
+
+  <!-- SVG: 3 atomer i olika perioder med ökande antal skal -->
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 700 190" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:700px;display:block;margin:0 auto">
+      <text x="350" y="18" text-anchor="middle" font-family="Playfair Display,serif" font-size="13" fill="#1a1612" font-weight="700">Grupp 1 – period 2, 3 och 4. Fler period → fler skal → större atom</text>
+
+      <!-- Li period 2 -->
+      <circle cx="120" cy="110" r="36" fill="#f2ece0" stroke="#d4703a" stroke-width="1.5" stroke-dasharray="5,3"/>
+      <circle cx="120" cy="110" r="22" fill="#f5f0ea" stroke="#d4703a" stroke-width="1"/>
+      <circle cx="120" cy="110" r="10" fill="#d4703a"/>
+      <text x="120" y="113" text-anchor="middle" font-family="Mulish,sans-serif" font-size="9" fill="#fff">Li</text>
+      <!-- val electron -->
+      <circle cx="156" cy="110" r="5" fill="#d4703a"/>
+      <text x="120" y="158" text-anchor="middle" font-family="Mulish,sans-serif" font-size="10" fill="#b85c2a" font-weight="600">Period 2</text>
+      <text x="120" y="170" text-anchor="middle" font-family="Mulish,sans-serif" font-size="9" fill="#6a5e52">2 elektronskal</text>
+
+      <!-- Na period 3 -->
+      <circle cx="350" cy="110" r="52" fill="#f2ece0" stroke="#2a4a7a" stroke-width="1.5" stroke-dasharray="5,3"/>
+      <circle cx="350" cy="110" r="36" fill="#f5f0ea" stroke="#2a4a7a" stroke-width="1"/>
+      <circle cx="350" cy="110" r="20" fill="#eee8e0" stroke="#2a4a7a" stroke-width="1"/>
+      <circle cx="350" cy="110" r="10" fill="#2a4a7a"/>
+      <text x="350" y="113" text-anchor="middle" font-family="Mulish,sans-serif" font-size="9" fill="#fff">Na</text>
+      <circle cx="402" cy="110" r="5" fill="#2a4a7a"/>
+      <text x="350" y="174" text-anchor="middle" font-family="Mulish,sans-serif" font-size="10" fill="#2a4a7a" font-weight="600">Period 3</text>
+      <text x="350" y="186" text-anchor="middle" font-family="Mulish,sans-serif" font-size="9" fill="#6a5e52">3 elektronskal</text>
+
+      <!-- K period 4 -->
+      <circle cx="590" cy="110" r="70" fill="#f2ece0" stroke="#2a7a6a" stroke-width="1.5" stroke-dasharray="5,3"/>
+      <circle cx="590" cy="110" r="54" fill="#f5f0ea" stroke="#2a7a6a" stroke-width="1"/>
+      <circle cx="590" cy="110" r="38" fill="#eee8e0" stroke="#2a7a6a" stroke-width="1"/>
+      <circle cx="590" cy="110" r="22" fill="#e8e0d8" stroke="#2a7a6a" stroke-width="1"/>
+      <circle cx="590" cy="110" r="10" fill="#2a7a6a"/>
+      <text x="590" y="113" text-anchor="middle" font-family="Mulish,sans-serif" font-size="9" fill="#fff">K</text>
+      <circle cx="660" cy="110" r="5" fill="#2a7a6a"/>
+      <text x="590" y="189" text-anchor="middle" font-family="Mulish,sans-serif" font-size="10" fill="#2a7a6a" font-weight="600">Period 4</text>
+    </svg>
+    <p class="diagram-caption">Figur 4. Li, Na och K tillhör alla grupp 1 (en valenselektron). Men de tillhör period 2, 3 respektive 4 – varje period lägger till ett elektronskal och gör atomen större.</p>
+  </div>
+
+  <details class="micro-task">
+    <summary>🧠 Mikroövning – Kalcium (Ca) har atomnumret 20. Vilken period tillhör det och hur många elektronskal har det?</summary>
+    <p><strong>Facit:</strong> Kalcium finns i period 4, alltså har det <strong>4 elektronskal</strong>. Elektronskalens fördelning är 2, 8, 8, 2 – de två yttersta är valenselektroner (grupp 2).</p>
+  </details>
+
+</div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SEKTION 5 – METALLER / ICKE-METALLER / HALVMETALLER
+══════════════════════════════════════ -->
+<div class="section" id="metaller">
+<div class="container">
+  <p class="section-eyebrow">Tre kategorier</p>
+  <h2 class="section-title">Metaller, icke-metaller och halvmetaller</h2>
+  <p class="section-intro">Periodiska systemet kan delas in i tre stora zoner beroende på ämnenas grundläggande egenskaper.</p>
+
+  <p class="prose">De flesta grundämnen är metaller – de sitter till vänster och i mitten av systemet. Icke-metallerna sitter till höger. Längs "trappan" däremellan finns en liten grupp ämnen med egenskaper från båda kategorier: halvmetallerna.</p>
+
+  <!-- SVG: förenklad tabell med zoner -->
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 700 180" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:700px;display:block;margin:0 auto">
+      <text x="350" y="18" text-anchor="middle" font-family="Playfair Display,serif" font-size="13" fill="#1a1612" font-weight="700">Metaller, halvmetaller och icke-metaller – zoner i systemet</text>
+
+      <!-- Metaller (vänster/mitten) -->
+      <rect x="30" y="30" width="400" height="130" rx="8" fill="#d4703a" opacity=".18"/>
+      <text x="160" y="55" text-anchor="middle" font-family="Playfair Display,serif" font-size="13" fill="#b85c2a" font-weight="700">Metaller</text>
+      <text x="160" y="72" text-anchor="middle" font-family="Mulish,sans-serif" font-size="10" fill="#b85c2a">Ca 20 · Fe 26 · Cu 29 · Au 79</text>
+      <text x="160" y="100" text-anchor="middle" font-family="Mulish,sans-serif" font-size="10" fill="#6a5e52">Vänster + mitten av systemet</text>
+
+      <!-- Halvmetaller (trappa) -->
+      <rect x="380" y="30" width="80" height="130" rx="8" fill="#6a5e52" opacity=".18"/>
+      <text x="420" y="55" text-anchor="middle" font-family="Playfair Display,serif" font-size="11" fill="#6a5e52" font-weight="700">Halv-</text>
+      <text x="420" y="70" text-anchor="middle" font-family="Playfair Display,serif" font-size="11" fill="#6a5e52" font-weight="700">metaller</text>
+      <text x="420" y="95" text-anchor="middle" font-family="Mulish,sans-serif" font-size="9" fill="#6a5e52">B, Si, Ge</text>
+      <text x="420" y="110" text-anchor="middle" font-family="Mulish,sans-serif" font-size="9" fill="#6a5e52">As, Sb…</text>
+      <text x="420" y="148" text-anchor="middle" font-family="Mulish,sans-serif" font-size="9" fill="#6a5e52" font-style="italic">längs "trappan"</text>
+
+      <!-- Icke-metaller (höger) -->
+      <rect x="460" y="30" width="210" height="130" rx="8" fill="#2a4a7a" opacity=".12"/>
+      <text x="565" y="55" text-anchor="middle" font-family="Playfair Display,serif" font-size="13" fill="#2a4a7a" font-weight="700">Icke-metaller</text>
+      <text x="565" y="72" text-anchor="middle" font-family="Mulish,sans-serif" font-size="10" fill="#2a4a7a">C, N, O, F, Cl, Ne, Ar</text>
+      <text x="565" y="100" text-anchor="middle" font-family="Mulish,sans-serif" font-size="10" fill="#6a5e52">Höger sida av systemet</text>
+    </svg>
+    <p class="diagram-caption">Figur 5. Förenklad zonindelning. Metaller dominerar vänster och mitten, icke-metaller sitter till höger och halvmetallerna bildar en "trappa" däremellan.</p>
+  </div>
+
+  <div class="three-col">
+    <div class="col-card accent-rust">
+      <h4>🔩 Metaller</h4>
+      <ul>
+        <li>Leder el och värme väl</li>
+        <li>Formbara – kan böjas och smidas</li>
+        <li>Ofta fasta vid rumstemperatur</li>
+        <li>Blank och glansig yta</li>
+        <li>Lämnar gärna ifrån sig elektroner</li>
+        <li>Exempel: järn, koppar, guld, natrium</li>
+      </ul>
+    </div>
+    <div class="col-card accent-blue">
+      <h4>💨 Icke-metaller</h4>
+      <ul>
+        <li>Leder el dåligt (undantag: grafit)</li>
+        <li>Ofta gaser eller sköra fasta ämnen</li>
+        <li>Tar gärna upp elektroner</li>
+        <li>Bildar kovalenta bindningar sinsemellan</li>
+        <li>Varierande egenskaper</li>
+        <li>Exempel: syre, kväve, svavel, klor</li>
+      </ul>
+    </div>
+    <div class="col-card accent-teal">
+      <h4>⚙️ Halvmetaller</h4>
+      <ul>
+        <li>Egenskaper mittemellan metall och icke-metall</li>
+        <li>Halvledare – leder el under vissa förhållanden</li>
+        <li>Viktiga i elektronik (kisel i chip)</li>
+        <li>Sitter längs "trappan" i systemet</li>
+        <li>Exempel: kisel (Si), germanium (Ge), bor (B)</li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SEKTION 6 – TRENDER
+══════════════════════════════════════ -->
+<div class="section" id="trender">
+<div class="container">
+  <p class="section-eyebrow">Mönster i systemet</p>
+  <h2 class="section-title">Trender i periodiska systemet</h2>
+  <p class="section-intro">En av periodiska systemets starka sidor är att det visar tydliga trender: egenskaper som förändras i bestämda riktningar när man rör sig i systemet.</p>
+
+  <p class="prose">Tre trender är särskilt viktiga att förstå: <strong>atomradie</strong>, <strong>jonbildningstendens</strong> och <strong>elektronegativitet</strong>. Alla tre hänger ihop med hur kärnan attraherar elektronerna.</p>
+
+  <p class="prose"><strong>Atomradie</strong> – Atomens storlek ökar nedåt i en grupp, eftersom varje ny period lägger till ett elektronskal. Åt höger i en period minskar däremot radien, trots att antalet elektroner ökar. Anledningen är att antalet protoner i kärnan ökar, vilket ger en starkare "dragkraft" inåt som drar elektronerna närmre kärnan.</p>
+
+  <p class="prose"><strong>Jonbildningstendens</strong> – Metaller till vänster lämnar gärna ifrån sig elektroner och bildar positiva joner. Icke-metaller till höger tar gärna upp elektroner och bildar negativa joner. Det är grunden för jonbindning.</p>
+
+  <p class="prose"><strong>Elektronegativitet</strong> – Elektronegativiteten mäter hur hårt en atom håller i de delade elektronerna i en bindning. Den ökar åt höger i en period (fler protoner drar hårdare) och minskar nedåt i en grupp (fler skal ökar avståndet). Fluor har den högsta elektronegativiteten av alla grundämnen.</p>
+
+  <!-- SVG: Pilar över förenklad periodisk tabell -->
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 700 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:700px;display:block;margin:0 auto">
+      <defs>
+        <marker id="arr-right" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><path d="M0,0 L0,6 L8,3 z" fill="#d4703a"/></marker>
+        <marker id="arr-left" markerWidth="8" markerHeight="6" refX="1" refY="3" orient="auto"><path d="M8,0 L8,6 L0,3 z" fill="#2a4a7a"/></marker>
+        <marker id="arr-down" markerWidth="6" markerHeight="8" refX="3" refY="7" orient="auto"><path d="M0,0 L6,0 L3,8 z" fill="#d4703a"/></marker>
+        <marker id="arr-up" markerWidth="6" markerHeight="8" refX="3" refY="1" orient="auto"><path d="M0,8 L6,8 L3,0 z" fill="#2a4a7a"/></marker>
+      </defs>
+
+      <text x="350" y="18" text-anchor="middle" font-family="Playfair Display,serif" font-size="13" fill="#1a1612" font-weight="700">Trender i periodiska systemet</text>
+
+      <!-- Tabell bakgrund -->
+      <rect x="60" y="32" width="580" height="130" rx="8" fill="#f5f0ea" stroke="#e8e0d0" stroke-width="1.5"/>
+
+      <!-- Period rows -->
+      <text x="44" y="75" text-anchor="middle" font-family="Mulish,sans-serif" font-size="9" fill="#6a5e52">P1</text>
+      <text x="44" y="108" text-anchor="middle" font-family="Mulish,sans-serif" font-size="9" fill="#6a5e52">P2</text>
+      <text x="44" y="141" text-anchor="middle" font-family="Mulish,sans-serif" font-size="9" fill="#6a5e52">P3</text>
+
+      <!-- Representative atoms -->
+      <rect x="72" y="56" width="42" height="34" rx="5" fill="#d4703a" opacity=".6"/>
+      <text x="93" y="78" text-anchor="middle" font-family="Mulish,sans-serif" font-size="10" fill="#fff" font-weight="700">H</text>
+      <rect x="120" y="56" width="42" height="34" rx="5" fill="#e8e0d0"/>
+      <text x="141" y="78" text-anchor="middle" font-family="Mulish,sans-serif" font-size="9" fill="#6a5e52">…</text>
+      <rect x="588" y="56" width="42" height="34" rx="5" fill="#2a7a6a" opacity=".6"/>
+      <text x="609" y="78" text-anchor="middle" font-family="Mulish,sans-serif" font-size="10" fill="#fff" font-weight="700">He</text>
+
+      <rect x="72" y="94" width="42" height="34" rx="5" fill="#d4703a" opacity=".6"/>
+      <text x="93" y="116" text-anchor="middle" font-family="Mulish,sans-serif" font-size="10" fill="#fff" font-weight="700">Li</text>
+      <rect x="120" y="94" width="348" height="34" rx="5" fill="#e8e0d0"/>
+      <text x="294" y="116" text-anchor="middle" font-family="Mulish,sans-serif" font-size="9" fill="#6a5e52">Be → N</text>
+      <rect x="474" y="94" width="42" height="34" rx="5" fill="#c0522a" opacity=".6"/>
+      <text x="495" y="116" text-anchor="middle" font-family="Mulish,sans-serif" font-size="10" fill="#fff" font-weight="700">F</text>
+      <rect x="522" y="94" width="42" height="34" rx="5" fill="#e8e0d0"/>
+      <text x="543" y="116" text-anchor="middle" font-family="Mulish,sans-serif" font-size="9" fill="#6a5e52">Ne</text>
+      <rect x="588" y="94" width="42" height="34" rx="5" fill="#2a7a6a" opacity=".6"/>
+      <text x="609" y="116" text-anchor="middle" font-family="Mulish,sans-serif" font-size="10" fill="#fff" font-weight="700">Ne</text>
+
+      <rect x="72" y="132" width="42" height="34" rx="5" fill="#d4703a" opacity=".6"/>
+      <text x="93" y="154" text-anchor="middle" font-family="Mulish,sans-serif" font-size="10" fill="#fff" font-weight="700">Na</text>
+      <rect x="120" y="132" width="420" height="34" rx="5" fill="#e8e0d0"/>
+      <text x="330" y="154" text-anchor="middle" font-family="Mulish,sans-serif" font-size="9" fill="#6a5e52">Mg → Cl</text>
+      <rect x="588" y="132" width="42" height="34" rx="5" fill="#2a7a6a" opacity=".6"/>
+      <text x="609" y="154" text-anchor="middle" font-family="Mulish,sans-serif" font-size="10" fill="#fff" font-weight="700">Ar</text>
+
+      <!-- Trend arrows – EN ökar åt höger -->
+      <line x1="80" y1="185" x2="625" y2="185" stroke="#2a4a7a" stroke-width="2" marker-end="url(#arr-right)"/>
+      <text x="350" y="198" text-anchor="middle" font-family="Mulish,sans-serif" font-size="9" fill="#2a4a7a" font-weight="600">Elektronegativitet ökar →   |   Atomradie minskar →   |   Icke-metallkaraktär ökar →</text>
+
+      <!-- Trend arrows – radie ökar nedåt -->
+      <line x1="30" y1="55" x2="30" y2="166" stroke="#d4703a" stroke-width="2" marker-end="url(#arr-down)"/>
+      <text x="17" y="120" text-anchor="middle" font-family="Mulish,sans-serif" font-size="8" fill="#b85c2a" font-weight="600" transform="rotate(-90,17,120)">Atomradie ökar ↓</text>
+
+      <!-- F marker -->
+      <text x="495" y="82" text-anchor="middle" font-family="Mulish,sans-serif" font-size="8" fill="#c0522a" font-style="italic">Högst EN</text>
+    </svg>
+    <p class="diagram-caption">Figur 6. Trender i periodiska systemet. Elektronegativiteten ökar åt höger och uppåt (fluor är störst). Atomradien ökar nedåt och åt vänster.</p>
+  </div>
+
+  <div class="analogy-box">
+    <h3>🧲 Liknelse – dragkraft och avstånd</h3>
+    <p>Tänk på atomkärnan som en <strong>magnet</strong> och elektronerna som metallkulor. En starkare magnet (fler protoner) drar kulorna hårdare = <strong>liten atomradie och hög elektronegativitet</strong>. Men om kulan är längre ifrån (fler elektronskal) spelar det roll att avståndet ökar – dragkraften minskar = <strong>större atomradie och lägre elektronegativitet</strong>.</p>
+  </div>
+
+  <table class="compare-table">
+    <thead><tr>
+      <th>Trend</th>
+      <th>Riktning i perioden (→)</th>
+      <th>Riktning i gruppen (↓)</th>
+      <th>Konsekvens för kemi</th>
+    </tr></thead>
+    <tbody>
+      <tr>
+        <td>Atomradie</td>
+        <td>Minskar (fler protoner, starkare dragkraft)</td>
+        <td>Ökar (fler elektronskal)</td>
+        <td>Påverkar hur nära atomer kan bindas, jonradie</td>
+      </tr>
+      <tr>
+        <td>Elektronegativitet</td>
+        <td>Ökar (starkare kärnladdning)</td>
+        <td>Minskar (längre avstånd till kärnan)</td>
+        <td>Avgör polaritet i bindningar, vätebindning</td>
+      </tr>
+      <tr>
+        <td>Jonbildningstendens (metaller)</td>
+        <td>Minskar åt höger</td>
+        <td>Ökar nedåt (K reagerar häftigare än Na)</td>
+        <td>Påverkar jonbindning och reaktivitet med syror</td>
+      </tr>
+      <tr>
+        <td>Jonbildningstendens (icke-metaller)</td>
+        <td>Ökar åt höger (F tar upp lättast)</td>
+        <td>Minskar nedåt (F > Cl > Br > I)</td>
+        <td>Påverkar oxidationsförmåga och reaktivitet</td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>
+</div>
+
+<!-- ══════════════════════════════════════
+     NYCKELBEGREPP
+══════════════════════════════════════ -->
+<div class="section">
+<div class="container">
+  <div class="key-box">
+    <h4>🔑 Nyckelbegrepp</h4>
+    <dl>
+      <div class="term-row"><dt>Periodiska systemet</dt><dd> – en tabell där alla grundämnen är ordnade i stigande atomnummer, arrangerade i perioder och grupper.</dd></div>
+      <div class="term-row"><dt>Grundämne</dt><dd> – ett ämne som bara består av atomer med samma antal protoner; kan inte brytas ner kemiskt till enklare ämnen.</dd></div>
+      <div class="term-row"><dt>Atomnummer </dt><dd> – antal protoner i atomkärnan; avgör vilket grundämne det är.</dd></div>
+      <div class="term-row"><dt>Masstal </dt><dd> – summan av protoner och neutroner i kärnan; ger atomens ungefärliga massa.</dd></div>
+      <div class="term-row"><dt>Period</dt><dd> – en vågrät rad i periodiska systemet; periodnumret anger hur många elektronskal atomen har.</dd></div>
+      <div class="term-row"><dt>Grupp</dt><dd> – en lodrät kolumn i periodiska systemet; ämnen i samma grupp har lika många valenselektroner och liknande egenskaper.</dd></div>
+      <div class="term-row"><dt>Valenselektron</dt><dd> – elektron i atomens yttersta skal; avgör hur atomen reagerar och vilka bindningar den kan bilda.</dd></div>
+      <div class="term-row"><dt>Metall</dt><dd> – grundämne till vänster/mitten i systemet; leder ström, är formbart och lämnar gärna ifrån sig elektroner.</dd></div>
+      <div class="term-row"><dt>Icke-metall</dt><dd> – grundämne till höger i systemet; leder ström dåligt och tar gärna upp elektroner.</dd></div>
+      <div class="term-row"><dt>Halvmetall</dt><dd> – grundämne längs "trappan" i systemet med egenskaper från båda kategorier; viktiga halvledare.</dd></div>
+      <div class="term-row"><dt>Atomradie</dt><dd> – ungefärlig storlek på en atom; ökar nedåt i gruppen och minskar åt höger i perioden.</dd></div>
+      <div class="term-row"><dt>Elektronegativitet</dt><dd> – ett mått på hur hårt en atom håller i delade elektroner; ökar åt höger och uppåt i systemet. Fluor är högst.</dd></div>
+      <div class="term-row"><dt>Jon</dt><dd> – en atom som tagit upp eller avgivit elektroner och därmed fått en elektrisk laddning.</dd></div>
+    </dl>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════
+     KOLLA ATT DU KAN
+══════════════════════════════════════ -->
+<div class="section" id="kolla">
+<div class="container">
+  <p class="section-eyebrow">Självbedömning</p>
+  <h2 class="section-title">Kolla att du kan</h2>
+  <p class="section-intro">Försök svara utan att titta i texten. Visa sedan mallsvaret och bocka i om du hade med det viktigaste.</p>
+  <div id="q-wrap"></div>
+</div>
+</div>
+
+</main>
+
+<footer>
+  <a href="nk2-periodiska.html">← Tillbaka till Atomen/periodiska</a> &middot; NK2 &middot; Periodiska systemet
+</footer>
+
+<script src="shared.js"></script>
+<script>
+requireLogin('NK2');
+
+const QUESTIONS = [
+  {
+    q: "Vad är grundtanken med periodiska systemet – vad visar det och varför är det användbart?",
+    model: [
+      "Periodiska systemet är en tabell där alla grundämnen ordnas i stigande atomnummer.",
+      "Ordningen skapar ett mönster: ämnen med liknande egenskaper hamnar i samma kolumn (grupp).",
+      "Det är användbart för att man kan förutsäga ett ämnes egenskaper bara av var det sitter i systemet.",
+      "Periodnumret berättar om antal elektronskal och grupptillhörigheten om valenselektroner."
+    ]
+  },
+  {
+    q: "Vad är atomnumret och vad avgör det? Vad är masstalet?",
+    model: [
+      "<strong>Atomnumret (Z)</strong> = antal protoner i kärnan. Det avgör vilket grundämne det är – två atomer med olika protontal är alltid olika grundämnen.",
+      "<strong>Masstalet (A)</strong> = protoner + neutroner. Det anger atomens ungefärliga massa.",
+      "Antal neutroner räknas ut som: masstal − atomnummer.",
+      "Exempel: natrium Z=11, A=23 → 23 − 11 = 12 neutroner."
+    ]
+  },
+  {
+    q: "Vad menas med en grupp i periodiska systemet? Varför har ämnen i samma grupp liknande egenskaper?",
+    model: [
+      "En grupp är en lodrät kolumn i periodiska systemet.",
+      "Ämnen i samma grupp har <strong>lika många valenselektroner</strong> – elektroner i yttersta skalet.",
+      "Det är valenselektronerna som deltar i kemiska reaktioner och bindningar.",
+      "Samma antal valenselektroner → liknande sätt att reagera."
+    ]
+  },
+  {
+    q: "Förklara vad alkalimetaller (grupp 1) och ädelgaser (grupp 18) har gemensamt med sin grupptillhörighet – och varför de beter sig så olika.",
+    model: [
+      "<strong>Alkalimetaller (grupp 1)</strong> har 1 valenselektron. Det är enkelt att lämna ifrån sig den för att nå fullt yttersta skal → de är mycket reaktiva.",
+      "<strong>Ädelgaser (grupp 18)</strong> har fullt yttersta skal (8 elektroner). De behöver varken ta upp eller lämna elektroner → de är stabila och reagerar nästan inte alls.",
+      "Gemensamt: båda gruppernas reaktivitet förklaras av hur nära de redan är ett fullt yttersta skal.",
+      "Skillnaden: alkalimetaller är långt ifrån fullt skal, ädelgaser är redan där."
+    ]
+  },
+  {
+    q: "Vad berättar periodnumret om en atoms uppbyggnad?",
+    model: [
+      "Periodnumret anger hur många <strong>elektronskal</strong> atomen har.",
+      "En atom i period 2 har 2 elektronskal, i period 3 har den 3 skal, och så vidare.",
+      "Varje ny period börjar med att ett nytt, tomt elektronskal börjar fyllas.",
+      "Det förklarar varför atomer i samma grupp blir större ju längre ner de sitter – fler skal = större atom."
+    ]
+  },
+  {
+    q: "Vilka tre kategorier delas grundämnena in i, och var sitter de ungefär i systemet?",
+    model: [
+      "<strong>Metaller</strong> – till vänster och i mitten av systemet. Leder ström, formbara, lämnar gärna ifrån sig elektroner.",
+      "<strong>Icke-metaller</strong> – till höger i systemet. Leder ström dåligt, tar gärna upp elektroner.",
+      "<strong>Halvmetaller</strong> – längs 'trappan' däremellan. Har egenskaper från båda och fungerar som halvledare.",
+      "Majoriteten av grundämnena är metaller."
+    ]
+  },
+  {
+    q: "Förklara trenden för atomradie: åt vilket håll ökar den och varför?",
+    model: [
+      "Atomradien <strong>ökar nedåt i en grupp</strong> – för varje period tillkommer ett nytt elektronskal som gör atomen större.",
+      "Atomradien <strong>minskar åt höger i en period</strong> – antalet protoner i kärnan ökar, vilket ger en starkare dragkraft inåt som drar elektronerna närmre.",
+      "Det är alltså en balans mellan fler skal (gör atomen större) och starkare kärnladdning (gör atomen mindre).",
+      "Kalium (period 4, grupp 1) är alltså mycket större än fluor (period 2, grupp 17)."
+    ]
+  },
+  {
+    q: "Vad är elektronegativitet och hur varierar den i periodiska systemet? Varför är det relevant för kemiska bindningar?",
+    model: [
+      "Elektronegativitet är ett mått på hur starkt en atom håller i de delade elektronerna i en kemisk bindning.",
+      "Den <strong>ökar åt höger</strong> i en period (fler protoner, starkare kärndragkraft).",
+      "Den <strong>minskar nedåt</strong> i en grupp (fler elektronskal, längre avstånd till kärnan).",
+      "Fluor har den högsta elektronegativiteten av alla grundämnen.",
+      "Relevansen: stor skillnad i elektronegativitet → polär bindning eller jonbindning. Liten skillnad → opolär kovalent bindning."
+    ]
+  }
+];
+
+let checked = new Array(QUESTIONS.length).fill(false);
+
+function buildQuestions() {
+  const wrap = document.getElementById('q-wrap');
+  QUESTIONS.forEach((q, i) => {
+    const items = q.model.map(m => `<li>${m}</li>`).join('');
+    wrap.innerHTML += `
+      <div class="q-card">
+        <div class="q-num">Fråga ${i+1} av ${QUESTIONS.length}</div>
+        <div class="q-text">${q.q}</div>
+        <textarea class="q-textarea" id="qta-${i}" placeholder="Skriv ditt svar här..."></textarea>
+        <button class="q-btn" onclick="showModel(${i})">Visa mallsvar →</button>
+        <div class="q-model" id="qmodel-${i}">
+          <div class="q-model-header">📋 Mallsvar</div>
+          <div class="q-model-body">
+            <ul>${items}</ul>
+            <div class="q-self-check">
+              <input type="checkbox" id="qcheck-${i}" onchange="toggleCheck(${i})"/>
+              <label for="qcheck-${i}">Jag hade med det viktigaste</label>
+            </div>
+          </div>
+        </div>
+        <button class="q-retry" onclick="resetQuestion(${i})">↩ Rensa och försök igen</button>
+      </div>`;
+  });
+  updateScore();
+}
+
+function showModel(i) { document.getElementById(`qmodel-${i}`).classList.add('shown'); }
+function toggleCheck(i) { checked[i] = document.getElementById(`qcheck-${i}`).checked; updateScore(); }
+function resetQuestion(i) {
+  document.getElementById(`qta-${i}`).value = '';
+  document.getElementById(`qmodel-${i}`).classList.remove('shown');
+  document.getElementById(`qcheck-${i}`).checked = false;
+  checked[i] = false;
+  updateScore();
+}
+
+function updateScore() {
+  const n = checked.filter(Boolean).length;
+  const total = QUESTIONS.length;
+  const msg = n === total ? '🎉 Utmärkt – du kan hela avsnittet!'
+    : n >= 6 ? '👍 Bra jobbat! Kika igenom de du missat.'
+    : n >= 4 ? '📖 Bra start – fortsätt öva på resten.'
+    : '🔍 Gå tillbaka till materialet och försök igen.';
+  let bar = document.getElementById('q-scorebar');
+  if (!bar) {
+    document.getElementById('q-wrap').insertAdjacentHTML('afterend',
+      `<div class="q-score-bar" id="q-scorebar">
+        <div class="q-score-num" id="qs-num">${n}/${total}</div>
+        <div><div class="q-score-label">Självskattning</div><div class="q-score-msg" id="qs-msg">${msg}</div></div>
+      </div>`);
+  } else {
+    document.getElementById('qs-num').textContent = `${n}/${total}`;
+    document.getElementById('qs-msg').textContent = msg;
+  }
+}
+
+buildQuestions();
+</script>
+
+</body>
+</html>
