@@ -1,1 +1,449 @@
-<!DOCTYPE html><html><body><h1>Organisk kemi</h1></body></html>
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Organisk kemi – NK2</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root{
+      --bg:#0b1219;
+      --surface:#111c27;
+      --card:#172233;
+      --border:#243548;
+      --teal:#3ecfb2;
+      --teal2:#27a890;
+      --amber:#f0b040;
+      --red:#e05555;
+      --green:#4caf82;
+      --text:#dde8f0;
+      --muted:#7a8ca0;
+      --radius:10px;
+    }
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{
+      font-family:'DM Sans',sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      min-height:100vh;
+    }
+
+    /* ── TOP BAR ── */
+    .top-bar{
+      background:var(--surface);
+      border-bottom:1px solid var(--border);
+      padding:16px 32px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      gap:12px;
+      position:sticky;
+      top:0;
+      z-index:50;
+    }
+    .top-left{display:flex;align-items:center;gap:14px;}
+    .back-link{font-size:.82rem;color:var(--muted);text-decoration:none;transition:color .2s;}
+    .back-link:hover{color:var(--teal);}
+    .top-title{font-family:'Fraunces',serif;font-size:1.15rem;}
+    .user-chip{background:var(--card);border:1px solid var(--border);padding:5px 12px;border-radius:30px;font-size:.78rem;color:var(--muted);}
+
+    /* ── HERO ── */
+    .hero{
+      padding:56px 32px 40px;
+      max-width:900px;
+      margin:0 auto;
+      text-align:center;
+    }
+    .hero-eyebrow{font-size:.75rem;letter-spacing:.22em;text-transform:uppercase;color:var(--teal);margin-bottom:12px;}
+    .hero h1{font-size:clamp(2rem,5vw,3.2rem);font-family:'Fraunces',serif;font-weight:900;margin-bottom:14px;}
+    .hero p{max-width:620px;margin:0 auto;color:var(--muted);font-size:1rem;line-height:1.7;}
+
+    /* ── TABS ── */
+    .tabs{
+      display:flex;
+      justify-content:center;
+      border-bottom:1px solid var(--border);
+      background:var(--surface);
+      margin-bottom:32px;
+      flex-wrap:wrap;
+    }
+    .tab{padding:14px 20px;font-size:.88rem;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;transition:.2s;}
+    .tab.active{color:var(--teal);border-bottom-color:var(--teal);}
+    .tab:hover:not(.active){color:var(--text);}
+
+    .panel{display:none;max-width:900px;margin:0 auto;padding:0 32px 80px;}
+    .panel.active{display:block;}
+
+    /* ── MATERIAL CARDS – förbättrad layout ── */
+    .mat-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+      gap:16px;
+    }
+
+    .mat-card{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:14px;
+      padding:0;
+      display:flex;
+      flex-direction:column;
+      overflow:hidden;
+      transition:border-color .2s, transform .2s;
+      text-decoration:none;
+      color:var(--text);
+    }
+    .mat-card:hover{
+      border-color:var(--teal);
+      transform:translateY(-3px);
+    }
+
+    /* Färgad topplinje per ämnesområde */
+    .mat-card-top{
+      height:4px;
+      background:var(--teal);
+    }
+    .mat-card-top.amber{ background:var(--amber); }
+    .mat-card-top.green{ background:var(--green); }
+    .mat-card-top.red{   background:var(--red); }
+    .mat-card-top.purple{ background:#a78bfa; }
+    .mat-card-top.pink{  background:#f472b6; }
+
+    .mat-card-body{
+      padding:20px 22px 22px;
+      display:flex;
+      flex-direction:column;
+      flex:1;
+    }
+
+    .mat-card-icon{
+      font-size:1.6rem;
+      margin-bottom:12px;
+      display:block;
+    }
+
+    .mat-card h4{
+      font-family:'Fraunces',serif;
+      font-size:1.05rem;
+      margin-bottom:8px;
+      line-height:1.25;
+    }
+
+    .mat-card p{
+      color:var(--muted);
+      font-size:.86rem;
+      line-height:1.6;
+      flex:1;
+      margin-bottom:16px;
+    }
+
+    .mat-card-footer{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }
+
+    .mat-pill{
+      font-size:.72rem;
+      font-weight:600;
+      padding:4px 10px;
+      border-radius:30px;
+      background:rgba(62,207,178,.1);
+      border:1px solid rgba(62,207,178,.22);
+      color:var(--teal);
+    }
+    .mat-pill.amber{
+      background:rgba(240,176,64,.1);
+      border-color:rgba(240,176,64,.22);
+      color:var(--amber);
+    }
+    .mat-pill.coming{
+      background:rgba(255,255,255,.04);
+      border-color:var(--border);
+      color:var(--muted);
+    }
+
+    .open-btn{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      font-size:.82rem;
+      font-weight:600;
+      color:var(--teal);
+      text-decoration:none;
+      transition:gap .15s;
+    }
+    .open-btn:hover{ gap:10px; }
+    .open-btn.coming{
+      color:var(--muted);
+      cursor:default;
+      pointer-events:none;
+    }
+
+    /* ── SIMPLE CARDS (flashcards / videos) ── */
+    .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:22px;transition:.2s;display:flex;flex-direction:column;}
+    .card:hover{border-color:var(--teal);transform:translateY(-2px);}
+    .card h4{margin-bottom:8px;font-family:'Fraunces',serif;font-size:1rem;}
+    .card p{color:var(--muted);font-size:.88rem;line-height:1.6;flex:1;margin-bottom:14px;}
+
+    .video-card{border-left:3px solid var(--amber);}
+
+    .link-btn{
+      display:inline-block;
+      margin-top:auto;
+      padding:9px 14px;
+      border:1px solid var(--teal);
+      border-radius:10px;
+      background:rgba(62,207,178,.08);
+      color:var(--teal);
+      text-decoration:none;
+      font-weight:600;
+      font-size:.84rem;
+      transition:all .2s;
+    }
+    .link-btn:hover{background:rgba(62,207,178,.16);transform:translateY(-1px);}
+
+    .video-btn{
+      display:inline-block;
+      margin-top:auto;
+      padding:9px 14px;
+      border:1px solid var(--amber);
+      border-radius:10px;
+      background:rgba(240,176,64,.08);
+      color:var(--amber);
+      text-decoration:none;
+      font-weight:600;
+      font-size:.84rem;
+      transition:all .2s;
+    }
+    .video-btn:hover{background:rgba(240,176,64,.16);transform:translateY(-1px);}
+
+    .coming-soon{
+      background:var(--card);
+      border:1px dashed var(--border);
+      padding:32px;
+      text-align:center;
+      color:var(--muted);
+      border-radius:var(--radius);
+    }
+
+    /* ── INTRO BANNER ── */
+    .intro-banner{
+      background:linear-gradient(135deg, rgba(62,207,178,.06), rgba(167,139,250,.06));
+      border:1px solid rgba(62,207,178,.14);
+      border-radius:14px;
+      padding:22px 26px;
+      margin-bottom:28px;
+      display:flex;
+      align-items:center;
+      gap:18px;
+    }
+    .intro-banner-icon{font-size:2rem;flex-shrink:0;}
+    .intro-banner p{font-size:.9rem;color:var(--muted);line-height:1.7;}
+    .intro-banner strong{color:var(--text);}
+
+    @media(max-width:700px){
+      .top-bar,.hero,.panel{padding-left:18px;padding-right:18px;}
+      .mat-grid{grid-template-columns:1fr;}
+    }
+  </style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<nav class="top-bar">
+  <div class="top-left">
+    <a href="nk2.html" class="back-link">← NK2</a>
+    <div class="top-title">Moment — Organisk kemi</div>
+  </div>
+  <div class="user-chip" id="user-chip">Laddar…</div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <p class="hero-eyebrow">NK2 — Organisk kemi</p>
+  <h1>Organisk kemi</h1>
+  <p>
+    Kolatomens förmåga att bilda långa kedjor och ringar är grunden för allt liv –
+    och för enormt många ämnen i vardagen. Här lär du dig kolväten,
+    alkoholer, syror och hur man namnger organiska föreningar.
+  </p>
+</div>
+
+<!-- TABS -->
+<div class="tabs">
+  <div class="tab active" data-tab="material">📚 Material</div>
+  <div class="tab" data-tab="flashcards">🃏 Flashcards</div>
+  <div class="tab" data-tab="uppgifter">✏️ Instuderingsfrågor</div>
+  <div class="tab" data-tab="video">🎬 Video</div>
+  <div class="tab" data-tab="quiz">🧠 Quiz</div>
+</div>
+
+<!-- ══════════════════ MATERIAL ══════════════════ -->
+<div class="panel active" id="material">
+
+  <div class="intro-banner">
+    <div class="intro-banner-icon">🧬</div>
+    <p>
+      <strong>Organisk kemi</strong> handlar om ämnen som innehåller kol.
+      Börja med kolatomens unika egenskaper för att förstå varför det finns
+      så oerhört många kolföreningar – sedan kan du ta de övriga avsnitten i valfri ordning.
+    </p>
+  </div>
+
+  <div class="mat-grid">
+
+    <!-- Kolatomens egenskaper -->
+    <div class="mat-card">
+      <div class="mat-card-top"></div>
+      <div class="mat-card-body">
+        <span class="mat-card-icon">⚛️</span>
+        <h4>Kolatomens unika egenskaper</h4>
+        <p>Varför kan kol bilda fler föreningar än alla andra grundämnen tillsammans? Fyra valenselektroner, kedjor och ringar.</p>
+        <div class="mat-card-footer">
+          <span class="mat-pill coming">Kommer snart</span>
+          <span class="open-btn coming">Läs mer →</span>
+        </div>
+      </div>
+    </div>
+
+
+<!-- Kolväten -->
+<a class="mat-card" href="nk2-material-kolvaten.html" aria-label="Öppna material: Kolväten – alkaner, alkener och alkyner">
+  <div class="mat-card-top amber"></div>
+
+  <div class="mat-card-body">
+    <span class="mat-card-icon">🔗</span>
+    <h4>Kolväten – alkaner, alkener och alkyner</h4>
+    <p>Enkelbindningar, dubbelbindningar och trippelbindningar. Metan, eten, acetylen – och var de finns i vardagen.</p>
+
+    <div class="mat-card-footer">
+      <span class="mat-pill amber">Material</span>
+      <span class="open-btn">Läs mer →</span>
+    </div>
+  </div>
+</a>
+
+
+    <!-- Alkoholer -->
+    <div class="mat-card">
+      <div class="mat-card-top green"></div>
+      <div class="mat-card-body">
+        <span class="mat-card-icon">🍷</span>
+        <h4>Alkoholer</h4>
+        <p>Hydroxylgruppen –OH. Etanol, metanol och propanol – skillnader, egenskaper och användningsområden.</p>
+        <div class="mat-card-footer">
+          <span class="mat-pill coming">Kommer snart</span>
+          <span class="open-btn coming">Läs mer →</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Organiska syror -->
+    <div class="mat-card">
+      <div class="mat-card-top red"></div>
+      <div class="mat-card-body">
+        <span class="mat-card-icon">🍋</span>
+        <h4>Organiska syror</h4>
+        <p>Karboxylgruppen –COOH. Ättiksyra, myrsyra och citronsyra – varför de är sura och var de uppträder.</p>
+        <div class="mat-card-footer">
+          <span class="mat-pill coming">Kommer snart</span>
+          <span class="open-btn coming">Läs mer →</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Estrar -->
+    <div class="mat-card">
+      <div class="mat-card-top purple"></div>
+      <div class="mat-card-body">
+        <span class="mat-card-icon">🌸</span>
+        <h4>Estrar</h4>
+        <p>Reaktionen mellan en alkohol och en syra. Varför estrar luktar frukt och blommor – och deras roll i fetter och oljor.</p>
+        <div class="mat-card-footer">
+          <span class="mat-pill coming">Kommer snart</span>
+          <span class="open-btn coming">Läs mer →</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Namngivning -->
+    <div class="mat-card">
+      <div class="mat-card-top pink"></div>
+      <div class="mat-card-body">
+        <span class="mat-card-icon">🏷️</span>
+        <h4>Namngivning av organiska föreningar</h4>
+        <p>Systematiska namn utifrån kolkedjelängd och funktionell grupp. Metan → butan, etanol → propansyra.</p>
+        <div class="mat-card-footer">
+          <span class="mat-pill coming">Kommer snart</span>
+          <span class="open-btn coming">Läs mer →</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════ FLASHCARDS ══════════════════ -->
+<div class="panel" id="flashcards">
+  <div class="coming-soon">🃏 Flashcards för organisk kemi kommer snart.</div>
+</div>
+
+<!-- ══════════════════ INSTUDERINGSFRÅGOR ══════════════════ -->
+<div class="panel" id="uppgifter">
+  <div class="coming-soon">✏️ Instuderingsfrågor kommer snart.</div>
+</div>
+
+<!-- ══════════════════ VIDEO ══════════════════ -->
+<div class="panel" id="video">
+  <div class="cards">
+
+    <div class="card video-card">
+      <h4>Organisk kemi – introduktion</h4>
+      <p>Vad är organisk kemi och varför är kol så speciellt?</p>
+      <a class="video-btn" href="https://app.begreppa.se/videos/kemi/organisk-kemi" target="_blank" rel="noopener noreferrer">Öppna video ↗</a>
+    </div>
+
+    <div class="card video-card">
+      <h4>Kolväten</h4>
+      <p>Alkaner, alkener och alkyner – struktur och egenskaper.</p>
+      <a class="video-btn" href="https://app.begreppa.se/videos/kemi/organisk-kemi" target="_blank" rel="noopener noreferrer">Öppna video ↗</a>
+    </div>
+
+    <div class="card video-card">
+      <h4>Alkoholer och organiska syror</h4>
+      <p>Funktionella grupper och deras egenskaper.</p>
+      <a class="video-btn" href="https://app.begreppa.se/videos/kemi/organisk-kemi" target="_blank" rel="noopener noreferrer">Öppna video ↗</a>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════ QUIZ ══════════════════ -->
+<div class="panel" id="quiz">
+  <div class="coming-soon">🧠 Quiz kommer snart.</div>
+</div>
+
+<script src="shared.js"></script>
+<script>
+  const s = requireLogin('NK2');
+  if (!s) window.location.href = 'index.html';
+  document.getElementById('user-chip').textContent = s.name;
+
+  const tabs = document.querySelectorAll('.tab');
+  const panels = document.querySelectorAll('.panel');
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      panels.forEach(p => p.classList.remove('active'));
+      document.getElementById(tab.dataset.tab).classList.add('active');
+    });
+  });
+</script>
+</body>
+</html>

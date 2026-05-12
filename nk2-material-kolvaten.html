@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Kolväten – NK2</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Mulish:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #faf7f2; --surface: #ffffff; --border: #e8e0d0;
+      --sand: #f2ece0; --rust: #b85c2a; --rust2: #d4703a;
+      --teal: #2a7a6a; --blue: #2a4a7a; --text: #1a1612;
+      --muted: #6a5e52; --radius: 10px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Mulish', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; font-size: 16px; }
+
+    /* TOP BAR */
+    .top-bar { background: #1a1612; padding: 14px 28px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; position: sticky; top: 0; z-index: 100; }
+    .back-link { color: #c8b89a; text-decoration: none; font-size: .82rem; transition: color .2s; }
+    .back-link:hover { color: #fff; }
+    .top-title { font-family: 'Playfair Display', serif; font-size: 1rem; color: #e8dcc8; }
+    .top-title span { color: #d4a060; }
+
+    /* HERO */
+    .hero { background: linear-gradient(135deg, #1a1612 0%, #1a2820 60%, #1a1612 100%); padding: 64px 32px 56px; text-align: center; position: relative; overflow: hidden; }
+    .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 60% 60% at 30% 50%, rgba(42,122,106,.12) 0%, transparent 60%), radial-gradient(ellipse 50% 70% at 80% 30%, rgba(180,92,42,.06) 0%, transparent 55%); pointer-events: none; }
+    .hero-eyebrow { font-size: .72rem; letter-spacing: .22em; text-transform: uppercase; color: #d4a060; margin-bottom: 12px; position: relative; z-index: 1; }
+    .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 5vw, 3rem); font-weight: 900; color: #f0e8d8; margin-bottom: 16px; line-height: 1.15; position: relative; z-index: 1; }
+    .hero-sub { font-size: 1rem; color: #a09080; max-width: 720px; margin: 0 auto 32px; line-height: 1.7; position: relative; z-index: 1; }
+    .hero-nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; position: relative; z-index: 1; }
+    .hero-nav a { font-size: .8rem; color: #c8b89a; border: 1px solid rgba(200,184,154,.3); border-radius: 30px; padding: 7px 16px; text-decoration: none; transition: all .2s; }
+    .hero-nav a:hover { background: rgba(200,184,154,.12); color: #fff; }
+
+    /* SECTION LAYOUT */
+    .container { max-width: 860px; margin: 0 auto; padding: 0 24px; }
+    .section { padding: 60px 0; }
+    .section + .section { border-top: 1px solid var(--border); }
+    .section-eyebrow { font-size: .7rem; letter-spacing: .2em; text-transform: uppercase; color: var(--rust); font-weight: 600; margin-bottom: 8px; }
+    .section-title { font-family: 'Playfair Display', serif; font-size: clamp(1.5rem, 3vw, 2rem); color: var(--text); margin-bottom: 6px; line-height: 1.25; }
+    .section-intro { font-size: .95rem; color: var(--muted); margin-bottom: 32px; max-width: 680px; line-height: 1.7; }
+    .prose { font-size: .95rem; line-height: 1.75; color: #2a2016; margin-bottom: 24px; }
+    .prose strong { color: var(--text); font-weight: 600; }
+
+    .key-box { background: var(--sand); border-left: 4px solid var(--rust2); border-radius: 0 var(--radius) var(--radius) 0; padding: 18px 22px; margin-bottom: 28px; }
+    .key-box h4 { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--rust); margin-bottom: 10px; }
+    .key-box p { font-size: .88rem; color: #4a3a2a; line-height: 1.65; }
+    .key-box dl { font-size: .88rem; color: #4a3a2a; display: flex; flex-direction: column; gap: 8px; }
+    .key-box dt { font-weight: 700; color: var(--text); display: inline; }
+    .key-box dd { display: inline; margin: 0; }
+    .key-box .term-row { line-height: 1.6; }
+
+    .diagram-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; margin-bottom: 28px; overflow-x: auto; }
+    .diagram-wrap h3 { font-family:'Playfair Display',serif; font-size: 1.05rem; margin-bottom: 12px; }
+    .diagram-caption { font-size: .78rem; color: var(--muted); text-align: center; margin-top: 12px; font-style: italic; }
+
+    .compare-table { width: 100%; border-collapse: collapse; margin-bottom: 32px; font-size: .88rem; }
+    .compare-table th { background: #1a1612; color: #e8dcc8; padding: 12px 16px; text-align: left; font-weight: 600; font-family: 'Playfair Display', serif; }
+    .compare-table th:first-child { border-radius: 8px 0 0 0; }
+    .compare-table th:last-child { border-radius: 0 8px 0 0; }
+    .compare-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); vertical-align: top; }
+    .compare-table tr:nth-child(even) td { background: var(--sand); }
+    .compare-table tr:last-child td { border-bottom: none; }
+    .compare-table td:first-child { font-weight: 700; color: var(--text); }
+
+    .analogy-box { background: #1a1612; border-radius: var(--radius); padding: 28px 32px; margin-bottom: 32px; }
+    .analogy-box h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: #e8dcc8; margin-bottom: 14px; }
+    .analogy-box p { font-size: .9rem; color: #a09080; line-height: 1.7; }
+    .analogy-box strong { color: #e8dcc8; }
+
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 28px; }
+    .col-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px; }
+    .col-card h4 { font-family: 'Playfair Display', serif; font-size: 1rem; margin-bottom: 10px; }
+    .col-card p { font-size: .87rem; color: var(--muted); line-height: 1.6; }
+    .col-card.accent-rust { border-top: 3px solid var(--rust2); }
+    .col-card.accent-teal { border-top: 3px solid var(--teal); }
+    .col-card.accent-blue { border-top: 3px solid var(--blue); }
+
+    /* mikroövningar */
+    .micro-task { margin: 12px 0 26px; border: 1px dashed var(--border); border-radius: var(--radius); background: rgba(242,236,224,.55); padding: 12px 14px; }
+    .micro-task summary { cursor: pointer; font-weight: 700; color: var(--text); list-style: none; }
+    .micro-task summary::-webkit-details-marker{display:none;}
+    .micro-task p { margin-top: 10px; color: var(--muted); font-size: .9rem; line-height: 1.7; }
+
+    .misconception { border: 1px solid rgba(184,92,42,.25); background: rgba(212,112,58,.08); border-radius: var(--radius); padding: 16px 18px; margin: 12px 0 28px; }
+    .misconception h4 { margin: 0 0 10px; font-family: 'Playfair Display', serif; color: var(--rust); font-size: 1rem; }
+    .misconception ul { margin-left: 18px; color: #4a3a2a; font-size: .9rem; line-height: 1.7; }
+
+    /* NYCKELBEGREPP GLOSSARY */
+    .glossary { display: flex; flex-direction: column; gap: 0; margin-bottom: 28px; }
+    .gloss-row { display: flex; gap: 0; border-bottom: 1px solid var(--border); padding: 13px 0; }
+    .gloss-row:first-child { border-top: 1px solid var(--border); }
+    .gloss-term { font-weight: 700; color: var(--text); min-width: 200px; font-size: .92rem; padding-right: 20px; flex-shrink: 0; }
+    .gloss-def { font-size: .88rem; color: var(--muted); line-height: 1.6; }
+
+    /* SELF-CHECK */
+    .q-card { background: #1a1612; border: 1px solid #2a2018; border-radius: var(--radius); padding: 22px 26px; margin-bottom: 18px; }
+    .q-num { font-size: .68rem; letter-spacing: .18em; text-transform: uppercase; color: #d4a060; margin-bottom: 7px; font-weight: 600; }
+    .q-text { font-family: 'Playfair Display', serif; font-size: .95rem; color: #f0e8d8; margin-bottom: 14px; line-height: 1.5; }
+    .q-textarea { width: 100%; background: #0f0c08; border: 1.5px solid #2a2018; border-radius: 6px; color: #e8dcc8; font-family: 'Mulish', sans-serif; font-size: .9rem; padding: 11px 13px; resize: vertical; min-height: 88px; outline: none; transition: border-color .2s; line-height: 1.6; }
+    .q-textarea:focus { border-color: #d4703a; }
+    .q-btn { margin-top: 10px; font-family: 'Mulish', sans-serif; font-size: .84rem; font-weight: 600; padding: 8px 20px; border-radius: 6px; border: none; cursor: pointer; background: #d4703a; color: #fff; transition: background .2s; }
+    .q-btn:hover { background: #b85c2a; }
+    .q-model { margin-top: 14px; display: none; background: #0f0c08; border: 1px solid #2a2018; border-radius: 6px; overflow: hidden; }
+    .q-model.shown { display: block; }
+    .q-model-header { background: #2a2018; padding: 8px 16px; font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: #d4a060; font-weight: 600; }
+    .q-model-body { padding: 14px 18px; font-size: .88rem; color: #c8b89a; line-height: 1.75; }
+    .q-model-body strong { color: #f0e8d8; }
+    .q-model-body ul { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+    .q-model-body li { padding-left: 16px; position: relative; }
+    .q-model-body li::before { content: '→'; position: absolute; left: 0; color: #d4703a; font-size: .8rem; }
+    .q-self-check { margin-top: 12px; padding-top: 12px; border-top: 1px solid #2a2018; display: flex; align-items: center; gap: 10px; font-size: .82rem; color: #8a7a60; cursor: pointer; }
+    .q-self-check input { accent-color: #d4703a; width: 16px; height: 16px; cursor: pointer; }
+    .q-retry { margin-top: 10px; font-size: .78rem; color: #6a5a40; background: none; border: none; cursor: pointer; font-family: 'Mulish', sans-serif; text-decoration: underline; padding: 0; display: block; }
+    .q-retry:hover { color: #c8b89a; }
+    .q-score-bar { background: #0f0c08; border: 1px solid #2a2018; border-radius: var(--radius); padding: 20px 24px; margin-top: 32px; display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+    .q-score-num { font-family: 'Playfair Display', serif; font-size: 2rem; color: #d4703a; }
+    .q-score-label { font-size: .85rem; color: #8a7a60; }
+    .q-score-msg { font-size: .88rem; color: #c8b89a; }
+
+    footer { border-top: 1px solid var(--border); padding: 28px 24px; text-align: center; font-size: .78rem; color: var(--muted); margin-top: 40px; }
+    footer a { color: var(--teal); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+
+    @media(max-width: 580px) {
+      .hero { padding: 44px 20px 36px; }
+      .container { padding: 0 16px; }
+      .two-col { grid-template-columns: 1fr; }
+      .gloss-row { flex-direction: column; gap: 4px; }
+      .gloss-term { min-width: unset; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="top-bar">
+  <a href="nk2.html" class="back-link">← NK2 / Kemi</a>
+  <div class="top-title">NK2 — <span>Kolväten</span></div>
+</div>
+
+<div class="hero">
+  <p class="hero-eyebrow">Kemi · Moment 4 · NK2</p>
+  <h1>Kolväten</h1>
+  <p class="hero-sub">
+    Kolväten är grunden i organisk kemi. När du kan skilja på alkaner, alkener, alkyner och bensen och koppla struktur till egenskaper
+    blir resten av organisk kemi mycket lättare.
+  </p>
+  <nav class="hero-nav">
+    <a href="#vad-ar">Vad är det?</a>
+    <a href="#indelning">Indelning</a>
+    <a href="#namn">Namngivning</a>
+    <a href="#isomeri">Isomeri</a>
+    <a href="#egenskaper">Egenskaper</a>
+    <a href="#reaktioner">Reaktioner</a>
+    <a href="#nyckel">Nyckelbegrepp</a>
+    <a href="#kolla">Kolla att du kan</a>
+  </nav>
+</div>
+
+<main>
+
+<!-- ══════════════════════════════════════
+     SEKTION 1 – VAD ÄR KOLVÄTEN?
+══════════════════════════════════════ -->
+<div class="section" id="vad-ar">
+  <div class="container">
+    <p class="section-eyebrow">Grundidé</p>
+    <h2 class="section-title">Vad är kolväten?</h2>
+    <p class="section-intro">Kolväten är organiska ämnen som bara innehåller kol (C) och väte (H). De kan ändå variera enormt i struktur och egenskaper.</p>
+
+    <p class="prose">
+      Kolväten är den enklaste gruppen organiska ämnen – men samtidigt en av de mest användbara att förstå.
+      Kol har <strong>fyra valenselektroner</strong> och kan därför bilda <strong>fyra kovalenta bindningar</strong>.
+      Det gör att kolatomer kan kopplas ihop till <strong>kedjor</strong>, <strong>förgreningar</strong> och <strong>ringar</strong>.
+    </p>
+
+    <div class="analogy-box">
+      <h3>🧩 Liknelse: "kopplingspunkt med fyra armar"</h3>
+      <p>
+        Tänk dig en kolatom som en kopplingspunkt med fyra armar.
+        Varje arm kan haka i en annan atom.
+        När många kolatomer kopplas ihop kan de bygga allt från korta kedjor (gas) till långa kedjor (vax) och ringar (t.ex. bensen).
+      </p>
+    </div>
+
+    <div class="diagram-wrap">
+      <h3>Kol kan bygga kedjor och ringar</h3>
+      <svg viewBox="0 0 720 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:720px;display:block;margin:0 auto">
+        <defs>
+          <style>
+            .c{fill:#d4703a}
+            .h{fill:#e8f0f8;stroke:#2a4a7a;stroke-width:1}
+            .b{stroke:#1a1612;stroke-width:2}
+            .t{font-family:Mulish,sans-serif;fill:#6a5e52;font-size:11px}
+            .th{font-family:'Playfair Display',serif;fill:#1a1612;font-size:13px;font-weight:700}
+          </style>
+        </defs>
+        <text x="360" y="22" text-anchor="middle" class="th">Fyra bindningar → många strukturer</text>
+
+        <!-- kol med 4 bindningar -->
+        <circle cx="115" cy="110" r="18" class="c"/>
+        <text x="115" y="115" text-anchor="middle" font-family="Mulish,sans-serif" font-size="10" fill="#fff" font-weight="700">C</text>
+        <line x1="115" y1="92" x2="115" y2="62" class="b"/>
+        <line x1="133" y1="110" x2="170" y2="110" class="b"/>
+        <line x1="115" y1="128" x2="115" y2="158" class="b"/>
+        <line x1="97" y1="110" x2="60" y2="110" class="b"/>
+        <text x="115" y="190" text-anchor="middle" class="t">"4 armar"</text>
+
+        <!-- kedja -->
+        <circle cx="320" cy="110" r="14" class="c"/>
+        <circle cx="360" cy="110" r="14" class="c"/>
+        <circle cx="400" cy="110" r="14" class="c"/>
+        <circle cx="440" cy="110" r="14" class="c"/>
+        <line x1="334" y1="110" x2="346" y2="110" class="b"/>
+        <line x1="374" y1="110" x2="386" y2="110" class="b"/>
+        <line x1="414" y1="110" x2="426" y2="110" class="b"/>
+        <text x="380" y="190" text-anchor="middle" class="t">kedja</text>
+
+        <!-- ring (bensen-skiss) -->
+        <polygon points="600,75 640,98 640,142 600,165 560,142 560,98" fill="none" stroke="#1a1612" stroke-width="2"/>
+        <line x1="600" y1="75" x2="640" y2="98" stroke="#1a1612" stroke-width="4" opacity=".4"/>
+        <line x1="640" y1="142" x2="600" y2="165" stroke="#1a1612" stroke-width="4" opacity=".4"/>
+        <line x1="560" y1="98" x2="560" y2="142" stroke="#1a1612" stroke-width="4" opacity=".4"/>
+        <text x="600" y="190" text-anchor="middle" class="t">ring (bensen)</text>
+      </svg>
+      <p class="diagram-caption">Kol kan koppla ihop sig till kedjor och ringar. Det är en viktig orsak till att organisk kemi innehåller så många ämnen.</p>
+    </div>
+
+    <details class="micro-task">
+      <summary>🧠 Mikroövning: varför ger kol så många olika ämnen?</summary>
+      <p>
+        <strong>Facit:</strong> Kol kan bilda fyra kovalenta bindningar och kan kopplas ihop till långa kedjor, förgreningar och ringar. Små skillnader i struktur ger många möjliga molekyler.
+      </p>
+    </details>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SEKTION 2 – INDELNING
+══════════════════════════════════════ -->
+<div class="section" id="indelning">
+  <div class="container">
+    <p class="section-eyebrow">Översikt</p>
+    <h2 class="section-title">Indelning: alkaner, alkener, alkyner och bensen</h2>
+    <p class="section-intro">Kolväten delas in efter vilken typ av bindning som finns mellan kolatomerna.</p>
+
+    <div class="two-col">
+      <div class="col-card accent-rust">
+        <h4>Alkaner (mättade)</h4>
+        <p>Har bara <strong>enkelbindningar</strong> mellan kolatomer. De kallas mättade eftersom de redan har maximalt antal väten per kol (givet enkelbindningar).</p>
+      </div>
+      <div class="col-card accent-teal">
+        <h4>Alkener och alkyner (omättade)</h4>
+        <p>Har minst en <strong>dubbelbindning</strong> (alken) eller <strong>trippelbindning</strong> (alkyn). De kallas omättade eftersom de kan reagera genom addition.</p>
+      </div>
+    </div>
+
+    <div class="col-card accent-blue" style="margin-bottom:28px;">
+      <h4>Aromatiska kolväten (bensen)</h4>
+      <p>Bensen är ett ringformat kolväte. I kursen räcker det att känna igen det som en <strong>sexhörnig ring</strong> och att aromatiska ämnen ofta beter sig annorlunda än vanliga alkener.</p>
+    </div>
+
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th>Typ</th>
+          <th>Bindning mellan kol</th>
+          <th>Ändelse i namn</th>
+          <th>Exempel</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Alkan</td><td>Enkelbindning (—)</td><td>-an</td><td>metan, propan</td></tr>
+        <tr><td>Alken</td><td>Dubbelbindning (=)</td><td>-en</td><td>eten, 1-buten</td></tr>
+        <tr><td>Alkyn</td><td>Trippelbindning (≡)</td><td>-yn</td><td>etyn</td></tr>
+        <tr><td>Aromatisk</td><td>Ring (bensen)</td><td>("bensen")</td><td>bensen</td></tr>
+      </tbody>
+    </table>
+
+    <div class="diagram-wrap">
+      <h3>Bindningstyper + bensen</h3>
+      <svg viewBox="0 0 720 230" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:720px;display:block;margin:0 auto">
+        <defs>
+          <style>
+            .lbl2{font-family:Mulish,sans-serif;fill:#6a5e52;font-size:11px}
+            .c2{fill:#d4703a}
+            .b2{stroke:#1a1612;stroke-width:3}
+          </style>
+        </defs>
+
+        <!-- alkan -->
+        <circle cx="120" cy="90" r="14" class="c2"/>
+        <circle cx="170" cy="90" r="14" class="c2"/>
+        <line x1="134" y1="90" x2="156" y2="90" class="b2"/>
+        <text x="145" y="130" text-anchor="middle" class="lbl2">alkan (—)</text>
+        <text x="145" y="144" text-anchor="middle" class="lbl2">enkelbindning</text>
+
+        <!-- alken -->
+        <circle cx="300" cy="90" r="14" class="c2"/>
+        <circle cx="350" cy="90" r="14" class="c2"/>
+        <line x1="314" y1="86" x2="336" y2="86" class="b2"/>
+        <line x1="314" y1="94" x2="336" y2="94" class="b2"/>
+        <text x="325" y="130" text-anchor="middle" class="lbl2">alken (=)</text>
+        <text x="325" y="144" text-anchor="middle" class="lbl2">dubbelbindning</text>
+
+        <!-- alkyn -->
+        <circle cx="480" cy="90" r="14" class="c2"/>
+        <circle cx="530" cy="90" r="14" class="c2"/>
+        <line x1="494" y1="84" x2="516" y2="84" class="b2"/>
+        <line x1="494" y1="90" x2="516" y2="90" class="b2"/>
+        <line x1="494" y1="96" x2="516" y2="96" class="b2"/>
+        <text x="505" y="130" text-anchor="middle" class="lbl2">alkyn (≡)</text>
+        <text x="505" y="144" text-anchor="middle" class="lbl2">trippelbindning</text>
+
+        <!-- bensen -->
+        <polygon points="620,55 660,78 660,122 620,145 580,122 580,78" fill="none" stroke="#1a1612" stroke-width="2.5"/>
+        <line x1="620" y1="55" x2="660" y2="78" stroke="#1a1612" stroke-width="4" opacity=".4"/>
+        <line x1="660" y1="122" x2="620" y2="145" stroke="#1a1612" stroke-width="4" opacity=".4"/>
+        <line x1="580" y1="78" x2="580" y2="122" stroke="#1a1612" stroke-width="4" opacity=".4"/>
+        <text x="620" y="170" text-anchor="middle" class="lbl2">bensen (ring)</text>
+        <text x="620" y="184" text-anchor="middle" class="lbl2">aromatisk</text>
+
+      </svg>
+      <p class="diagram-caption">Vi använder streck för att visa om bindningen är enkel, dubbel eller trippel. Bensen ritas som en sexhörnig ring med omväxlande enkla och dubbla bindningar (ofta visas som en cirkel inuti ringen).</p>
+    </div>
+
+    <div class="key-box">
+      <h4>🔑 Mättad vs omättad</h4>
+      <p><strong>Mättad</strong> betyder "bara enkelbindningar" (alkan). <strong>Omättad</strong> betyder att det finns dubbel- eller trippelbindning (alken/alkyn), vilket gör addition möjlig.</p>
+    </div>
+
+    <details class="micro-task">
+      <summary>🧠 Mikroövning: vilka kolväten är omättade?</summary>
+      <p><strong>Facit:</strong> Alkener och alkyner är omättade. Alkaner är mättade. Bensen räknas som aromatiskt och behandlas separat.</p>
+    </details>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SEKTION 3 – NAMNGIVNING
+══════════════════════════════════════ -->
+<div class="section" id="namn">
+  <div class="container">
+    <p class="section-eyebrow">Nomenklatur (grundnivå)</p>
+    <h2 class="section-title">Namngivning av enkla kolväten</h2>
+    <p class="section-intro">I NK2 räcker det långt att kunna prefix (kedjelängd) och ändelser (-an, -en, -yn) samt att kunna ange var dubbelbindningen sitter.</p>
+
+    <p class="prose">
+      Namnet berättar två saker: <strong>hur många kol</strong> som finns i huvudkedjan och <strong>vilken bindningstyp</strong> som finns.
+      För alkener och alkyner anger man också <strong>var</strong> dubbel- eller trippelbindningen börjar genom numrering.
+    </p>
+
+    <div class="key-box">
+      <h4>🏷️ Snabbregel i 4 steg</h4>
+      <dl>
+        <div class="term-row"><dt>Steg 1</dt><dd> – Hitta den längsta kolkedjan.</dd></div>
+        <div class="term-row"><dt>Steg 2</dt><dd> – Numrera kedjan från den ände som ger lägst siffra till dubbel- eller trippelbindningen.</dd></div>
+        <div class="term-row"><dt>Steg 3</dt><dd> – Välj rätt prefix (met-, et-, prop-, but-…) utifrån antalet kol.</dd></div>
+        <div class="term-row"><dt>Steg 4</dt><dd> – Lägg till ändelse (-an/-en/-yn) och positionssiffra vid behov. Ex: 4 kol + dubbelbindning på kol 1 → <strong>1-buten</strong>.</dd></div>
+      </dl>
+    </div>
+
+    <div class="diagram-wrap">
+      <h3>Namngivning – flöde</h3>
+      <svg viewBox="0 0 720 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:720px;display:block;margin:0 auto">
+        <defs>
+          <style>
+            .bx{fill:#f2ece0;stroke:#e8e0d0;stroke-width:1.5;rx:10}
+            .tn{font-family:Mulish,sans-serif;fill:#1a1612;font-size:11px}
+            .tm{font-family:Mulish,sans-serif;fill:#6a5e52;font-size:10px}
+          </style>
+          <marker id="arrN" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+            <path d="M0,0 L10,3 L0,6 Z" fill="#6a5e52"/>
+          </marker>
+        </defs>
+        <rect x="30" y="55" width="150" height="60" rx="10" fill="#f2ece0" stroke="#e8e0d0" stroke-width="1.5"/>
+        <text x="105" y="78" text-anchor="middle" class="tn" font-weight="700">1) Längsta kedja</text>
+        <text x="105" y="95" text-anchor="middle" class="tm">Räkna antalet C</text>
+        <text x="105" y="108" text-anchor="middle" class="tm">i huvudkedjan</text>
+
+        <line x1="190" y1="85" x2="230" y2="85" stroke="#6a5e52" stroke-width="1.5" marker-end="url(#arrN)"/>
+
+        <rect x="238" y="55" width="150" height="60" rx="10" fill="#f2ece0" stroke="#e8e0d0" stroke-width="1.5"/>
+        <text x="313" y="78" text-anchor="middle" class="tn" font-weight="700">2) Numrera kedjan</text>
+        <text x="313" y="95" text-anchor="middle" class="tm">Lägst siffra till</text>
+        <text x="313" y="108" text-anchor="middle" class="tm">dubbelbindningen</text>
+
+        <line x1="398" y1="85" x2="438" y2="85" stroke="#6a5e52" stroke-width="1.5" marker-end="url(#arrN)"/>
+
+        <rect x="446" y="55" width="240" height="60" rx="10" fill="#f2ece0" stroke="#e8e0d0" stroke-width="1.5"/>
+        <text x="566" y="78" text-anchor="middle" class="tn" font-weight="700">3–4) Bygg namnet</text>
+        <text x="566" y="95" text-anchor="middle" class="tm">Prefix + position + ändelse</text>
+        <text x="566" y="108" text-anchor="middle" fill="#b85c2a" font-family="Mulish,sans-serif" font-size="11" font-weight="700">Ex: 1-buten</text>
+
+        <text x="360" y="160" text-anchor="middle" class="tm">4 kol + dubbelbindning på kol 1 → 1-buten</text>
+        <text x="360" y="177" text-anchor="middle" class="tm">5 kol + trippelbindning på kol 2 → 2-pentyn</text>
+      </svg>
+      <p class="diagram-caption">Namngivningsflödet steg för steg. Ändelsen avslöjar bindningstypen; siffran avslöjar var den sitter.</p>
+    </div>
+
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th>Antal kol</th>
+          <th>Prefix</th>
+          <th>Alkan (enkel)</th>
+          <th>Alken (dubbel)</th>
+          <th>Alkyn (trippel)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>1</td><td>met-</td><td>metan</td><td>—</td><td>—</td></tr>
+        <tr><td>2</td><td>et-</td><td>etan</td><td>eten</td><td>etyn</td></tr>
+        <tr><td>3</td><td>prop-</td><td>propan</td><td>propen</td><td>propyn</td></tr>
+        <tr><td>4</td><td>but-</td><td>butan</td><td>1-buten</td><td>1-butyn</td></tr>
+        <tr><td>5</td><td>pent-</td><td>pentan</td><td>1-penten</td><td>2-pentyn</td></tr>
+        <tr><td>6</td><td>hex-</td><td>hexan</td><td>1-hexen</td><td>1-hexyn</td></tr>
+      </tbody>
+    </table>
+
+    <details class="micro-task">
+      <summary>🧠 Mikroövning: vilket namn passar på en molekyl med fyra kol i kedja och en dubbelbindning längst ut på första kolatomen?</summary>
+      <p>
+        <strong>Facit:</strong> 1-buten.
+      </p>
+    </details>
+
+    <div class="misconception">
+      <h4>⚠️ Vanliga missuppfattningar</h4>
+      <ul>
+        <li>Ändelsen <strong>-en</strong> betyder inte "extra kol" – den betyder <strong>dubbelbindning</strong>.</li>
+        <li>Positionssiffran beskriver var dubbel-/trippelbindningen <em>börjar</em>, inte hur många bindningar det finns.</li>
+        <li>"Eten" och "etén" är samma ämne – etén är äldre benämning. I kursen används eten.</li>
+	<li>Namngivningen i olika källor kan se lite olika ut 1-buten anges ibland som 1-buten men det är samma molekyl</li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SEKTION 4 – ISOMERI
+══════════════════════════════════════ -->
+<div class="section" id="isomeri">
+  <div class="container">
+    <p class="section-eyebrow">Varför så många kolföreningar?</p>
+    <h2 class="section-title">Isomeri – samma formel, olika struktur</h2>
+    <p class="section-intro">Isomeri är en av huvudförklaringarna till att det finns så många organiska ämnen. Samma summaformel kan ge helt olika molekyler.</p>
+
+    <p class="prose">
+      <strong>Isomerer</strong> har samma summaformel (samma antal C och H) men olika struktur.
+      Det kan innebära att kolatomer är ordnade i en rak kedja istället för en grenad, eller att en dubbelbindning sitter på olika ställen.
+      Strukturskillnaderna gör att molekylerna "packar" sig annorlunda, vilket ger olika egenskaper – till exempel olika kokpunkt.
+    </p>
+
+    <div class="diagram-wrap">
+      <h3>Exempel: C₄H₁₀ – två strukturisomerer</h3>
+      <svg viewBox="0 0 720 250" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:720px;display:block;margin:0 auto">
+        <defs>
+          <style>
+            .ci{fill:#d4703a}
+            .bi{stroke:#1a1612;stroke-width:3}
+            .li{font-family:Mulish,sans-serif;fill:#6a5e52;font-size:11px}
+            .hi{font-family:'Playfair Display',serif;fill:#1a1612;font-size:13px;font-weight:700}
+          </style>
+        </defs>
+
+        <text x="180" y="24" text-anchor="middle" class="hi">Butan (rak kedja)</text>
+        <text x="540" y="24" text-anchor="middle" class="hi">2-metylpropan (grenad)</text>
+
+        <!-- Butan: C-C-C-C vågrätt -->
+        <circle cx="80" cy="110" r="15" class="ci"/>
+        <text x="80" y="115" text-anchor="middle" font-family="Mulish,sans-serif" font-size="9" fill="#fff">C</text>
+        <circle cx="130" cy="110" r="15" class="ci"/>
+        <text x="130" y="115" text-anchor="middle" font-family="Mulish,sans-serif" font-size="9" fill="#fff">C</text>
+        <circle cx="180" cy="110" r="15" class="ci"/>
+        <text x="180" y="115" text-anchor="middle" font-family="Mulish,sans-serif" font-size="9" fill="#fff">C</text>
+        <circle cx="230" cy="110" r="15" class="ci"/>
+        <text x="230" y="115" text-anchor="middle" font-family="Mulish,sans-serif" font-size="9" fill="#fff">C</text>
+        <line x1="95" y1="110" x2="115" y2="110" class="bi"/>
+        <line x1="145" y1="110" x2="165" y2="110" class="bi"/>
+        <line x1="195" y1="110" x2="215" y2="110" class="bi"/>
+        <text x="155" y="148" text-anchor="middle" class="li">rak kedja → packar tätare</text>
+        <text x="155" y="162" text-anchor="middle" class="li">Kokpunkt: −1 °C</text>
+
+        <!-- Isobutan: ett centralt C + 3 sidokedjor -->
+        <circle cx="510" cy="110" r="15" class="ci"/>
+        <text x="510" y="115" text-anchor="middle" font-family="Mulish,sans-serif" font-size="9" fill="#fff">C</text>
+        <!-- vänster -->
+        <circle cx="460" cy="110" r="15" class="ci"/>
+        <text x="460" y="115" text-anchor="middle" font-family="Mulish,sans-serif" font-size="9" fill="#fff">C</text>
+        <line x1="475" y1="110" x2="495" y2="110" class="bi"/>
+        <!-- höger -->
+        <circle cx="560" cy="110" r="15" class="ci"/>
+        <text x="560" y="115" text-anchor="middle" font-family="Mulish,sans-serif" font-size="9" fill="#fff">C</text>
+        <line x1="525" y1="110" x2="545" y2="110" class="bi"/>
+        <!-- upp -->
+        <circle cx="510" cy="62" r="15" class="ci"/>
+        <text x="510" y="67" text-anchor="middle" font-family="Mulish,sans-serif" font-size="9" fill="#fff">C</text>
+        <line x1="510" y1="77" x2="510" y2="95" class="bi"/>
+        <text x="510" y="178" text-anchor="middle" class="li">grenad → packar sämre</text>
+        <text x="510" y="192" text-anchor="middle" class="li">Kokpunkt: −12 °C</text>
+
+        <!-- separator -->
+        <line x1="360" y1="40" x2="360" y2="200" stroke="#e8e0d0" stroke-width="1" stroke-dasharray="6,4"/>
+        <text x="360" y="220" text-anchor="middle" class="li">Samma summaformel: C₄H₁₀</text>
+        <text x="360" y="236" text-anchor="middle" class="li">Olika struktur → olika kokpunkt</text>
+      </svg>
+      <p class="diagram-caption">Figur: Butan och 2-metylpropan har samma summaformel (C₄H₁₀) men olika struktur och därmed olika kokpunkt.</p>
+    </div>
+
+    <p class="prose">
+      Isomeri kan också uppstå när en dubbelbindning befinner sig på olika positioner i en kolkedja – t.ex. but-1-en och but-2-en är isomerer till varandra.
+      Ju fler kolatomer, desto fler möjliga isomerer. Dekan (C₁₀H₂₂) har över 75 möjliga strukturisomerer!
+    </p>
+
+    <div class="key-box">
+      <h4>🔑 Isomeri i en mening</h4>
+      <p>Samma summaformel kan ge <strong>olika molekyler</strong>. Olika struktur → olika form → ofta <strong>olika kokpunkt</strong> och andra egenskaper.</p>
+    </div>
+
+    <details class="micro-task">
+      <summary>🧠 Mikroövning: varför ändras kokpunkten?</summary>
+      <p><strong>Facit:</strong> Molekylernas form påverkar hur nära de kan ligga varandra och hur starka van der Waals-krafter de kan få. Rakare kedjor packar tätare och kan attrahera mer → högre kokpunkt. Grenade molekyler packar sämre → lägre kokpunkt.</p>
+    </details>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SEKTION 5 – EGENSKAPER
+══════════════════════════════════════ -->
+<div class="section" id="egenskaper">
+  <div class="container">
+    <p class="section-eyebrow">Konsekvenser av struktur</p>
+    <h2 class="section-title">Egenskaper: löslighet, kokpunkt och aggregationstillstånd</h2>
+    <p class="section-intro">Kolväten är oftast opolära. Därför påverkas deras egenskaper starkt av van der Waals-krafter och av kedjelängd.</p>
+
+    <div class="two-col">
+      <div class="col-card accent-teal">
+        <h4>💧 Löslighet i vatten</h4>
+        <p>Kolväten är <strong>opolära</strong> och blandar sig därför dåligt med vatten (som är polärt). Tumregel: <em>lika löser lika</em>. Kolväten löser sig bättre i opolära lösningsmedel som bensin.</p>
+      </div>
+      <div class="col-card accent-rust">
+        <h4>🌡️ Kokpunkt och kedjelängd</h4>
+        <p>Ju längre kolkedja, desto fler kontaktpunkter mellan molekyler → starkare van der Waals-krafter → oftast <strong>högre kokpunkt</strong>. Grenade isomerer har lägre kokpunkt än raka av samma längd.</p>
+      </div>
+    </div>
+
+    <div class="analogy-box">
+      <h3>🧷 Liknelse: "många små kardborrar"</h3>
+      <p>
+        Tänk att varje liten del av molekylen kan "hakas i" andra molekyler lite grann.
+        En längre molekyl får fler sådana kontaktpunkter, ungefär som mer kardborre → svårare att dra isär → mer energi krävs → högre kokpunkt.
+        En <strong>grenad</strong> molekyl kan inte ligga lika tätt intill en annan → färre kontaktpunkter → lägre kokpunkt.
+      </p>
+    </div>
+
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th>Kedjelängd</th>
+          <th>Typiskt tillstånd (25 °C)</th>
+          <th>Exempel</th>
+          <th>Användning</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Kort (C1–C4)</td><td>Gas</td><td>Metan, propan, butan</td><td>Naturgas, gasolkök, tändare</td></tr>
+        <tr><td>Medel (C5–C11)</td><td>Vätska (flyktig)</td><td>Pentan, hexan, oktan</td><td>Bensin, lösningsmedel</td></tr>
+        <tr><td>Längre (C12–C16)</td><td>Vätska (trögflytande)</td><td>Dodekan, tetradekan</td><td>Diesel, fotogen</td></tr>
+        <tr><td>Lång (C17+)</td><td>Fast/vax</td><td>Ikosan, paraffinvax</td><td>Stearinljus, smörjmedel</td></tr>
+      </tbody>
+    </table>
+
+    <div class="diagram-wrap">
+      <h3>Trend: fler kol → högre kokpunkt</h3>
+      <svg viewBox="0 0 720 260" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:720px;display:block;margin:0 auto">
+        <defs>
+          <style>
+            .axe{stroke:#1a1612;stroke-width:2}
+            .grd{stroke:#e8e0d0;stroke-width:1}
+            .dot{fill:#2a7a6a}
+            .lt{font-family:Mulish,sans-serif;fill:#6a5e52;font-size:11px}
+            .ttl2{font-family:'Playfair Display',serif;fill:#1a1612;font-size:13px;font-weight:700}
+          </style>
+        </defs>
+        <text x="360" y="22" text-anchor="middle" class="ttl2">Kokpunkt för normala alkaner (trend)</text>
+        <!-- Axlar -->
+        <line x1="80" y1="220" x2="660" y2="220" class="axe"/>
+        <line x1="80" y1="220" x2="80" y2="50" class="axe"/>
+        <!-- Gridlinjer -->
+        <line x1="80" y1="180" x2="660" y2="180" class="grd"/>
+        <line x1="80" y1="140" x2="660" y2="140" class="grd"/>
+        <line x1="80" y1="100" x2="660" y2="100" class="grd"/>
+        <line x1="80" y1="60" x2="660" y2="60" class="grd"/>
+        <!-- Y-axel etiketter -->
+        <text x="68" y="224" text-anchor="end" class="lt">−160</text>
+        <text x="68" y="184" text-anchor="end" class="lt">−50</text>
+        <text x="68" y="144" text-anchor="end" class="lt">+36</text>
+        <text x="68" y="104" text-anchor="end" class="lt">+125</text>
+        <text x="68" y="64" text-anchor="end" class="lt">+287</text>
+        <!-- Axeltext -->
+        <text x="370" y="245" text-anchor="middle" class="lt">Antal kolatomer (C)</text>
+        <text x="22" y="140" text-anchor="middle" class="lt" transform="rotate(-90 22 140)">Kokpunkt (°C)</text>
+        <!-- Punkter: C1 metan -162, C2 -89, C3 -42, C4 -1, C5 36, C6 69, C8 126, C10 174, C16 287 -->
+        <!-- Skala: y = 220 - (kp+162)/(287+162) * 170 -->
+        <circle cx="140" cy="220" r="6" class="dot"/> <!-- C1: -162 → y=220 -->
+        <circle cx="220" cy="195" r="6" class="dot"/> <!-- C2: -89 → y≈192 -->
+        <circle cx="300" cy="182" r="6" class="dot"/> <!-- C3: -42 → y≈182 -->
+        <circle cx="380" cy="171" r="6" class="dot"/> <!-- C4: -1 -->
+        <circle cx="460" cy="155" r="6" class="dot"/> <!-- C5: 36 -->
+        <circle cx="510" cy="143" r="6" class="dot"/> <!-- C6: 69 -->
+        <circle cx="560" cy="117" r="6" class="dot"/> <!-- C8: 126 -->
+        <circle cx="610" cy="88" r="6" class="dot"/>  <!-- C10: 174 -->
+        <circle cx="640" cy="58" r="6" class="dot"/>  <!-- C16: 287 -->
+        <polyline points="140,220 220,195 300,182 380,171 460,155 510,143 560,117 610,88 640,58" fill="none" stroke="#2a7a6a" stroke-width="2.5" opacity=".8"/>
+        <!-- X-etikett -->
+        <text x="140" y="235" text-anchor="middle" class="lt">C1</text>
+        <text x="220" y="235" text-anchor="middle" class="lt">C2</text>
+        <text x="300" y="235" text-anchor="middle" class="lt">C3</text>
+        <text x="380" y="235" text-anchor="middle" class="lt">C4</text>
+        <text x="460" y="235" text-anchor="middle" class="lt">C5</text>
+        <text x="510" y="235" text-anchor="middle" class="lt">C6</text>
+        <text x="560" y="235" text-anchor="middle" class="lt">C8</text>
+        <text x="610" y="235" text-anchor="middle" class="lt">C10</text>
+        <text x="640" y="235" text-anchor="middle" class="lt">C16</text>
+        <!-- Aggregationstillstånd -->
+        <rect x="82" y="56" width="58" height="14" fill="rgba(42,122,106,.12)" rx="3"/>
+        <text x="111" y="66" text-anchor="middle" fill="#2a7a6a" font-family="Mulish,sans-serif" font-size="9">fast/vax</text>
+        <rect x="82" y="150" width="48" height="14" fill="rgba(212,112,58,.1)" rx="3"/>
+        <text x="101" y="160" text-anchor="middle" fill="#b85c2a" font-family="Mulish,sans-serif" font-size="9">vätska</text>
+        <rect x="82" y="205" width="38" height="14" fill="rgba(42,74,122,.1)" rx="3"/>
+        <text x="101" y="215" text-anchor="middle" fill="#2a4a7a" font-family="Mulish,sans-serif" font-size="9">gas</text>
+      </svg>
+      <p class="diagram-caption">Ungefärliga kokpunkter för normala alkaner (CₙH₂ₙ₊₂). Trenden är tydlig: fler kolatomer → högre kokpunkt → aggregationstillståndet ändras från gas till vätska till fast.</p>
+    </div>
+
+    <details class="micro-task">
+      <summary>🧠 Mikroövning: varför kokar hexan högre än propan?</summary>
+      <p><strong>Facit:</strong> Hexan (C₆) har fler kol och en större molekyl → fler van der Waals-kontakter → mer energi krävs för att separera dem → högre kokpunkt (69 °C mot −42 °C för propan).</p>
+    </details>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SEKTION 7 – NYCKELBEGREPP
+══════════════════════════════════════ -->
+<div class="section" id="nyckel">
+  <div class="container">
+    <p class="section-eyebrow">Sammanfattning</p>
+    <h2 class="section-title">Nyckelbegrepp – kolväten</h2>
+    <p class="section-intro">Alla begrepp du behöver behärska för det här avsnittet, samlat på ett ställe.</p>
+
+    <div class="glossary">
+      <div class="gloss-row">
+        <div class="gloss-term">Kolväte</div>
+        <div class="gloss-def">Organisk förening som bara innehåller kol (C) och väte (H).</div>
+      </div>
+      <div class="gloss-row">
+        <div class="gloss-term">Alkan</div>
+        <div class="gloss-def">Mättat kolväte med bara enkelbindningar mellan kolatomerna. Ändelse: -an. Ex: metan (CH₄), propan (C₃H₈).</div>
+      </div>
+      <div class="gloss-row">
+        <div class="gloss-term">Alken</div>
+        <div class="gloss-def">Omättat kolväte med minst en dubbelbindning (C=C). Ändelse: -en. Ex: eten (C₂H₄), propen (C₃H₆).</div>
+      </div>
+      <div class="gloss-row">
+        <div class="gloss-term">Alkyn</div>
+        <div class="gloss-def">Omättat kolväte med minst en trippelbindning (C≡C). Ändelse: -yn. Ex: etyn (C₂H₂).</div>
+      </div>
+      <div class="gloss-row">
+        <div class="gloss-term">Bensen</div>
+        <div class="gloss-def">Aromatiskt kolväte med sexhörnig ringstruktur (C₆H₆). Uppför sig annorlunda än vanliga alkener.</div>
+      </div>
+      <div class="gloss-row">
+        <div class="gloss-term">Mättad</div>
+        <div class="gloss-def">Har bara enkelbindningar – kan inte additionsreagera. Gäller alkaner.</div>
+      </div>
+      <div class="gloss-row">
+        <div class="gloss-term">Omättad</div>
+        <div class="gloss-def">Har dubbel- eller trippelbindning – kan additionsreagera. Gäller alkener och alkyner.</div>
+      </div>
+      <div class="gloss-row">
+        <div class="gloss-term">Isomerer</div>
+        <div class="gloss-def">Föreningar med samma summaformel men olika strukturformel. Ger ofta olika kokpunkt och egenskaper.</div>
+      </div>
+      <div class="gloss-row">
+        <div class="gloss-term">Van der Waals-krafter</div>
+        <div class="gloss-def">Svaga attraktionskrafter mellan molekyler. Starkare ju större och längre molekylen är → påverkar kokpunkten.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SEKTION 8 – KOLLA ATT DU KAN
+══════════════════════════════════════ -->
+<div class="section" id="kolla">
+  <div class="container">
+    <p class="section-eyebrow">Självbedömning</p>
+    <h2 class="section-title">Kolla att du kan</h2>
+    <p class="section-intro">Skriv ditt svar på varje fråga och jämför sedan med mallsvaret. Bocka i om du hade med det viktigaste.</p>
+    <div id="q-wrap"></div>
+  </div>
+</div>
+
+</main>
+
+<footer>
+  <a href="nk2.html">← Tillbaka till NK2</a> &middot; Naturkunskap 2 &middot; Kolväten
+</footer>
+
+<script src="shared.js"></script>
+<script>
+const QUESTIONS = [
+  {
+    q: "Förklara varför kol kan bilda så många olika ämnen.",
+    model: [
+      "<strong>Kol har fyra valenselektroner</strong> och kan bilda fyra kovalenta bindningar.",
+      "Kolatomer kan kopplas ihop till raka kedjor, förgrenade kedjor och ringar.",
+      "Bindningarna kan vara enkla (—), dubbla (=) eller trippla (≡), vilket ger ytterligare variation.",
+      "Isomeri (samma summaformel, olika struktur) mångfaldigar antalet möjliga ämnen ytterligare."
+    ]
+  },
+  {
+    q: "Vad skiljer alkaner, alkener och alkyner åt? Ge ett exempel på varje.",
+    model: [
+      "<strong>Alkaner</strong> – bara enkelbindningar (mättade). Ex: propan (C₃H₈).",
+      "<strong>Alkener</strong> – minst en dubbelbindning (omättade). Ex: eten (C₂H₄).",
+      "<strong>Alkyner</strong> – minst en trippelbindning (omättade). Ex: etyn (C₂H₂).",
+      "Skillnaden avgör om ämnet kan additionsreagera (alkener/alkyner kan det, alkaner kan det inte)."
+    ]
+  },
+  {
+    q: "Ge kolvätet with 5 kol i kedjan och en trippelbindning på kol 2 dess korrekta namn.",
+    model: [
+      "5 kol → prefix <strong>pent-</strong>.",
+      "Trippelbindning → ändelse <strong>-yn</strong>.",
+      "Trippelbindningen börjar på kol 2 → position <strong>2</strong>.",
+      "Namn: <strong>pent-2-yn</strong>."
+    ]
+  },
+  {
+    q: "Vad är isomerer och hur kan de skilja sig i egenskaper? Ge ett konkret exempel.",
+    model: [
+      "<strong>Isomerer</strong> har samma summaformel men olika strukturformel.",
+      "Ex: butan (rak kedja, C₄H₁₀) och 2-metylpropan (grenad, C₄H₁₀).",
+      "Butan kokar vid −1 °C, 2-metylpropan vid −12 °C – grenad form packar sämre → svagare van der Waals → lägre kokpunkt.",
+      "Isomerin är en viktig anledning till att det finns enormt många organiska ämnen."
+    ]
+  },
+  {
+    q: "Varför ökar kokpunkten när kolkedjan blir längre? Koppla till intermolekylära krafter.",
+    model: [
+      "Längre kolkedja → större molekyl → fler kontaktpunkter mellan molekylerna.",
+      "<strong>Van der Waals-krafterna</strong> (svaga attraktionskrafter) är starkare när det finns fler kontaktpunkter.",
+      "Starkare attraktionskrafter → mer energi (värme) krävs för att separera molekylerna → <strong>högre kokpunkt</strong>.",
+      "Grenade isomerer har lägre kokpunkt trots samma antal kol, eftersom de inte kan ligga lika tätt."
+    ]
+  },
+];
+
+let checked = new Array(QUESTIONS.length).fill(false);
+
+function buildQuestions() {
+  const wrap = document.getElementById('q-wrap');
+  QUESTIONS.forEach((q, i) => {
+    const items = q.model.map(m => `<li>${m}</li>`).join('');
+    wrap.innerHTML += `
+      <div class="q-card" id="qcard-${i}">
+        <div class="q-num">Fråga ${i+1} av ${QUESTIONS.length}</div>
+        <div class="q-text">${q.q}</div>
+        <textarea class="q-textarea" id="qta-${i}" placeholder="Skriv ditt svar här..."></textarea>
+        <div>
+          <button class="q-btn" onclick="showModel(${i})">Visa mallsvar →</button>
+        </div>
+        <div class="q-model" id="qmodel-${i}">
+          <div class="q-model-header">📋 Mallsvar</div>
+          <div class="q-model-body">
+            <ul>${items}</ul>
+            <div class="q-self-check">
+              <input type="checkbox" id="qcheck-${i}" onchange="toggleCheck(${i})"/>
+              <label for="qcheck-${i}">Jag hade med det viktigaste</label>
+            </div>
+          </div>
+        </div>
+        <button class="q-retry" onclick="resetQuestion(${i})">↩ Rensa och försök igen</button>
+      </div>`;
+  });
+  updateScore();
+}
+
+function showModel(i) {
+  document.getElementById(`qmodel-${i}`).classList.add('shown');
+}
+
+function toggleCheck(i) {
+  checked[i] = document.getElementById(`qcheck-${i}`).checked;
+  updateScore();
+}
+
+function resetQuestion(i) {
+  document.getElementById(`qta-${i}`).value = '';
+  document.getElementById(`qmodel-${i}`).classList.remove('shown');
+  document.getElementById(`qcheck-${i}`).checked = false;
+  checked[i] = false;
+  updateScore();
+}
+
+function updateScore() {
+  const n = checked.filter(Boolean).length;
+  const total = QUESTIONS.length;
+  const msg = n === total ? '🎉 Utmärkt – du kan hela avsnittet!'
+    : n >= 6 ? '👍 Bra jobbat! Kika igenom de du missat.'
+    : n >= 4 ? '📖 Bra start – fortsätt öva på resten.'
+    : '🔍 Gå tillbaka till materialet och försök igen.';
+
+  let bar = document.getElementById('q-scorebar');
+  if (!bar) {
+    document.getElementById('q-wrap').insertAdjacentHTML('afterend',
+      `<div class="q-score-bar" id="q-scorebar">
+        <div class="q-score-num" id="qs-num">${n}/${total}</div>
+        <div><div class="q-score-label">Självskattning</div><div class="q-score-msg" id="qs-msg">${msg}</div></div>
+      </div>`);
+  } else {
+    document.getElementById('qs-num').textContent = `${n}/${total}`;
+    document.getElementById('qs-msg').textContent = msg;
+  }
+}
+
+buildQuestions();
+</script>
+</body>
+</html>
