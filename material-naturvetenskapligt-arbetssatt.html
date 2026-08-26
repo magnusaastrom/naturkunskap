@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Naturvetenskapligt arbetssätt – NK1b</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Mulish:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #faf7f2; --surface: #ffffff; --border: #e8e0d0;
+      --sand: #f2ece0; --rust: #b85c2a; --rust2: #d4703a;
+      --teal: #2a7a6a; --blue: #2a4a7a; --text: #1a1612;
+      --muted: #6a5e52; --radius: 10px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Mulish', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; font-size: 16px; }
+
+    /* TOP BAR */
+    .top-bar { background: #1a1612; padding: 14px 28px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; position: sticky; top: 0; z-index: 100; }
+    .back-link { color: #c8b89a; text-decoration: none; font-size: .82rem; transition: color .2s; }
+    .back-link:hover { color: #fff; }
+    .top-title { font-family: 'Playfair Display', serif; font-size: 1rem; color: #e8dcc8; }
+    .top-title span { color: #d4a060; }
+
+    /* HERO */
+    .hero { background: linear-gradient(135deg, #1a1612 0%, #1a2820 60%, #1a1612 100%); padding: 64px 32px 56px; text-align: center; position: relative; overflow: hidden; }
+    .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 60% 60% at 30% 50%, rgba(42,122,106,.12) 0%, transparent 60%), radial-gradient(ellipse 50% 70% at 80% 30%, rgba(180,92,42,.06) 0%, transparent 55%); pointer-events: none; }
+    .hero-eyebrow { font-size: .72rem; letter-spacing: .22em; text-transform: uppercase; color: #d4a060; margin-bottom: 12px; }
+    .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 5vw, 3rem); font-weight: 900; color: #f0e8d8; margin-bottom: 16px; line-height: 1.15; }
+    .hero-sub { font-size: 1rem; color: #a09080; max-width: 560px; margin: 0 auto 32px; line-height: 1.7; }
+    .hero-nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+    .hero-nav a { font-size: .8rem; color: #c8b89a; border: 1px solid rgba(200,184,154,.3); border-radius: 30px; padding: 7px 16px; text-decoration: none; transition: all .2s; }
+    .hero-nav a:hover { background: rgba(200,184,154,.12); color: #fff; }
+
+    /* LAYOUT */
+    .container { max-width: 860px; margin: 0 auto; padding: 0 24px; }
+    .section { padding: 60px 0; }
+    .section + .section { border-top: 1px solid var(--border); }
+
+    .section-eyebrow { font-size: .7rem; letter-spacing: .2em; text-transform: uppercase; color: var(--rust); font-weight: 600; margin-bottom: 8px; }
+    .section-title { font-family: 'Playfair Display', serif; font-size: clamp(1.5rem, 3vw, 2rem); color: var(--text); margin-bottom: 6px; line-height: 1.25; }
+    .section-intro { font-size: .95rem; color: var(--muted); margin-bottom: 32px; max-width: 640px; line-height: 1.7; }
+
+    /* PROSE */
+    .prose { font-size: .95rem; line-height: 1.75; color: #2a2016; margin-bottom: 24px; }
+    .prose strong { color: var(--text); font-weight: 600; }
+
+    /* KEY BOX */
+    .key-box { background: var(--sand); border-left: 4px solid var(--rust2); border-radius: 0 var(--radius) var(--radius) 0; padding: 18px 22px; margin-bottom: 28px; }
+    .key-box h4 { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--rust); margin-bottom: 10px; }
+    .key-box p { font-size: .88rem; color: #4a3a2a; line-height: 1.65; }
+    .key-box dl { font-size: .88rem; color: #4a3a2a; display: flex; flex-direction: column; gap: 8px; }
+    .key-box dt { font-weight: 600; color: var(--text); display: inline; }
+    .key-box dd { display: inline; margin: 0; }
+    .key-box .term-row { line-height: 1.55; }
+
+    /* DIAGRAM */
+    .diagram-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; margin-bottom: 28px; overflow-x: auto; }
+    .diagram-caption { font-size: .78rem; color: var(--muted); text-align: center; margin-top: 12px; font-style: italic; }
+
+    /* COMPARE TABLE */
+    .compare-table { width: 100%; border-collapse: collapse; margin-bottom: 32px; font-size: .88rem; }
+    .compare-table th { background: #1a1612; color: #e8dcc8; padding: 12px 16px; text-align: left; font-weight: 600; font-family: 'Playfair Display', serif; }
+    .compare-table th:first-child { border-radius: 8px 0 0 0; }
+    .compare-table th:last-child { border-radius: 0 8px 0 0; }
+    .compare-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); vertical-align: top; }
+    .compare-table tr:nth-child(even) td { background: var(--sand); }
+    .compare-table tr:last-child td { border-bottom: none; }
+    .compare-table td:first-child { font-weight: 600; color: var(--text); }
+
+    /* PROCESS STEPS */
+    .process-steps { display: flex; flex-direction: column; gap: 0; margin-bottom: 32px; position: relative; }
+    .process-steps::before { content: ''; position: absolute; left: 22px; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, var(--rust2), var(--teal)); opacity: .3; }
+    .process-step { display: flex; gap: 18px; align-items: flex-start; padding: 16px 0; }
+    .step-num { width: 44px; height: 44px; border-radius: 50%; background: var(--rust2); color: #fff; display: flex; align-items: center; justify-content: center; font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; flex-shrink: 0; position: relative; z-index: 1; }
+    .step-num.teal { background: var(--teal); }
+    .step-num.blue { background: var(--blue); }
+    .step-body h4 { font-size: .95rem; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+    .step-body p { font-size: .85rem; color: var(--muted); line-height: 1.6; }
+
+    /* ANALOGY BOX */
+    .analogy-box { background: #1a1612; border-radius: var(--radius); padding: 28px 32px; margin-bottom: 32px; }
+    .analogy-box h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: #e8dcc8; margin-bottom: 14px; }
+    .analogy-box p { font-size: .9rem; color: #a09080; line-height: 1.7; }
+    .analogy-box strong { color: #e8dcc8; }
+
+    /* SELF-CHECK */
+    .q-card { background: #1a1612; border: 1px solid #2a2018; border-radius: var(--radius); padding: 22px 26px; margin-bottom: 18px; }
+    .q-num { font-size: .68rem; letter-spacing: .18em; text-transform: uppercase; color: #d4a060; margin-bottom: 7px; font-weight: 600; }
+    .q-text { font-family: 'Playfair Display', serif; font-size: .95rem; color: #f0e8d8; margin-bottom: 14px; line-height: 1.5; }
+    .q-textarea { width: 100%; background: #0f0c08; border: 1.5px solid #2a2018; border-radius: 6px; color: #e8dcc8; font-family: 'Mulish', sans-serif; font-size: .9rem; padding: 11px 13px; resize: vertical; min-height: 80px; outline: none; transition: border-color .2s; line-height: 1.6; }
+    .q-textarea:focus { border-color: #d4703a; }
+    .q-btn { margin-top: 10px; font-family: 'Mulish', sans-serif; font-size: .84rem; font-weight: 600; padding: 8px 20px; border-radius: 6px; border: none; cursor: pointer; background: #d4703a; color: #fff; transition: background .2s; }
+    .q-btn:hover { background: #b85c2a; }
+    .q-model { margin-top: 14px; display: none; background: #0f0c08; border: 1px solid #2a2018; border-radius: 6px; overflow: hidden; }
+    .q-model.shown { display: block; }
+    .q-model-header { background: #2a2018; padding: 8px 16px; font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: #d4a060; font-weight: 600; }
+    .q-model-body { padding: 14px 18px; font-size: .88rem; color: #c8b89a; line-height: 1.75; }
+    .q-model-body strong { color: #f0e8d8; }
+    .q-model-body ul { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+    .q-model-body li { padding-left: 16px; position: relative; }
+    .q-model-body li::before { content: '→'; position: absolute; left: 0; color: #d4703a; font-size: .8rem; }
+    .q-self-check { margin-top: 12px; padding-top: 12px; border-top: 1px solid #2a2018; display: flex; align-items: center; gap: 10px; font-size: .82rem; color: #8a7a60; cursor: pointer; }
+    .q-self-check input { accent-color: #d4703a; width: 16px; height: 16px; cursor: pointer; }
+    .q-retry { margin-top: 10px; font-size: .78rem; color: #6a5a40; background: none; border: none; cursor: pointer; font-family: 'Mulish', sans-serif; text-decoration: underline; padding: 0; display: block; }
+    .q-score-bar { background: #0f0c08; border: 1px solid #2a2018; border-radius: var(--radius); padding: 20px 24px; margin-top: 32px; display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+    .q-score-num { font-family: 'Playfair Display', serif; font-size: 2rem; color: #d4703a; }
+    .q-score-label { font-size: .85rem; color: #8a7a60; }
+    .q-score-msg { font-size: .88rem; color: #c8b89a; }
+
+    footer { border-top: 1px solid var(--border); padding: 28px 24px; text-align: center; font-size: .78rem; color: var(--muted); margin-top: 40px; }
+    footer a { color: var(--teal); text-decoration: none; }
+
+    @media(max-width: 580px) {
+      .hero { padding: 44px 20px 36px; }
+      .container { padding: 0 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="top-bar">
+  <a href="nk1b-naturvetenskaplig_metod.html" class="back-link">← Naturvetenskaplig metod</a>
+  <div class="top-title">NK1b &mdash; <span>Naturvetenskapligt arbetssätt</span></div>
+</div>
+
+<div class="hero">
+  <p class="hero-eyebrow">Naturvetenskaplig metod &middot; NK1b</p>
+  <h1>Naturvetenskapligt arbetssätt</h1>
+  <p class="hero-sub">Hur forskare undersöker verkligheten – från fråga och hypotes till metod, resultat och slutsats. Samt hur vi kritiskt granskar det som påstås vara vetenskap.</p>
+  <nav class="hero-nav">
+    <a href="#oversikt">Översikt</a>
+    <a href="#processen">Processen</a>
+    <a href="#franga-metod">Fråga, hypotes & metod</a>
+    <a href="#resultat">Resultat</a>
+    <a href="#teori-modell">Teori & modell</a>
+    <a href="#kallkritik">Källkritik</a>
+    <a href="#sammanfattning">Sammanfattning</a>
+    <a href="#kolla">Kolla att du kan</a>
+  </nav>
+</div>
+
+<main>
+
+<!-- ══════════════════════════════════════
+     SEKTION 1 – ÖVERSIKT
+══════════════════════════════════════ -->
+<div class="section" id="oversikt">
+<div class="container">
+  <p class="section-eyebrow">Introduktion</p>
+  <h2 class="section-title">Vad är naturvetenskapligt arbetssätt?</h2>
+  <p class="section-intro">Vetenskap är ett sätt att försöka förklara och förstå världen vi lever i. Den utgår från ett specifikt, systematiskt arbetssätt – den vetenskapliga processen.</p>
+
+  <p class="prose">Vetenskapen bygger på <strong>observationer, experiment, mätningar och analyser</strong> för att besvara olika frågeställningar och hypoteser. Ett exempel på en fråga vetenskapen kan undersöka: är sockerfri läsk nyttigare än vanlig läsk?</p>
+
+  <p class="prose">Vetenskapen bygger också på <strong>nyfikenhet</strong> och är i ständig förändring – nya teorier tillkommer och gamla teorier kan överges när nya bevis kommer fram. Ett historiskt exempel är skiftet från att jorden ansågs vara i universums centrum (den geocentriska världsbilden) till att solen är det (den heliocentriska världsbilden).</p>
+
+  <div class="key-box">
+    <h4>🔑 Grundidén</h4>
+    <dl>
+      <div class="term-row"><dt>Vetenskap</dt><dd> – ett systematiskt sätt att förklara och förstå naturen genom observationer och tester, inte gissningar.</dd></div>
+      <div class="term-row"><dt>Den vetenskapliga processen</dt><dd> – det arbetssätt forskare följer, från fråga till slutsats.</dd></div>
+      <div class="term-row"><dt>Föränderlighet</dt><dd> – vetenskapliga teorier kan omprövas och ersättas när nya bevis framkommer.</dd></div>
+    </dl>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SEKTION 2 – DEN VETENSKAPLIGA PROCESSEN
+══════════════════════════════════════ -->
+<div class="section" id="processen">
+<div class="container">
+  <p class="section-eyebrow">Arbetsgången</p>
+  <h2 class="section-title">Den vetenskapliga processen – steg för steg</h2>
+  <p class="section-intro">Naturvetenskapligt arbete följer oftast samma grundmönster, oavsett om det handlar om ett skolexperiment eller banbrytande forskning.</p>
+
+  <div class="process-steps">
+    <div class="process-step"><div class="step-num">1</div><div class="step-body"><h4>Egna erfarenheter</h4><p>Man utgår från sina nuvarande erfarenheter och kunskaper.</p></div></div>
+    <div class="process-step"><div class="step-num">2</div><div class="step-body"><h4>Fråga eller problem</h4><p>Man skriver en fråga som går att undersöka.</p></div></div>
+    <div class="process-step"><div class="step-num">3</div><div class="step-body"><h4>Hypotes</h4><p>Man gör en motiverad gissning för hur något är eller vad som kommer hända, utifrån frågan.</p></div></div>
+    <div class="process-step"><div class="step-num">4</div><div class="step-body"><h4>Metod</h4><p>Man planerar hur undersökningen ska genomföras, genomför den noggrant och dokumenterar den så att andra kan göra om samma sak och kontrollera resultaten.</p></div></div>
+    <div class="process-step"><div class="step-num teal">5</div><div class="step-body"><h4>Resultat</h4><p>Resultatet värderas och sammanställs för att dra slutsatser.</p></div></div>
+    <div class="process-step"><div class="step-num teal">6</div><div class="step-body"><h4>Slutsats</h4><p>Man drar slutsatser om hypotesen stämde eller inte. Stämde den inte får man formulera en ny hypotes och göra nya undersökningar.</p></div></div>
+    <div class="process-step"><div class="step-num teal">7</div><div class="step-body"><h4>Utvärdering</h4><p>Resultatet anses stämma om undersökningen kan göras om flera gånger på samma sätt och ge samma resultat varje gång.</p></div></div>
+  </div>
+
+  <div class="key-box">
+    <h4>🔑 Kom ihåg</h4>
+    <p>Upprepbarhet är centralt i naturvetenskapen. En undersökning anses bara tillförlitlig om den går att göra om av andra och ge samma resultat varje gång.</p>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SEKTION 3 – FRÅGESTÄLLNING, HYPOTES OCH METOD
+══════════════════════════════════════ -->
+<div class="section" id="franga-metod">
+<div class="container">
+  <p class="section-eyebrow">Del 1</p>
+  <h2 class="section-title">Frågeställning, hypotes och metod</h2>
+  <p class="section-intro">Allt naturvetenskapligt arbete börjar med en tydlig fråga och ett motiverat antagande om svaret – och en metod för att testa antagandet.</p>
+
+  <p class="prose"><strong>Frågeställningen</strong> ska vara avgränsad och möjlig att undersöka, till exempel: "Påverkar temperatur groningshastigheten hos kärnbönor?"</p>
+
+  <p class="prose"><strong>Hypotesen</strong> är ett testbart, motiverat antagande om svaret på frågeställningen, formulerat innan undersökningen genomförs. En hypotes måste gå att motbevisa (falsifiera) – annars går den inte att pröva vetenskapligt.</p>
+
+  <p class="prose"><strong>Metoden</strong> tas fram för att testa om hypotesen stämmer, till exempel genom observationer eller experiment. En bra metodbeskrivning: beskriver hur undersökningen genomförs, anger vad som mäts eller observeras, anger vad som hålls lika (kontrollerade variabler) och gör undersökningen upprepbar för andra.</p>
+
+  <div class="key-box">
+    <h4>🔑 Nyckelbegrepp – Frågeställning, hypotes & metod</h4>
+    <dl>
+      <div class="term-row"><dt>Frågeställning</dt><dd> – den konkreta, avgränsade fråga en undersökning ska besvara.</dd></div>
+      <div class="term-row"><dt>Hypotes</dt><dd> – ett testbart antagande om svaret, som går att motbevisa.</dd></div>
+      <div class="term-row"><dt>Metod</dt><dd> – beskrivningen av tillvägagångssätt som gör undersökningen upprepbar av andra.</dd></div>
+      <div class="term-row"><dt>Observation</dt><dd> – en iakttagelse av verkligheten, gjord med sinnena eller mätinstrument.</dd></div>
+    </dl>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SEKTION 4 – RESULTAT OCH ANALYS
+══════════════════════════════════════ -->
+<div class="section" id="resultat">
+<div class="container">
+  <p class="section-eyebrow">Del 2</p>
+  <h2 class="section-title">Resultat och analys</h2>
+  <p class="section-intro">När undersökningen är klar ska resultatet redovisas – och sedan tolkas.</p>
+
+  <p class="prose"><strong>Resultatet</strong> visar vad undersökningen faktiskt gav. Det redovisas objektivt i text, tabeller eller diagram – utan tolkning.</p>
+
+  <p class="prose"><strong>Analysen (diskussionen)</strong> handlar om vad resultaten betyder: är resultatet <strong>signifikant</strong>, det vill säga sannolikt inte beroende på slumpen? Stämmer resultatet med hypotesen? Vilka felkällor finns, och vad kan förbättras?</p>
+
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 700 260" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:700px;display:block;margin:0 auto">
+      <text x="175" y="20" text-anchor="middle" font-family="Playfair Display,serif" font-size="13" fill="#1a1612" font-weight="700">Litet överlapp → sannolikt signifikant</text>
+      <text x="525" y="20" text-anchor="middle" font-family="Playfair Display,serif" font-size="13" fill="#1a1612" font-weight="700">Stort överlapp → sannolikt slump</text>
+      <line x1="350" y1="10" x2="350" y2="230" stroke="#e8e0d0" stroke-width="1"/>
+
+      <!-- PANEL 1: liten spridning, tydlig skillnad -->
+      <line x1="40" y1="210" x2="310" y2="210" stroke="#6a5e52" stroke-width="1.5"/>
+      <text x="105" y="228" text-anchor="middle" font-family="Mulish,sans-serif" font-size="10" fill="#6a5e52">Grupp A</text>
+      <text x="245" y="228" text-anchor="middle" font-family="Mulish,sans-serif" font-size="10" fill="#6a5e52">Grupp B</text>
+      <!-- Grupp A -->
+      <rect x="85" y="70" width="40" height="140" rx="4" fill="#2a7a6a"/>
+      <line x1="105" y1="55" x2="105" y2="85" stroke="#1a1612" stroke-width="2"/>
+      <line x1="95" y1="55" x2="115" y2="55" stroke="#1a1612" stroke-width="2"/>
+      <line x1="95" y1="85" x2="115" y2="85" stroke="#1a1612" stroke-width="2"/>
+      <!-- Grupp B -->
+      <rect x="225" y="130" width="40" height="80" rx="4" fill="#b85c2a"/>
+      <line x1="245" y1="118" x2="245" y2="145" stroke="#1a1612" stroke-width="2"/>
+      <line x1="235" y1="118" x2="255" y2="118" stroke="#1a1612" stroke-width="2"/>
+      <line x1="235" y1="145" x2="255" y2="145" stroke="#1a1612" stroke-width="2"/>
+      <text x="175" y="245" text-anchor="middle" font-family="Mulish,sans-serif" font-size="9" fill="#6a5e52" font-style="italic">Grupperna skiljer sig tydligt – liten spridning inom varje grupp</text>
+
+      <!-- PANEL 2: stor spridning, osäker skillnad -->
+      <line x1="390" y1="210" x2="660" y2="210" stroke="#6a5e52" stroke-width="1.5"/>
+      <text x="455" y="228" text-anchor="middle" font-family="Mulish,sans-serif" font-size="10" fill="#6a5e52">Grupp A</text>
+      <text x="595" y="228" text-anchor="middle" font-family="Mulish,sans-serif" font-size="10" fill="#6a5e52">Grupp B</text>
+      <!-- Grupp A -->
+      <rect x="435" y="95" width="40" height="115" rx="4" fill="#2a7a6a"/>
+      <line x1="455" y1="40" x2="455" y2="150" stroke="#1a1612" stroke-width="2"/>
+      <line x1="445" y1="40" x2="465" y2="40" stroke="#1a1612" stroke-width="2"/>
+      <line x1="445" y1="150" x2="465" y2="150" stroke="#1a1612" stroke-width="2"/>
+      <!-- Grupp B -->
+      <rect x="575" y="115" width="40" height="95" rx="4" fill="#b85c2a"/>
+      <line x1="595" y1="65" x2="595" y2="165" stroke="#1a1612" stroke-width="2"/>
+      <line x1="585" y1="65" x2="605" y2="65" stroke="#1a1612" stroke-width="2"/>
+      <line x1="585" y1="165" x2="605" y2="165" stroke="#1a1612" stroke-width="2"/>
+      <text x="525" y="245" text-anchor="middle" font-family="Mulish,sans-serif" font-size="9" fill="#6a5e52" font-style="italic">Grupperna liknar varandra mycket – stor spridning inom varje grupp</text>
+    </svg>
+    <p class="diagram-caption">Figur. Staplarna visar medelvärdet, de svarta strecken (felstaplar) visar spridningen inom gruppen. När felstaplarna knappt överlappar (vänster) är skillnaden mellan grupperna sannolikt signifikant. När de överlappar mycket (höger) kan skillnaden lika gärna bero på slumpmässig variation.</p>
+  </div>
+
+  <p class="prose"><strong>Textexempel:</strong> Tio elever provar en ny studieteknik och förbättrar i snitt sitt provresultat med 5 poäng mer än en kontrollgrupp som pluggade som vanligt. Om alla tio elever i den första gruppen förbättrades ungefär lika mycket, pekar det på en verklig effekt av tekniken. Men om resultaten inom gruppen varierar enormt – några förbättras med 20 poäng, andra försämras – kan snittskillnaden lika gärna bero på slumpen (vissa elever hade helt enkelt en bra dag). Forskare använder statistiska beräkningar för att avgöra vilket som är mest troligt.</p>
+
+  <div class="key-box">
+    <h4>🔑 Nyckelbegrepp – Resultat & diskussion</h4>
+    <dl>
+      <div class="term-row"><dt>Resultat</dt><dd> – de data eller observationer undersökningen faktiskt gav.</dd></div>
+      <div class="term-row"><dt>Diskussion</dt><dd> – delen där resultaten tolkas, jämförs med hypotesen och slutsatser dras.</dd></div>
+      <div class="term-row"><dt>Signifikans</dt><dd> – ett mått på hur sannolikt det är att ett resultat beror på en verklig effekt och inte på slumpen.</dd></div>
+    </dl>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SEKTION 5 – VETENSKAPLIG STUDIE, TEORI OCH MODELL
+══════════════════════════════════════ -->
+<div class="section" id="teori-modell">
+<div class="container">
+  <p class="section-eyebrow">Del 3</p>
+  <h2 class="section-title">Vetenskaplig studie, teori och modell</h2>
+  <p class="section-intro">Tre begrepp som lätt blandas ihop – men som skiljer sig åt i hur säkra de är och vad de faktiskt beskriver.</p>
+
+  <table class="compare-table">
+    <thead><tr><th>Begrepp</th><th>Innebär</th><th>Grad av osäkerhet</th></tr></thead>
+    <tbody>
+      <tr><td>Vetenskaplig studie</td><td>Grundar sig på en enskild undersökning.</td><td>Finns ett mått av osäkerhet.</td></tr>
+      <tr><td>Vetenskaplig teori</td><td>Produkten av många studier som tillsammans pekar på ett gemensamt fenomen, t.ex. evolutionsteorin.</td><td>Mycket lägre osäkerhet – väl underbyggd och allmänt accepterad.</td></tr>
+      <tr><td>Vetenskaplig modell</td><td>En förenklad representation av verkligheten (bild, diagram, matematisk formel eller fysisk modell).</td><td>Förenklar teorin för att göra den begriplig eller användbar.</td></tr>
+    </tbody>
+  </table>
+
+  <p class="prose">Vetenskapliga modeller och teorier förändras när nya bevis framkommer. Ett tydligt exempel är skiftet från den <strong>geocentriska världsbilden</strong> (jorden i centrum) till den <strong>heliocentriska världsbilden</strong> (solen i centrum) – flera upptäckter runt 1500–1600-talet, bland annat att Jupiter har månar, visade att den gamla modellen inte stämde.</p>
+
+  <p class="prose">Atommodellen är ett annat exempel på hur en vetenskaplig modell steg för steg förfinas när nya experiment ger ny information:</p>
+
+  <div class="process-steps">
+    <div class="process-step"><div class="step-num blue">1</div><div class="step-body"><h4>Dalton</h4><p>Kemiska reaktioner visade att materia består av atomer.</p></div></div>
+    <div class="process-step"><div class="step-num blue">2</div><div class="step-body"><h4>Thomson</h4><p>Katodstrålar avslöjade elektronen.</p></div></div>
+    <div class="process-step"><div class="step-num blue">3</div><div class="step-body"><h4>Rutherford</h4><p>Guldfolieexperimentet visade att atomen har en kärna.</p></div></div>
+    <div class="process-step"><div class="step-num blue">4</div><div class="step-body"><h4>Bohr</h4><p>Atomspektra visade att elektronerna befinner sig i bestämda energinivåer.</p></div></div>
+    <div class="process-step"><div class="step-num blue">5</div><div class="step-body"><h4>Kvantmekaniken</h4><p>Vågexperiment visade att elektroner saknar exakta banor kring kärnan.</p></div></div>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SEKTION 6 – KÄLLKRITIK OCH PSEUDOVETENSKAP
+══════════════════════════════════════ -->
+<div class="section" id="kallkritik">
+<div class="container">
+  <p class="section-eyebrow">Del 4 &middot; Källkritik och vetenskapens del i samhället</p>
+  <h2 class="section-title">Källkritik och pseudovetenskap</h2>
+  <p class="section-intro">Naturvetenskap är en central del av samhället – det gör det viktigt att kunna skilja på pålitlig vetenskap och falska påståenden.</p>
+
+  <div class="key-box">
+    <h4>🔑 Källkritik – att tänka på</h4>
+    <dl>
+      <div class="term-row"><dt>Källans ursprung</dt><dd> – Vem är avsändare och vad är syftet? När är den publicerad?</dd></div>
+      <div class="term-row"><dt>Innehållets kvalitet</dt><dd> – Granska t.ex. metod och resultat (svårt utan rätt kunskap/träning).</dd></div>
+      <div class="term-row"><dt>Trovärdighet</dt><dd> – Är källan opartisk och kommer från en trovärdig avsändare?</dd></div>
+      <div class="term-row"><dt>Granskning (peer review)</dt><dd> – Är källan granskad av andra forskare inom samma fält innan den publicerades?</dd></div>
+    </dl>
+  </div>
+
+  <p class="prose"><strong>Pseudo</strong> kommer från grekiskan och betyder "falsk" – alltså falsk vetenskap: påståenden som framställs som vetenskapliga men saknar vetenskaplig grund.</p>
+
+  <div class="key-box">
+    <h4>🔑 Kännetecken för pseudovetenskap</h4>
+    <dl>
+      <div class="term-row"><dt>Ofalsifierbarhet</dt><dd> – påståendet är formulerat så att det inte går att testa eller motbevisa.</dd></div>
+      <div class="term-row"><dt>Auktoritetstro</dt><dd> – hänvisning till att någon med titel eller status säger något, istället för till bevis.</dd></div>
+      <div class="term-row"><dt>Handplockade exempel</dt><dd> – bara de fall som stödjer tesen lyfts fram, motsägande resultat ignoreras.</dd></div>
+      <div class="term-row"><dt>Bristande upprepbarhet</dt><dd> – resultaten kan inte återskapas av andra oberoende undersökningar.</dd></div>
+    </dl>
+  </div>
+
+  <div class="key-box">
+    <h4>🔑 Exempel på pseudovetenskap</h4>
+    <dl>
+      <div class="term-row"><dt>Astrologi</dt><dd> – påståendet att stjärnornas och planeternas positioner vid födseln formar personlighet och förutsäger framtiden. Går inte att testa på ett sätt som kan motbevisa det, och upprepade vetenskapliga studier har inte kunnat visa något samband.</dd></div>
+      <div class="term-row"><dt>Homeopati</dt><dd> – bygger på att ett ämne som spätts ut extremt mycket (ofta så mycket att inte en enda molekyl av ursprungsämnet finns kvar) ska ha en läkande effekt. Kontrollerade studier visar ingen effekt utöver placebo.</dd></div>
+      <div class="term-row"><dt>Grafologi</dt><dd> – att bedöma en persons karaktärsdrag utifrån handstilen. Upprepade tester har visat att grafologer inte kan förutsäga personlighet bättre än slumpen skulle ge.</dd></div>
+    </dl>
+  </div>
+
+  <p class="prose">Naturvetenskapen påverkar samhällsutvecklingen genom nya material, mediciner och uppfinningar. Samtidigt påverkar vår livsstil miljön – vilket kopplar ämnet till hållbar utveckling.</p>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SEKTION 7 – SAMMANFATTNING
+══════════════════════════════════════ -->
+<div class="section" id="sammanfattning">
+<div class="container">
+  <p class="section-eyebrow">Sammanfattning</p>
+  <h2 class="section-title">Det viktigaste i korthet</h2>
+
+  <div class="key-box">
+    <h4>🔑 Sammanfattning</h4>
+    <dl>
+      <div class="term-row"><dt>Vetenskap</dt><dd> – bygger på undersökningar och studier, inte gissningar.</dd></div>
+      <div class="term-row"><dt>Samhällspåverkan</dt><dd> – vetenskapliga upptäckter påverkar samhället.</dd></div>
+      <div class="term-row"><dt>Teori</dt><dd> – flera studier som tillsammans pekar åt samma håll.</dd></div>
+      <div class="term-row"><dt>Modell</dt><dd> – en förenkling av en vetenskaplig teori.</dd></div>
+    </dl>
+  </div>
+</div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SEKTION 8 – KOLLA ATT DU KAN
+══════════════════════════════════════ -->
+<div class="section" id="kolla">
+<div class="container">
+  <p class="section-eyebrow">Självbedömning</p>
+  <h2 class="section-title">Kolla att du kan</h2>
+  <p class="section-intro">Försök svara utan att titta i texten. Visa sedan mallsvaret och bocka i om du hade med det viktigaste.</p>
+  <div id="q-wrap"></div>
+</div>
+</div>
+
+</main>
+
+<footer>
+  <a href="nk1b-naturvetenskaplig_metod.html">← Tillbaka till Naturvetenskaplig metod</a> &middot; NK1b &middot; Naturvetenskapligt arbetssätt
+</footer>
+
+<script src="shared.js"></script>
+<script>
+requireLogin('NK1b');
+
+const QUESTIONS = [
+  {
+    q: "Beskriv den vetenskapliga processen så utförligt som möjligt, från erfarenhet till utvärdering.",
+    model: [
+      "Man utgår från egna erfarenheter och kunskaper.",
+      "Man formulerar en avgränsad frågeställning som går att undersöka.",
+      "Man ställer upp en hypotes – ett testbart antagande om svaret.",
+      "Man planerar och genomför en metod som gör undersökningen upprepbar.",
+      "Resultatet sammanställs och man drar en slutsats om hypotesen stämde.",
+      "Undersökningen utvärderas – den anses tillförlitlig om den ger samma resultat varje gång den upprepas."
+    ]
+  },
+  {
+    q: "Vad menas med en hypotes, och varför måste den gå att falsifiera?",
+    model: [
+      "En hypotes är ett testbart, motiverat antagande om svaret på frågeställningen, formulerat innan undersökningen genomförs.",
+      "Den måste gå att motbevisa (falsifiera) – annars går den inte att pröva vetenskapligt, och är då ingen riktig hypotes."
+    ]
+  },
+  {
+    q: "Vad krävs av en bra metodbeskrivning?",
+    model: [
+      "Den beskriver hur undersökningen genomförs.",
+      "Den anger vad som mäts eller observeras.",
+      "Den anger vad som hålls lika (kontrollerade variabler).",
+      "Den gör undersökningen upprepbar, så att andra kan göra om den och kontrollera resultaten."
+    ]
+  },
+  {
+    q: "Förklara skillnaden mellan en vetenskaplig teori och en vetenskaplig studie.",
+    model: [
+      "En vetenskaplig studie grundar sig på en enskild undersökning och har ett mått av osäkerhet.",
+      "En vetenskaplig teori är produkten av många studier som tillsammans pekar på ett gemensamt fenomen, och har mycket lägre osäkerhet.",
+      "En vetenskaplig modell är i sin tur en förenklad representation av en teori."
+    ]
+  },
+  {
+    q: "Vad ska man tänka på för att vara källkritisk?",
+    model: [
+      "Källans ursprung: vem är avsändaren och vad är syftet, och när publicerades den?",
+      "Innehållets kvalitet: går det att granska metod och resultat?",
+      "Trovärdighet: är källan opartisk och kommer från en pålitlig avsändare?",
+      "Granskning: är källan peer reviewed, det vill säga granskad av andra forskare inom fältet?"
+    ]
+  },
+  {
+    q: "Vilka kännetecken har pseudovetenskap? Ge exempel på vad varje kännetecken innebär.",
+    model: [
+      "Ofalsifierbarhet – påståendet är formulerat så att det inte går att testa eller motbevisa.",
+      "Auktoritetstro – man hänvisar till titel eller status istället för till bevis.",
+      "Handplockade exempel – bara stödjande fall lyfts fram, motsägande resultat ignoreras.",
+      "Bristande upprepbarhet – resultaten kan inte återskapas av andra oberoende undersökningar."
+    ]
+  },
+  {
+    q: "Fundera ut en egen frågeställning och beskriv hur man skulle kunna testa den vetenskapligt.",
+    model: [
+      "Frågeställningen bör vara avgränsad, mätbar och möjlig att undersöka.",
+      "En hypotes formuleras som ett motiverat antagande om svaret.",
+      "En metod tas fram som beskriver hur undersökningen genomförs, vad som mäts och vad som hålls konstant.",
+      "Resultatet samlas in och jämförs sedan med hypotesen i en diskussion."
+    ]
+  }
+];
+
+let checked = new Array(QUESTIONS.length).fill(false);
+
+function buildQuestions() {
+  const wrap = document.getElementById('q-wrap');
+  QUESTIONS.forEach((q, i) => {
+    const items = q.model.map(m => `<li>${m}</li>`).join('');
+    wrap.innerHTML += `
+      <div class="q-card">
+        <div class="q-num">Fråga ${i+1} av ${QUESTIONS.length}</div>
+        <div class="q-text">${q.q}</div>
+        <textarea class="q-textarea" id="qta-${i}" placeholder="Skriv ditt svar här..."></textarea>
+        <button class="q-btn" onclick="showModel(${i})">Visa mallsvar →</button>
+        <div class="q-model" id="qmodel-${i}">
+          <div class="q-model-header">📋 Mallsvar</div>
+          <div class="q-model-body">
+            <ul>${items}</ul>
+            <div class="q-self-check">
+              <input type="checkbox" id="qcheck-${i}" onchange="toggleCheck(${i})"/>
+              <label for="qcheck-${i}">Jag hade med det viktigaste</label>
+            </div>
+          </div>
+        </div>
+        <button class="q-retry" onclick="resetQuestion(${i})">↩ Rensa och försök igen</button>
+      </div>`;
+  });
+  updateScore();
+}
+
+function showModel(i) { document.getElementById(`qmodel-${i}`).classList.add('shown'); }
+function toggleCheck(i) { checked[i] = document.getElementById(`qcheck-${i}`).checked; updateScore(); }
+function resetQuestion(i) {
+  document.getElementById(`qta-${i}`).value = '';
+  document.getElementById(`qmodel-${i}`).classList.remove('shown');
+  document.getElementById(`qcheck-${i}`).checked = false;
+  checked[i] = false;
+  updateScore();
+}
+
+function updateScore() {
+  const n = checked.filter(Boolean).length;
+  const total = QUESTIONS.length;
+  const msg = n === total ? '🎉 Utmärkt – du kan hela avsnittet!'
+    : n >= 5 ? '👍 Bra jobbat! Kika igenom de du missat.'
+    : n >= 3 ? '📖 Bra start – fortsätt öva på resten.'
+    : '🔍 Gå tillbaka till materialet och försök igen.';
+
+  let bar = document.getElementById('q-scorebar');
+  if (!bar) {
+    document.getElementById('q-wrap').insertAdjacentHTML('afterend',
+      `<div class="q-score-bar" id="q-scorebar">
+        <div class="q-score-num" id="qs-num">${n}/${total}</div>
+        <div><div class="q-score-label">Självskattning</div><div class="q-score-msg" id="qs-msg">${msg}</div></div>
+      </div>`);
+  } else {
+    document.getElementById('qs-num').textContent = `${n}/${total}`;
+    document.getElementById('qs-msg').textContent = msg;
+  }
+}
+
+buildQuestions();
+</script>
+
+</body>
+</html>

@@ -71,6 +71,19 @@
     footer a { color: var(--rust); text-decoration: none; }
 
     @media(max-width:560px) { .cat-grid { grid-template-columns: 1fr; } .container { padding: 32px 16px 60px; } }
+
+    .cat-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 10px; }
+    .cat-tag { font-size: .7rem; background: var(--sand); border-radius: 30px; padding: 2px 9px; color: var(--muted); }
+    .cat-card { display: flex; flex-direction: column; }
+    .cat-actions { margin-top: auto; display: flex; gap: 10px; flex-wrap: wrap; }
+    .fc-launch {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--rust2); color: #fff;
+      font-family: 'Mulish', sans-serif; font-size: .82rem; font-weight: 700;
+      padding: 9px 18px; border-radius: 7px; text-decoration: none;
+      transition: background .2s; margin-top: 4px;
+    }
+    .fc-launch:hover { background: var(--rust); }
   </style>
 </head>
 <body>
@@ -102,20 +115,24 @@
     <a href="flashcards-naturvetenskaplig_metod.html" class="fc-launch-all">Starta flashcards →</a>
   </div>
 
-  <!-- PLACEHOLDER SECTION -->
-  <p class="section-label" id="omrade">Begreppsområden</p>
-  <h2 class="section-title">Material på gång</h2>
-
-  <div class="placeholder-box">
-    <div class="placeholder-icon">🧪</div>
-    <p>Kommer snart</p>
+   <div class="cat-grid">
+    <div class="cat-card">
+      <div class="cat-icon">🧪</div>
+      <div class="cat-title">Naturvetenskapligt arbetssätt</div>
+      <div class="cat-count">15 begrepp</div>
+      <div class="cat-tags">
+        <span class="cat-tag">Hypotes</span>
+        <span class="cat-tag">Metod</span>
+        <span class="cat-tag">Signifikans</span>
+        <span class="cat-tag">Källkritik</span>
+        <span class="cat-tag">Pseudovetenskap</span>
+      </div>
+      <div class="cat-actions">
+        <a href="flashcards-naturvetenskaplig_metod.html" class="fc-launch">Öva →</a>
+        <a href="material-naturvetenskapligt-arbetssatt.html" class="fc-launch">Läs material →</a>
+      </div>
+    </div>
   </div>
-
-  <div class="info-box">
-    <strong>Under uppbyggnad:</strong> Kommer snart.
-  </div>
-
-</div>
 
 <footer><a href="nk1b.html">← Tillbaka till NK1b</a> &middot; Naturkunskap 1b &middot; Naturvetenskaplig metod</footer>
 
