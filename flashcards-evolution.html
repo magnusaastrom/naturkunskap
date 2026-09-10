@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Flashcards – Evolution</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root{--bg:#0f1a24;--surface:#162030;--card:#1c2d3f;--border:#2a3f54;--teal:#3ecfb2;--teal2:#27a890;--amber:#f0b040;--red:#e05555;--green:#4caf82;--text:#dde8f0;--muted:#7a9ab0;--radius:10px;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+.top-bar{background:var(--surface);border-bottom:1px solid var(--border);padding:16px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+.top-left{display:flex;align-items:center;gap:14px;}
+.back-link{color:var(--muted);text-decoration:none;font-size:0.82rem;display:flex;align-items:center;gap:6px;transition:color .2s;}
+.back-link:hover{color:var(--teal);}
+.top-title{font-family:'Fraunces',serif;font-size:1.2rem;}
+.top-title span{color:var(--teal);}
+.user-chip{font-size:0.78rem;color:var(--muted);background:var(--card);border:1px solid var(--border);padding:4px 12px;border-radius:30px;}
+.mode-tabs{display:flex;background:var(--surface);border-bottom:1px solid var(--border);padding:0 28px;}
+.mode-tab{padding:13px 20px;font-size:0.86rem;font-weight:500;color:var(--muted);cursor:pointer;border-bottom:2.5px solid transparent;transition:all .2s;user-select:none;}
+.mode-tab:hover{color:var(--text);}
+.mode-tab.active{color:var(--teal);border-bottom-color:var(--teal);}
+.main{max-width:720px;margin:0 auto;padding:40px 20px 80px;}
+.history-toggle{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
+.history-btn{font-size:0.8rem;color:var(--teal);background:none;border:1px solid rgba(62,207,178,.3);border-radius:5px;padding:5px 13px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;}
+.history-btn:hover{background:rgba(62,207,178,.1);}
+.cat-filter{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;}
+.cat-btn{font-size:0.76rem;padding:5px 13px;border-radius:30px;border:1.5px solid var(--border);background:none;color:var(--muted);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;}
+.cat-btn:hover{border-color:var(--text);color:var(--text);}
+.cat-btn.active{background:rgba(62,207,178,.12);border-color:var(--teal);color:var(--teal);}
+.history-panel{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:20px;margin-bottom:24px;display:none;}
+.history-panel.open{display:block;}
+.history-panel h3{font-size:0.85rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;}
+.history-empty{font-size:0.85rem;color:var(--muted);font-style:italic;}
+.history-table{width:100%;border-collapse:collapse;font-size:0.82rem;}
+.history-table th{text-align:left;color:var(--muted);font-weight:500;padding:4px 10px 8px 0;border-bottom:1px solid var(--border);}
+.history-table td{padding:7px 10px 7px 0;border-bottom:1px solid rgba(42,63,84,.5);color:var(--text);}
+.pct-bar-wrap{display:flex;align-items:center;gap:8px;}
+.pct-bar{height:5px;background:var(--border);border-radius:3px;flex:1;overflow:hidden;}
+.pct-fill{height:100%;background:var(--teal);border-radius:3px;transition:width .4s;}
+.pct-fill.mid{background:var(--amber);}
+.pct-fill.low{background:var(--red);}
+.stats-row{display:flex;gap:10px;margin-bottom:24px;flex-wrap:wrap;}
+.stat-pill{background:var(--card);border:1px solid var(--border);border-radius:30px;padding:6px 14px;font-size:0.78rem;display:flex;align-items:center;gap:6px;}
+.stat-dot{width:8px;height:8px;border-radius:50%;}
+.dot-green{background:var(--green);}.dot-red{background:var(--red);}.dot-muted{background:var(--muted);}
+.prog-wrap{margin-bottom:28px;}
+.prog-info{display:flex;justify-content:space-between;font-size:0.78rem;color:var(--muted);margin-bottom:6px;}
+.prog-bar{height:4px;background:var(--border);border-radius:2px;overflow:hidden;}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--teal),var(--teal2));border-radius:2px;transition:width .4s;}
+.card-counter-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
+.card-counter{font-size:0.8rem;color:var(--muted);}
+.card-category{font-size:0.72rem;color:var(--amber);background:rgba(240,176,64,.12);border:1px solid rgba(240,176,64,.3);padding:3px 10px;border-radius:30px;}
+#mode-flip{display:block;}
+#mode-write,#mode-multi{display:none;}
+.flip-hint{font-size:0.76rem;color:var(--muted);text-align:center;margin-bottom:12px;}
+.flip-scene{perspective:1200px;height:260px;cursor:pointer;margin-bottom:24px;}
+.flip-card{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform .55s cubic-bezier(.4,.2,.2,1);}
+.flip-card.flipped{transform:rotateY(180deg);}
+.flip-face{position:absolute;inset:0;backface-visibility:hidden;background:var(--card);border:1px solid var(--border);border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px;text-align:center;}
+.flip-face.back{transform:rotateY(180deg);background:#1a3040;border-color:var(--teal2);}
+.flip-label{font-size:0.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:16px;}
+.flip-label.teal{color:var(--teal);}
+.flip-term{font-family:'Fraunces',serif;font-size:clamp(1.2rem,3vw,1.8rem);color:var(--text);line-height:1.3;}
+.flip-def{font-size:0.93rem;color:var(--text);line-height:1.65;max-width:460px;}
+.flip-actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;}
+.know-actions{display:flex;justify-content:center;gap:10px;margin-top:14px;flex-wrap:wrap;}
+.btn{font-family:'DM Sans',sans-serif;font-size:0.86rem;font-weight:500;padding:10px 20px;border-radius:6px;border:none;cursor:pointer;transition:all .18s;letter-spacing:.02em;}
+.btn-ghost{background:transparent;border:1.5px solid var(--border);color:var(--muted);}
+.btn-ghost:hover{border-color:var(--text);color:var(--text);}
+.btn-primary{background:var(--teal);color:#0f1a24;font-weight:600;}
+.btn-primary:hover{background:var(--teal2);}
+.btn-green{background:rgba(76,175,130,.2);color:var(--green);border:1.5px solid var(--green);}
+.btn-green:hover{background:rgba(76,175,130,.35);}
+.btn-red{background:rgba(224,85,85,.15);color:var(--red);border:1.5px solid var(--red);}
+.btn-red:hover{background:rgba(224,85,85,.28);}
+.write-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:32px 28px;margin-bottom:20px;}
+.write-deflabel{font-size:0.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--teal);margin-bottom:12px;}
+.write-def{font-size:1rem;line-height:1.65;color:var(--text);margin-bottom:24px;}
+.write-input{width:100%;background:var(--bg);border:1.5px solid var(--border);border-radius:7px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:1rem;padding:13px 15px;outline:none;transition:border-color .2s;}
+.write-input:focus{border-color:var(--teal);}
+.write-input.c{border-color:var(--green);}
+.write-input.w{border-color:var(--red);}
+.write-result{margin-top:12px;font-size:0.9rem;min-height:24px;display:none;}
+.write-result.correct{color:var(--green);display:block;}
+.write-result.wrong{color:var(--red);display:block;}
+.override-wrap{margin-top:10px;display:none;align-items:center;gap:9px;font-size:0.83rem;color:var(--muted);}
+.override-wrap.show{display:flex;}
+.override-cb{width:16px;height:16px;accent-color:var(--teal);cursor:pointer;}
+.write-actions{display:flex;gap:10px;flex-wrap:wrap;}
+.multi-q{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:28px;margin-bottom:20px;}
+.multi-deflabel{font-size:0.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--amber);margin-bottom:10px;}
+.multi-term{font-family:'Fraunces',serif;font-size:1.3rem;color:var(--text);margin-bottom:24px;line-height:1.35;}
+.multi-opts{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.multi-opt{background:var(--bg);border:1.5px solid var(--border);border-radius:7px;padding:13px 15px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:0.9rem;cursor:pointer;text-align:left;transition:all .18s;line-height:1.4;}
+.multi-opt:hover:not(:disabled){border-color:var(--teal);color:var(--teal);}
+.multi-opt.co{border-color:var(--green);background:rgba(76,175,130,.15);color:var(--green);}
+.multi-opt.wo{border-color:var(--red);background:rgba(224,85,85,.12);color:var(--red);}
+.multi-opt:disabled{cursor:default;}
+.multi-fb{margin-top:14px;font-size:0.88rem;min-height:20px;font-style:italic;color:var(--muted);}
+.multi-actions{display:flex;gap:10px;margin-top:16px;}
+.completion{text-align:center;padding:56px 20px;display:none;}
+.completion.show{display:block;}
+.comp-icon{font-size:3rem;margin-bottom:18px;}
+.comp-h{font-family:'Fraunces',serif;font-size:1.7rem;color:var(--teal);margin-bottom:8px;}
+.comp-score{font-family:'Fraunces',serif;font-size:2.8rem;color:var(--text);margin:12px 0 4px;}
+.comp-sub{font-size:0.85rem;color:var(--muted);margin-bottom:6px;}
+.comp-msg{font-size:0.9rem;color:var(--muted);margin-bottom:28px;}
+.comp-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+@media(max-width:520px){.multi-opts{grid-template-columns:1fr;}.write-card,.multi-q{padding:20px 16px;}}
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <div class="top-left">
+    <a href="nk2-evolution.html" class="back-link">← Evolution</a>
+    <div class="top-title">Flashcards &mdash; <span>Evolution</span></div>
+  </div>
+  <div class="user-chip" id="user-chip">Laddar...</div>
+</div>
+
+<div class="mode-tabs">
+  <div class="mode-tab active" data-mode="flip">🔄 Vändkort</div>
+  <div class="mode-tab" data-mode="write">✏️ Skrivläge</div>
+  <div class="mode-tab" data-mode="multi">🎯 Flerval</div>
+</div>
+
+<div class="main">
+
+  <div class="history-toggle">
+    <span style="font-size:.82rem;color:var(--muted)">Evolution &middot; <span id="total-count">32</span> begrepp</span>
+    <button class="history-btn" onclick="toggleHistory()">📊 Visa min historik</button>
+  </div>
+  <div class="history-panel" id="history-panel">
+    <h3>Dina tidigare omgångar</h3>
+    <div id="history-content"><p class="history-empty">Inga omgångar sparade ännu.</p></div>
+  </div>
+
+  <div class="cat-filter" id="cat-filter">
+    <button class="cat-btn active" data-cat="all" onclick="setCategory(this)">Alla kategorier</button>
+    <button class="cat-btn" data-cat="uppkomst" onclick="setCategory(this)">🧫 Livets uppkomst</button>
+    <button class="cat-btn" data-cat="idehistoria" onclick="setCategory(this)">📜 Idéhistoria</button>
+    <button class="cat-btn" data-cat="bevis" onclick="setCategory(this)">🦴 Bevis</button>
+    <button class="cat-btn" data-cat="urval" onclick="setCategory(this)">🌱 Naturligt urval</button>
+    <button class="cat-btn" data-cat="urvalsprocesser" onclick="setCategory(this)">🔀 Urvalsprocesser</button>
+    <button class="cat-btn" data-cat="artbildning" onclick="setCategory(this)">🐦 Artbildning</button>
+  </div>
+
+  <div class="stats-row" id="stats-row">
+    <div class="stat-pill"><span class="stat-dot dot-green"></span><span id="s-know">0 kan</span></div>
+    <div class="stat-pill"><span class="stat-dot dot-red"></span><span id="s-dont">0 kan inte</span></div>
+    <div class="stat-pill"><span class="stat-dot dot-muted"></span><span id="s-left">32 kvar</span></div>
+  </div>
+  <div class="prog-wrap">
+    <div class="prog-info"><span>Framsteg</span><span id="prog-pct">0%</span></div>
+    <div class="prog-bar"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+  </div>
+
+  <div id="mode-flip">
+    <div class="card-counter-row">
+      <span class="card-counter" id="card-counter">Kort 1 av 32</span>
+      <span class="card-category" id="card-cat-label"></span>
+    </div>
+    <div class="flip-hint">Klicka på kortet för att vända det</div>
+    <div class="flip-scene" onclick="flipCard()">
+      <div class="flip-card" id="flip-card">
+        <div class="flip-face front"><div class="flip-label">Begrepp</div><div class="flip-term" id="ff-term"></div></div>
+        <div class="flip-face back"><div class="flip-label teal">Förklaring</div><div class="flip-def" id="ff-def"></div></div>
+      </div>
+    </div>
+    <div class="flip-actions">
+      <button class="btn btn-ghost" onclick="prevCard()">← Föregående</button>
+      <button class="btn btn-primary" onclick="nextCard()">Nästa →</button>
+    </div>
+    <div class="know-actions" id="know-actions" style="display:none">
+      <button class="btn btn-red" onclick="markCard(false)">✗ Kan inte</button>
+      <button class="btn btn-green" onclick="markCard(true)">✓ Kan!</button>
+    </div>
+  </div>
+
+  <div id="mode-write">
+    <div class="card-counter-row"><span class="card-counter" id="card-counter-w">Kort 1 av 32</span></div>
+    <div class="write-card">
+      <div class="write-deflabel">Vad är begreppet för denna förklaring?</div>
+      <div class="write-def" id="w-def"></div>
+      <input type="text" class="write-input" id="w-input" placeholder="Skriv begreppet här..." autocomplete="off" autocorrect="off" spellcheck="false"/>
+      <div class="write-result" id="w-result"></div>
+      <div class="override-wrap" id="w-override">
+        <input type="checkbox" class="override-cb" id="w-cb"/>
+        <label for="w-cb">Jag tänkte på rätt begrepp – räkna som rätt ändå</label>
+      </div>
+    </div>
+    <div class="write-actions">
+      <button class="btn btn-primary" id="w-check" onclick="checkWrite()">Kontrollera</button>
+      <button class="btn btn-ghost" id="w-next" onclick="nextCard()" style="display:none">Nästa →</button>
+    </div>
+  </div>
+
+  <div id="mode-multi">
+    <div class="card-counter-row"><span class="card-counter" id="card-counter-m">Kort 1 av 32</span></div>
+    <div class="multi-q">
+      <div class="multi-deflabel">Vad kallas detta?</div>
+      <div class="multi-term" id="m-def"></div>
+      <div class="multi-opts" id="m-opts"></div>
+      <div class="multi-fb" id="m-fb"></div>
+      <div class="multi-actions">
+        <button class="btn btn-primary" id="m-next" onclick="nextCard()" style="display:none">Nästa →</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="completion" id="completion">
+    <div class="comp-icon">🎉</div>
+    <div class="comp-h">Omgång klar!</div>
+    <div class="comp-score" id="comp-score"></div>
+    <div class="comp-sub" id="comp-sub"></div>
+    <div class="comp-msg" id="comp-msg"></div>
+    <div class="comp-btns">
+      <button class="btn btn-primary" onclick="restart()">Börja om</button>
+      <button class="btn btn-ghost" id="retry-btn" onclick="retryWrong()" style="display:none">Öva felen igen</button>
+      <a href="nk2-evolution.html" class="btn btn-ghost" style="text-decoration:none">← Tillbaka</a>
+    </div>
+  </div>
+
+</div>
+
+<script src="shared.js"></script>
+<script>
+const SET_ID = 'nk2_evolution';
+
+const allCards = [
+  { cat:'uppkomst', term:"Urcell", def:"Den tänkta första cellen som allt senare liv härstammar ifrån.",
+    multiDef:"Vad kallas den tänkta första cellen som allt senare liv härstammar ifrån?", wrong:["Domän","Endosymbiontteorin","Art"] },
+  { cat:'uppkomst', term:"Urcellsteorin", def:"Teorin att allt liv har ett gemensamt ursprung, stödd av att alla celler har membran, samma 20 aminosyror och DNA som informationsbärare.",
+    multiDef:"Vilken teori säger att allt liv har ett gemensamt ursprung, stödd av att alla celler har membran, samma aminosyror och DNA?", wrong:["Endosymbiontteorin","Darwins naturliga urval","Scala naturae"] },
+  { cat:'uppkomst', term:"Millers experiment", def:"Ett försök från 1950-talet som visade att organiska molekyler kan bildas ur enkla ämnen i en syrefri atmosfär med tillförd energi. Forskarna tillförde elektriska urladdningar (simulerad åska) till en blandning av gaser och fick aminosyror att bildas.",
+    multiDef:"Vilket experiment visade att organiska molekyler (t.ex. aminosyror) kan bildas ur enkla ämnen med hjälp av tillförd energi, t.ex. simulerad åska?", wrong:["Endosymbiontteorin","Urcellsteorin","Radiometrisk datering"] },
+  { cat:'uppkomst', term:"Endosymbiontteorin", def:"Teorin att mitokondrier och kloroplaster en gång var egna bakterier som togs upp av en större cell och blev en permanent del av den. Båda har eget DNA och förökar sig på egen hand i cellen.",
+    multiDef:"Vilken teori säger att mitokondrier och kloroplaster en gång var egna bakterier som togs upp av en större cell?", wrong:["Urcellsteorin","Millers experiment","Domän"] },
+  { cat:'uppkomst', term:"Domän", def:"Den högsta indelningsnivån för allt liv; det finns tre domäner (bakterier, arkéer, eukaryoter).",
+    multiDef:"Vad kallas den högsta indelningsnivån för allt liv, där det finns tre stycken (bakterier, arkéer, eukaryoter)?", wrong:["Art","Urcell","Population"] },
+
+  { cat:'idehistoria', term:"Scala naturae", def:"Aristoteles idé om att alla arter har en fast, oföränderlig plats i en stege från enkla till komplexa.",
+    multiDef:"Vad kallas Aristoteles idé om att alla arter har en fast plats i en stege från enkla till komplexa?", wrong:["Lamarcks teori","Darwins naturliga urval","Urcellsteorin"] },
+  { cat:'idehistoria', term:"Lamarcks teori", def:"Idén att egenskaper en individ förvärvar under sitt liv kan ärvas av avkomman (idag motbevisad). Lamarck trodde t.ex. att en bodybuilders starka muskler skulle gå i arv till barnen.",
+    multiDef:"Vilken (idag motbevisad) teori säger att egenskaper man skaffar sig under livet kan ärvas av ens barn?", wrong:["Darwins naturliga urval","Scala naturae","Genetisk drift"] },
+  { cat:'idehistoria', term:"Darwins naturliga urval", def:"Idén att de individer som är bäst anpassade till sin miljö överlever och för sina egenskaper vidare i högre grad.",
+    multiDef:"Vilken idé säger att individer som är bäst anpassade till sin miljö överlever och förökar sig i högre grad?", wrong:["Lamarcks teori","Scala naturae","Genetisk drift"] },
+
+  { cat:'bevis', term:"Fossil", def:"Förstenade rester av organismer, ofta bevarade i berglager i åldersordning.",
+    multiDef:"Vad kallas förstenade rester av organismer, ofta bevarade i berglager i åldersordning?", wrong:["Homologa organ","Rudimentära organ","Domän"] },
+  { cat:'bevis', term:"Radiometrisk datering", def:"Metod att bestämma ålder på fossil genom att mäta sönderfall av radioaktiva isotoper.",
+    multiDef:"Vilken metod bestämmer ålder på fossil genom att mäta sönderfall av radioaktiva isotoper?", wrong:["Fylogenetiskt träd","Millers experiment","Embryonala likheter"] },
+  { cat:'bevis', term:"Homologa organ", def:"Kroppsdelar med samma grundläggande uppbyggnad hos olika arter, vilket tyder på gemensamt ursprung. Människans arm, en vals framfena och en fladdermus vinge har samma bakomliggande benstruktur.",
+    multiDef:"Vad kallas kroppsdelar med samma grundläggande uppbyggnad hos olika arter, t.ex. armen hos människa, val och fladdermus?", wrong:["Analoga organ","Rudimentära organ","Embryonala likheter"] },
+  { cat:'bevis', term:"Analoga organ", def:"Kroppsdelar med samma funktion men olika ursprung hos olika arter. Fågelvingar och insektsvingar fyller samma funktion (flygning) men har helt olika uppbyggnad och ursprung.",
+    multiDef:"Vad kallas kroppsdelar med samma funktion men olika ursprung, t.ex. fågelvingar och insektsvingar?", wrong:["Homologa organ","Rudimentära organ","Reproduktiv barriär"] },
+  { cat:'bevis', term:"Rudimentära organ", def:"Kroppsdelar utan eller med kraftigt minskad funktion, kvar från en förfader (t.ex. blindtarmen).",
+    multiDef:"Vad kallas kroppsdelar utan eller med kraftigt minskad funktion, kvar från en förfader, t.ex. blindtarmen?", wrong:["Homologa organ","Analoga organ","Allel"] },
+  { cat:'bevis', term:"Embryonala likheter", def:"Att embryon hos släkta arter liknar varandra mer än de vuxna djuren gör.",
+    multiDef:"Vad kallas det att embryon hos släkta arter liknar varandra mer än de vuxna djuren gör?", wrong:["Homologa organ","Fylogenetiskt träd","Analoga organ"] },
+  { cat:'bevis', term:"Fylogenetiskt träd", def:"Ett diagram som visar släktskap mellan arter.",
+    multiDef:"Vad kallas ett diagram som visar släktskap mellan arter?", wrong:["Radiometrisk datering","Domän","Population"] },
+
+  { cat:'urval', term:"Variation", def:"Skillnader mellan individer inom samma art, som uppstår genom mutationer och rekombination.",
+    multiDef:"Vad kallas skillnader mellan individer inom samma art, som uppstår genom mutationer och rekombination?", wrong:["Mutation","Allel","Selektionstryck"] },
+  { cat:'urval', term:"Mutation", def:"En slumpmässig förändring i DNA som kan skapa en ny egenskap.",
+    multiDef:"Vad kallas en slumpmässig förändring i DNA som kan skapa en ny egenskap?", wrong:["Variation","Allel","Genetisk drift"] },
+  { cat:'urval', term:"Kamp om resurser", def:"Att fler individer föds än vad miljön kan försörja, vilket leder till konkurrens.",
+    multiDef:"Vad kallas det att fler individer föds än vad miljön kan försörja, vilket leder till konkurrens?", wrong:["Naturligt urval","Selektionstryck","Ärftlighet"] },
+  { cat:'urval', term:"Ärftlighet", def:"Att egenskaper förs vidare från föräldrar till avkomma via DNA.",
+    multiDef:"Vad kallas det att egenskaper förs vidare från föräldrar till avkomma via DNA?", wrong:["Variation","Mutation","Naturligt urval"] },
+  { cat:'urval', term:"Naturligt urval", def:"Att individer med fördelaktiga egenskaper överlever och förökar sig i högre grad än andra. Björkmätaren blev mörkare under industrialismen eftersom mörka individer var bättre kamouflerade mot sotiga trädstammar.",
+    multiDef:"Vad kallas det att individer med fördelaktiga egenskaper överlever och förökar sig i högre grad, t.ex. björkmätaren som blev mörkare under industrialismen?", wrong:["Kamp om resurser","Genetisk drift","Sexuell selektion"] },
+  { cat:'urval', term:"Allel", def:"En variant av en gen.",
+    multiDef:"Vad kallas en variant av en gen?", wrong:["Mutation","Variation","Art"] },
+  { cat:'urval', term:"Selektionstryck", def:"En miljöfaktor som gynnar vissa egenskaper framför andra.",
+    multiDef:"Vad kallas en miljöfaktor som gynnar vissa egenskaper framför andra?", wrong:["Kamp om resurser","Genetisk drift","Reproduktiv barriär"] },
+
+  { cat:'urvalsprocesser', term:"Riktat urval", def:"En ovanlig egenskap gynnas, vilket förskjuter populationen mot ett nytt normalläge. Harar med vit vinterpäls missgynnas när vintrarna blir snöfattigare, och grå harar blir vanligare.",
+    multiDef:"Vilken urvalsprocess innebär att en ovanlig egenskap gynnas och förskjuter populationen mot ett nytt normalläge, t.ex. grå harar som blir vanligare?", wrong:["Stabiliserande urval","Splittrande urval","Genetisk drift"] },
+  { cat:'urvalsprocesser', term:"Stabiliserande urval", def:"En redan väl anpassad egenskap förstärks, medan ytterligheter missgynnas. Människors födelsevikt är ett exempel – både för låg och för hög vikt ökar risken vid förlossningen, så en mellanvikt gynnas.",
+    multiDef:"Vilken urvalsprocess innebär att en redan väl anpassad egenskap förstärks och ytterligheter missgynnas, t.ex. mellanvikt vid födsel?", wrong:["Riktat urval","Splittrande urval","Samevolution"] },
+  { cat:'urvalsprocesser', term:"Splittrande urval", def:"Båda ytterligheterna hos en egenskap gynnas, medan mellanlägen missgynnas. Fåglar med små eller stora näbbar klarar sig bra om det bara finns små respektive stora frön, medan fåglar med medelstor näbb missgynnas.",
+    multiDef:"Vilken urvalsprocess innebär att båda ytterligheterna hos en egenskap gynnas, medan mellanläget missgynnas, t.ex. näbbstorlek hos fåglar?", wrong:["Riktat urval","Stabiliserande urval","Sexuell selektion"] },
+  { cat:'urvalsprocesser', term:"Samevolution", def:"Två arter i nära samspel påverkar varandras egenskaper över tid. En rovdjursart och dess bytesdjur kan driva varandras utveckling i en ständig \"kapprustning\".",
+    multiDef:"Vad kallas det när två arter i nära samspel påverkar varandras egenskaper över tid, t.ex. rovdjur och bytesdjur?", wrong:["Sexuell selektion","Genetisk drift","Splittrande urval"] },
+  { cat:'urvalsprocesser', term:"Sexuell selektion", def:"Egenskaper som ökar chansen att para sig gynnas, även om de inte ökar överlevnaden. Påfågelns stora stjärt gör den mer synlig för rovdjur, men ökar chansen att attrahera en hona.",
+    multiDef:"Vilken urvalsprocess gynnar egenskaper som ökar chansen att para sig, även om de inte ökar överlevnaden, t.ex. påfågelns stjärt?", wrong:["Naturligt urval","Samevolution","Riktat urval"] },
+  { cat:'urvalsprocesser', term:"Genetisk drift", def:"Slumpmässiga förändringar i vilka gener som finns i en population, särskilt tydligt i små populationer. När den nordliga sjöelefanten nästan jagades till utrotning fanns bara ett fåtal individer kvar, vilket av en slump gav mycket låg genetisk variation idag.",
+    multiDef:"Vad kallas slumpmässiga förändringar i vilka gener som finns i en population, extra tydligt i små populationer som den nordliga sjöelefanten?", wrong:["Naturligt urval","Mutation","Stabiliserande urval"] },
+
+  { cat:'artbildning', term:"Art", def:"(Biologisk definition) en grupp individer som kan para sig med varandra och få fertil avkomma.",
+    multiDef:"Vad kallas (enligt den biologiska artdefinitionen) en grupp individer som kan para sig med varandra och få fertil avkomma?", wrong:["Population","Domän","Allel"] },
+  { cat:'artbildning', term:"Allopatrisk artbildning", def:"Nya arter bildas när en population delas av en geografisk barriär. Brunbjörnar som vandrade norrut isolerades och utvecklades så småningom till isbjörnar.",
+    multiDef:"Vilken typ av artbildning sker när en population delas av en geografisk barriär, t.ex. brunbjörnar som blev isbjörnar?", wrong:["Sympatrisk artbildning","Reproduktiv barriär","Genetisk drift"] },
+  { cat:'artbildning', term:"Sympatrisk artbildning", def:"Nya arter bildas inom samma område, utan geografisk barriär. Hundratals ciklidarter har utvecklats i samma afrikanska sjöar genom att specialisera sig på olika föda.",
+    multiDef:"Vilken typ av artbildning sker inom samma område utan geografisk barriär, t.ex. ciklider i afrikanska sjöar?", wrong:["Allopatrisk artbildning","Reproduktiv barriär","Samevolution"] },
+  { cat:'artbildning', term:"Reproduktiv barriär", def:"Ett hinder som gör att två grupper inte längre kan para sig med varandra.",
+    multiDef:"Vad kallas ett hinder som gör att två grupper inte längre kan para sig med varandra?", wrong:["Allopatrisk artbildning","Selektionstryck","Art"] }
+];
+
+const CAT_LABELS = {
+  uppkomst: '🧫 Livets uppkomst',
+  idehistoria: '📜 Idéhistoria',
+  bevis: '🦴 Bevis',
+  urval: '🌱 Naturligt urval',
+  urvalsprocesser: '🔀 Urvalsprocesser',
+  artbildning: '🐦 Artbildning'
+};
+
+let session, userId;
+let cards=[], current=0, mode='flip', isFlipped=false;
+let knowSet=new Set(), dontSet=new Set(), answered=false;
+let currentCat='all';
+
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function getFilteredCards(){const src=currentCat==='all'?allCards:allCards.filter(c=>c.cat===currentCat);return shuffle([...src]);}
+
+window.addEventListener('load',()=>{
+  session=getSession();
+  if(!session){window.location.href='index.html';return;}
+  userId=session.name+'_'+session.klass;
+  document.getElementById('user-chip').textContent=session.name;
+  cards=getFilteredCards();
+  document.getElementById('total-count').textContent=cards.length;
+  renderHistory();
+  loadCard();
+});
+
+function setCategory(btn){
+  document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  currentCat=btn.dataset.cat;
+  cards=getFilteredCards();
+  current=0;knowSet.clear();dontSet.clear();answered=false;
+  document.getElementById('total-count').textContent=cards.length;
+  document.getElementById('completion').classList.remove('show');
+  document.getElementById('stats-row').style.display='flex';
+  showMode(mode);loadCard();
+}
+
+function toggleHistory(){
+  const p=document.getElementById('history-panel');
+  p.classList.toggle('open');
+  document.querySelector('.history-btn').textContent=p.classList.contains('open')?'✕ Stäng historik':'📊 Visa min historik';
+}
+function renderHistory(){
+  const p=getProgress(userId);
+  const sessions=(p[SET_ID]||{sessions:[]}).sessions;
+  const el=document.getElementById('history-content');
+  if(!sessions.length){el.innerHTML='<p class="history-empty">Inga omgångar sparade ännu. Slutför en omgång för att se din historik.</p>';return;}
+  const rows=sessions.slice().reverse().slice(0,10).map(s=>{
+    const d=new Date(s.date);
+    const ds=d.toLocaleDateString('sv-SE',{month:'short',day:'numeric'})+' '+d.toLocaleTimeString('sv-SE',{hour:'2-digit',minute:'2-digit'});
+    return `<tr><td>${ds}</td><td>${s.correct}/${s.total}</td><td><div class="pct-bar-wrap"><div class="pct-bar"><div class="pct-fill ${s.pct>=80?'':(s.pct>=50?'mid':'low')}" style="width:${s.pct}%"></div></div><span>${s.pct}%</span></div></td></tr>`;
+  }).join('');
+  el.innerHTML=`<table class="history-table"><thead><tr><th>Datum</th><th>Rätt</th><th>Resultat</th></tr></thead><tbody>${rows}</tbody></table>`;
+}
+
+function updateStats(){
+  const total=cards.length,done=knowSet.size+dontSet.size;
+  document.getElementById('s-know').textContent=knowSet.size+' kan';
+  document.getElementById('s-dont').textContent=dontSet.size+' kan inte';
+  document.getElementById('s-left').textContent=(total-done)+' kvar';
+  const pct=total?Math.round((done/total)*100):0;
+  document.getElementById('prog-fill').style.width=pct+'%';
+  document.getElementById('prog-pct').textContent=pct+'%';
+  const label='Kort '+(current+1)+' av '+total;
+  ['card-counter','card-counter-w','card-counter-m'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=label;});
+}
+
+function showCompletion(){
+  ['mode-flip','mode-write','mode-multi'].forEach(id=>{document.getElementById(id).style.display='none';});
+  document.getElementById('stats-row').style.display='none';
+  const total=cards.length,know=knowSet.size,pct=Math.round((know/total)*100);
+  recordSession(userId,SET_ID,total,know);
+  renderHistory();
+  document.getElementById('comp-score').textContent=pct+'%';
+  document.getElementById('comp-sub').textContent=know+' av '+total+' rätt';
+  document.getElementById('comp-msg').textContent=pct===100?'🌟 Perfekt! Du kan alla begrepp!':pct>=70?'👍 Bra jobbat! Öva lite till på de du missade.':'📖 Fortsätt öva – du är på rätt väg!';
+  if(dontSet.size>0)document.getElementById('retry-btn').style.display='inline-block';
+  document.getElementById('completion').classList.add('show');
+}
+
+function loadCard(){
+  if(current>=cards.length){showCompletion();return;}
+  answered=false;
+  updateStats();
+  const c=cards[current];
+  const catLabel=document.getElementById('card-cat-label');
+  if(catLabel)catLabel.textContent=CAT_LABELS[c.cat]||'';
+
+  if(mode==='flip'){
+    isFlipped=false;
+    document.getElementById('flip-card').classList.remove('flipped');
+    document.getElementById('ff-term').textContent=c.term;
+    document.getElementById('ff-def').textContent=c.def;
+    document.getElementById('know-actions').style.display='none';
+  }
+  if(mode==='write'){
+    document.getElementById('w-def').textContent=c.def;
+    document.getElementById('w-input').value='';
+    document.getElementById('w-input').className='write-input';
+    document.getElementById('w-result').className='write-result';
+    document.getElementById('w-result').textContent='';
+    document.getElementById('w-override').className='override-wrap';
+    document.getElementById('w-cb').checked=false;
+    document.getElementById('w-check').style.display='inline-block';
+    document.getElementById('w-next').style.display='none';
+    setTimeout(()=>document.getElementById('w-input').focus(),50);
+  }
+  if(mode==='multi'){
+    document.getElementById('m-def').textContent=c.multiDef||c.def;
+    document.getElementById('m-fb').textContent='';
+    document.getElementById('m-fb').style.color='var(--muted)';
+    document.getElementById('m-next').style.display='none';
+    buildMulti(c);
+  }
+}
+function nextCard(){current++;loadCard();}
+function prevCard(){if(current>0){current--;loadCard();}}
+
+function flipCard(){
+  isFlipped=!isFlipped;
+  document.getElementById('flip-card').classList.toggle('flipped',isFlipped);
+  if(isFlipped)document.getElementById('know-actions').style.display='flex';
+}
+function markCard(know){
+  const t=cards[current].term;
+  know?knowSet.add(t):dontSet.add(t);
+  nextCard();
+}
+
+function norm(s){return s.trim().toLowerCase().replace(/[åä]/g,'a').replace(/ö/g,'o').replace(/[()]/g,'').replace(/[^a-z0-9 ]/g,'').trim();}
+function checkWrite(){
+  if(answered)return;
+  const c=cards[current],val=document.getElementById('w-input').value;
+  if(!val.trim())return;
+  answered=true;
+  const ok=norm(val)===norm(c.term);
+  document.getElementById('w-input').className='write-input '+(ok?'c':'w');
+  document.getElementById('w-result').className='write-result '+(ok?'correct':'wrong');
+  document.getElementById('w-result').textContent=ok?('✅ Rätt! Begreppet är: '+c.term):('❌ Rätt svar: '+c.term);
+  ok?knowSet.add(c.term):dontSet.add(c.term);
+  if(!ok)document.getElementById('w-override').className='override-wrap show';
+  document.getElementById('w-check').style.display='none';
+  document.getElementById('w-next').style.display='inline-block';
+  updateStats();
+}
+document.addEventListener('keydown',e=>{
+  if(mode==='write'&&e.key==='Enter'){if(!answered)checkWrite();else nextCard();}
+});
+window.addEventListener('load',()=>{
+  const cb=document.getElementById('w-cb');
+  if(cb)cb.addEventListener('change',function(){
+    const t=cards[current].term;
+    if(this.checked){knowSet.add(t);dontSet.delete(t);}else{dontSet.add(t);knowSet.delete(t);}
+    updateStats();
+  });
+});
+
+function buildMulti(c){
+  const wrap=document.getElementById('m-opts');
+  wrap.innerHTML='';
+  const opts=shuffle([c.term,...c.wrong.slice(0,3)]);
+  opts.forEach(o=>{
+    const b=document.createElement('button');
+    b.className='multi-opt';b.textContent=o;
+    b.addEventListener('click',()=>answerMulti(o,c.term));
+    wrap.appendChild(b);
+  });
+}
+function answerMulti(chosen,correct){
+  if(answered)return;
+  answered=true;
+  document.querySelectorAll('.multi-opt').forEach(b=>{
+    b.disabled=true;
+    if(b.textContent===correct)b.classList.add('co');
+    else if(b.textContent===chosen)b.classList.add('wo');
+  });
+  const fb=document.getElementById('m-fb');
+  if(chosen===correct){fb.textContent='✅ Rätt!';fb.style.color='var(--green)';knowSet.add(correct);}
+  else{fb.textContent='❌ Rätt svar var: '+correct;fb.style.color='var(--red)';dontSet.add(correct);}
+  document.getElementById('m-next').style.display='inline-block';
+  updateStats();
+}
+
+function restart(){
+  cards=getFilteredCards();current=0;knowSet.clear();dontSet.clear();answered=false;
+  document.getElementById('completion').classList.remove('show');
+  document.getElementById('stats-row').style.display='flex';
+  document.getElementById('retry-btn').style.display='none';
+  showMode(mode);loadCard();
+}
+function retryWrong(){
+  const wrong=[...dontSet];
+  cards=shuffle(allCards.filter(c=>wrong.includes(c.term)));
+  current=0;knowSet.clear();dontSet.clear();answered=false;
+  document.getElementById('completion').classList.remove('show');
+  document.getElementById('stats-row').style.display='flex';
+  showMode(mode);loadCard();
+}
+
+function showMode(m){
+  ['flip','write','multi'].forEach(id=>{document.getElementById('mode-'+id).style.display=id===m?'block':'none';});
+  document.querySelectorAll('.mode-tab').forEach(t=>t.classList.toggle('active',t.dataset.mode===m));
+  mode=m;
+}
+document.querySelectorAll('.mode-tab').forEach(tab=>{
+  tab.addEventListener('click',()=>{
+    cards=getFilteredCards();current=0;knowSet.clear();dontSet.clear();answered=false;
+    document.getElementById('completion').classList.remove('show');
+    document.getElementById('stats-row').style.display='flex';
+    showMode(tab.dataset.mode);loadCard();
+  });
+});
+</script>
+</body>
+</html>
