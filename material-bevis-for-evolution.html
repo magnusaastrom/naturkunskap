@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Bevis för evolutionen – Evolution</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Mulish:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #faf7f2; --surface: #ffffff; --border: #e8e0d0;
+      --sand: #f2ece0; --rust: #b85c2a; --rust2: #d4703a;
+      --teal: #2a7a6a; --blue: #2a4a7a; --text: #1a1612;
+      --muted: #6a5e52; --radius: 10px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Mulish', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; font-size: 16px; }
+
+    .top-bar { background: #1a1612; padding: 14px 28px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; position: sticky; top: 0; z-index: 100; }
+    .back-link { color: #c8b89a; text-decoration: none; font-size: .82rem; transition: color .2s; }
+    .back-link:hover { color: #fff; }
+    .top-title { font-family: 'Playfair Display', serif; font-size: 1rem; color: #e8dcc8; }
+    .top-title span { color: #d4a060; }
+
+    .hero { background: linear-gradient(135deg, #1a1612 0%, #1a2820 60%, #1a1612 100%); padding: 64px 32px 56px; text-align: center; position: relative; overflow: hidden; }
+    .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 60% 60% at 30% 50%, rgba(42,122,106,.12) 0%, transparent 60%), radial-gradient(ellipse 50% 70% at 80% 30%, rgba(180,92,42,.06) 0%, transparent 55%); pointer-events: none; }
+    .hero-eyebrow { font-size: .72rem; letter-spacing: .22em; text-transform: uppercase; color: #d4a060; margin-bottom: 12px; }
+    .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 5vw, 3rem); font-weight: 900; color: #f0e8d8; margin-bottom: 16px; line-height: 1.15; }
+    .hero-sub { font-size: 1rem; color: #a09080; max-width: 560px; margin: 0 auto 32px; line-height: 1.7; }
+    .hero-nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+    .hero-nav a { font-size: .8rem; color: #c8b89a; border: 1px solid rgba(200,184,154,.3); border-radius: 30px; padding: 7px 16px; text-decoration: none; transition: all .2s; }
+    .hero-nav a:hover { background: rgba(200,184,154,.12); color: #fff; }
+
+    .container { max-width: 860px; margin: 0 auto; padding: 0 24px; }
+    .section { padding: 60px 0; }
+    .section + .section { border-top: 1px solid var(--border); }
+
+    .section-eyebrow { font-size: .7rem; letter-spacing: .2em; text-transform: uppercase; color: var(--rust); font-weight: 600; margin-bottom: 8px; }
+    .section-title { font-family: 'Playfair Display', serif; font-size: clamp(1.5rem, 3vw, 2rem); color: var(--text); margin-bottom: 6px; line-height: 1.25; }
+    .section-intro { font-size: .95rem; color: var(--muted); margin-bottom: 32px; max-width: 640px; line-height: 1.7; }
+
+    .prose { font-size: .95rem; line-height: 1.75; color: #2a2016; margin-bottom: 24px; }
+    .prose strong { color: var(--text); font-weight: 600; }
+
+    .key-box { background: var(--sand); border-left: 4px solid var(--rust2); border-radius: 0 var(--radius) var(--radius) 0; padding: 18px 22px; margin-bottom: 28px; }
+    .key-box h4 { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--rust); margin-bottom: 10px; }
+    .key-box p { font-size: .88rem; color: #4a3a2a; line-height: 1.65; }
+    .key-box dl { font-size: .88rem; color: #4a3a2a; display: flex; flex-direction: column; gap: 8px; }
+    .key-box dt { font-weight: 600; color: var(--text); display: inline; }
+    .key-box dd { display: inline; margin: 0; }
+    .key-box .term-row { line-height: 1.55; }
+
+    .compare-table { width: 100%; border-collapse: collapse; margin-bottom: 32px; font-size: .88rem; }
+    .compare-table th { background: #1a1612; color: #e8dcc8; padding: 12px 16px; text-align: left; font-weight: 600; font-family: 'Playfair Display', serif; }
+    .compare-table th:first-child { border-radius: 8px 0 0 0; }
+    .compare-table th:last-child { border-radius: 0 8px 0 0; }
+    .compare-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); vertical-align: top; }
+    .compare-table tr:nth-child(even) td { background: var(--sand); }
+    .compare-table tr:last-child td { border-bottom: none; }
+    .compare-table td:first-child { font-weight: 600; color: var(--text); }
+
+    .process-steps { display: flex; flex-direction: column; gap: 0; margin-bottom: 32px; position: relative; }
+    .process-steps::before { content: ''; position: absolute; left: 22px; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, var(--rust2), var(--teal)); opacity: .3; }
+    .process-step { display: flex; gap: 18px; align-items: flex-start; padding: 16px 0; }
+    .step-num { width: 44px; height: 44px; border-radius: 50%; background: var(--rust2); color: #fff; display: flex; align-items: center; justify-content: center; font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; flex-shrink: 0; position: relative; z-index: 1; }
+    .step-num.teal { background: var(--teal); }
+    .step-num.blue { background: var(--blue); }
+    .step-body h4 { font-size: .95rem; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+    .step-body p { font-size: .85rem; color: var(--muted); line-height: 1.6; }
+
+    .analogy-box { background: #1a1612; border-radius: var(--radius); padding: 28px 32px; margin-bottom: 32px; }
+    .analogy-box h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: #e8dcc8; margin-bottom: 14px; }
+    .analogy-box p { font-size: .9rem; color: #a09080; line-height: 1.7; }
+    .analogy-box strong { color: #e8dcc8; }
+
+    .tag-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
+    .tag-chip { background: var(--sand); border: 1px solid var(--border); border-radius: 30px; padding: 6px 14px; font-size: .82rem; color: #4a3a2a; }
+
+    .q-card { background: #1a1612; border: 1px solid #2a2018; border-radius: var(--radius); padding: 22px 26px; margin-bottom: 18px; }
+    .q-num { font-size: .68rem; letter-spacing: .18em; text-transform: uppercase; color: #d4a060; margin-bottom: 7px; font-weight: 600; }
+    .q-text { font-family: 'Playfair Display', serif; font-size: .95rem; color: #f0e8d8; margin-bottom: 14px; line-height: 1.5; }
+    .q-textarea { width: 100%; background: #0f0c08; border: 1.5px solid #2a2018; border-radius: 6px; color: #e8dcc8; font-family: 'Mulish', sans-serif; font-size: .9rem; padding: 11px 13px; resize: vertical; min-height: 80px; outline: none; transition: border-color .2s; line-height: 1.6; }
+    .q-textarea:focus { border-color: #d4703a; }
+    .q-btn { margin-top: 10px; font-family: 'Mulish', sans-serif; font-size: .84rem; font-weight: 600; padding: 8px 20px; border-radius: 6px; border: none; cursor: pointer; background: #d4703a; color: #fff; transition: background .2s; }
+    .q-btn:hover { background: #b85c2a; }
+    .q-model { margin-top: 14px; display: none; background: #0f0c08; border: 1px solid #2a2018; border-radius: 6px; overflow: hidden; }
+    .q-model.shown { display: block; }
+    .q-model-header { background: #2a2018; padding: 8px 16px; font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: #d4a060; font-weight: 600; }
+    .q-model-body { padding: 14px 18px; font-size: .88rem; color: #c8b89a; line-height: 1.75; }
+    .q-model-body strong { color: #f0e8d8; }
+    .q-model-body ul { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+    .q-model-body li { padding-left: 16px; position: relative; }
+    .q-model-body li::before { content: '→'; position: absolute; left: 0; color: #d4703a; font-size: .8rem; }
+    .q-self-check { margin-top: 12px; padding-top: 12px; border-top: 1px solid #2a2018; display: flex; align-items: center; gap: 10px; font-size: .82rem; color: #8a7a60; cursor: pointer; }
+    .q-self-check input { accent-color: #d4703a; width: 16px; height: 16px; cursor: pointer; }
+    .q-retry { margin-top: 10px; font-size: .78rem; color: #6a5a40; background: none; border: none; cursor: pointer; font-family: 'Mulish', sans-serif; text-decoration: underline; padding: 0; display: block; }
+    .q-score-bar { background: #0f0c08; border: 1px solid #2a2018; border-radius: var(--radius); padding: 20px 24px; margin-top: 32px; display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+    .q-score-num { font-family: 'Playfair Display', serif; font-size: 2rem; color: #d4703a; }
+    .q-score-label { font-size: .85rem; color: #8a7a60; }
+    .q-score-msg { font-size: .88rem; color: #c8b89a; }
+
+    footer { border-top: 1px solid var(--border); padding: 28px 24px; text-align: center; font-size: .78rem; color: var(--muted); margin-top: 40px; }
+    footer a { color: var(--teal); text-decoration: none; }
+
+    @media(max-width: 580px) {
+      .hero { padding: 44px 20px 36px; }
+      .container { padding: 0 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="top-bar">
+  <a href="nk2-evolution.html" class="back-link">← Evolution</a>
+  <div class="top-title">NK2 &mdash; <span>Bevis för evolutionen</span></div>
+</div>
+
+<div class="hero">
+  <p class="hero-eyebrow">Evolution &middot; NK2</p>
+  <h1>Bevis för evolutionen</h1>
+  <p class="hero-sub">Fossil, åldersbestämning, kroppsbyggnad, DNA och beteende – flera helt olika typer av bevis som alla pekar åt samma håll.</p>
+  <nav class="hero-nav">
+    <a href="#fossil">Fossil</a>
+    <a href="#datering">Radiometrisk datering</a>
+    <a href="#embryo">Embryonalutveckling</a>
+    <a href="#organ">Homologa & analoga organ</a>
+    <a href="#dna">DNA</a>
+    <a href="#beteende">Beteende</a>
+    <a href="#rudimentar">Rudimentära organ</a>
+    <a href="#sammanfattning">Sammanfattning</a>
+    <a href="#kolla">Kolla att du kan</a>
+  </nav>
+</div>
+
+<main>
+
+<!-- SEKTION 1 – FOSSIL -->
+<div class="section" id="fossil">
+<div class="container">
+  <p class="section-eyebrow">Bevis 1</p>
+  <h2 class="section-title">Fossil</h2>
+  <p class="section-intro"><strong>Fossil</strong> är förstenade rester av organismer. De hamnar i olika bergartslager (strata), och eftersom lagren bildas ett i taget hamnar de äldsta fossilen längst ner och de yngsta längst upp.</p>
+
+  <p class="prose">Bergartslagren bildas genom en process som kallas <strong>stratifiering</strong>:</p>
+
+  <div class="process-steps">
+    <div class="process-step"><div class="step-num">1</div><div class="step-body"><h4>Vittring och erosion</h4><p>Berg bryts ner till mindre partiklar (sand, silt, lera) som transporteras av vatten, vind eller is.</p></div></div>
+    <div class="process-step"><div class="step-num">2</div><div class="step-body"><h4>Deposition</h4><p>Partiklarna förlorar transportenergi – till exempel i sjöar, hav eller flodbäddar – och sjunker till botten.</p></div></div>
+    <div class="process-step"><div class="step-num teal">3</div><div class="step-body"><h4>Lager på lager</h4><p>Varje avsättningsperiod bildar ett nytt lager ovanpå det förra. Skillnader i material gör att lagren går att skilja åt.</p></div></div>
+    <div class="process-step"><div class="step-num teal">4</div><div class="step-body"><h4>Litifiering</h4><p>Med tiden trycks lagren ihop av vikten från ovanliggande material, och mineraler cementerar samman partiklarna till fast bergart.</p></div></div>
+  </div>
+
+  <div class="key-box">
+    <h4>🔑 Varför är detta bevis för evolution?</h4>
+    <p>Genom att jämföra fossil i olika lager kan man se hur livet förändrats över tid – enklare organismer i de äldsta (understa) lagren, och alltmer komplexa och moderna organismer ju högre upp (och yngre) lagren är.</p>
+  </div>
+</div>
+</div>
+
+<!-- SEKTION 2 – RADIOMETRISK DATERING -->
+<div class="section" id="datering">
+<div class="container">
+  <p class="section-eyebrow">Bevis 2</p>
+  <h2 class="section-title">Radiometrisk datering</h2>
+  <p class="section-intro">För att veta hur gamla fossil faktiskt är räcker det inte att bara titta på vilket lager de ligger i – man behöver också kunna sätta en ålder på dem.</p>
+
+  <p class="prose">Radioaktiva isotoper sönderfaller med ett bestämt intervall, kallat <strong>halveringstid</strong> – tiden det tar för hälften av ett radioaktivt ämne att sönderfalla. Genom att mäta förhållandet mellan en radioaktiv isotop och den stabila produkt den sönderfaller till, kan forskare räkna ut hur länge sönderfallet pågått – och därmed fossilets ålder.</p>
+
+  <table class="compare-table">
+    <thead><tr><th>Metod</th><th>Används för</th></tr></thead>
+    <tbody>
+      <tr><td>Kol-14</td><td>Relativt unga fynd (upp till ca 50 000 år).</td></tr>
+      <tr><td>Uran-bly</td><td>Riktigt gamla fossil och bergarter, miljontals till miljarder år.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="key-box">
+    <h4>🔑 Kom ihåg</h4>
+    <p>Olika isotoper har olika halveringstid, vilket gör att olika metoder passar olika bra beroende på hur gammalt fyndet förväntas vara.</p>
+  </div>
+</div>
+</div>
+
+<!-- SEKTION 3 – EMBRYONALUTVECKLING -->
+<div class="section" id="embryo">
+<div class="container">
+  <p class="section-eyebrow">Bevis 3</p>
+  <h2 class="section-title">Embryonalutveckling</h2>
+  <p class="section-intro">Embryon hos olika ryggradsdjur liknar varandra betydligt mer än de vuxna djuren gör.</p>
+
+  <p class="prose">Under ett tidigt embryonalstadium har till exempel människor, fiskar och fåglar liknande strukturer som kallas gälbågar. Hos fiskar utvecklas dessa vidare till gälar, men hos människor utvecklas motsvarande struktur istället till flera av <strong>hörselbenen</strong> i örat. Att så olika kroppsdelar utgår från samma embryonala struktur tyder på ett <strong>gemensamt ursprung</strong>.</p>
+
+  <div class="key-box">
+    <h4>🔑 Kom ihåg</h4>
+    <p>Ju mer lika embryon och anatomi två arter har, desto <strong>närmare släkt</strong> är de troligen – strukturerna har helt enkelt utvecklats åt olika håll från samma utgångspunkt.</p>
+  </div>
+</div>
+</div>
+
+<!-- SEKTION 4 – HOMOLOGA OCH ANALOGA ORGAN -->
+<div class="section" id="organ">
+<div class="container">
+  <p class="section-eyebrow">Bevis 4</p>
+  <h2 class="section-title">Homologa och analoga organ</h2>
+  <p class="section-intro">Två kroppsdelar kan likna varandra av två helt olika anledningar – och det är viktigt att kunna skilja dem åt.</p>
+
+  <table class="compare-table">
+    <thead><tr><th></th><th>Homologa organ</th><th>Analoga organ</th></tr></thead>
+    <tbody>
+      <tr><td>Grundläggande uppbyggnad</td><td>Samma grundläggande skelettuppbyggnad – samma ben, i samma inbördes placering.</td><td>Helt olika uppbyggnad och ursprung.</td></tr>
+      <tr><td>Skillnader</td><td>Skiljer sig i storlek och proportioner – inte i vilka delar som finns.</td><td>Fyller samma funktion, men har byggts upp på olika sätt.</td></tr>
+      <tr><td>Vad det visar</td><td>Ju fler och mer detaljerade strukturella likheter, desto närmare släktskap.</td><td>Säger ingenting om släktskap – organen har utvecklats oberoende av varandra.</td></tr>
+      <tr><td>Exempel</td><td>Människans arm, en fladdermus vinge och en vals framfena har samma underliggande benstruktur.</td><td>Fågelvingar och insektsvingar fyller samma funktion (flygning) men har helt olika ursprung.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="analogy-box">
+    <h3>💡 Så här kan du komma ihåg skillnaden</h3>
+    <p><strong>Homologa</strong> organ har samma <strong>ursprung</strong> men kan se olika ut och göra olika saker. <strong>Analoga</strong> organ gör samma <strong>sak</strong> men har helt olika ursprung. Homologa organ är alltså det starka beviset för släktskap – analoga organ är det inte.</p>
+  </div>
+</div>
+</div>
+
+<!-- SEKTION 5 – DNA -->
+<div class="section" id="dna">
+<div class="container">
+  <p class="section-eyebrow">Bevis 5</p>
+  <h2 class="section-title">DNA</h2>
+  <p class="section-intro">Sedan DNA-teknik blev tillgänglig har forskare fått ett av de mest exakta bevisen för evolution och släktskap.</p>
+
+  <p class="prose">Genetisk likhet mellan arter avslöjar hur nära släkt de är. Människor och schimpanser delar till exempel ungefär <strong>98–99 % av sitt DNA</strong>, medan mer avlägsna släktingar delar en mindre andel. Ju närmare släkt två arter är, desto mer lika är deras DNA-sekvenser.</p>
+
+  <div class="key-box">
+    <h4>🔑 Kom ihåg</h4>
+    <p>DNA-jämförelser bekräftar ofta samma släktträd som fossil och anatomi redan pekat mot – vilket gör beviset extra starkt, eftersom flera helt olika metoder ger samma svar.</p>
+  </div>
+</div>
+</div>
+
+<!-- SEKTION 6 – LIKHETER I BETEENDE -->
+<div class="section" id="beteende">
+<div class="container">
+  <p class="section-eyebrow">Bevis 6</p>
+  <h2 class="section-title">Likheter i beteende</h2>
+  <p class="section-intro">Även instinktiva, medfödda beteenden kan följa samma mönster hos närbesläktade arter.</p>
+
+  <p class="prose">Hos människor och våra närmaste släktingar (t.ex. schimpanser och bonoboer) återfinns flera liknande instinktiva beteenden:</p>
+
+  <div class="tag-grid">
+    <span class="tag-chip">Ansiktsuttryck för känslor</span>
+    <span class="tag-chip">Lek hos ungar</span>
+    <span class="tag-chip">Omsorg om avkomman</span>
+    <span class="tag-chip">Socialt samarbete</span>
+    <span class="tag-chip">Tröstbeteende</span>
+    <span class="tag-chip">Kommunikation med gester</span>
+  </div>
+
+  <p class="prose">Liknande mönster finns även längre bort i djurriket: fåglar bygger bon och nykläckta havssköldpaddor rör sig mot havet utan att ha lärt sig det – helt medfödda beteenden typiska för respektive art.</p>
+
+  <div class="key-box">
+    <h4>🔑 Varför är detta bevis för evolution?</h4>
+    <p>När nära släktingar delar komplexa, medfödda beteenden är den enklaste förklaringen att beteendena ärvts från en <strong>gemensam förfader</strong> och sedan utvecklats vidare. Ju fler sådana likheter, desto starkare stöd för nära släktskap.</p>
+  </div>
+</div>
+</div>
+
+<!-- SEKTION 7 – RUDIMENTÄRA ORGAN -->
+<div class="section" id="rudimentar">
+<div class="container">
+  <p class="section-eyebrow">Bevis 7</p>
+  <h2 class="section-title">Rudimentära organ</h2>
+  <p class="section-intro">Ibland bär en art med sig kroppsdelar som en gång fyllde en funktion hos en förfader, men som idag saknar eller nästan saknar funktion.</p>
+
+  <p class="prose">Sådana kroppsdelar kallas <strong>rudimentära organ</strong>. Exempel är människans <strong>blindtarm</strong> och svanskota, samt <strong>bäckenben</strong> hos valar och pytonormar – kvarlevor från förfäder som hade fungerande bakben.</p>
+
+  <div class="key-box">
+    <h4>🔑 Kom ihåg</h4>
+    <p>Rudimentära organ visar att en art en gång haft nytta av strukturen, även om den idag har liten eller ingen funktion – ett tydligt spår av evolutionär historia.</p>
+  </div>
+</div>
+</div>
+
+<!-- SEKTION 8 – SAMMANFATTNING -->
+<div class="section" id="sammanfattning">
+<div class="container">
+  <p class="section-eyebrow">Sammanfattning</p>
+  <h2 class="section-title">Det viktigaste i korthet</h2>
+
+  <div class="key-box">
+    <h4>🔑 Sju typer av bevis för evolution</h4>
+    <dl>
+      <div class="term-row"><dt>Fossil</dt><dd> – visar hur livet förändrats över tid, äldst längst ner i bergartslagren.</dd></div>
+      <div class="term-row"><dt>Radiometrisk datering</dt><dd> – sätter en ålder på fossil genom radioaktivt sönderfall.</dd></div>
+      <div class="term-row"><dt>Embryonalutveckling</dt><dd> – embryon hos släkta arter liknar varandra mer än de vuxna gör.</dd></div>
+      <div class="term-row"><dt>Homologa organ</dt><dd> – samma grundläggande uppbyggnad hos olika arter, tyder på gemensamt ursprung.</dd></div>
+      <div class="term-row"><dt>DNA</dt><dd> – genetisk likhet avslöjar släktskap, t.ex. människa och schimpans.</dd></div>
+      <div class="term-row"><dt>Beteende</dt><dd> – delade instinktiva beteenden tyder på gemensam härkomst.</dd></div>
+      <div class="term-row"><dt>Rudimentära organ</dt><dd> – kroppsdelar utan eller med kraftigt reducerad funktion, kvarlevor från förfäder.</dd></div>
+    </dl>
+  </div>
+</div>
+</div>
+
+<!-- SEKTION 9 – KOLLA ATT DU KAN -->
+<div class="section" id="kolla">
+<div class="container">
+  <p class="section-eyebrow">Självbedömning</p>
+  <h2 class="section-title">Kolla att du kan</h2>
+  <p class="section-intro">Försök svara utan att titta i texten. Visa sedan mallsvaret och bocka i om du hade med det viktigaste.</p>
+  <div id="q-wrap"></div>
+</div>
+</div>
+
+</main>
+
+<footer>
+  <a href="nk2-evolution.html">← Tillbaka till Evolution</a> &middot; NK2 &middot; Bevis för evolutionen
+</footer>
+
+<script src="shared.js"></script>
+<script>
+requireLogin('NK2');
+
+const QUESTIONS = [
+  {
+    q: "Beskriv hur bergartslager bildas, och förklara varför de äldsta fossilen hamnar längst ner.",
+    model: [
+      "Vittring och erosion bryter ner berg till partiklar som transporteras av vatten, vind eller is.",
+      "Partiklarna avsätts (deposition) i t.ex. sjöar eller hav och bildar lager på lager över tid.",
+      "Lagren pressas ihop och cementeras samman (litifiering) till fast bergart.",
+      "Eftersom varje nytt lager bildas ovanpå de gamla hamnar de äldsta fossilen längst ner."
+    ]
+  },
+  {
+    q: "Hur fungerar radiometrisk datering, och varför används olika metoder för olika fynd?",
+    model: [
+      "Radioaktiva isotoper sönderfaller med en bestämd halveringstid.",
+      "Genom att mäta förhållandet mellan den radioaktiva isotopen och sönderfallsprodukten kan man räkna ut fyndets ålder.",
+      "Olika isotoper har olika halveringstid – kol-14 passar unga fynd, uran-bly passar mycket gamla fossil."
+    ]
+  },
+  {
+    q: "Vad visar likheter i embryonalutveckling om släktskap mellan arter?",
+    model: [
+      "Embryon hos släkta arter liknar varandra mer än de vuxna djuren gör.",
+      "Samma embryonala struktur (t.ex. gälbågar) kan utvecklas till olika saker hos olika arter, vilket tyder på ett gemensamt ursprung."
+    ]
+  },
+  {
+    q: "Förklara skillnaden mellan homologa och analoga organ med ett eget exempel på vardera.",
+    model: [
+      "Homologa organ har samma grundläggande skelettuppbyggnad men kan skilja sig i storlek och proportion, t.ex. armen hos människa och val.",
+      "Analoga organ har samma funktion men helt olika ursprung och uppbyggnad, t.ex. fågelvingar och insektsvingar.",
+      "Bara homologa organ är ett starkt bevis för nära släktskap."
+    ]
+  },
+  {
+    q: "Varför räknas DNA-likheter som ett särskilt starkt bevis för evolution?",
+    model: [
+      "Genetisk likhet mellan arter avslöjar släktskap direkt, t.ex. delar människor och schimpanser 98–99 % av sitt DNA.",
+      "DNA-bevisen bekräftar ofta samma släktskap som fossil och anatomi redan visat, vilket gör beviset extra starkt."
+    ]
+  },
+  {
+    q: "Ge exempel på likheter i beteende mellan människor och våra närmaste släktingar, och förklara varför det räknas som evolutionärt bevis.",
+    model: [
+      "Exempel: ansiktsuttryck för känslor, lek hos ungar, omsorg om avkomman, socialt samarbete, tröstbeteende och kommunikation med gester.",
+      "Delade, medfödda beteenden hos nära släktingar förklaras enklast av att beteendena ärvts från en gemensam förfader."
+    ]
+  },
+  {
+    q: "Vad är ett rudimentärt organ? Ge minst två exempel.",
+    model: [
+      "En kroppsdel utan eller med kraftigt reducerad funktion, kvarlämnad från en förfader.",
+      "Exempel: människans blindtarm och svanskota, samt bäckenben hos valar och pytonormar."
+    ]
+  }
+];
+
+let checked = new Array(QUESTIONS.length).fill(false);
+
+function buildQuestions() {
+  const wrap = document.getElementById('q-wrap');
+  QUESTIONS.forEach((q, i) => {
+    const items = q.model.map(m => `<li>${m}</li>`).join('');
+    wrap.innerHTML += `
+      <div class="q-card">
+        <div class="q-num">Fråga ${i+1} av ${QUESTIONS.length}</div>
+        <div class="q-text">${q.q}</div>
+        <textarea class="q-textarea" id="qta-${i}" placeholder="Skriv ditt svar här..."></textarea>
+        <button class="q-btn" onclick="showModel(${i})">Visa mallsvar →</button>
+        <div class="q-model" id="qmodel-${i}">
+          <div class="q-model-header">📋 Mallsvar</div>
+          <div class="q-model-body">
+            <ul>${items}</ul>
+            <div class="q-self-check">
+              <input type="checkbox" id="qcheck-${i}" onchange="toggleCheck(${i})"/>
+              <label for="qcheck-${i}">Jag hade med det viktigaste</label>
+            </div>
+          </div>
+        </div>
+        <button class="q-retry" onclick="resetQuestion(${i})">↩ Rensa och försök igen</button>
+      </div>`;
+  });
+  updateScore();
+}
+
+function showModel(i) { document.getElementById(`qmodel-${i}`).classList.add('shown'); }
+function toggleCheck(i) { checked[i] = document.getElementById(`qcheck-${i}`).checked; updateScore(); }
+function resetQuestion(i) {
+  document.getElementById(`qta-${i}`).value = '';
+  document.getElementById(`qmodel-${i}`).classList.remove('shown');
+  document.getElementById(`qcheck-${i}`).checked = false;
+  checked[i] = false;
+  updateScore();
+}
+
+function updateScore() {
+  const n = checked.filter(Boolean).length;
+  const total = QUESTIONS.length;
+  const msg = n === total ? '🎉 Utmärkt – du kan hela avsnittet!'
+    : n >= 5 ? '👍 Bra jobbat! Kika igenom de du missat.'
+    : n >= 3 ? '📖 Bra start – fortsätt öva på resten.'
+    : '🔍 Gå tillbaka till materialet och försök igen.';
+
+  let bar = document.getElementById('q-scorebar');
+  if (!bar) {
+    document.getElementById('q-wrap').insertAdjacentHTML('afterend',
+      `<div class="q-score-bar" id="q-scorebar">
+        <div class="q-score-num" id="qs-num">${n}/${total}</div>
+        <div><div class="q-score-label">Självskattning</div><div class="q-score-msg" id="qs-msg">${msg}</div></div>
+      </div>`);
+  } else {
+    document.getElementById('qs-num').textContent = `${n}/${total}`;
+    document.getElementById('qs-msg').textContent = msg;
+  }
+}
+
+buildQuestions();
+</script>
+
+</body>
+</html>
