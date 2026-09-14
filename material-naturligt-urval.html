@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Naturligt urval – Evolution</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Mulish:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #faf7f2; --surface: #ffffff; --border: #e8e0d0;
+      --sand: #f2ece0; --rust: #b85c2a; --rust2: #d4703a;
+      --teal: #2a7a6a; --blue: #2a4a7a; --text: #1a1612;
+      --muted: #6a5e52; --radius: 10px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Mulish', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; font-size: 16px; }
+
+    .top-bar { background: #1a1612; padding: 14px 28px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; position: sticky; top: 0; z-index: 100; }
+    .back-link { color: #c8b89a; text-decoration: none; font-size: .82rem; transition: color .2s; }
+    .back-link:hover { color: #fff; }
+    .top-title { font-family: 'Playfair Display', serif; font-size: 1rem; color: #e8dcc8; }
+    .top-title span { color: #d4a060; }
+
+    .hero { background: linear-gradient(135deg, #1a1612 0%, #1a2820 60%, #1a1612 100%); padding: 64px 32px 56px; text-align: center; position: relative; overflow: hidden; }
+    .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 60% 60% at 30% 50%, rgba(42,122,106,.12) 0%, transparent 60%), radial-gradient(ellipse 50% 70% at 80% 30%, rgba(180,92,42,.06) 0%, transparent 55%); pointer-events: none; }
+    .hero-eyebrow { font-size: .72rem; letter-spacing: .22em; text-transform: uppercase; color: #d4a060; margin-bottom: 12px; }
+    .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 5vw, 3rem); font-weight: 900; color: #f0e8d8; margin-bottom: 16px; line-height: 1.15; }
+    .hero-sub { font-size: 1rem; color: #a09080; max-width: 560px; margin: 0 auto 32px; line-height: 1.7; }
+    .hero-nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+    .hero-nav a { font-size: .8rem; color: #c8b89a; border: 1px solid rgba(200,184,154,.3); border-radius: 30px; padding: 7px 16px; text-decoration: none; transition: all .2s; }
+    .hero-nav a:hover { background: rgba(200,184,154,.12); color: #fff; }
+
+    .container { max-width: 860px; margin: 0 auto; padding: 0 24px; }
+    .section { padding: 60px 0; }
+    .section + .section { border-top: 1px solid var(--border); }
+
+    .section-eyebrow { font-size: .7rem; letter-spacing: .2em; text-transform: uppercase; color: var(--rust); font-weight: 600; margin-bottom: 8px; }
+    .section-title { font-family: 'Playfair Display', serif; font-size: clamp(1.5rem, 3vw, 2rem); color: var(--text); margin-bottom: 6px; line-height: 1.25; }
+    .section-intro { font-size: .95rem; color: var(--muted); margin-bottom: 32px; max-width: 640px; line-height: 1.7; }
+
+    .prose { font-size: .95rem; line-height: 1.75; color: #2a2016; margin-bottom: 24px; }
+    .prose strong { color: var(--text); font-weight: 600; }
+
+    .key-box { background: var(--sand); border-left: 4px solid var(--rust2); border-radius: 0 var(--radius) var(--radius) 0; padding: 18px 22px; margin-bottom: 28px; }
+    .key-box h4 { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--rust); margin-bottom: 10px; }
+    .key-box p { font-size: .88rem; color: #4a3a2a; line-height: 1.65; }
+    .key-box dl { font-size: .88rem; color: #4a3a2a; display: flex; flex-direction: column; gap: 8px; }
+    .key-box dt { font-weight: 600; color: var(--text); display: inline; }
+    .key-box dd { display: inline; margin: 0; }
+    .key-box .term-row { line-height: 1.55; }
+
+    .compare-table { width: 100%; border-collapse: collapse; margin-bottom: 32px; font-size: .88rem; }
+    .compare-table th { background: #1a1612; color: #e8dcc8; padding: 12px 16px; text-align: left; font-weight: 600; font-family: 'Playfair Display', serif; }
+    .compare-table th:first-child { border-radius: 8px 0 0 0; }
+    .compare-table th:last-child { border-radius: 0 8px 0 0; }
+    .compare-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); vertical-align: top; }
+    .compare-table tr:nth-child(even) td { background: var(--sand); }
+    .compare-table tr:last-child td { border-bottom: none; }
+    .compare-table td:first-child { font-weight: 600; color: var(--text); }
+
+    .process-steps { display: flex; flex-direction: column; gap: 0; margin-bottom: 32px; position: relative; }
+    .process-steps::before { content: ''; position: absolute; left: 22px; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, var(--rust2), var(--teal)); opacity: .3; }
+    .process-step { display: flex; gap: 18px; align-items: flex-start; padding: 16px 0; }
+    .step-num { width: 44px; height: 44px; border-radius: 50%; background: var(--rust2); color: #fff; display: flex; align-items: center; justify-content: center; font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; flex-shrink: 0; position: relative; z-index: 1; }
+    .step-num.teal { background: var(--teal); }
+    .step-num.blue { background: var(--blue); }
+    .step-body h4 { font-size: .95rem; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+    .step-body p { font-size: .85rem; color: var(--muted); line-height: 1.6; }
+
+    .analogy-box { background: #1a1612; border-radius: var(--radius); padding: 28px 32px; margin-bottom: 32px; }
+    .analogy-box h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: #e8dcc8; margin-bottom: 14px; }
+    .analogy-box p { font-size: .9rem; color: #a09080; line-height: 1.7; }
+    .analogy-box strong { color: #e8dcc8; }
+
+    .tag-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
+    .tag-chip { background: var(--sand); border: 1px solid var(--border); border-radius: 30px; padding: 6px 14px; font-size: .82rem; color: #4a3a2a; }
+
+    .q-card { background: #1a1612; border: 1px solid #2a2018; border-radius: var(--radius); padding: 22px 26px; margin-bottom: 18px; }
+    .q-num { font-size: .68rem; letter-spacing: .18em; text-transform: uppercase; color: #d4a060; margin-bottom: 7px; font-weight: 600; }
+    .q-text { font-family: 'Playfair Display', serif; font-size: .95rem; color: #f0e8d8; margin-bottom: 14px; line-height: 1.5; }
+    .q-textarea { width: 100%; background: #0f0c08; border: 1.5px solid #2a2018; border-radius: 6px; color: #e8dcc8; font-family: 'Mulish', sans-serif; font-size: .9rem; padding: 11px 13px; resize: vertical; min-height: 80px; outline: none; transition: border-color .2s; line-height: 1.6; }
+    .q-textarea:focus { border-color: #d4703a; }
+    .q-btn { margin-top: 10px; font-family: 'Mulish', sans-serif; font-size: .84rem; font-weight: 600; padding: 8px 20px; border-radius: 6px; border: none; cursor: pointer; background: #d4703a; color: #fff; transition: background .2s; }
+    .q-btn:hover { background: #b85c2a; }
+    .q-model { margin-top: 14px; display: none; background: #0f0c08; border: 1px solid #2a2018; border-radius: 6px; overflow: hidden; }
+    .q-model.shown { display: block; }
+    .q-model-header { background: #2a2018; padding: 8px 16px; font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: #d4a060; font-weight: 600; }
+    .q-model-body { padding: 14px 18px; font-size: .88rem; color: #c8b89a; line-height: 1.75; }
+    .q-model-body strong { color: #f0e8d8; }
+    .q-model-body ul { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+    .q-model-body li { padding-left: 16px; position: relative; }
+    .q-model-body li::before { content: '→'; position: absolute; left: 0; color: #d4703a; font-size: .8rem; }
+    .q-self-check { margin-top: 12px; padding-top: 12px; border-top: 1px solid #2a2018; display: flex; align-items: center; gap: 10px; font-size: .82rem; color: #8a7a60; cursor: pointer; }
+    .q-self-check input { accent-color: #d4703a; width: 16px; height: 16px; cursor: pointer; }
+    .q-retry { margin-top: 10px; font-size: .78rem; color: #6a5a40; background: none; border: none; cursor: pointer; font-family: 'Mulish', sans-serif; text-decoration: underline; padding: 0; display: block; }
+    .q-score-bar { background: #0f0c08; border: 1px solid #2a2018; border-radius: var(--radius); padding: 20px 24px; margin-top: 32px; display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+    .q-score-num { font-family: 'Playfair Display', serif; font-size: 2rem; color: #d4703a; }
+    .q-score-label { font-size: .85rem; color: #8a7a60; }
+    .q-score-msg { font-size: .88rem; color: #c8b89a; }
+
+    footer { border-top: 1px solid var(--border); padding: 28px 24px; text-align: center; font-size: .78rem; color: var(--muted); margin-top: 40px; }
+    footer a { color: var(--teal); text-decoration: none; }
+
+    @media(max-width: 580px) {
+      .hero { padding: 44px 20px 36px; }
+      .container { padding: 0 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="top-bar">
+  <a href="nk2-evolution.html" class="back-link">← Evolution</a>
+  <div class="top-title">NK2 &mdash; <span>Naturligt urval</span></div>
+</div>
+
+<div class="hero">
+  <p class="hero-eyebrow">Evolution &middot; NK2</p>
+  <h1>Naturligt urval</h1>
+  <p class="hero-sub">Fyra byggstenar – kamp om resurser, variation, ärftlighet och naturligt urval – som tillsammans driver evolutionen framåt.</p>
+  <nav class="hero-nav">
+    <a href="#kamp">Kamp om resurser</a>
+    <a href="#variation">Variation</a>
+    <a href="#arftlighet">Ärftlighet</a>
+    <a href="#naturligt-urval">Naturligt urval</a>
+    <a href="#bjorkmatare">Björkmätaren</a>
+    <a href="#missuppfattning">Vanlig missuppfattning</a>
+    <a href="#sammanfattning">Sammanfattning</a>
+    <a href="#kolla">Kolla att du kan</a>
+  </nav>
+</div>
+
+<main>
+
+<!-- SEKTION 1 – KAMP OM RESURSER -->
+<div class="section" id="kamp">
+<div class="container">
+  <p class="section-eyebrow">Byggsten 1</p>
+  <h2 class="section-title">Kamp om resurser</h2>
+  <p class="section-intro">Naturligt urval bygger på ett enkelt men avgörande faktum: det föds fler individer än vad som kan överleva till vuxen ålder.</p>
+
+  <p class="prose">De flesta organismer producerar betydligt fler avkommor än vad miljön kan försörja – tänk på hur många frön ett träd sprider, eller hur mycket fiskrom en fisk lägger. Samtidigt är resurserna som mat, utrymme, vatten och partners begränsade. Det gör att individer hamnar i <strong>konkurrens</strong> om att få sina behov mötta – vad Darwin kallade "kamp om tillvaron".</p>
+
+  <div class="key-box">
+    <h4>🔑 Kom ihåg</h4>
+    <p>"Kamp" behöver inte betyda fysisk strid. Det handlar lika ofta om en kapplöpning mot svält, rovdjur, sjukdomar eller ett tufft klimat.</p>
+  </div>
+</div>
+</div>
+
+<!-- SEKTION 2 – VARIATION -->
+<div class="section" id="variation">
+<div class="container">
+  <p class="section-eyebrow">Byggsten 2</p>
+  <h2 class="section-title">Variation inom arten</h2>
+  <p class="section-intro">Individer inom samma art skiljer sig alltid åt – det var något Darwin observerade, även om han inte visste varför. Idag vet vi vad som orsakar variationen.</p>
+
+  <table class="compare-table">
+    <thead><tr><th>Källa</th><th>Vad som händer</th></tr></thead>
+    <tbody>
+      <tr><td>Mutationer</td><td>Slumpmässiga förändringar i DNA:t – den ursprungliga källan till helt ny variation.</td></tr>
+      <tr><td>Rekombination</td><td>Vid könlig fortplantning blandas gener om, vilket ger nya kombinationer av redan existerande varianter.</td></tr>
+    </tbody>
+  </table>
+
+  <p class="prose">En mutation kan vara <strong>gynnsam</strong> (ger en fördel), <strong>kostsam</strong> (ger en nackdel) eller <strong>neutral</strong> (varken eller). Det är just denna variation som naturligt urval sedan kan "välja" bland.</p>
+</div>
+</div>
+
+<!-- SEKTION 3 – ÄRFTLIGHET -->
+<div class="section" id="arftlighet">
+<div class="container">
+  <p class="section-eyebrow">Byggsten 3</p>
+  <h2 class="section-title">Ärftlighet</h2>
+  <p class="section-intro">Variation räcker inte på egen hand – för att naturligt urval ska kunna fungera måste egenskaperna också kunna föras vidare till nästa generation.</p>
+
+  <p class="prose"><strong>DNA</strong> är informationsbäraren som gör att egenskaper ärvs mellan generationer – till exempel längd, vingstorlek, färg eller näbbform. Ett känt exempel är <strong>Darwinfinkarna</strong> på Galápagosöarna, där näbbformen skiljer sig mellan arter beroende på vilken typ av föda som funnits tillgänglig.</p>
+
+  <div class="key-box">
+    <h4>🔑 Kom ihåg</h4>
+    <p>Bara egenskaper som går att ärva via DNA kan påverkas av naturligt urval. En egenskap man skaffar sig under livet (t.ex. genom träning) förs inte vidare på samma sätt.</p>
+  </div>
+</div>
+</div>
+
+<!-- SEKTION 4 – NATURLIGT URVAL -->
+<div class="section" id="naturligt-urval">
+<div class="container">
+  <p class="section-eyebrow">Byggsten 4</p>
+  <h2 class="section-title">Naturligt urval – så knyts allt ihop</h2>
+  <p class="section-intro">När kamp om resurser, variation och ärftlighet kombineras uppstår naturligt urval nästan automatiskt.</p>
+
+  <div class="process-steps">
+    <div class="process-step"><div class="step-num">1</div><div class="step-body"><h4>Ärftlig fördel</h4><p>Vissa individer har, tack vare slumpmässig variation, egenskaper som gör att de klarar "kampen" om resurser bättre än andra.</p></div></div>
+    <div class="process-step"><div class="step-num teal">2</div><div class="step-body"><h4>Differentiell reproduktion</h4><p>Dessa individer överlever i högre grad och får fler avkommor än individer utan fördelen.</p></div></div>
+    <div class="process-step"><div class="step-num teal">3</div><div class="step-body"><h4>Egenskapen sprids</h4><p>Eftersom fler avkommor bär den fördelaktiga egenskapen blir den vanligare i nästa generation.</p></div></div>
+  </div>
+
+  <div class="key-box">
+    <h4>🔑 Kort sagt</h4>
+    <p>De individer som är <strong>bäst anpassade till sin omgivning</strong> har störst chans att konkurrera om föda, skydd och en partner – och därmed störst chans att föra sina egenskaper vidare.</p>
+  </div>
+</div>
+</div>
+
+<!-- SEKTION 5 – BJÖRKMÄTAREN -->
+<div class="section" id="bjorkmatare">
+<div class="container">
+  <p class="section-eyebrow">Exempel i praktiken</p>
+  <h2 class="section-title">Björkmätaren – naturligt urval i verkligheten</h2>
+  <p class="section-intro">Björkmätaren är ett klassiskt exempel på naturligt urval, eftersom förändringen faktiskt gick att observera under en enda mänsklig livstid.</p>
+
+  <p class="prose">Björkmätaren finns i två varianter: en <strong>spräcklig</strong> (ljus) och en <strong>svart</strong> (mörk). Vilken variant som är bäst kamouflerad – och därför oftast undgår att bli uppäten av fåglar – beror helt på vilken miljö björkmätaren lever i.</p>
+
+  <table class="compare-table">
+    <thead><tr><th>Miljö</th><th>Bäst kamouflerad</th><th>Resultat</th></tr></thead>
+    <tbody>
+      <tr><td>Före industrialismen (ljusa, lavbeklädda trädstammar)</td><td>Spräcklig björkmätare</td><td>Fåglar äter fler svarta individer → spräcklig variant blir vanligast.</td></tr>
+      <tr><td>Under industrialismen (sotiga, mörka trädstammar)</td><td>Svart björkmätare</td><td>Fåglar äter fler spräckliga individer → svart variant blir vanligast.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="analogy-box">
+    <h3>💡 Vad orsakade förändringen?</h3>
+    <p>Under 1800-talets industrialism sotade luftföroreningar ner trädstammarna, samtidigt som lavarna som normalt växte på träden dog. Det gjorde att den mörka björkmätaren plötsligt blev bäst kamouflerad – och den egenskapen blev därför snabbt vanligare i populationen.</p>
+  </div>
+</div>
+</div>
+
+<!-- SEKTION 6 – VANLIG MISSUPPFATTNING -->
+<div class="section" id="missuppfattning">
+<div class="container">
+  <p class="section-eyebrow">Stanna upp och tänk</p>
+  <h2 class="section-title">En vanlig missuppfattning</h2>
+
+  <div class="key-box">
+    <h4>🔑 Individer anpassar sig inte själva</h4>
+    <p>Naturligt urval sker på <strong>populationsnivå, över flera generationer</strong> – inte genom att en enskild individ förändras eller "anpassar sig" under sin egen livstid. En enskild björkmätare byter till exempel aldrig färg för att smälta in bättre. Det är istället <strong>andelen</strong> ljusa respektive mörka individer i hela populationen som förändras, generation för generation, beroende på vilken variant som överlever och förökar sig mest.</p>
+  </div>
+</div>
+</div>
+
+<!-- SEKTION 7 – SAMMANFATTNING -->
+<div class="section" id="sammanfattning">
+<div class="container">
+  <p class="section-eyebrow">Sammanfattning</p>
+  <h2 class="section-title">Det viktigaste i korthet</h2>
+
+  <div class="key-box">
+    <h4>🔑 Evolutionens drivkrafter</h4>
+    <dl>
+      <div class="term-row"><dt>Kamp om resurser</dt><dd> – fler individer föds än vad miljön kan försörja, vilket leder till konkurrens.</dd></div>
+      <div class="term-row"><dt>Variation</dt><dd> – individer skiljer sig åt genom mutationer och rekombination.</dd></div>
+      <div class="term-row"><dt>Ärftlighet</dt><dd> – egenskaper förs vidare mellan generationer via DNA.</dd></div>
+      <div class="term-row"><dt>Naturligt urval</dt><dd> – individer med fördelaktiga egenskaper överlever och förökar sig mer, vilket gör egenskapen vanligare över tid.</dd></div>
+    </dl>
+    <p style="margin-top:12px">Naturligt urval sker på <strong>populationsnivå</strong>, över generationer. Björkmätaren är ett klassiskt exempel på hur detta går till i praktiken.</p>
+  </div>
+</div>
+</div>
+
+<!-- SEKTION 8 – KOLLA ATT DU KAN -->
+<div class="section" id="kolla">
+<div class="container">
+  <p class="section-eyebrow">Självbedömning</p>
+  <h2 class="section-title">Kolla att du kan</h2>
+  <p class="section-intro">Försök svara utan att titta i texten. Visa sedan mallsvaret och bocka i om du hade med det viktigaste.</p>
+  <div id="q-wrap"></div>
+</div>
+</div>
+
+</main>
+
+<footer>
+  <a href="nk2-evolution.html">← Tillbaka till Evolution</a> &middot; NK2 &middot; Naturligt urval
+</footer>
+
+<script src="shared.js"></script>
+<script>
+requireLogin('NK2');
+
+const QUESTIONS = [
+  {
+    q: "Förklara vad som menas med \"kamp om resurser\", och varför det uppstår.",
+    model: [
+      "Det föds fler individer än vad som kan överleva till vuxen ålder.",
+      "Resurser som mat, utrymme, vatten och partners är begränsade, vilket leder till konkurrens mellan individer."
+    ]
+  },
+  {
+    q: "Vilka två källor till variation nämns, och vad är skillnaden mellan dem?",
+    model: [
+      "Mutationer – slumpmässiga förändringar i DNA:t, den ursprungliga källan till helt ny variation.",
+      "Rekombination – gener blandas om vid könlig fortplantning, vilket ger nya kombinationer av redan existerande varianter."
+    ]
+  },
+  {
+    q: "Varför är ärftlighet nödvändigt för att naturligt urval ska fungera?",
+    model: [
+      "Om en fördelaktig egenskap inte kan föras vidare till nästa generation via DNA, kan den inte bli vanligare i populationen över tid.",
+      "Endast egenskaper som ärvs genetiskt (inte sådant man skaffar sig under livet) påverkas av naturligt urval."
+    ]
+  },
+  {
+    q: "Beskriv med egna ord hur kamp om resurser, variation och ärftlighet tillsammans leder till naturligt urval.",
+    model: [
+      "Vissa individer har, tack vare variation, egenskaper som gör att de klarar konkurrensen om resurser bättre.",
+      "Dessa individer överlever och får fler avkommor (differentiell reproduktion).",
+      "Eftersom egenskapen ärvs blir den vanligare i nästa generation."
+    ]
+  },
+  {
+    q: "Använd björkmätaren för att förklara hur miljöförändringar kan påverka vilken egenskap som gynnas.",
+    model: [
+      "Före industrialismen var trädstammarna ljusa och lavbeklädda, vilket gjorde den spräckliga björkmätaren bäst kamouflerad.",
+      "Under industrialismen blev trädstammarna sotiga och mörka, vilket istället gynnade den svarta björkmätaren.",
+      "Fåglar åt oftast upp den sämst kamouflerade varianten, vilket gjorde att den bäst kamouflerade blev vanligare."
+    ]
+  },
+  {
+    q: "Förklara varför det är fel att säga att \"björkmätaren anpassade sig till den nya miljön\".",
+    model: [
+      "Naturligt urval sker på populationsnivå över flera generationer, inte genom att en enskild individ förändras under sin livstid.",
+      "Det var andelen redan existerande ljusa respektive mörka individer i populationen som förändrades, inte att enskilda björkmätare bytte färg."
+    ]
+  }
+];
+
+let checked = new Array(QUESTIONS.length).fill(false);
+
+function buildQuestions() {
+  const wrap = document.getElementById('q-wrap');
+  QUESTIONS.forEach((q, i) => {
+    const items = q.model.map(m => `<li>${m}</li>`).join('');
+    wrap.innerHTML += `
+      <div class="q-card">
+        <div class="q-num">Fråga ${i+1} av ${QUESTIONS.length}</div>
+        <div class="q-text">${q.q}</div>
+        <textarea class="q-textarea" id="qta-${i}" placeholder="Skriv ditt svar här..."></textarea>
+        <button class="q-btn" onclick="showModel(${i})">Visa mallsvar →</button>
+        <div class="q-model" id="qmodel-${i}">
+          <div class="q-model-header">📋 Mallsvar</div>
+          <div class="q-model-body">
+            <ul>${items}</ul>
+            <div class="q-self-check">
+              <input type="checkbox" id="qcheck-${i}" onchange="toggleCheck(${i})"/>
+              <label for="qcheck-${i}">Jag hade med det viktigaste</label>
+            </div>
+          </div>
+        </div>
+        <button class="q-retry" onclick="resetQuestion(${i})">↩ Rensa och försök igen</button>
+      </div>`;
+  });
+  updateScore();
+}
+
+function showModel(i) { document.getElementById(`qmodel-${i}`).classList.add('shown'); }
+function toggleCheck(i) { checked[i] = document.getElementById(`qcheck-${i}`).checked; updateScore(); }
+function resetQuestion(i) {
+  document.getElementById(`qta-${i}`).value = '';
+  document.getElementById(`qmodel-${i}`).classList.remove('shown');
+  document.getElementById(`qcheck-${i}`).checked = false;
+  checked[i] = false;
+  updateScore();
+}
+
+function updateScore() {
+  const n = checked.filter(Boolean).length;
+  const total = QUESTIONS.length;
+  const msg = n === total ? '🎉 Utmärkt – du kan hela avsnittet!'
+    : n >= 4 ? '👍 Bra jobbat! Kika igenom de du missat.'
+    : n >= 2 ? '📖 Bra start – fortsätt öva på resten.'
+    : '🔍 Gå tillbaka till materialet och försök igen.';
+
+  let bar = document.getElementById('q-scorebar');
+  if (!bar) {
+    document.getElementById('q-wrap').insertAdjacentHTML('afterend',
+      `<div class="q-score-bar" id="q-scorebar">
+        <div class="q-score-num" id="qs-num">${n}/${total}</div>
+        <div><div class="q-score-label">Självskattning</div><div class="q-score-msg" id="qs-msg">${msg}</div></div>
+      </div>`);
+  } else {
+    document.getElementById('qs-num').textContent = `${n}/${total}`;
+    document.getElementById('qs-msg').textContent = msg;
+  }
+}
+
+buildQuestions();
+</script>
+
+</body>
+</html>
