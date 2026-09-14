@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Evolutionsteorins idéhistoria – Evolution</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Mulish:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #faf7f2; --surface: #ffffff; --border: #e8e0d0;
+      --sand: #f2ece0; --rust: #b85c2a; --rust2: #d4703a;
+      --teal: #2a7a6a; --blue: #2a4a7a; --text: #1a1612;
+      --muted: #6a5e52; --radius: 10px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Mulish', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; font-size: 16px; }
+
+    .top-bar { background: #1a1612; padding: 14px 28px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; position: sticky; top: 0; z-index: 100; }
+    .back-link { color: #c8b89a; text-decoration: none; font-size: .82rem; transition: color .2s; }
+    .back-link:hover { color: #fff; }
+    .top-title { font-family: 'Playfair Display', serif; font-size: 1rem; color: #e8dcc8; }
+    .top-title span { color: #d4a060; }
+
+    .hero { background: linear-gradient(135deg, #1a1612 0%, #1a2820 60%, #1a1612 100%); padding: 64px 32px 56px; text-align: center; position: relative; overflow: hidden; }
+    .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 60% 60% at 30% 50%, rgba(42,122,106,.12) 0%, transparent 60%), radial-gradient(ellipse 50% 70% at 80% 30%, rgba(180,92,42,.06) 0%, transparent 55%); pointer-events: none; }
+    .hero-eyebrow { font-size: .72rem; letter-spacing: .22em; text-transform: uppercase; color: #d4a060; margin-bottom: 12px; }
+    .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 5vw, 3rem); font-weight: 900; color: #f0e8d8; margin-bottom: 16px; line-height: 1.15; }
+    .hero-sub { font-size: 1rem; color: #a09080; max-width: 560px; margin: 0 auto 32px; line-height: 1.7; }
+    .hero-nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+    .hero-nav a { font-size: .8rem; color: #c8b89a; border: 1px solid rgba(200,184,154,.3); border-radius: 30px; padding: 7px 16px; text-decoration: none; transition: all .2s; }
+    .hero-nav a:hover { background: rgba(200,184,154,.12); color: #fff; }
+
+    .container { max-width: 860px; margin: 0 auto; padding: 0 24px; }
+    .section { padding: 60px 0; }
+    .section + .section { border-top: 1px solid var(--border); }
+
+    .section-eyebrow { font-size: .7rem; letter-spacing: .2em; text-transform: uppercase; color: var(--rust); font-weight: 600; margin-bottom: 8px; }
+    .section-title { font-family: 'Playfair Display', serif; font-size: clamp(1.5rem, 3vw, 2rem); color: var(--text); margin-bottom: 6px; line-height: 1.25; }
+    .section-intro { font-size: .95rem; color: var(--muted); margin-bottom: 32px; max-width: 640px; line-height: 1.7; }
+
+    .prose { font-size: .95rem; line-height: 1.75; color: #2a2016; margin-bottom: 24px; }
+    .prose strong { color: var(--text); font-weight: 600; }
+
+    .key-box { background: var(--sand); border-left: 4px solid var(--rust2); border-radius: 0 var(--radius) var(--radius) 0; padding: 18px 22px; margin-bottom: 28px; }
+    .key-box h4 { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--rust); margin-bottom: 10px; }
+    .key-box p { font-size: .88rem; color: #4a3a2a; line-height: 1.65; }
+    .key-box dl { font-size: .88rem; color: #4a3a2a; display: flex; flex-direction: column; gap: 8px; }
+    .key-box dt { font-weight: 600; color: var(--text); display: inline; }
+    .key-box dd { display: inline; margin: 0; }
+    .key-box .term-row { line-height: 1.55; }
+
+    .compare-table { width: 100%; border-collapse: collapse; margin-bottom: 32px; font-size: .88rem; }
+    .compare-table th { background: #1a1612; color: #e8dcc8; padding: 12px 16px; text-align: left; font-weight: 600; font-family: 'Playfair Display', serif; }
+    .compare-table th:first-child { border-radius: 8px 0 0 0; }
+    .compare-table th:last-child { border-radius: 0 8px 0 0; }
+    .compare-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); vertical-align: top; }
+    .compare-table tr:nth-child(even) td { background: var(--sand); }
+    .compare-table tr:last-child td { border-bottom: none; }
+    .compare-table td:first-child { font-weight: 600; color: var(--text); }
+
+    .process-steps { display: flex; flex-direction: column; gap: 0; margin-bottom: 32px; position: relative; }
+    .process-steps::before { content: ''; position: absolute; left: 22px; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, var(--rust2), var(--teal)); opacity: .3; }
+    .process-step { display: flex; gap: 18px; align-items: flex-start; padding: 16px 0; }
+    .step-num { width: 44px; height: 44px; border-radius: 50%; background: var(--rust2); color: #fff; display: flex; align-items: center; justify-content: center; font-family: 'Playfair Display', serif; font-size: .95rem; font-weight: 700; flex-shrink: 0; position: relative; z-index: 1; text-align: center; line-height: 1.1; }
+    .step-num.teal { background: var(--teal); }
+    .step-num.blue { background: var(--blue); }
+    .step-body h4 { font-size: .95rem; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+    .step-body p { font-size: .85rem; color: var(--muted); line-height: 1.6; }
+
+    .analogy-box { background: #1a1612; border-radius: var(--radius); padding: 28px 32px; margin-bottom: 32px; }
+    .analogy-box h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: #e8dcc8; margin-bottom: 14px; }
+    .analogy-box p { font-size: .9rem; color: #a09080; line-height: 1.7; }
+    .analogy-box strong { color: #e8dcc8; }
+
+    .q-card { background: #1a1612; border: 1px solid #2a2018; border-radius: var(--radius); padding: 22px 26px; margin-bottom: 18px; }
+    .q-num { font-size: .68rem; letter-spacing: .18em; text-transform: uppercase; color: #d4a060; margin-bottom: 7px; font-weight: 600; }
+    .q-text { font-family: 'Playfair Display', serif; font-size: .95rem; color: #f0e8d8; margin-bottom: 14px; line-height: 1.5; }
+    .q-textarea { width: 100%; background: #0f0c08; border: 1.5px solid #2a2018; border-radius: 6px; color: #e8dcc8; font-family: 'Mulish', sans-serif; font-size: .9rem; padding: 11px 13px; resize: vertical; min-height: 80px; outline: none; transition: border-color .2s; line-height: 1.6; }
+    .q-textarea:focus { border-color: #d4703a; }
+    .q-btn { margin-top: 10px; font-family: 'Mulish', sans-serif; font-size: .84rem; font-weight: 600; padding: 8px 20px; border-radius: 6px; border: none; cursor: pointer; background: #d4703a; color: #fff; transition: background .2s; }
+    .q-btn:hover { background: #b85c2a; }
+    .q-model { margin-top: 14px; display: none; background: #0f0c08; border: 1px solid #2a2018; border-radius: 6px; overflow: hidden; }
+    .q-model.shown { display: block; }
+    .q-model-header { background: #2a2018; padding: 8px 16px; font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: #d4a060; font-weight: 600; }
+    .q-model-body { padding: 14px 18px; font-size: .88rem; color: #c8b89a; line-height: 1.75; }
+    .q-model-body strong { color: #f0e8d8; }
+    .q-model-body ul { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+    .q-model-body li { padding-left: 16px; position: relative; }
+    .q-model-body li::before { content: '→'; position: absolute; left: 0; color: #d4703a; font-size: .8rem; }
+    .q-self-check { margin-top: 12px; padding-top: 12px; border-top: 1px solid #2a2018; display: flex; align-items: center; gap: 10px; font-size: .82rem; color: #8a7a60; cursor: pointer; }
+    .q-self-check input { accent-color: #d4703a; width: 16px; height: 16px; cursor: pointer; }
+    .q-retry { margin-top: 10px; font-size: .78rem; color: #6a5a40; background: none; border: none; cursor: pointer; font-family: 'Mulish', sans-serif; text-decoration: underline; padding: 0; display: block; }
+    .q-score-bar { background: #0f0c08; border: 1px solid #2a2018; border-radius: var(--radius); padding: 20px 24px; margin-top: 32px; display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+    .q-score-num { font-family: 'Playfair Display', serif; font-size: 2rem; color: #d4703a; }
+    .q-score-label { font-size: .85rem; color: #8a7a60; }
+    .q-score-msg { font-size: .88rem; color: #c8b89a; }
+
+    footer { border-top: 1px solid var(--border); padding: 28px 24px; text-align: center; font-size: .78rem; color: var(--muted); margin-top: 40px; }
+    footer a { color: var(--teal); text-decoration: none; }
+
+    @media(max-width: 580px) {
+      .hero { padding: 44px 20px 36px; }
+      .container { padding: 0 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="top-bar">
+  <a href="nk2-evolution.html" class="back-link">← Evolution</a>
+  <div class="top-title">NK2 &mdash; <span>Evolutionsteorins idéhistoria</span></div>
+</div>
+
+<div class="hero">
+  <p class="hero-eyebrow">Evolution &middot; NK2</p>
+  <h1>Evolutionsteorins idéhistoria</h1>
+  <p class="hero-sub">Från tanken om att arter är fasta och oföränderliga till Darwins idé om naturligt urval – en resa genom flera hundra år av vetenskapligt tänkande.</p>
+  <nav class="hero-nav">
+    <a href="#tidslinje">Tidslinje</a>
+    <a href="#aristoteles-linne">Aristoteles & Linné</a>
+    <a href="#malthus-cuvier">Malthus & Cuvier</a>
+    <a href="#lamarck">Lamarck</a>
+    <a href="#darwin">Darwin</a>
+    <a href="#sammanfattning">Sammanfattning</a>
+    <a href="#kolla">Kolla att du kan</a>
+  </nav>
+</div>
+
+<main>
+
+<!-- SEKTION 1 – TIDSLINJE -->
+<div class="section" id="tidslinje">
+<div class="container">
+  <p class="section-eyebrow">Översikt</p>
+  <h2 class="section-title">En idé som växte fram över hundratals år</h2>
+  <p class="section-intro">Innan evolutionsteorin fanns trodde de flesta att arter var skapade en gång för alla och sedan förblev exakt likadana för alltid. Det tog flera tänkare, över lång tid, att sakta luckra upp den föreställningen.</p>
+
+  <div class="process-steps">
+    <div class="process-step"><div class="step-num">384<br>fvt</div><div class="step-body"><h4>Aristoteles</h4><p>Menade att alla arter har en fast, oföränderlig plats i en naturens stege – från enkla till komplexa organismer.</p></div></div>
+    <div class="process-step"><div class="step-num">1707</div><div class="step-body"><h4>Carl von Linné</h4><p>Systematiserade allt liv i grupper, men trodde att arterna var skapade av Gud i sin nuvarande form.</p></div></div>
+    <div class="process-step"><div class="step-num">1744</div><div class="step-body"><h4>Jean-Baptiste Lamarck</h4><p>Föreslog att arter faktiskt förändras över tid, och att egenskaper man skaffar sig under livet kan gå i arv.</p></div></div>
+    <div class="process-step"><div class="step-num teal">1766</div><div class="step-body"><h4>Thomas Malthus</h4><p>Beskrev hur befolkningar växer snabbare än tillgången på mat – en idé som senare skulle inspirera Darwin.</p></div></div>
+    <div class="process-step"><div class="step-num teal">1769</div><div class="step-body"><h4>Georges Cuvier</h4><p>Visade med hjälp av fossil att arter kan dö ut helt, vilket utmanade tanken om en oföränderlig natur.</p></div></div>
+    <div class="process-step"><div class="step-num teal">1809</div><div class="step-body"><h4>Charles Darwin</h4><p>Formulerade teorin om naturligt urval – att de bäst anpassade individerna överlever och för sina egenskaper vidare.</p></div></div>
+  </div>
+
+  <div class="key-box">
+    <h4>🔑 Kom ihåg</h4>
+    <p>Årtalen ovan visar när respektive person föddes, inte när idén presenterades. Det är den ordningen som visar hur tänkandet gradvis förändrades över generationer.</p>
+  </div>
+</div>
+</div>
+
+<!-- SEKTION 2 – ARISTOTELES & LINNÉ -->
+<div class="section" id="aristoteles-linne">
+<div class="container">
+  <p class="section-eyebrow">Del 1</p>
+  <h2 class="section-title">Aristoteles och Linné – en ordnad men oföränderlig natur</h2>
+  <p class="section-intro">Två tänkare som ordnade upp naturen i system – men som båda utgick från att arterna alltid sett likadana ut.</p>
+
+  <p class="prose"><strong>Aristoteles</strong> (384–322 fvt) beskrev naturen som en stege, <strong>scala naturae</strong>, där varje art hade en bestämd plats från enkla till komplexa organismer. Enligt honom var denna ordning fast och oföränderlig – en art kunde varken flytta uppåt eller nedåt i stegen, och inga nya arter kunde tillkomma.</p>
+
+  <p class="prose">Nästan 2000 år senare systematiserade <strong>Carl von Linné</strong> (1707–1778) allt känt liv i sitt verk <em>Systema naturae</em>. Han delade in naturens riken i klasser, ordningar, familjer, släkten och arter – ett system som fortfarande används inom biologin idag. Linné trodde att arterna var skapade av Gud i sin nuvarande form, men han var samtidigt öppen för att arter kunde <strong>förändras genom korsning</strong> mellan varandra.</p>
+
+  <div class="analogy-box">
+    <h3>💡 En kontroversiell upptäckt</h3>
+    <p>När Linné jämförde människor och apor fann han att de i princip delade samma anatomi, förutom talorganet. Han placerade därför båda i samma kategori, som han kallade <strong>"Anthropomorpha"</strong> (människolik) – en klassificering som väckte stor debatt på den tiden.</p>
+  </div>
+
+  <div class="key-box">
+    <h4>🔑 Nyckelbegrepp</h4>
+    <dl>
+      <div class="term-row"><dt>Scala naturae</dt><dd> – Aristoteles idé om att alla arter har en fast, oföränderlig plats i en stege från enkla till komplexa.</dd></div>
+      <div class="term-row"><dt>Systema naturae</dt><dd> – Linnés system för att klassificera allt liv i grupper baserat på likheter.</dd></div>
+    </dl>
+  </div>
+</div>
+</div>
+
+<!-- SEKTION 3 – MALTHUS & CUVIER -->
+<div class="section" id="malthus-cuvier">
+<div class="container">
+  <p class="section-eyebrow">Del 2</p>
+  <h2 class="section-title">Malthus och Cuvier – sprickor i den fasta världsbilden</h2>
+  <p class="section-intro">Två helt olika tänkare, en ekonom och en paleontolog, som var för sig la grunden till idéer Darwin senare skulle bygga vidare på.</p>
+
+  <p class="prose"><strong>Georges Cuvier</strong> (1769–1832) studerade fossil och upptäckte att vissa arter som en gång funnits inte längre gick att hitta bland levande djur – de hade dött ut, samtidigt som helt nya arter dykt upp i yngre lager. Det var ett tydligt bevis mot tanken att naturen alltid sett likadan ut. Cuvier förklarade detta med stora, plötsliga katastrofer i jordens historia (en idé som ibland kopplades till berättelsen om syndafloden), snarare än med en gradvis förändring över tid.</p>
+
+  <p class="prose"><strong>Thomas Malthus</strong> (1766–1834) var ekonom, inte biolog. Han observerade att befolkningar tenderar att växa exponentiellt, medan tillgången på mat inte ökar i samma takt. Resultatet blir konkurrens om begränsade resurser. Den här idén – <strong>kamp om resurser</strong> – blev senare en viktig byggsten i Darwins teori om naturligt urval.</p>
+
+  <div class="key-box">
+    <h4>🔑 Varför spelar detta roll?</h4>
+    <p>Cuvier visade att arter faktiskt <strong>kan försvinna</strong>. Malthus visade att begränsade resurser leder till <strong>konkurrens</strong>. Tillsammans gav de Darwin två viktiga pusselbitar, även om ingen av dem själva formulerade någon evolutionsteori.</p>
+  </div>
+</div>
+</div>
+
+<!-- SEKTION 4 – LAMARCK -->
+<div class="section" id="lamarck">
+<div class="container">
+  <p class="section-eyebrow">Del 3</p>
+  <h2 class="section-title">Lamarck – förvärvade egenskaper ärvs</h2>
+  <p class="section-intro">Jean-Baptiste Lamarck (1744–1829) var en av de första att på allvar föreslå att arter faktiskt förändras över tid.</p>
+
+  <p class="prose">Lamarck menade att naturen förändras, och att arter förändras med den. Enligt hans teori förstärks egenskaper som en individ använder ofta under sitt liv, medan egenskaper som inte används försvagas – och dessa <strong>förvärvade egenskaper</strong> kan sedan gå i arv till avkomman.</p>
+
+  <div class="analogy-box">
+    <h3>💡 Exempel: bodybuildern</h3>
+    <p>Ett klassiskt sätt att förklara Lamarcks idé: om en förälder tränar upp stora muskler under sitt liv, borde enligt Lamarck barnen ärva just de starka musklerna. Ett annat klassiskt exempel är giraffens hals – om en giraff ständigt sträcker på halsen för att nå löv högt upp i träden, skulle enligt Lamarck en något längre hals kunna gå i arv till nästa generation.</p>
+  </div>
+
+  <div class="key-box">
+    <h4>🔑 Kom ihåg</h4>
+    <p>Lamarcks specifika förklaring – att förvärvade egenskaper ärvs – är <strong>idag motbevisad</strong>. Men han förtjänar ändå att nämnas, eftersom han var en av de första att föreslå att arter över huvud taget kan förändras över tid.</p>
+  </div>
+</div>
+</div>
+
+<!-- SEKTION 5 – DARWIN -->
+<div class="section" id="darwin">
+<div class="container">
+  <p class="section-eyebrow">Del 4</p>
+  <h2 class="section-title">Darwin – naturligt urval</h2>
+  <p class="section-intro">Charles Darwin (1809–1882) knöt ihop flera av de lösa trådarna från tidigare tänkare till en sammanhängande teori.</p>
+
+  <p class="prose">Darwins idé var att naturen förändras, och att de individer som är <strong>bäst anpassade</strong> till sin miljö överlever och för sina egenskaper vidare i högre grad än andra. Till skillnad från Lamarck handlar det inte om att egenskaper man skaffar sig under livet ärvs – istället handlar det om att välja bland den <strong>variation som redan finns</strong> naturligt inom en art.</p>
+
+  <p class="prose">Darwin inspirerades bland annat av <strong>Thomas Malthus</strong> idé om att begränsade resurser leder till konkurrens. Han insåg att samma princip borde gälla i naturen: fler individer föds än vad miljön kan försörja, vilket leder till en ständig kamp om resurser – och i den kampen har vissa egenskaper en fördel.</p>
+
+  <div class="key-box">
+    <h4>🔑 Nyckelbegrepp</h4>
+    <dl>
+      <div class="term-row"><dt>Naturligt urval</dt><dd> – att individer med fördelaktiga egenskaper överlever och förökar sig i högre grad än andra.</dd></div>
+      <div class="term-row"><dt>Anpassning</dt><dd> – en egenskap som ökar en individs chans att överleva och föröka sig i sin miljö.</dd></div>
+    </dl>
+  </div>
+</div>
+</div>
+
+<!-- SEKTION 6 – SAMMANFATTNING -->
+<div class="section" id="sammanfattning">
+<div class="container">
+  <p class="section-eyebrow">Sammanfattning</p>
+  <h2 class="section-title">Det viktigaste i korthet</h2>
+
+  <table class="compare-table">
+    <thead><tr><th>Tänkare</th><th>Central idé</th><th>Bidrag till evolutionsteorin</th></tr></thead>
+    <tbody>
+      <tr><td>Aristoteles</td><td>Scala naturae – arter har en fast plats i naturen.</td><td>Utgångspunkten evolutionsteorin senare gjorde upp med.</td></tr>
+      <tr><td>Linné</td><td>Systematiserade allt liv i grupper.</td><td>Gav biologin ett klassificeringssystem som fortfarande används.</td></tr>
+      <tr><td>Cuvier</td><td>Fossil visar att arter kan dö ut.</td><td>Visade att naturen faktiskt förändras över tid.</td></tr>
+      <tr><td>Malthus</td><td>Befolkningar växer snabbare än matresurser.</td><td>Gav idén om kamp om resurser, som inspirerade Darwin.</td></tr>
+      <tr><td>Lamarck</td><td>Förvärvade egenskaper ärvs.</td><td>Föreslog för första gången att arter förändras över tid.</td></tr>
+      <tr><td>Darwin</td><td>Naturligt urval.</td><td>Formulerade en sammanhängande teori för hur evolution sker.</td></tr>
+    </tbody>
+  </table>
+</div>
+</div>
+
+<!-- SEKTION 7 – KOLLA ATT DU KAN -->
+<div class="section" id="kolla">
+<div class="container">
+  <p class="section-eyebrow">Självbedömning</p>
+  <h2 class="section-title">Kolla att du kan</h2>
+  <p class="section-intro">Försök svara utan att titta i texten. Visa sedan mallsvaret och bocka i om du hade med det viktigaste.</p>
+  <div id="q-wrap"></div>
+</div>
+</div>
+
+</main>
+
+<footer>
+  <a href="nk2-evolution.html">← Tillbaka till Evolution</a> &middot; NK2 &middot; Evolutionsteorins idéhistoria
+</footer>
+
+<script src="shared.js"></script>
+<script>
+requireLogin('NK2');
+
+const QUESTIONS = [
+  {
+    q: "Vad menade Aristoteles med scala naturae, och varför är det en motsats till evolutionstänkande?",
+    model: [
+      "Scala naturae är idén att alla arter har en fast, oföränderlig plats i en stege från enkla till komplexa organismer.",
+      "Det är en motsats till evolution eftersom det utgår från att arter aldrig förändras eller uppstår på nytt."
+    ]
+  },
+  {
+    q: "Vad bidrog Linné med, och vad trodde han om hur arter uppstått?",
+    model: [
+      "Linné systematiserade allt känt liv i grupper (klasser, ordningar, familjer, släkten, arter) i Systema naturae.",
+      "Han trodde att arterna var skapade av Gud i sin nuvarande form, men att de kunde förändras genom korsning."
+    ]
+  },
+  {
+    q: "Hur bidrog Cuvier och Malthus till evolutionsteorin, trots att ingen av dem själva var evolutionsforskare?",
+    model: [
+      "Cuvier visade med hjälp av fossil att arter kan dö ut helt, vilket motbevisade tanken om en oföränderlig natur.",
+      "Malthus visade att befolkningar växer snabbare än tillgången på mat, vilket leder till kamp om resurser – en idé Darwin senare byggde vidare på."
+    ]
+  },
+  {
+    q: "Förklara Lamarcks teori om förvärvade egenskaper, och varför den idag är motbevisad.",
+    model: [
+      "Lamarck menade att egenskaper en individ skaffar sig eller förstärker under sitt liv (t.ex. genom träning) kan gå i arv till avkomman.",
+      "Teorin är motbevisad eftersom förvärvade egenskaper inte förändrar DNA:t i könscellerna och därför inte kan ärvas på det sättet."
+    ]
+  },
+  {
+    q: "Vad är skillnaden mellan Lamarcks och Darwins förklaring till hur arter förändras?",
+    model: [
+      "Lamarck: egenskaper man skaffar sig under livet kan ärvas av avkomman.",
+      "Darwin: naturligt urval väljer bland variation som redan finns naturligt inom arten – inget nytt behöver 'skaffas' under livet."
+    ]
+  },
+  {
+    q: "Beskriv med egna ord Darwins teori om naturligt urval, och nämn vem som inspirerade honom.",
+    model: [
+      "De individer som är bäst anpassade till sin miljö överlever och för sina egenskaper vidare i högre grad än andra.",
+      "Darwin inspirerades bland annat av Thomas Malthus idé om att begränsade resurser leder till konkurrens."
+    ]
+  }
+];
+
+let checked = new Array(QUESTIONS.length).fill(false);
+
+function buildQuestions() {
+  const wrap = document.getElementById('q-wrap');
+  QUESTIONS.forEach((q, i) => {
+    const items = q.model.map(m => `<li>${m}</li>`).join('');
+    wrap.innerHTML += `
+      <div class="q-card">
+        <div class="q-num">Fråga ${i+1} av ${QUESTIONS.length}</div>
+        <div class="q-text">${q.q}</div>
+        <textarea class="q-textarea" id="qta-${i}" placeholder="Skriv ditt svar här..."></textarea>
+        <button class="q-btn" onclick="showModel(${i})">Visa mallsvar →</button>
+        <div class="q-model" id="qmodel-${i}">
+          <div class="q-model-header">📋 Mallsvar</div>
+          <div class="q-model-body">
+            <ul>${items}</ul>
+            <div class="q-self-check">
+              <input type="checkbox" id="qcheck-${i}" onchange="toggleCheck(${i})"/>
+              <label for="qcheck-${i}">Jag hade med det viktigaste</label>
+            </div>
+          </div>
+        </div>
+        <button class="q-retry" onclick="resetQuestion(${i})">↩ Rensa och försök igen</button>
+      </div>`;
+  });
+  updateScore();
+}
+
+function showModel(i) { document.getElementById(`qmodel-${i}`).classList.add('shown'); }
+function toggleCheck(i) { checked[i] = document.getElementById(`qcheck-${i}`).checked; updateScore(); }
+function resetQuestion(i) {
+  document.getElementById(`qta-${i}`).value = '';
+  document.getElementById(`qmodel-${i}`).classList.remove('shown');
+  document.getElementById(`qcheck-${i}`).checked = false;
+  checked[i] = false;
+  updateScore();
+}
+
+function updateScore() {
+  const n = checked.filter(Boolean).length;
+  const total = QUESTIONS.length;
+  const msg = n === total ? '🎉 Utmärkt – du kan hela avsnittet!'
+    : n >= 4 ? '👍 Bra jobbat! Kika igenom de du missat.'
+    : n >= 2 ? '📖 Bra start – fortsätt öva på resten.'
+    : '🔍 Gå tillbaka till materialet och försök igen.';
+
+  let bar = document.getElementById('q-scorebar');
+  if (!bar) {
+    document.getElementById('q-wrap').insertAdjacentHTML('afterend',
+      `<div class="q-score-bar" id="q-scorebar">
+        <div class="q-score-num" id="qs-num">${n}/${total}</div>
+        <div><div class="q-score-label">Självskattning</div><div class="q-score-msg" id="qs-msg">${msg}</div></div>
+      </div>`);
+  } else {
+    document.getElementById('qs-num').textContent = `${n}/${total}`;
+    document.getElementById('qs-msg').textContent = msg;
+  }
+}
+
+buildQuestions();
+</script>
+
+</body>
+</html>
