@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Artbildning – Evolution</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Mulish:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #faf7f2; --surface: #ffffff; --border: #e8e0d0;
+      --sand: #f2ece0; --rust: #b85c2a; --rust2: #d4703a;
+      --teal: #2a7a6a; --blue: #2a4a7a; --text: #1a1612;
+      --muted: #6a5e52; --radius: 10px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Mulish', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; font-size: 16px; }
+
+    .top-bar { background: #1a1612; padding: 14px 28px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; position: sticky; top: 0; z-index: 100; }
+    .back-link { color: #c8b89a; text-decoration: none; font-size: .82rem; transition: color .2s; }
+    .back-link:hover { color: #fff; }
+    .top-title { font-family: 'Playfair Display', serif; font-size: 1rem; color: #e8dcc8; }
+    .top-title span { color: #d4a060; }
+
+    .hero { background: linear-gradient(135deg, #1a1612 0%, #1a2820 60%, #1a1612 100%); padding: 64px 32px 56px; text-align: center; position: relative; overflow: hidden; }
+    .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 60% 60% at 30% 50%, rgba(42,122,106,.12) 0%, transparent 60%), radial-gradient(ellipse 50% 70% at 80% 30%, rgba(180,92,42,.06) 0%, transparent 55%); pointer-events: none; }
+    .hero-eyebrow { font-size: .72rem; letter-spacing: .22em; text-transform: uppercase; color: #d4a060; margin-bottom: 12px; }
+    .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 5vw, 3rem); font-weight: 900; color: #f0e8d8; margin-bottom: 16px; line-height: 1.15; }
+    .hero-sub { font-size: 1rem; color: #a09080; max-width: 560px; margin: 0 auto 32px; line-height: 1.7; }
+    .hero-nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+    .hero-nav a { font-size: .8rem; color: #c8b89a; border: 1px solid rgba(200,184,154,.3); border-radius: 30px; padding: 7px 16px; text-decoration: none; transition: all .2s; }
+    .hero-nav a:hover { background: rgba(200,184,154,.12); color: #fff; }
+
+    .container { max-width: 860px; margin: 0 auto; padding: 0 24px; }
+    .section { padding: 60px 0; }
+    .section + .section { border-top: 1px solid var(--border); }
+
+    .section-eyebrow { font-size: .7rem; letter-spacing: .2em; text-transform: uppercase; color: var(--rust); font-weight: 600; margin-bottom: 8px; }
+    .section-title { font-family: 'Playfair Display', serif; font-size: clamp(1.5rem, 3vw, 2rem); color: var(--text); margin-bottom: 6px; line-height: 1.25; }
+    .section-intro { font-size: .95rem; color: var(--muted); margin-bottom: 32px; max-width: 640px; line-height: 1.7; }
+
+    .prose { font-size: .95rem; line-height: 1.75; color: #2a2016; margin-bottom: 24px; }
+    .prose strong { color: var(--text); font-weight: 600; }
+
+    .key-box { background: var(--sand); border-left: 4px solid var(--rust2); border-radius: 0 var(--radius) var(--radius) 0; padding: 18px 22px; margin-bottom: 28px; }
+    .key-box h4 { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--rust); margin-bottom: 10px; }
+    .key-box p { font-size: .88rem; color: #4a3a2a; line-height: 1.65; }
+    .key-box dl { font-size: .88rem; color: #4a3a2a; display: flex; flex-direction: column; gap: 8px; }
+    .key-box dt { font-weight: 600; color: var(--text); display: inline; }
+    .key-box dd { display: inline; margin: 0; }
+    .key-box .term-row { line-height: 1.55; }
+
+    .compare-table { width: 100%; border-collapse: collapse; margin-bottom: 32px; font-size: .88rem; }
+    .compare-table th { background: #1a1612; color: #e8dcc8; padding: 12px 16px; text-align: left; font-weight: 600; font-family: 'Playfair Display', serif; }
+    .compare-table th:first-child { border-radius: 8px 0 0 0; }
+    .compare-table th:last-child { border-radius: 0 8px 0 0; }
+    .compare-table td { padding: 11px 16px; border-bottom: 1px solid var(--border); vertical-align: top; }
+    .compare-table tr:nth-child(even) td { background: var(--sand); }
+    .compare-table tr:last-child td { border-bottom: none; }
+    .compare-table td:first-child { font-weight: 600; color: var(--text); }
+
+    .process-steps { display: flex; flex-direction: column; gap: 0; margin-bottom: 32px; position: relative; }
+    .process-steps::before { content: ''; position: absolute; left: 22px; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, var(--rust2), var(--teal)); opacity: .3; }
+    .process-step { display: flex; gap: 18px; align-items: flex-start; padding: 16px 0; }
+    .step-num { width: 44px; height: 44px; border-radius: 50%; background: var(--rust2); color: #fff; display: flex; align-items: center; justify-content: center; font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; flex-shrink: 0; position: relative; z-index: 1; }
+    .step-num.teal { background: var(--teal); }
+    .step-num.blue { background: var(--blue); }
+    .step-body h4 { font-size: .95rem; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+    .step-body p { font-size: .85rem; color: var(--muted); line-height: 1.6; }
+
+    .analogy-box { background: #1a1612; border-radius: var(--radius); padding: 28px 32px; margin-bottom: 32px; }
+    .analogy-box h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: #e8dcc8; margin-bottom: 14px; }
+    .analogy-box p { font-size: .9rem; color: #a09080; line-height: 1.7; }
+    .analogy-box strong { color: #e8dcc8; }
+
+    .tag-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
+    .tag-chip { background: var(--sand); border: 1px solid var(--border); border-radius: 30px; padding: 6px 14px; font-size: .82rem; color: #4a3a2a; }
+
+    .q-card { background: #1a1612; border: 1px solid #2a2018; border-radius: var(--radius); padding: 22px 26px; margin-bottom: 18px; }
+    .q-num { font-size: .68rem; letter-spacing: .18em; text-transform: uppercase; color: #d4a060; margin-bottom: 7px; font-weight: 600; }
+    .q-text { font-family: 'Playfair Display', serif; font-size: .95rem; color: #f0e8d8; margin-bottom: 14px; line-height: 1.5; }
+    .q-textarea { width: 100%; background: #0f0c08; border: 1.5px solid #2a2018; border-radius: 6px; color: #e8dcc8; font-family: 'Mulish', sans-serif; font-size: .9rem; padding: 11px 13px; resize: vertical; min-height: 80px; outline: none; transition: border-color .2s; line-height: 1.6; }
+    .q-textarea:focus { border-color: #d4703a; }
+    .q-btn { margin-top: 10px; font-family: 'Mulish', sans-serif; font-size: .84rem; font-weight: 600; padding: 8px 20px; border-radius: 6px; border: none; cursor: pointer; background: #d4703a; color: #fff; transition: background .2s; }
+    .q-btn:hover { background: #b85c2a; }
+    .q-model { margin-top: 14px; display: none; background: #0f0c08; border: 1px solid #2a2018; border-radius: 6px; overflow: hidden; }
+    .q-model.shown { display: block; }
+    .q-model-header { background: #2a2018; padding: 8px 16px; font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: #d4a060; font-weight: 600; }
+    .q-model-body { padding: 14px 18px; font-size: .88rem; color: #c8b89a; line-height: 1.75; }
+    .q-model-body strong { color: #f0e8d8; }
+    .q-model-body ul { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+    .q-model-body li { padding-left: 16px; position: relative; }
+    .q-model-body li::before { content: '→'; position: absolute; left: 0; color: #d4703a; font-size: .8rem; }
+    .q-self-check { margin-top: 12px; padding-top: 12px; border-top: 1px solid #2a2018; display: flex; align-items: center; gap: 10px; font-size: .82rem; color: #8a7a60; cursor: pointer; }
+    .q-self-check input { accent-color: #d4703a; width: 16px; height: 16px; cursor: pointer; }
+    .q-retry { margin-top: 10px; font-size: .78rem; color: #6a5a40; background: none; border: none; cursor: pointer; font-family: 'Mulish', sans-serif; text-decoration: underline; padding: 0; display: block; }
+    .q-score-bar { background: #0f0c08; border: 1px solid #2a2018; border-radius: var(--radius); padding: 20px 24px; margin-top: 32px; display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+    .q-score-num { font-family: 'Playfair Display', serif; font-size: 2rem; color: #d4703a; }
+    .q-score-label { font-size: .85rem; color: #8a7a60; }
+    .q-score-msg { font-size: .88rem; color: #c8b89a; }
+
+    footer { border-top: 1px solid var(--border); padding: 28px 24px; text-align: center; font-size: .78rem; color: var(--muted); margin-top: 40px; }
+    footer a { color: var(--teal); text-decoration: none; }
+
+    @media(max-width: 580px) {
+      .hero { padding: 44px 20px 36px; }
+      .container { padding: 0 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="top-bar">
+  <a href="nk2-evolution.html" class="back-link">← Evolution</a>
+  <div class="top-title">NK2 &mdash; <span>Artbildning</span></div>
+</div>
+
+<div class="hero">
+  <p class="hero-eyebrow">Evolution &middot; NK2</p>
+  <h1>Artbildning</h1>
+  <p class="hero-sub">Vad är egentligen en art, hur uppstår nya arter, och vad är det som håller dem isär över tid?</p>
+  <nav class="hero-nav">
+    <a href="#vad-ar-en-art">Vad är en art?</a>
+    <a href="#hur-bildas-arter">Hur bildas nya arter?</a>
+    <a href="#allopatrisk">Allopatrisk artbildning</a>
+    <a href="#sympatrisk">Sympatrisk artbildning</a>
+    <a href="#artrikedom">Artrikedom</a>
+    <a href="#barriarer">Reproduktiva barriärer</a>
+    <a href="#sammanfattning">Sammanfattning</a>
+    <a href="#kolla">Kolla att du kan</a>
+  </nav>
+</div>
+
+<main>
+
+<!-- SEKTION 1 – VAD ÄR EN ART? -->
+<div class="section" id="vad-ar-en-art">
+<div class="container">
+  <p class="section-eyebrow">Grundfråga</p>
+  <h2 class="section-title">Vad är en art?</h2>
+  <p class="section-intro">Det låter som en enkel fråga, men det finns faktiskt ingen definition av "art" som fungerar perfekt i alla lägen. Två definitioner används oftast, och båda har sina begränsningar.</p>
+
+  <table class="compare-table">
+    <thead><tr><th>Definition</th><th>Innebär</th><th>Brister</th></tr></thead>
+    <tbody>
+      <tr><td>Morfologisk art</td><td>Två individer tillhör samma art om de liknar varandra utseendemässigt (morfologiskt). Används bland annat för fossil.</td><td>Individer inom samma art kan se väldigt olika ut (olika fenotyper), medan individer från olika arter ibland ser nästan identiska ut.</td></tr>
+      <tr><td>Biologisk art</td><td>Två individer tillhör samma art om de kan para sig med varandra och få fertil avkomma.</td><td>Fungerar inte för asexuella arter, och går inte att tillämpa på utdöda arter.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="key-box">
+    <h4>🔑 Kom ihåg</h4>
+    <p>Eftersom ingen definition är perfekt använder biologer den definition som passar bäst för det de studerar för tillfället.</p>
+  </div>
+</div>
+</div>
+
+<!-- SEKTION 2 – HUR BILDAS NYA ARTER? -->
+<div class="section" id="hur-bildas-arter">
+<div class="container">
+  <p class="section-eyebrow">Översikt</p>
+  <h2 class="section-title">Hur bildas nya arter?</h2>
+  <p class="section-intro">Det finns i huvudsak två vägar till artbildning, beroende på om populationen separeras geografiskt eller inte.</p>
+
+  <div class="tag-grid">
+    <span class="tag-chip">Allopatrisk artbildning – geografisk barriär</span>
+    <span class="tag-chip">Sympatrisk artbildning – samma område</span>
+  </div>
+
+  <p class="prose"><strong>Allopatrisk artbildning</strong> sker när en population delas i två grupper genom en geografisk barriär, och de utvecklas till olika arter eftersom de lever i olika miljöer. <strong>Sympatrisk artbildning</strong> sker istället genom en förändring i beteende hos delar av en population, vilket kan leda till att nya arter uppstår inom samma miljö – utan någon geografisk barriär.</p>
+</div>
+</div>
+
+<!-- SEKTION 3 – ALLOPATRISK ARTBILDNING -->
+<div class="section" id="allopatrisk">
+<div class="container">
+  <p class="section-eyebrow">1. Allopatrisk artbildning</p>
+  <h2 class="section-title">Allopatrisk artbildning</h2>
+  <p class="section-intro">Så här går det till, steg för steg, när en geografisk barriär leder till att en art blir två.</p>
+
+  <div class="process-steps">
+    <div class="process-step"><div class="step-num">1</div><div class="step-body"><h4>En barriär uppstår</h4><p>Till exempel sjunker vattennivån i en sjö, vilket delar upp en moderpopulation i två dotterpopulationer som inte längre kan mötas.</p></div></div>
+    <div class="process-step"><div class="step-num teal">2</div><div class="step-body"><h4>Olika selektionstryck</h4><p>De två dotterpopulationerna lever nu i olika miljöer och utsätts därför för olika selektionstryck, vilket gör att de utvecklar olika egenskaper.</p></div></div>
+    <div class="process-step"><div class="step-num teal">3</div><div class="step-body"><h4>Nya arter bildas</h4><p>Om populationerna möts igen men inte längre kan få fertil avkomma tillsammans, har de utvecklats till separata arter.</p></div></div>
+  </div>
+
+  <p class="prose"><strong>Exempel: isbjörn och brunbjörn.</strong> En population brunbjörnar vandrade norrut och isolerades i en helt ny, arktisk miljö. Över tid utvecklades de till det vi idag kallar isbjörn, genom flera olika selektionstryck:</p>
+
+  <div class="key-box">
+    <h4>🔑 Selektionstryck i den arktiska miljön</h4>
+    <dl>
+      <div class="term-row"><dt>Vit päls</dt><dd> – ger kamouflage på snö och is, vilket gör det möjligt att smyga sig på sälar.</dd></div>
+      <div class="term-row"><dt>Ihåliga hårstrån</dt><dd> – leder solljus ner till den svarta huden som absorberar värme, och ger extra isolering mot kylan.</dd></div>
+      <div class="term-row"><dt>Kroppsform och simhud</dt><dd> – en mer strömlinjeformad kropp och simhud mellan tårna gör det möjligt att simma långa sträckor mellan isflak.</dd></div>
+      <div class="term-row"><dt>Köttdiet</dt><dd> – i Arktis finns inga bär eller rötter, vilket gynnade individer med ett matsmältningssystem anpassat för kött och fett.</dd></div>
+      <div class="term-row"><dt>Mindre öron</dt><dd> – minskar värmeförlust och risk för förfrysningsskador, jämfört med brunbjörnens större öron.</dd></div>
+    </dl>
+  </div>
+
+  <p class="prose"><strong>Ett annat klassiskt exempel: Darwins finkar.</strong> Finkarna på Galápagosöarna härstammar från en gemensam urmoder, men blev isolerade på olika öar med olika livsmiljöer. Skillnaderna i ekologisk nisch förstärktes över tid genom riktat urval, vilket gav upphov till flera olika finkarter med olika näbbformer.</p>
+</div>
+</div>
+
+<!-- SEKTION 4 – SYMPATRISK ARTBILDNING -->
+<div class="section" id="sympatrisk">
+<div class="container">
+  <p class="section-eyebrow">2. Sympatrisk artbildning</p>
+  <h2 class="section-title">Sympatrisk artbildning – ciklider i Afrika</h2>
+  <p class="section-intro">Ibland behövs ingen geografisk barriär alls för att nya arter ska uppstå.</p>
+
+  <p class="prose">Ciklider i Afrikas stora sjöar härstammar alla från en gemensam stamfader, men har utvecklats till <strong>hundratals arter</strong> i samma sjöar – utan att någonsin separerats geografiskt.</p>
+
+  <div class="key-box">
+    <h4>🔑 Hur gick det till?</h4>
+    <dl>
+      <div class="term-row"><dt>Ekologiska nischer</dt><dd> – fiskarna specialiserade sig på olika födokällor, t.ex. alger, insekter, plankton eller andra fiskar.</dd></div>
+      <div class="term-row"><dt>Sexuellt urval</dt><dd> – honorna är extremt kräsna och väljer bara hanar med specifika färgmönster, vilket snabbt isolerade olika grupper från varandra.</dd></div>
+      <div class="term-row"><dt>Beteendeisolering</dt><dd> – honornas partnerval fungerade som en barriär som förhindrade parning mellan grupperna, trots att de levde på samma plats.</dd></div>
+    </dl>
+  </div>
+
+  <div class="analogy-box">
+    <h3>💡 En evolutionär explosion</h3>
+    <p>Över <strong>1 500 unika ciklidarter</strong> har utvecklats i de afrikanska sjöarna, på förhållandevis extremt kort tid – ett av de tydligaste exemplen på hur snabbt sympatrisk artbildning kan gå när sexuellt urval driver på processen.</p>
+  </div>
+</div>
+</div>
+
+<!-- SEKTION 5 – ARTRIKEDOM -->
+<div class="section" id="artrikedom">
+<div class="container">
+  <p class="section-eyebrow">Geografisk variation</p>
+  <h2 class="section-title">Varför har vissa områden högre artrikedom?</h2>
+  <p class="section-intro">Artrikedom är inte jämnt fördelad över jorden. Flera faktorer avgör varför vissa regioner har fler arter än andra.</p>
+
+  <table class="compare-table">
+    <thead><tr><th>Faktor</th><th>Varför den ökar artrikedomen</th></tr></thead>
+    <tbody>
+      <tr><td>Geografiska barriärer</td><td>Landskap som förändras mycket skapar återkommande barriärer som separerar populationer från varandra, t.ex. där kontinentalplattor krockar eller glider isär.</td></tr>
+      <tr><td>Avstånd till ekvatorn</td><td>Mycket solljus och nederbörd nära ekvatorn ger hög primärproduktion (mycket växtlighet) och ett jämnt klimat.</td></tr>
+      <tr><td>Ekosystemens ålder</td><td>Äldre ekosystem har haft mer tid att utveckla artrikedom. Amazonas ekosystem är över en miljon år gamla, medan svenska ekosystem är yngre än 12 000 år eftersom de tidigare täcktes av inlandsis.</td></tr>
+      <tr><td>Mänsklig påverkan</td><td>Jakt och förstörelse av livsmiljöer har minskat artrikedomen på många håll – stora delar av förhistoriens megafauna dog ut ungefär samtidigt som människan spred sig till nya kontinenter.</td></tr>
+    </tbody>
+  </table>
+</div>
+</div>
+
+<!-- SEKTION 6 – REPRODUKTIVA BARRIÄRER -->
+<div class="section" id="barriarer">
+<div class="container">
+  <p class="section-eyebrow">Vad håller arter isär?</p>
+  <h2 class="section-title">Reproduktiva barriärer</h2>
+  <p class="section-intro">Vi har sett hur nya arter kan bildas – både genom geografisk delning (björnarna, finkarna) och på samma plats (cikliderna). Men vad är det konkret som gör att arterna fortsätter vara olika, istället för att blandas ihop igen?</p>
+
+  <table class="compare-table">
+    <thead><tr><th>Barriär</th><th>Innebär</th></tr></thead>
+    <tbody>
+      <tr><td>Geografisk isolering</td><td>Arterna möts inte eftersom de lever på olika platser, t.ex. isbjörn och brunbjörn.</td></tr>
+      <tr><td>Tidsmässig isolering</td><td>Arterna är aktiva eller parar sig under olika tider på dygnet eller året.</td></tr>
+      <tr><td>Beteendeisolering</td><td>Olika parningsritualer gör att arterna inte accepterar varandra som partner, t.ex. hos cikliderna.</td></tr>
+      <tr><td>Mekanisk isolering</td><td>Fortplantningsorganen har olika storlek eller form och passar helt enkelt inte ihop.</td></tr>
+      <tr><td>Gametisolering</td><td>Könscellerna har kemiska skillnader som gör att ägg och spermie inte kan bilda ett befruktat ägg.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="key-box">
+    <h4>🔑 Kort sagt</h4>
+    <p>Dessa barriärer är evolutionens sätt att se till att en art förblir en egen, unik art över tid.</p>
+  </div>
+</div>
+</div>
+
+<!-- SEKTION 7 – SAMMANFATTNING -->
+<div class="section" id="sammanfattning">
+<div class="container">
+  <p class="section-eyebrow">Sammanfattning</p>
+  <h2 class="section-title">Det viktigaste i korthet</h2>
+
+  <div class="key-box">
+    <h4>🔑 Artbildning i korthet</h4>
+    <dl>
+      <div class="term-row"><dt>Art</dt><dd> – definieras antingen morfologiskt (utseende) eller biologiskt (kan para sig och få fertil avkomma) – ingen definition är perfekt.</dd></div>
+      <div class="term-row"><dt>Allopatrisk artbildning</dt><dd> – en geografisk barriär delar en population, som sedan utvecklas åt olika håll (t.ex. isbjörn/brunbjörn, Darwins finkar).</dd></div>
+      <div class="term-row"><dt>Sympatrisk artbildning</dt><dd> – nya arter bildas inom samma område, ofta via sexuellt urval (t.ex. ciklider i Afrika).</dd></div>
+      <div class="term-row"><dt>Artrikedom</dt><dd> – påverkas av geografiska barriärer, avstånd till ekvatorn, ekosystemens ålder och mänsklig påverkan.</dd></div>
+      <div class="term-row"><dt>Reproduktiva barriärer</dt><dd> – geografisk, tidsmässig, beteendemässig, mekanisk och gametisk isolering håller arter åtskilda.</dd></div>
+    </dl>
+  </div>
+</div>
+</div>
+
+<!-- SEKTION 8 – KOLLA ATT DU KAN -->
+<div class="section" id="kolla">
+<div class="container">
+  <p class="section-eyebrow">Självbedömning</p>
+  <h2 class="section-title">Kolla att du kan</h2>
+  <p class="section-intro">Försök svara utan att titta i texten. Visa sedan mallsvaret och bocka i om du hade med det viktigaste.</p>
+  <div id="q-wrap"></div>
+</div>
+</div>
+
+</main>
+
+<footer>
+  <a href="nk2-evolution.html">← Tillbaka till Evolution</a> &middot; NK2 &middot; Artbildning
+</footer>
+
+<script src="shared.js"></script>
+<script>
+requireLogin('NK2');
+
+const QUESTIONS = [
+  {
+    q: "Förklara morfologisk och biologisk artdefinition, samt en svaghet med var och en.",
+    model: [
+      "Morfologisk art: individer tillhör samma art om de liknar varandra utseendemässigt. Svaghet: individer inom en art kan se olika ut, medan olika arter kan se nästan identiska ut.",
+      "Biologisk art: individer tillhör samma art om de kan para sig och få fertil avkomma. Svaghet: fungerar inte på asexuella eller utdöda arter."
+    ]
+  },
+  {
+    q: "Beskriv de tre stegen i allopatrisk artbildning med hjälp av sjöexemplet.",
+    model: [
+      "En geografisk barriär (t.ex. sjunkande vattennivå) delar en moderpopulation i två dotterpopulationer.",
+      "De två grupperna utsätts för olika selektionstryck och utvecklar olika egenskaper.",
+      "Om de inte längre kan få fertil avkomma tillsammans när de möts, har de blivit två separata arter."
+    ]
+  },
+  {
+    q: "Ge minst tre exempel på egenskaper hos isbjörnen som uppstått genom selektionstryck i den nya arktiska miljön.",
+    model: [
+      "Vit päls för kamouflage på snö och is.",
+      "Ihåliga hårstrån för isolering mot kyla.",
+      "Strömlinjeformad kropp och simhud för att simma i vatten.",
+      "Ett matsmältningssystem anpassat för en köttrik diet."
+    ]
+  },
+  {
+    q: "Vad är sympatrisk artbildning, och hur skiljer den sig från allopatrisk? Använd cikliderna som exempel.",
+    model: [
+      "Sympatrisk artbildning sker inom samma område, utan geografisk barriär – till skillnad från allopatrisk artbildning.",
+      "Ciklider i Afrikas sjöar specialiserade sig på olika ekologiska nischer och separerades genom sexuellt urval (honornas kräsna partnerval), vilket ledde till hundratals nya arter i samma sjöar."
+    ]
+  },
+  {
+    q: "Nämn minst tre faktorer som gör att vissa områden på jorden har högre artrikedom än andra.",
+    model: [
+      "Geografiska barriärer som separerar populationer från varandra.",
+      "Kort avstånd till ekvatorn, med hög primärproduktion och jämnt klimat.",
+      "Äldre ekosystem har haft mer tid att utveckla artrikedom.",
+      "Mänsklig påverkan (jakt, förstörda livsmiljöer) kan minska artrikedomen."
+    ]
+  },
+  {
+    q: "Beskriv de fem typerna av reproduktiva barriärer som håller arter isär.",
+    model: [
+      "Geografisk isolering – arterna lever på olika platser.",
+      "Tidsmässig isolering – parar sig vid olika tidpunkter.",
+      "Beteendeisolering – olika parningsritualer.",
+      "Mekanisk isolering – fortplantningsorganen passar inte ihop.",
+      "Gametisolering – kemiska skillnader mellan könsceller förhindrar befruktning."
+    ]
+  }
+];
+
+let checked = new Array(QUESTIONS.length).fill(false);
+
+function buildQuestions() {
+  const wrap = document.getElementById('q-wrap');
+  QUESTIONS.forEach((q, i) => {
+    const items = q.model.map(m => `<li>${m}</li>`).join('');
+    wrap.innerHTML += `
+      <div class="q-card">
+        <div class="q-num">Fråga ${i+1} av ${QUESTIONS.length}</div>
+        <div class="q-text">${q.q}</div>
+        <textarea class="q-textarea" id="qta-${i}" placeholder="Skriv ditt svar här..."></textarea>
+        <button class="q-btn" onclick="showModel(${i})">Visa mallsvar →</button>
+        <div class="q-model" id="qmodel-${i}">
+          <div class="q-model-header">📋 Mallsvar</div>
+          <div class="q-model-body">
+            <ul>${items}</ul>
+            <div class="q-self-check">
+              <input type="checkbox" id="qcheck-${i}" onchange="toggleCheck(${i})"/>
+              <label for="qcheck-${i}">Jag hade med det viktigaste</label>
+            </div>
+          </div>
+        </div>
+        <button class="q-retry" onclick="resetQuestion(${i})">↩ Rensa och försök igen</button>
+      </div>`;
+  });
+  updateScore();
+}
+
+function showModel(i) { document.getElementById(`qmodel-${i}`).classList.add('shown'); }
+function toggleCheck(i) { checked[i] = document.getElementById(`qcheck-${i}`).checked; updateScore(); }
+function resetQuestion(i) {
+  document.getElementById(`qta-${i}`).value = '';
+  document.getElementById(`qmodel-${i}`).classList.remove('shown');
+  document.getElementById(`qcheck-${i}`).checked = false;
+  checked[i] = false;
+  updateScore();
+}
+
+function updateScore() {
+  const n = checked.filter(Boolean).length;
+  const total = QUESTIONS.length;
+  const msg = n === total ? '🎉 Utmärkt – du kan hela avsnittet!'
+    : n >= 4 ? '👍 Bra jobbat! Kika igenom de du missat.'
+    : n >= 2 ? '📖 Bra start – fortsätt öva på resten.'
+    : '🔍 Gå tillbaka till materialet och försök igen.';
+
+  let bar = document.getElementById('q-scorebar');
+  if (!bar) {
+    document.getElementById('q-wrap').insertAdjacentHTML('afterend',
+      `<div class="q-score-bar" id="q-scorebar">
+        <div class="q-score-num" id="qs-num">${n}/${total}</div>
+        <div><div class="q-score-label">Självskattning</div><div class="q-score-msg" id="qs-msg">${msg}</div></div>
+      </div>`);
+  } else {
+    document.getElementById('qs-num').textContent = `${n}/${total}`;
+    document.getElementById('qs-msg').textContent = msg;
+  }
+}
+
+buildQuestions();
+</script>
+
+</body>
+</html>
