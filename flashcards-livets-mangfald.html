@@ -164,7 +164,7 @@
 
   <!-- HISTORY -->
   <div class="history-toggle">
-    <span style="font-size:.82rem;color:var(--muted)">Livets mångfald &middot; <span id="total-count">33</span> begrepp</span>
+    <span style="font-size:.82rem;color:var(--muted)">Livets mångfald &middot; <span id="total-count">30</span> begrepp</span>
     <button class="history-btn" onclick="toggleHistory()">📊 Visa min historik</button>
   </div>
   <div class="history-panel" id="history-panel">
@@ -186,7 +186,7 @@
   <div class="stats-row" id="stats-row">
     <div class="stat-pill"><span class="stat-dot dot-green"></span><span id="s-know">0 kan</span></div>
     <div class="stat-pill"><span class="stat-dot dot-red"></span><span id="s-dont">0 kan inte</span></div>
-    <div class="stat-pill"><span class="stat-dot dot-muted"></span><span id="s-left">33 kvar</span></div>
+    <div class="stat-pill"><span class="stat-dot dot-muted"></span><span id="s-left">30 kvar</span></div>
   </div>
   <div class="prog-wrap">
     <div class="prog-info"><span>Framsteg</span><span id="prog-pct">0%</span></div>
@@ -196,7 +196,7 @@
   <!-- FLIP -->
   <div id="mode-flip">
     <div class="card-counter-row">
-      <span class="card-counter" id="card-counter">Kort 1 av 33</span>
+      <span class="card-counter" id="card-counter">Kort 1 av 30</span>
       <span class="card-category" id="card-cat-label"></span>
     </div>
     <div class="flip-hint">Klicka på kortet för att vända det</div>
@@ -218,7 +218,7 @@
 
   <!-- WRITE -->
   <div id="mode-write">
-    <div class="card-counter-row"><span class="card-counter" id="card-counter-w">Kort 1 av 33</span></div>
+    <div class="card-counter-row"><span class="card-counter" id="card-counter-w">Kort 1 av 30</span></div>
     <div class="write-card">
       <div class="write-deflabel">Vad är begreppet för denna förklaring?</div>
       <div class="write-def" id="w-def"></div>
@@ -237,7 +237,7 @@
 
   <!-- MULTI -->
   <div id="mode-multi">
-    <div class="card-counter-row"><span class="card-counter" id="card-counter-m">Kort 1 av 33</span></div>
+    <div class="card-counter-row"><span class="card-counter" id="card-counter-m">Kort 1 av 30</span></div>
     <div class="multi-q">
       <div class="multi-deflabel">Vad kallas detta?</div>
       <div class="multi-term" id="m-def"></div>
@@ -305,17 +305,22 @@ const allCards = [
   { cat:'celler', term:"Cellmembran",
     def:"Det tunna skikt som omger cellen och reglerar vilka ämnen som får passera in och ut.",
     multiDef:"Vad kallas det tunna skikt som omger cellen och reglerar vilka ämnen som får passera in och ut?",
-    wrong:["Cellvägg","Cellplasma (cytoplasma)","Organell"] },
+    wrong:["Cellvägg","Mitokondrie","Organell"] },
 
-  { cat:'celler', term:"Cellplasma (cytoplasma)",
-    def:"Den geléliknande vätskan inuti cellen som ger cellen dess form och håller organellerna på plats.",
-    multiDef:"Vad kallas den geléliknande vätskan inuti cellen som ger cellen dess form och håller organellerna på plats?",
-    wrong:["Cellmembran","Vakuol","Cellvägg"] },
+  { cat:'celler', term:"Mitokondrie",
+    def:"En organell som bryter ner näring och frigör energi som cellen kan använda – cellens \"kraftverk\".",
+    multiDef:"Vad kallas den organell som bryter ner näring och frigör energi som cellen kan använda?",
+    wrong:["Ribosom","Kloroplast","Vakuol"] },
+
+  { cat:'celler', term:"Ribosom",
+    def:"En liten struktur i cellen där proteiner tillverkas utifrån instruktioner från DNA.",
+    multiDef:"Vad kallas den struktur i cellen där proteiner tillverkas utifrån instruktioner från DNA?",
+    wrong:["Mitokondrie","Organell","Cellmembran"] },
 
   { cat:'celler', term:"Organell",
     def:"En avgränsad struktur inuti cellen med en specifik uppgift, t.ex. att lagra DNA eller producera energi.",
     multiDef:"Vad kallas en avgränsad struktur inuti cellen med en specifik uppgift, t.ex. att lagra DNA eller producera energi?",
-    wrong:["Vävnad","Organ","Cellplasma (cytoplasma)"] },
+    wrong:["Vävnad","Organ","Cellmembran"] },
 
   { cat:'celler', term:"Cellvägg",
     def:"Ett stelt lager utanför cellmembranet som ger stadga åt cellen – finns hos växtceller men saknas hos djurceller.",
@@ -351,7 +356,7 @@ const allCards = [
   { cat:'art', term:"Biologiskt artbegrepp",
     def:"Definitionen av art som säger att två individer tillhör samma art om de kan para sig med varandra i naturen och få fertil avkomma.",
     multiDef:"Vad kallas den definition av art som säger att två individer tillhör samma art om de kan para sig i naturen och få fertil avkomma?",
-    wrong:["Fylogenetiskt artbegrepp","Taxonomisk hierarki","Systematik"] },
+    wrong:["Fylogenetiskt artbegrepp","Rike","Systematik"] },
 
   { cat:'art', term:"Fertil avkomma",
     def:"Avkomma som själv är fortplantningsduglig, det vill säga kan få egna ungar. Avgörande för det biologiska artbegreppet.",
@@ -361,33 +366,23 @@ const allCards = [
   { cat:'art', term:"Fylogenetiskt artbegrepp",
     def:"Ett sätt att definiera art genom att gruppera organismer utifrån gemensamma karaktärsdrag eller likheter i DNA, istället för om de kan para sig. Används bl.a. för fossil och bakterier.",
     multiDef:"Vad kallas det sätt att definiera art som grupperar organismer utifrån gemensamma karaktärsdrag eller DNA-likheter, istället för om de kan para sig?",
-    wrong:["Biologiskt artbegrepp","DNA-teknik (släktskapsanalys)","Taxonomisk hierarki"] },
+    wrong:["Biologiskt artbegrepp","Systematik","Rike"] },
 
   // SYSTEMATIK
   { cat:'systematik', term:"Systematik",
     def:"Läran om att dela in jordens organismer i grupper utifrån hur nära släkt de är med varandra.",
     multiDef:"Vad kallas läran om att dela in jordens organismer i grupper utifrån hur nära släkt de är med varandra?",
-    wrong:["Taxonomisk hierarki","DNA-teknik (släktskapsanalys)","Domän"] },
-
-  { cat:'systematik', term:"DNA-teknik (släktskapsanalys)",
-    def:"En metod inom systematik där man jämför organismers arvsmassa direkt – ju mer lika DNA-sekvenser, desto närmare släkt.",
-    multiDef:"Vad kallas den metod inom systematik där man jämför organismers arvsmassa direkt för att avgöra släktskap?",
-    wrong:["Systematik","Taxonomisk hierarki","Fylogenetiskt artbegrepp"] },
-
-  { cat:'systematik', term:"Taxonomisk hierarki",
-    def:"Den ordning organismer grupperas i, med allt bredare kategorier: art, släkte, familj, ordning, klass, stam, rike.",
-    multiDef:"Vad kallas den ordning organismer grupperas i, från art upp till rike, med allt bredare kategorier?",
-    wrong:["Domän","Systematik","Rike"] },
+    wrong:["Domän","Rike","Eukaryot"] },
 
   { cat:'systematik', term:"Domän",
     def:"Den högsta och bredaste nivån i klassificeringen av liv, ovanför rike. Allt liv delas in i tre domäner: Bakterier, Arkéer och Eukaryoter.",
     multiDef:"Vad kallas den högsta och bredaste nivån i klassificeringen av liv, ovanför rike?",
-    wrong:["Rike","Taxonomisk hierarki","Prokaryot"] },
+    wrong:["Rike","Systematik","Prokaryot"] },
 
   { cat:'systematik', term:"Rike",
-    def:"En nivå i den taxonomiska hierarkin under domän, t.ex. Svampar, Växter, Djur och Protister inom domänen Eukaryoter.",
-    multiDef:"Vad kallas nivån i den taxonomiska hierarkin under domän, t.ex. Svampar, Växter, Djur och Protister?",
-    wrong:["Domän","Taxonomisk hierarki","Prokaryot"] },
+    def:"En nivå i klassificeringen av liv, under domän. Inom domänen Eukaryoter finns det fyra riken, och dessa är: Svampar, Växter, Djur och Protister.",
+    multiDef:"Det finns fyra av dessa inom domänen Eukaryoter (Svampar, Växter, Djur och Protister) – vad kallas denna nivå i klassificeringen av liv?",
+    wrong:["Domän","Systematik","Eukaryot"] },
 
   { cat:'systematik', term:"Prokaryot",
     def:"En organism vars celler saknar cellkärna – gäller Bakterier och Arkéer.",
@@ -402,43 +397,33 @@ const allCards = [
   { cat:'systematik', term:"Arkéer",
     def:"En av de tre domänerna av liv – prokaryota organismer som ofta lever i extrema miljöer.",
     multiDef:"Vad kallas den domän av prokaryota organismer som ofta lever i extrema miljöer?",
-    wrong:["Bakterie","Eukaryot","Protister"] },
-
-  { cat:'systematik', term:"Protister",
-    def:"Ett rike av eukaryota organismer som varken är svampar, växter eller djur, t.ex. amöbor och alger.",
-    multiDef:"Vad kallas det rike av eukaryota organismer som varken är svampar, växter eller djur, t.ex. amöbor och alger?",
-    wrong:["Bakterie","Svamp","Arkéer"] },
+    wrong:["Bakterie","Eukaryot","Rike"] },
 
   // LIVETS STORA GRUPPER & BIOLOGISK MÅNGFALD
   { cat:'grupper', term:"Bakterie",
     def:"En encellig organism utan cellkärna som förökar sig asexuellt genom celldelning och finns i praktiskt taget alla miljöer.",
     multiDef:"Vad kallas en encellig organism utan cellkärna som förökar sig asexuellt genom celldelning?",
-    wrong:["Protister","Arkéer","Svamp"] },
+    wrong:["Eukaryot","Arkéer","Svamp"] },
 
   { cat:'grupper', term:"Svamp",
     def:"En organism som skaffar näring genom att bryta ner organiskt material utifrån, och som ofta lever i symbios med växter.",
     multiDef:"Vad kallas en organism som skaffar näring genom att bryta ner organiskt material utifrån?",
-    wrong:["Bakterie","Lav","Protister"] },
-
-  { cat:'grupper', term:"Mykorrhiza",
-    def:"Symbiosen mellan en svamp och en växts rötter, där svampen hjälper växten ta upp vatten och näring och får kolhydrater i gengäld.",
-    multiDef:"Vad kallas symbiosen mellan en svamp och en växts rötter, där svampen hjälper växten ta upp vatten och näring och får kolhydrater i gengäld?",
-    wrong:["Symbios","Lav","Biologisk mångfald"] },
+    wrong:["Bakterie","Lav","Symbios"] },
 
   { cat:'grupper', term:"Symbios",
     def:"Ett nära samlevnadsförhållande mellan två olika arter, ofta till ömsesidig nytta, t.ex. mellan svamp och alg i en lav.",
     multiDef:"Vad kallas ett nära samlevnadsförhållande mellan två olika arter, ofta till ömsesidig nytta?",
-    wrong:["Mykorrhiza","Lav","Biologisk mångfald"] },
+    wrong:["Svamp","Lav","Biologisk mångfald"] },
 
   { cat:'grupper', term:"Lav",
     def:"En organism som i själva verket är en symbios mellan en svamp och en alg eller cyanobakterie – inte ett eget rike.",
     multiDef:"Vad kallas den organism som i själva verket är en symbios mellan en svamp och en alg eller cyanobakterie?",
-    wrong:["Svamp","Mykorrhiza","Protister"] },
+    wrong:["Svamp","Symbios","Bakterie"] },
 
   { cat:'grupper', term:"Biologisk mångfald",
     def:"Ett mått på variationen av liv – på gennivå inom en art, på artnivå mellan organismer, och på ekosystemnivå mellan olika livsmiljöer.",
     multiDef:"Vad kallas måttet på variationen av liv på gen-, art- och ekosystemnivå?",
-    wrong:["Symbios","Systematik","Taxonomisk hierarki"] }
+    wrong:["Symbios","Systematik","Rike"] }
 ];
 
 const CAT_LABELS = {
