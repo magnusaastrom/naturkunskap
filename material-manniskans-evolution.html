@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Människans evolution – Evolution</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Mulish:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #faf7f2; --surface: #ffffff; --border: #e8e0d0;
+      --sand: #f2ece0; --rust: #b85c2a; --rust2: #d4703a;
+      --teal: #2a7a6a; --blue: #2a4a7a; --text: #1a1612;
+      --muted: #6a5e52; --radius: 10px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Mulish', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; font-size: 16px; }
+
+    .top-bar { background: #1a1612; padding: 14px 28px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; position: sticky; top: 0; z-index: 100; }
+    .back-link { color: #c8b89a; text-decoration: none; font-size: .82rem; transition: color .2s; }
+    .back-link:hover { color: #fff; }
+    .top-title { font-family: 'Playfair Display', serif; font-size: 1rem; color: #e8dcc8; }
+    .top-title span { color: #d4a060; }
+
+    .hero { background: linear-gradient(135deg, #1a1612 0%, #1a2820 60%, #1a1612 100%); padding: 64px 32px 56px; text-align: center; position: relative; overflow: hidden; }
+    .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 60% 60% at 30% 50%, rgba(42,122,106,.12) 0%, transparent 60%), radial-gradient(ellipse 50% 70% at 80% 30%, rgba(180,92,42,.06) 0%, transparent 55%); pointer-events: none; }
+    .hero-eyebrow { font-size: .72rem; letter-spacing: .22em; text-transform: uppercase; color: #d4a060; margin-bottom: 12px; }
+    .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 5vw, 3rem); font-weight: 900; color: #f0e8d8; margin-bottom: 16px; line-height: 1.15; }
+    .hero-sub { font-size: 1rem; color: #a09080; max-width: 560px; margin: 0 auto 32px; line-height: 1.7; }
+    .hero-nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+    .hero-nav a { font-size: .8rem; color: #c8b89a; border: 1px solid rgba(200,184,154,.3); border-radius: 30px; padding: 7px 16px; text-decoration: none; transition: all .2s; }
+    .hero-nav a:hover { background: rgba(200,184,154,.12); color: #fff; }
+
+    .container { max-width: 900px; margin: 0 auto; padding: 0 24px; }
+    .section { padding: 60px 0; }
+    .section + .section { border-top: 1px solid var(--border); }
+
+    .section-eyebrow { font-size: .7rem; letter-spacing: .2em; text-transform: uppercase; color: var(--rust); font-weight: 600; margin-bottom: 8px; }
+    .section-title { font-family: 'Playfair Display', serif; font-size: clamp(1.5rem, 3vw, 2rem); color: var(--text); margin-bottom: 6px; line-height: 1.25; }
+    .section-intro { font-size: .95rem; color: var(--muted); margin-bottom: 32px; max-width: 660px; line-height: 1.7; }
+
+    .prose { font-size: .95rem; line-height: 1.75; color: #2a2016; margin-bottom: 24px; }
+    .prose strong { color: var(--text); font-weight: 600; }
+
+    .key-box { background: var(--sand); border-left: 4px solid var(--rust2); border-radius: 0 var(--radius) var(--radius) 0; padding: 18px 22px; margin-bottom: 28px; }
+    .key-box h4 { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--rust); margin-bottom: 10px; }
+    .key-box p { font-size: .88rem; color: #4a3a2a; line-height: 1.65; }
+    .key-box dl { font-size: .88rem; color: #4a3a2a; display: flex; flex-direction: column; gap: 8px; }
+    .key-box dt { font-weight: 600; color: var(--text); display: inline; }
+    .key-box dd { display: inline; margin: 0; }
+    .key-box .term-row { line-height: 1.55; }
+
+    .table-scroll { overflow-x: auto; margin-bottom: 32px; }
+    .compare-table { width: 100%; min-width: 640px; border-collapse: collapse; font-size: .85rem; }
+    .compare-table.wide { min-width: 780px; }
+    .compare-table th { background: #1a1612; color: #e8dcc8; padding: 11px 14px; text-align: left; font-weight: 600; font-family: 'Playfair Display', serif; }
+    .compare-table th:first-child { border-radius: 8px 0 0 0; }
+    .compare-table th:last-child { border-radius: 0 8px 0 0; }
+    .compare-table td { padding: 10px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
+    .compare-table tr:nth-child(even) td { background: var(--sand); }
+    .compare-table tr:last-child td { border-bottom: none; }
+    .compare-table td:first-child { font-weight: 600; color: var(--text); white-space: nowrap; }
+
+    .process-steps { display: flex; flex-direction: column; gap: 0; margin-bottom: 32px; position: relative; }
+    .process-steps::before { content: ''; position: absolute; left: 22px; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, var(--rust2), var(--teal)); opacity: .3; }
+    .process-step { display: flex; gap: 18px; align-items: flex-start; padding: 14px 0; }
+    .step-num { width: 44px; height: 44px; border-radius: 50%; background: var(--rust2); color: #fff; display: flex; align-items: center; justify-content: center; font-family: 'Playfair Display', serif; font-size: .82rem; font-weight: 700; flex-shrink: 0; position: relative; z-index: 1; text-align: center; line-height: 1.1; }
+    .step-num.teal { background: var(--teal); }
+    .step-num.blue { background: var(--blue); }
+    .step-body h4 { font-size: .95rem; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+    .step-body p { font-size: .85rem; color: var(--muted); line-height: 1.6; }
+
+    .analogy-box { background: #1a1612; border-radius: var(--radius); padding: 28px 32px; margin-bottom: 32px; }
+    .analogy-box h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: #e8dcc8; margin-bottom: 14px; }
+    .analogy-box p { font-size: .9rem; color: #a09080; line-height: 1.7; }
+    .analogy-box strong { color: #e8dcc8; }
+
+    .tag-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
+    .tag-chip { background: var(--sand); border: 1px solid var(--border); border-radius: 30px; padding: 6px 14px; font-size: .82rem; color: #4a3a2a; }
+
+    .diagram-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; margin-bottom: 28px; overflow-x: auto; }
+    .diagram-caption { font-size: .78rem; color: var(--muted); text-align: center; margin-top: 12px; font-style: italic; }
+
+    .q-card { background: #1a1612; border: 1px solid #2a2018; border-radius: var(--radius); padding: 22px 26px; margin-bottom: 18px; }
+    .q-num { font-size: .68rem; letter-spacing: .18em; text-transform: uppercase; color: #d4a060; margin-bottom: 7px; font-weight: 600; }
+    .q-text { font-family: 'Playfair Display', serif; font-size: .95rem; color: #f0e8d8; margin-bottom: 14px; line-height: 1.5; }
+    .q-textarea { width: 100%; background: #0f0c08; border: 1.5px solid #2a2018; border-radius: 6px; color: #e8dcc8; font-family: 'Mulish', sans-serif; font-size: .9rem; padding: 11px 13px; resize: vertical; min-height: 80px; outline: none; transition: border-color .2s; line-height: 1.6; }
+    .q-textarea:focus { border-color: #d4703a; }
+    .q-btn { margin-top: 10px; font-family: 'Mulish', sans-serif; font-size: .84rem; font-weight: 600; padding: 8px 20px; border-radius: 6px; border: none; cursor: pointer; background: #d4703a; color: #fff; transition: background .2s; }
+    .q-btn:hover { background: #b85c2a; }
+    .q-model { margin-top: 14px; display: none; background: #0f0c08; border: 1px solid #2a2018; border-radius: 6px; overflow: hidden; }
+    .q-model.shown { display: block; }
+    .q-model-header { background: #2a2018; padding: 8px 16px; font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: #d4a060; font-weight: 600; }
+    .q-model-body { padding: 14px 18px; font-size: .88rem; color: #c8b89a; line-height: 1.75; }
+    .q-model-body strong { color: #f0e8d8; }
+    .q-model-body ul { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+    .q-model-body li { padding-left: 16px; position: relative; }
+    .q-model-body li::before { content: '→'; position: absolute; left: 0; color: #d4703a; font-size: .8rem; }
+    .q-self-check { margin-top: 12px; padding-top: 12px; border-top: 1px solid #2a2018; display: flex; align-items: center; gap: 10px; font-size: .82rem; color: #8a7a60; cursor: pointer; }
+    .q-self-check input { accent-color: #d4703a; width: 16px; height: 16px; cursor: pointer; }
+    .q-retry { margin-top: 10px; font-size: .78rem; color: #6a5a40; background: none; border: none; cursor: pointer; font-family: 'Mulish', sans-serif; text-decoration: underline; padding: 0; display: block; }
+    .q-score-bar { background: #0f0c08; border: 1px solid #2a2018; border-radius: var(--radius); padding: 20px 24px; margin-top: 32px; display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+    .q-score-num { font-family: 'Playfair Display', serif; font-size: 2rem; color: #d4703a; }
+    .q-score-label { font-size: .85rem; color: #8a7a60; }
+    .q-score-msg { font-size: .88rem; color: #c8b89a; }
+
+    footer { border-top: 1px solid var(--border); padding: 28px 24px; text-align: center; font-size: .78rem; color: var(--muted); margin-top: 40px; }
+    footer a { color: var(--teal); text-decoration: none; }
+
+    @media(max-width: 580px) {
+      .hero { padding: 44px 20px 36px; }
+      .container { padding: 0 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="top-bar">
+  <a href="nk2-evolution.html" class="back-link">← Evolution</a>
+  <div class="top-title">NK2 &mdash; <span>Människans evolution</span></div>
+</div>
+
+<div class="hero">
+  <p class="hero-eyebrow">Evolution &middot; NK2</p>
+  <h1>Människans evolution</h1>
+  <p class="hero-sub">Vad skiljer olika hominider åt – och hur syns evolutionen fortfarande i vår egen kropp?</p>
+  <nav class="hero-nav">
+    <a href="#trad">Ett förgrenat träd</a>
+    <a href="#slaktingar">Våra närmaste släktingar</a>
+    <a href="#hominider">Viktiga hominider</a>
+    <a href="#jamforelse">Jämförande anatomi</a>
+    <a href="#manniska-apa">Människa vs. människoapor</a>
+    <a href="#hjarnvolym">Hjärnvolym</a>
+    <a href="#dna-bevis">DNA-bevis</a>
+    <a href="#pagaende-evolution">Pågående evolution</a>
+    <a href="#genetisk-variation">Genetisk variation</a>
+    <a href="#sammanfattning">Sammanfattning</a>
+    <a href="#kolla">Kolla att du kan</a>
+  </nav>
+</div>
+
+<main>
+
+<!-- SEKTION 1 – ETT FÖRGRENAT TRÄD -->
+<div class="section" id="trad">
+<div class="container">
+  <p class="section-eyebrow">Introduktion</p>
+  <h2 class="section-title">Ett förgrenat träd, inte en rak linje</h2>
+  <p class="section-intro">Den vanliga bilden av en apa som stegvis reser sig upp till en människa är missvisande.</p>
+
+  <p class="prose">Människans evolution är ett <strong>förgrenat träd</strong>, inte en rak linje mot ett mål. Flera olika Homo-arter har levt <strong>samtidigt</strong> på jorden, och de flesta grenarna har dött ut – bara <strong>Homo sapiens</strong> finns kvar idag. Utdöda arter var inte "misslyckade" föregångare, utan egna, fullt fungerande grenar på trädet. Eftersom vår kunskap bygger på fossil, som bara ger ögonblicksbilder, har vi heller ingen fullständig bild av alla mellansteg.</p>
+
+  <div class="key-box">
+    <h4>🔑 Kom ihåg</h4>
+    <p>Evolution har ingen färdriktning mot "mer utvecklad" – den handlar bara om vilka egenskaper som gynnades i en viss miljö vid en viss tid.</p>
+  </div>
+</div>
+</div>
+
+<!-- SEKTION 2 – VÅRA NÄRMASTE SLÄKTINGAR -->
+<div class="section" id="slaktingar">
+<div class="container">
+  <p class="section-eyebrow">Släktskap</p>
+  <h2 class="section-title">Våra närmaste släktingar</h2>
+  <p class="section-intro">Människan tillhör ordningen <strong>primater</strong>, tillsammans med bland annat schimpanser, gorillor, orangutanger och gibboner.</p>
+
+  <p class="prose">Schimpansen är vår närmast levande släkting. Vi delar en <strong>gemensam anfader</strong> med schimpansen för ungefär 5–6 miljoner år sedan.</p>
+
+  <div class="key-box">
+    <h4>🔑 En vanlig missuppfattning</h4>
+    <p>"Släkting" betyder inte "härstammar från". Människan är alltså <strong>inte</strong> en ättling till schimpansen – vi har istället en gemensam förfader som varken var människa eller schimpans, och som båda arterna sedan utvecklats vidare ifrån, åt olika håll.</p>
+  </div>
+</div>
+</div>
+
+<!-- SEKTION 3 – VIKTIGA HOMINIDER I KORTHET -->
+<div class="section" id="hominider">
+<div class="container">
+  <p class="section-eyebrow">Bakgrund</p>
+  <h2 class="section-title">Viktiga hominider i korthet</h2>
+  <p class="section-intro">En snabb överblick av några centrala fynd, i ungefärlig tidsordning. Detaljerna är mindre viktiga än vad som skilde arterna åt – det tar nästa avsnitt upp mer ingående.</p>
+
+  <div class="process-steps">
+    <div class="process-step"><div class="step-num">5,8–4,4<br>mn år</div><div class="step-body"><h4>Ardipithecus</h4><p>Tidig gren nära ursprunget. Kunde troligen både gå upprätt och röra sig i träd.</p></div></div>
+    <div class="process-step"><div class="step-num">4,2–2<br>mn år</div><div class="step-body"><h4>Australopithecus ("Lucy")</h4><p>Tydligare tecken på upprätt gång. Ett av de mest kända fossilfynden, hittat i Etiopien 1974.</p></div></div>
+    <div class="process-step"><div class="step-num teal">2,4–1,4<br>mn år</div><div class="step-body"><h4>Homo habilis</h4><p>"Den skicklige" – den första art som förknippas med tillverkade stenverktyg.</p></div></div>
+    <div class="process-step"><div class="step-num teal">1,9 mn–<br>110 000 år</div><div class="step-body"><h4>Homo erectus</h4><p>Lärde sig troligen kontrollera eld. Den första hominiden att lämna Afrika.</p></div></div>
+    <div class="process-step"><div class="step-num teal">400 000–<br>40 000 år</div><div class="step-body"><h4>Homo neanderthalensis</h4><p>Robust kroppsbyggnad, stor hjärnvolym och avancerade verktyg. Levde i Europa och västra Asien.</p></div></div>
+    <div class="process-step"><div class="step-num teal">300 000 år–<br>nu</div><div class="step-body"><h4>Homo sapiens</h4><p>Uppstod i Afrika. Levde parallellt med neandertalare innan de mötte varandra vid utvandringen från Afrika.</p></div></div>
+  </div>
+</div>
+</div>
+
+<!-- SEKTION 4 – JÄMFÖRANDE ANATOMI -->
+<div class="section" id="jamforelse">
+<div class="container">
+  <p class="section-eyebrow">⭐ Centralt avsnitt</p>
+  <h2 class="section-title">Jämförande anatomi: vad skiljer hominiderna åt?</h2>
+  <p class="section-intro">Det viktigaste att kunna är inte exakta årtal, utan att kunna ge konkreta exempel på vad som skilde arterna åt. Tabellen nedan samlar de tydligaste skillnaderna.</p>
+
+  <div class="table-scroll">
+    <table class="compare-table wide">
+      <thead><tr><th>Art</th><th>Upprätt gång</th><th>Verktyg</th><th>Hjärnvolym</th><th>Annat utmärkande</th></tr></thead>
+      <tbody>
+        <tr><td>Ardipithecus</td><td>Tidiga tecken, men fortfarande anpassad för klättring</td><td>Inga kända</td><td>Ej fastställd</td><td>Möjlig "länk" mellan fyrbent och upprätt gång</td></tr>
+        <tr><td>Australopithecus</td><td>Tydligare upprätt gång</td><td>Inga stenverktyg</td><td>~460 cm³</td><td>Fortfarande relativt små hörntänder</td></tr>
+        <tr><td>H. habilis</td><td>Upprätt gång</td><td>De första stenverktygen</td><td>~610 cm³</td><td>Namnet betyder "den skicklige"</td></tr>
+        <tr><td>H. erectus</td><td>Gångstil som liknar vår egen</td><td>Mer avancerade verktyg, troligen eld</td><td>~950 cm³</td><td>Första hominid att lämna Afrika</td></tr>
+        <tr><td>H. neanderthalensis</td><td>Upprätt gång, robust kroppsbyggnad</td><td>Avancerade verktyg</td><td>~1500 cm³ (störst)</td><td>Kallt klimat, komplex kultur, begravningsritualer</td></tr>
+        <tr><td>H. sapiens</td><td>Upprätt gång</td><td>Avancerad, komplex teknik</td><td>~1350 cm³</td><td>Relativt stor pannlob, avancerat socialt samarbete och språk</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="key-box">
+    <h4>🔑 Kom ihåg</h4>
+    <p>Notera att Homo sapiens inte har den absolut största hjärnan – neandertalare hade en något större hjärnvolym. Skillnaden verkar snarare ligga i hjärnans <strong>proportioner</strong>, bland annat en relativt stor pannlob kopplad till socialt och kognitivt tänkande.</p>
+  </div>
+</div>
+</div>
+
+<!-- SEKTION 5 – MÄNNISKA VS MÄNNISKOAPOR -->
+<div class="section" id="manniska-apa">
+<div class="container">
+  <p class="section-eyebrow">⭐ Centralt avsnitt</p>
+  <h2 class="section-title">Människa vs. människoapor: kroppsliga skillnader</h2>
+  <p class="section-intro">Flera av de tydligaste skillnaderna mellan människan och andra människoapor går att se direkt i skelettet.</p>
+
+  <div class="tag-grid">
+    <span class="tag-chip">Upprätt gång (bipedalism)</span>
+    <span class="tag-chip">Mindre hörntänder</span>
+    <span class="tag-chip">Nackhålets placering</span>
+    <span class="tag-chip">Ryggradens S-form</span>
+    <span class="tag-chip">Bäckenets form</span>
+    <span class="tag-chip">Motstående tumme</span>
+  </div>
+
+  <p class="prose">Skelettet avslöjar gångsättet på flera sätt: <strong>nackhålet</strong> sitter längre fram och rakt under skallen (istället för bakom, som hos fyrbenta djur), <strong>ryggraden</strong> har fått en bärande S-form istället för att vara rak, och <strong>bäckenet</strong> har blivit kortare och bredare för att bära upp inälvorna. Människan har också en <strong>motstående tumme</strong> som gör precisionsgrepp möjliga – hos många människoapor spelar stortån en liknande roll för att greppa grenar.</p>
+
+  <table class="compare-table">
+    <thead><tr><th>Fördelar då</th><th>Konsekvenser idag</th></tr></thead>
+    <tbody>
+      <tr><td>Bättre överblick över omgivningen</td><td>Nack- och ryggont, diskbråck</td></tr>
+      <tr><td>Energieffektiv förflyttning över långa sträckor</td><td>Förlossningssvårigheter (smalt bäcken möter en stor hjärna)</td></tr>
+      <tr><td>Händerna frigörs för redskap och bärande</td><td>Plattfot och knäproblem</td></tr>
+    </tbody>
+  </table>
+
+  <div class="key-box">
+    <h4>🔑 Evolution skapar inte perfekta lösningar</h4>
+    <p>Vårt skelett formades under hundratals miljoner år av fyrfota gång. De några miljoner år vi gått upprätt har inte hunnit "fixa" alla följdproblem – ett bra exempel på att naturligt urval bara behöver ge en <strong>tillräckligt bra</strong> lösning, inte en perfekt sådan (se gärna avsnittet om <a href="material-naturligt-urval.html">naturligt urval</a>).</p>
+  </div>
+</div>
+</div>
+
+<!-- SEKTION 6 – HJÄRNVOLYM -->
+<div class="section" id="hjarnvolym">
+<div class="container">
+  <p class="section-eyebrow">⭐ Centralt avsnitt</p>
+  <h2 class="section-title">Hjärnvolymens utveckling</h2>
+  <p class="section-intro">Hjärnvolymen ökade kraftigt inom släktet Homo – och ökningen skedde snabbare än vad kroppsstorleken gjorde, det vill säga den <strong>relativa</strong> hjärnstorleken ökade.</p>
+
+  <div class="diagram-wrap">
+    <svg viewBox="0 0 500 230" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:500px;display:block;margin:0 auto">
+      <line x1="10" y1="190" x2="490" y2="190" stroke="#6a5e52" stroke-width="1"/>
+      <rect x="15" y="144" width="50" height="46" rx="3" fill="#b85c2a"/>
+      <text x="40" y="138" text-anchor="middle" font-family="Mulish,sans-serif" font-size="11" fill="#1a1612" font-weight="600">460</text>
+      <text x="40" y="205" text-anchor="middle" font-family="Mulish,sans-serif" font-size="9" fill="#6a5e52">Australopithecus</text>
+
+      <rect x="115" y="129" width="50" height="61" rx="3" fill="#d4703a"/>
+      <text x="140" y="123" text-anchor="middle" font-family="Mulish,sans-serif" font-size="11" fill="#1a1612" font-weight="600">610</text>
+      <text x="140" y="205" text-anchor="middle" font-family="Mulish,sans-serif" font-size="9" fill="#6a5e52">H. habilis</text>
+
+      <rect x="215" y="95" width="50" height="95" rx="3" fill="#2a7a6a"/>
+      <text x="240" y="89" text-anchor="middle" font-family="Mulish,sans-serif" font-size="11" fill="#1a1612" font-weight="600">950</text>
+      <text x="240" y="205" text-anchor="middle" font-family="Mulish,sans-serif" font-size="9" fill="#6a5e52">H. erectus</text>
+
+      <rect x="315" y="40" width="50" height="150" rx="3" fill="#2a4a7a"/>
+      <text x="340" y="34" text-anchor="middle" font-family="Mulish,sans-serif" font-size="11" fill="#1a1612" font-weight="600">1500</text>
+      <text x="340" y="205" text-anchor="middle" font-family="Mulish,sans-serif" font-size="9" fill="#6a5e52">H. neand.</text>
+
+      <rect x="415" y="55" width="50" height="135" rx="3" fill="#1a1612"/>
+      <text x="440" y="49" text-anchor="middle" font-family="Mulish,sans-serif" font-size="11" fill="#1a1612" font-weight="600">1350</text>
+      <text x="440" y="205" text-anchor="middle" font-family="Mulish,sans-serif" font-size="9" fill="#6a5e52">H. sapiens</text>
+    </svg>
+    <p class="diagram-caption">Ungefärlig hjärnvolym i kubikcentimeter (cm³) för respektive art.</p>
+  </div>
+
+  <div class="key-box">
+    <h4>🔑 Kom ihåg</h4>
+    <p>En stor hjärna kostar mycket energi – hos människan står hjärnan för ungefär <strong>20 % av kroppens energiförbrukning i vila</strong>, trots att den bara utgör en liten del av kroppsvikten. Vad som drev fram den stora ökningen diskuteras fortfarande: förslag är socialt liv, verktygsanvändning och en mer näringsrik kost.</p>
+  </div>
+</div>
+</div>
+
+<!-- SEKTION 7 – DNA-BEVIS -->
+<div class="section" id="dna-bevis">
+<div class="container">
+  <p class="section-eyebrow">Modernt bevis</p>
+  <h2 class="section-title">DNA-bevis: neandertalarv</h2>
+  <p class="section-intro">DNA-analys av fossil har blivit ett av de viktigaste verktygen inom modern paleoantropologi (se även avsnittet om <a href="material-bevis-for-evolution.html">DNA som bevis för evolution</a>).</p>
+
+  <p class="prose">Moderna människor med ursprung utanför Afrika bär i genomsnitt <strong>1–2 %</strong> neandertal-DNA i sin arvsmassa. Det visar att <strong>Homo sapiens</strong> och <strong>Homo neanderthalensis</strong> fick fertil avkomma tillsammans när de möttes.</p>
+
+  <div class="key-box">
+    <h4>🔑 En utmaning för artbegreppet</h4>
+    <p>Det här är ett bra exempel på varför den biologiska artdefinitionen inte alltid är enkel att tillämpa (se <a href="material-artbildning.html">Artbildning</a>): om sapiens och neandertalare kunde få fertil avkomma, var de då verkligen skilda arter enligt den definitionen, eller väldigt nära besläktade populationer av samma art?</p>
+  </div>
+</div>
+</div>
+
+<!-- SEKTION 8 – PÅGÅENDE EVOLUTION -->
+<div class="section" id="pagaende-evolution">
+<div class="container">
+  <p class="section-eyebrow">Evolution idag</p>
+  <h2 class="section-title">Människan idag – pågående evolution</h2>
+  <p class="section-intro">Evolutionen stannade inte av när Homo sapiens uppstod. Naturligt urval fortsätter att verka på oss än idag.</p>
+
+  <div class="key-box">
+    <h4>🔑 Vad är "heterozygot fördel"? (en enkel förklaring)</h4>
+    <p>Alla människor har <strong>två kopior</strong> av varje gen – en från mamma och en från pappa. Ibland är det bäst att ha <strong>en av varje variant</strong> (kallas heterozygot), istället för två likadana. Man kan tänka sig det som att ha en fördel av "det bästa från två världar" – medan att ha två likadana kopior av samma variant kan innebära antingen en extra fördel <strong>eller</strong> en risk, beroende på vilken variant det gäller.</p>
+  </div>
+
+  <p class="prose"><strong>Exempel: sicklecellanlaget och malaria.</strong> Har man anlaget för sicklecellanemi från <strong>bara en förälder</strong> (heterozygot) blir man inte sjuk, men får ett bra skydd mot malaria. Har man anlaget från <strong>båda</strong> föräldrarna (två likadana kopior) blir man istället svårt sjuk i sicklecellanemi. I områden med mycket malaria gynnar naturligt urval därför att vara bärare av anlaget – vilket förklarar varför anlaget finns kvar i befolkningen trots att det i värsta fall kan orsaka en allvarlig sjukdom.</p>
+
+  <p class="prose"><strong>Exempel: laktostolerans.</strong> Hos de flesta däggdjur, och ursprungligen hos alla människor, slutar kroppen bryta ner mjölksocker (laktos) i vuxen ålder. I populationer med lång tradition av mjölkboskap uppstod och spreds istället en mutation som gör att laktasenzymet fortsätter fungera hela livet. Eftersom tillgång till mjölk som näringskälla gav en fördel i dessa populationer spreds mutationen genom naturligt urval – idag är laktostolerans därför vanligast hos vuxna i regioner med lång tradition av mjölkdjur, till exempel norra Europa.</p>
+
+  <div class="tag-grid">
+    <span class="tag-chip">Sicklecellanlag – skydd mot malaria</span>
+    <span class="tag-chip">Laktostolerans – tradition av mjölkboskap</span>
+    <span class="tag-chip">Höghöjdsanpassning – t.ex. hos tibetaner</span>
+  </div>
+</div>
+</div>
+
+<!-- SEKTION 9 – GENETISK VARIATION -->
+<div class="section" id="genetisk-variation">
+<div class="container">
+  <p class="section-eyebrow">Genetik och samhälle</p>
+  <h2 class="section-title">Genetisk variation – och varför "ras" inte är en biologisk kategori</h2>
+  <p class="section-intro">Ett känsligt men vetenskapligt viktigt ämne, som är bra att hålla sakligt och evidensbaserat.</p>
+
+  <div class="key-box">
+    <h4>🔑 Vad visar forskningen?</h4>
+    <p>Människans genetiska variation är <strong>störst inom</strong> traditionellt definierade befolkningsgrupper, inte mellan dem. Det finns därför inget biologiskt stöd för att dela in människor i separata, distinkta "raser". Synliga drag som till exempel hudfärg är ytliga, lokala anpassningar – bland annat till mängden solljus – och säger väldigt lite om en persons genetiska variation i övrigt.</p>
+  </div>
+
+  <p class="prose">Det är viktigt att skilja på biologiska fakta och sociala eller kulturella föreställningar om grupptillhörighet – de senare bygger inte på någon tydlig genetisk grund.</p>
+</div>
+</div>
+
+<!-- SEKTION 10 – SAMMANFATTNING -->
+<div class="section" id="sammanfattning">
+<div class="container">
+  <p class="section-eyebrow">Sammanfattning</p>
+  <h2 class="section-title">Det viktigaste i korthet</h2>
+
+  <div class="key-box">
+    <h4>🔑 Människans evolution i korthet</h4>
+    <dl>
+      <div class="term-row"><dt>Förgrenat träd</dt><dd> – flera Homo-arter har levt samtidigt, bara sapiens finns kvar.</dd></div>
+      <div class="term-row"><dt>Släktskap</dt><dd> – schimpansen är närmaste levande släkting, med gemensam anfader för 5–6 miljoner år sedan.</dd></div>
+      <div class="term-row"><dt>Jämförande anatomi</dt><dd> – upprätt gång, verktygsanvändning och hjärnvolym skiljer sig tydligt mellan hominidarterna.</dd></div>
+      <div class="term-row"><dt>Kroppsliga skillnader</dt><dd> – nackhål, ryggradens form, bäcken och tumme skiljer människan från andra människoapor, med både fördelar och konsekvenser.</dd></div>
+      <div class="term-row"><dt>DNA-bevis</dt><dd> – neandertalarv visar att sapiens och neandertalare fick fertil avkomma tillsammans.</dd></div>
+      <div class="term-row"><dt>Pågående evolution</dt><dd> – sicklecellanlag och laktostolerans visar att naturligt urval fortfarande formar oss.</dd></div>
+      <div class="term-row"><dt>Genetisk variation</dt><dd> – störst inom grupper, inte mellan dem – inget biologiskt stöd för separata "raser".</dd></div>
+    </dl>
+  </div>
+</div>
+</div>
+
+<!-- SEKTION 11 – KOLLA ATT DU KAN -->
+<div class="section" id="kolla">
+<div class="container">
+  <p class="section-eyebrow">Självbedömning</p>
+  <h2 class="section-title">Kolla att du kan</h2>
+  <p class="section-intro">Försök svara utan att titta i texten. Visa sedan mallsvaret och bocka i om du hade med det viktigaste.</p>
+  <div id="q-wrap"></div>
+</div>
+</div>
+
+</main>
+
+<footer>
+  <a href="nk2-evolution.html">← Tillbaka till Evolution</a> &middot; NK2 &middot; Människans evolution
+</footer>
+
+<script src="shared.js"></script>
+<script>
+requireLogin('NK2');
+
+const QUESTIONS = [
+  {
+    q: "Förklara varför man säger att det mänskliga släktträdet är \"förgrenat\" snarare än en rak linje, och vilken missuppfattning det motverkar.",
+    model: [
+      "Flera olika Homo-arter har levt samtidigt, och de flesta grenarna har dött ut – bara Homo sapiens finns kvar idag.",
+      "Det motverkar missuppfattningen att evolutionen är en rak linje mot ett mål, där varje art är ett steg på väg mot människan."
+    ]
+  },
+  {
+    q: "Vad är vår närmaste levande släkting, och vad är skillnaden mellan att vara \"släkt med\" och att \"härstamma från\" en annan art?",
+    model: [
+      "Schimpansen är vår närmaste levande släkting.",
+      "Vi härstammar inte från schimpansen – vi delar istället en gemensam anfader som varken var människa eller schimpans."
+    ]
+  },
+  {
+    q: "Ge tre exempel på skillnader mellan olika hominidarter (t.ex. graden av upprätt gång, verktygsanvändning eller hjärnvolym).",
+    model: [
+      "Exempel: Ardipithecus hade bara tidiga tecken på upprätt gång, medan H. erectus hade en gångstil som liknar vår egen.",
+      "H. habilis är den första arten som förknippas med tillverkade stenverktyg, medan senare arter hade mer avancerad teknik.",
+      "Hjärnvolymen ökade från cirka 460 cm³ hos Australopithecus till cirka 1500 cm³ hos neandertalare."
+    ]
+  },
+  {
+    q: "Beskriv minst tre skeletala/kroppsliga skillnader mellan människor och andra människoapor, och koppla en av dem till en \"konsekvens idag\".",
+    model: [
+      "Nackhålets placering, ryggradens S-form och bäckenets kortare, bredare form.",
+      "Motstående tumme hos människan, jämfört med att stortån fyller en liknande funktion hos många människoapor.",
+      "Exempel på konsekvens: bäckenets form ger idag förlossningssvårigheter eftersom ett smalt bäcken ska möta en stor hjärna."
+    ]
+  },
+  {
+    q: "Vad visar DNA-beviset om neandertalarv, och varför utmanar det den strikta biologiska artdefinitionen?",
+    model: [
+      "Moderna människor med ursprung utanför Afrika bär 1–2 % neandertal-DNA, vilket visar att sapiens och neandertalare fick fertil avkomma.",
+      "Det utmanar artdefinitionen eftersom den bygger på att skilda arter inte ska kunna få fertil avkomma tillsammans."
+    ]
+  },
+  {
+    q: "Förklara med egna ord vad heterozygot fördel innebär, med hjälp av sicklecell-exemplet.",
+    model: [
+      "Att ha en kopia av sicklecellanlaget (heterozygot) ger skydd mot malaria utan att man blir sjuk.",
+      "Att ha två kopior av anlaget ger istället sicklecellanemi, en allvarlig sjukdom.",
+      "I malariadrabbade områden gynnar naturligt urval därför att vara bärare, vilket håller anlaget kvar i populationen."
+    ]
+  },
+  {
+    q: "Hur uppstod laktostolerans hos vuxna i vissa populationer, och varför spreds egenskapen genom naturligt urval?",
+    model: [
+      "En mutation gjorde att laktasenzymet fortsätter fungera i vuxen ålder, istället för att sluta produceras som hos de flesta däggdjur.",
+      "I populationer med tradition av mjölkboskap gav tillgången till mjölk som näringskälla en fördel, vilket gjorde att mutationen spreds via naturligt urval."
+    ]
+  },
+  {
+    q: "Varför finns det inget biologiskt stöd för att dela in människor i separata \"raser\"?",
+    model: [
+      "Människans genetiska variation är störst inom traditionellt definierade befolkningsgrupper, inte mellan dem.",
+      "Synliga drag som hudfärg är ytliga, lokala anpassningar (t.ex. till solljus) och säger lite om övrig genetisk variation."
+    ]
+  }
+];
+
+let checked = new Array(QUESTIONS.length).fill(false);
+
+function buildQuestions() {
+  const wrap = document.getElementById('q-wrap');
+  QUESTIONS.forEach((q, i) => {
+    const items = q.model.map(m => `<li>${m}</li>`).join('');
+    wrap.innerHTML += `
+      <div class="q-card">
+        <div class="q-num">Fråga ${i+1} av ${QUESTIONS.length}</div>
+        <div class="q-text">${q.q}</div>
+        <textarea class="q-textarea" id="qta-${i}" placeholder="Skriv ditt svar här..."></textarea>
+        <button class="q-btn" onclick="showModel(${i})">Visa mallsvar →</button>
+        <div class="q-model" id="qmodel-${i}">
+          <div class="q-model-header">📋 Mallsvar</div>
+          <div class="q-model-body">
+            <ul>${items}</ul>
+            <div class="q-self-check">
+              <input type="checkbox" id="qcheck-${i}" onchange="toggleCheck(${i})"/>
+              <label for="qcheck-${i}">Jag hade med det viktigaste</label>
+            </div>
+          </div>
+        </div>
+        <button class="q-retry" onclick="resetQuestion(${i})">↩ Rensa och försök igen</button>
+      </div>`;
+  });
+  updateScore();
+}
+
+function showModel(i) { document.getElementById(`qmodel-${i}`).classList.add('shown'); }
+function toggleCheck(i) { checked[i] = document.getElementById(`qcheck-${i}`).checked; updateScore(); }
+function resetQuestion(i) {
+  document.getElementById(`qta-${i}`).value = '';
+  document.getElementById(`qmodel-${i}`).classList.remove('shown');
+  document.getElementById(`qcheck-${i}`).checked = false;
+  checked[i] = false;
+  updateScore();
+}
+
+function updateScore() {
+  const n = checked.filter(Boolean).length;
+  const total = QUESTIONS.length;
+  const msg = n === total ? '🎉 Utmärkt – du kan hela avsnittet!'
+    : n >= 6 ? '👍 Bra jobbat! Kika igenom de du missat.'
+    : n >= 3 ? '📖 Bra start – fortsätt öva på resten.'
+    : '🔍 Gå tillbaka till materialet och försök igen.';
+
+  let bar = document.getElementById('q-scorebar');
+  if (!bar) {
+    document.getElementById('q-wrap').insertAdjacentHTML('afterend',
+      `<div class="q-score-bar" id="q-scorebar">
+        <div class="q-score-num" id="qs-num">${n}/${total}</div>
+        <div><div class="q-score-label">Självskattning</div><div class="q-score-msg" id="qs-msg">${msg}</div></div>
+      </div>`);
+  } else {
+    document.getElementById('qs-num').textContent = `${n}/${total}`;
+    document.getElementById('qs-msg').textContent = msg;
+  }
+}
+
+buildQuestions();
+</script>
+
+</body>
+</html>
