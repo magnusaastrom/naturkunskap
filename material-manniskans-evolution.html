@@ -61,9 +61,9 @@
     .compare-table td:first-child { font-weight: 600; color: var(--text); white-space: nowrap; }
 
     .process-steps { display: flex; flex-direction: column; gap: 0; margin-bottom: 32px; position: relative; }
-    .process-steps::before { content: ''; position: absolute; left: 22px; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, var(--rust2), var(--teal)); opacity: .3; }
+    .process-steps::before { content: ''; position: absolute; left: 39px; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, var(--rust2), var(--teal)); opacity: .3; }
     .process-step { display: flex; gap: 18px; align-items: flex-start; padding: 14px 0; }
-    .step-num { width: 44px; height: 44px; border-radius: 50%; background: var(--rust2); color: #fff; display: flex; align-items: center; justify-content: center; font-family: 'Playfair Display', serif; font-size: .82rem; font-weight: 700; flex-shrink: 0; position: relative; z-index: 1; text-align: center; line-height: 1.1; }
+    .step-num { width: 78px; min-width: 78px; height: 54px; border-radius: 14px; background: var(--rust2); color: #fff; display: flex; align-items: center; justify-content: center; font-family: 'Playfair Display', serif; font-size: .66rem; font-weight: 700; flex-shrink: 0; position: relative; z-index: 1; text-align: center; line-height: 1.25; padding: 4px 6px; }
     .step-num.teal { background: var(--teal); }
     .step-num.blue { background: var(--blue); }
     .step-body h4 { font-size: .95rem; font-weight: 600; color: var(--text); margin-bottom: 4px; }
@@ -148,6 +148,11 @@
   <p class="section-intro">Den vanliga bilden av en apa som stegvis reser sig upp till en människa är missvisande.</p>
 
   <p class="prose">Människans evolution är ett <strong>förgrenat träd</strong>, inte en rak linje mot ett mål. Flera olika Homo-arter har levt <strong>samtidigt</strong> på jorden, och de flesta grenarna har dött ut – bara <strong>Homo sapiens</strong> finns kvar idag. Utdöda arter var inte "misslyckade" föregångare, utan egna, fullt fungerande grenar på trädet. Eftersom vår kunskap bygger på fossil, som bara ger ögonblicksbilder, har vi heller ingen fullständig bild av alla mellansteg.</p>
+
+  <div class="diagram-wrap">
+    <img src="images/människans_utveckling.jpg" alt="Förgrenat släktträd som visar hur människor, schimpanser/bonobor och gorillor grenar av från en gemensam förfader vid olika tidpunkter" style="max-width:100%; height:auto; display:block; margin:0 auto; border-radius:6px;"/>
+    <p class="diagram-caption">Släktträdet grenar av vid olika tidpunkter (miljoner år sedan) – gorillalinjen tidigast, därefter schimpanser/bonobor, med människan som en egen gren.</p>
+  </div>
 
   <div class="key-box">
     <h4>🔑 Kom ihåg</h4>
