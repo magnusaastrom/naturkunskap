@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ekologi – NK1b</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Mulish:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #faf7f2; --surface: #ffffff; --border: #e8e0d0;
+      --sand: #f2ece0; --rust: #b85c2a; --rust2: #d4703a;
+      --teal: #2a7a6a; --blue: #2a4a7a; --text: #1a1612;
+      --muted: #6a5e52; --radius: 12px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Mulish', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+    .top-bar { background: #1a1612; padding: 14px 28px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+    .back-link { color: #c8b89a; text-decoration: none; font-size: .82rem; transition: color .2s; }
+    .back-link:hover { color: #fff; }
+    .top-title { font-family: 'Playfair Display', serif; font-size: 1rem; color: #e8dcc8; }
+    .top-title span { color: #d4a060; }
+
+    .hero { background: linear-gradient(135deg, #1a1612 0%, #2a2018 60%, #1a1a12 100%); padding: 56px 32px 48px; text-align: center; position: relative; overflow: hidden; }
+    .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 60% 60% at 25% 50%, rgba(180,92,42,.12) 0%, transparent 60%), radial-gradient(ellipse 50% 70% at 80% 30%, rgba(42,122,106,.08) 0%, transparent 55%); pointer-events: none; }
+    .hero-eyebrow { font-size: .72rem; letter-spacing: .22em; text-transform: uppercase; color: #d4a060; margin-bottom: 12px; }
+    .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 900; color: #f0e8d8; margin-bottom: 14px; line-height: 1.15; }
+    .hero p { font-size: .95rem; color: #a09080; max-width: 520px; margin: 0 auto; line-height: 1.7; }
+
+    .container { max-width: 860px; margin: 0 auto; padding: 48px 24px 80px; }
+    .section-label { font-size: .7rem; letter-spacing: .2em; text-transform: uppercase; color: var(--rust); font-weight: 600; margin-bottom: 8px; }
+    .section-title { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--text); margin-bottom: 28px; }
+
+    .cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 20px; margin-bottom: 48px; }
+    .hub-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; text-decoration: none; color: var(--text); display: flex; flex-direction: column; transition: all .2s; position: relative; }
+    .hub-card:hover { border-color: var(--rust2); transform: translateY(-3px); box-shadow: 0 8px 32px rgba(180,92,42,.12); }
+    .hub-card-top { padding: 24px 24px 0; display: flex; align-items: flex-start; gap: 16px; }
+    .hub-icon { font-size: 2rem; flex-shrink: 0; }
+    .hub-num { font-size: .68rem; letter-spacing: .15em; text-transform: uppercase; color: var(--rust); font-weight: 600; margin-bottom: 4px; }
+    .hub-title { font-family: 'Playfair Display', serif; font-size: 1.15rem; margin-bottom: 6px; }
+    .hub-desc { font-size: .83rem; color: var(--muted); line-height: 1.55; }
+    .hub-topics { padding: 14px 24px; display: flex; flex-wrap: wrap; gap: 6px; }
+    .hub-tag { font-size: .72rem; background: var(--sand); border-radius: 30px; padding: 3px 10px; color: var(--muted); }
+    .hub-footer { padding: 14px 24px 20px; display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--border); margin-top: auto; }
+    .hub-arrow { font-size: .82rem; font-weight: 600; color: var(--rust); }
+
+    .info-box { background: var(--sand); border-left: 4px solid var(--rust2); border-radius: 0 var(--radius) var(--radius) 0; padding: 16px 20px; font-size: .88rem; color: var(--muted); line-height: 1.65; }
+    .info-box strong { color: var(--text); }
+
+    footer { border-top: 1px solid var(--border); text-align: center; padding: 24px; font-size: .78rem; color: var(--muted); }
+    footer a { color: var(--rust); text-decoration: none; }
+
+    @media(max-width:560px) { .cards-grid { grid-template-columns: 1fr; } .container { padding: 32px 16px 60px; } }
+  </style>
+</head>
+<body>
+
+<div class="top-bar">
+  <a href="nk1b.html" class="back-link">← NK1b</a>
+  <div class="top-title">Naturkunskap 1b &mdash; <span>Ekologi</span></div>
+</div>
+
+<div class="hero">
+  <p class="hero-eyebrow">NK1b &middot; Ekologi</p>
+  <h1>Ekologi</h1>
+  <p>Läran om levande organismer och deras samspel med sin omgivning. Välj ett område att fördjupa dig i. Varje avsnitt innehåller material, nyckelbegrepp, diagram och självkontrollfrågor.</p>
+</div>
+
+<div class="container">
+  <p class="section-label">Sex delområden</p>
+  <h2 class="section-title">Välj ett avsnitt</h2>
+
+  <div class="cards-grid">
+
+    <a href="nk1b-ekologi-grundbegrepp.html" class="hub-card">
+      <div class="hub-card-top">
+        <div class="hub-icon">🌍</div>
+        <div>
+          <div class="hub-num">Avsnitt 1</div>
+          <div class="hub-title">Grundbegrepp i ekologi</div>
+          <div class="hub-desc">Vad ekologi är, hur ett ekosystem är uppbyggt och skillnaden mellan biotiska och abiotiska faktorer.</div>
+        </div>
+      </div>
+      <div class="hub-topics">
+        <span class="hub-tag">Ekologi & ekosystem</span>
+        <span class="hub-tag">Biosfären</span>
+        <span class="hub-tag">Biotiska faktorer</span>
+        <span class="hub-tag">Abiotiska faktorer</span>
+      </div>
+      <div class="hub-footer"><span style="font-size:.82rem;color:var(--muted)">Material + diagram</span><span class="hub-arrow">Öppna →</span></div>
+    </a>
+
+    <a href="nk1b-ekologi-producenter-konsumenter.html" class="hub-card">
+      <div class="hub-card-top">
+        <div class="hub-icon">🌾</div>
+        <div>
+          <div class="hub-num">Avsnitt 2</div>
+          <div class="hub-title">Producenter & konsumenter</div>
+          <div class="hub-desc">Hur producenter skapar energi genom fotosyntes, och hur konsumenter och nedbrytare för den vidare genom ekosystemet.</div>
+        </div>
+      </div>
+      <div class="hub-topics">
+        <span class="hub-tag">Fotosyntes</span>
+        <span class="hub-tag">Cellandning</span>
+        <span class="hub-tag">Konsumenter</span>
+        <span class="hub-tag">Nedbrytare</span>
+      </div>
+      <div class="hub-footer"><span style="font-size:.82rem;color:var(--muted)">Material + diagram</span><span class="hub-arrow">Öppna →</span></div>
+    </a>
+
+    <a href="nk1b-ekologi-population.html" class="hub-card">
+      <div class="hub-card-top">
+        <div class="hub-icon">🐇</div>
+        <div>
+          <div class="hub-num">Avsnitt 3</div>
+          <div class="hub-title">Population & samhälle</div>
+          <div class="hub-desc">Vad en population är, vilka faktorer som styr dess storlek, och skillnaden mellan växt- och djursamhälle.</div>
+        </div>
+      </div>
+      <div class="hub-topics">
+        <span class="hub-tag">Population</span>
+        <span class="hub-tag">Växtsamhälle</span>
+        <span class="hub-tag">Djursamhälle</span>
+      </div>
+      <div class="hub-footer"><span style="font-size:.82rem;color:var(--muted)">Material + diagram</span><span class="hub-arrow">Öppna →</span></div>
+    </a>
+
+    <a href="nk1b-ekologi-naringsvavar.html" class="hub-card">
+      <div class="hub-card-top">
+        <div class="hub-icon">🕸️</div>
+        <div>
+          <div class="hub-num">Avsnitt 4</div>
+          <div class="hub-title">Näringsvävar & energiflöde</div>
+          <div class="hub-desc">Näringskedjor, trofinivåer och näringspyramider – samt hur energi och materia rör sig genom ett ekosystem.</div>
+        </div>
+      </div>
+      <div class="hub-topics">
+        <span class="hub-tag">Näringskedjor</span>
+        <span class="hub-tag">Näringsvävar</span>
+        <span class="hub-tag">Trofinivåer</span>
+        <span class="hub-tag">Näringspyramider</span>
+      </div>
+      <div class="hub-footer"><span style="font-size:.82rem;color:var(--muted)">Material + diagram</span><span class="hub-arrow">Öppna →</span></div>
+    </a>
+
+    <a href="nk1b-ekologi-samspel.html" class="hub-card">
+      <div class="hub-card-top">
+        <div class="hub-icon">🦊</div>
+        <div>
+          <div class="hub-num">Avsnitt 5</div>
+          <div class="hub-title">Arters samspel & populationsdynamik</div>
+          <div class="hub-desc">Hur arter påverkar varandra genom nisch, samspel och konkurrens, samt vad som styr en populations tillväxt.</div>
+        </div>
+      </div>
+      <div class="hub-topics">
+        <span class="hub-tag">Nisch</span>
+        <span class="hub-tag">Mutualism & parasitism</span>
+        <span class="hub-tag">Bärkraft</span>
+        <span class="hub-tag">Invasiva arter</span>
+      </div>
+      <div class="hub-footer"><span style="font-size:.82rem;color:var(--muted)">Material + diagram</span><span class="hub-arrow">Öppna →</span></div>
+    </a>
+
+    <a href="nk1b-ekologi-mangfald.html" class="hub-card">
+      <div class="hub-card-top">
+        <div class="hub-icon">🐝</div>
+        <div>
+          <div class="hub-num">Avsnitt 6</div>
+          <div class="hub-title">Biologisk mångfald & ekosystemtjänster</div>
+          <div class="hub-desc">Varför mångfald gör ekosystem mer motståndskraftiga, och vilka tjänster naturen ger oss gratis.</div>
+        </div>
+      </div>
+      <div class="hub-topics">
+        <span class="hub-tag">Biologisk mångfald</span>
+        <span class="hub-tag">Ekosystemtjänster</span>
+      </div>
+      <div class="hub-footer"><span style="font-size:.82rem;color:var(--muted)">Material + diagram</span><span class="hub-arrow">Öppna →</span></div>
+    </a>
+
+  </div>
+
+  <div class="info-box">
+    <strong>Tips:</strong> Börja med Avsnitt 1 för att få grundbegreppen på plats – övriga avsnitt bygger vidare på dem. Avsnitt 2 och 3 är bra att läsa innan Avsnitt 4 och 5, men i övrigt går det bra att läsa avsnitten i valfri ordning.
+  </div>
+</div>
+
+<footer><a href="nk1b.html">← Tillbaka till NK1b</a> &middot; Naturkunskap 1b &middot; Ekologi</footer>
+
+<script src="shared.js"></script>
+<script>
+  const s = requireLogin('NK1b');
+  if (!s) window.location.href = 'index.html';
+</script>
+</body>
+</html>
