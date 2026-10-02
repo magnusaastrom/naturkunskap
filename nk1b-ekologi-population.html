@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Population & samhälle – NK1b</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Mulish:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #faf7f2; --surface: #ffffff; --border: #e8e0d0;
+      --sand: #f2ece0; --rust: #b85c2a; --rust2: #d4703a;
+      --teal: #2a7a6a; --blue: #2a4a7a; --text: #1a1612;
+      --muted: #6a5e52; --radius: 10px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Mulish', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; font-size: 16px; }
+
+    .top-bar { background: #1a1612; padding: 14px 28px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; position: sticky; top: 0; z-index: 100; }
+    .back-link { color: #c8b89a; text-decoration: none; font-size: .82rem; transition: color .2s; }
+    .back-link:hover { color: #fff; }
+    .top-title { font-family: 'Playfair Display', serif; font-size: 1rem; color: #e8dcc8; }
+    .top-title span { color: #d4a060; }
+
+    .hero { background: linear-gradient(135deg, #1a1612 0%, #1a2820 60%, #1a1612 100%); padding: 64px 32px 56px; text-align: center; position: relative; overflow: hidden; }
+    .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 60% 60% at 30% 50%, rgba(42,122,106,.12) 0%, transparent 60%), radial-gradient(ellipse 50% 70% at 80% 30%, rgba(180,92,42,.06) 0%, transparent 55%); pointer-events: none; }
+    .hero-eyebrow { font-size: .72rem; letter-spacing: .22em; text-transform: uppercase; color: #d4a060; margin-bottom: 12px; }
+    .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 5vw, 3rem); font-weight: 900; color: #f0e8d8; margin-bottom: 16px; line-height: 1.15; }
+    .hero-sub { font-size: 1rem; color: #a09080; max-width: 560px; margin: 0 auto 32px; line-height: 1.7; }
+    .hero-nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+    .hero-nav a { font-size: .8rem; color: #c8b89a; border: 1px solid rgba(200,184,154,.3); border-radius: 30px; padding: 7px 16px; text-decoration: none; transition: all .2s; }
+    .hero-nav a:hover { background: rgba(200,184,154,.12); color: #fff; }
+
+    .container { max-width: 860px; margin: 0 auto; padding: 0 24px; }
+    .section { padding: 60px 0; }
+    .section + .section { border-top: 1px solid var(--border); }
+
+    .section-eyebrow { font-size: .7rem; letter-spacing: .2em; text-transform: uppercase; color: var(--rust); font-weight: 600; margin-bottom: 8px; }
+    .section-title { font-family: 'Playfair Display', serif; font-size: clamp(1.5rem, 3vw, 2rem); color: var(--text); margin-bottom: 6px; line-height: 1.25; }
+    .section-intro { font-size: .95rem; color: var(--muted); margin-bottom: 32px; max-width: 640px; line-height: 1.7; }
+
+    .prose { font-size: .95rem; line-height: 1.75; color: #2a2016; margin-bottom: 24px; }
+    .prose strong { color: var(--text); font-weight: 600; }
+
+    .key-box { background: var(--sand); border-left: 4px solid var(--rust2); border-radius: 0 var(--radius) var(--radius) 0; padding: 18px 22px; margin-bottom: 28px; }
+    .key-box h4 { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--rust); margin-bottom: 10px; }
+    .key-box p { font-size: .88rem; color: #4a3a2a; line-height: 1.65; }
+    .key-box dl { font-size: .88rem; color: #4a3a2a; display: flex; flex-direction: column; gap: 8px; }
+    .key-box dt { font-weight: 600; color: var(--text); display: inline; }
+    .key-box dd { display: inline; margin: 0; }
+    .key-box .term-row { line-height: 1.55; }
+
+    .tag-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
+    .tag-chip { background: var(--sand); border: 1px solid var(--border); border-radius: 30px; padding: 6px 14px; font-size: .82rem; color: #4a3a2a; }
+
+    .factor-columns { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin-bottom: 12px; }
+    .factor-columns h4 { font-family: 'Playfair Display', serif; font-size: .95rem; margin-bottom: 12px; color: var(--text); }
+    .factor-columns .tag-grid { margin-bottom: 0; }
+
+    .diagram-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px 20px 16px; margin-bottom: 20px; }
+    .pop-diagram { width: 100%; max-width: 480px; height: auto; display: block; margin: 0 auto; }
+    .diagram-caption { font-size: .82rem; color: var(--muted); line-height: 1.6; padding: 4px 4px 0; }
+    .diagram-caption strong { color: var(--text); }
+
+    .q-card { background: #1a1612; border: 1px solid #2a2018; border-radius: var(--radius); padding: 22px 26px; margin-bottom: 18px; }
+    .q-num { font-size: .68rem; letter-spacing: .18em; text-transform: uppercase; color: #d4a060; margin-bottom: 7px; font-weight: 600; }
+    .q-text { font-family: 'Playfair Display', serif; font-size: .95rem; color: #f0e8d8; margin-bottom: 14px; line-height: 1.5; }
+    .q-textarea { width: 100%; background: #0f0c08; border: 1.5px solid #2a2018; border-radius: 6px; color: #e8dcc8; font-family: 'Mulish', sans-serif; font-size: .9rem; padding: 11px 13px; resize: vertical; min-height: 80px; outline: none; transition: border-color .2s; line-height: 1.6; }
+    .q-textarea:focus { border-color: #d4703a; }
+    .q-btn { margin-top: 10px; font-family: 'Mulish', sans-serif; font-size: .84rem; font-weight: 600; padding: 8px 20px; border-radius: 6px; border: none; cursor: pointer; background: #d4703a; color: #fff; transition: background .2s; }
+    .q-btn:hover { background: #b85c2a; }
+    .q-model { margin-top: 14px; display: none; background: #0f0c08; border: 1px solid #2a2018; border-radius: 6px; overflow: hidden; }
+    .q-model.shown { display: block; }
+    .q-model-header { background: #2a2018; padding: 8px 16px; font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: #d4a060; font-weight: 600; }
+    .q-model-body { padding: 14px 18px; font-size: .88rem; color: #c8b89a; line-height: 1.75; }
+    .q-model-body strong { color: #f0e8d8; }
+    .q-model-body ul { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+    .q-model-body li { padding-left: 16px; position: relative; }
+    .q-model-body li::before { content: '→'; position: absolute; left: 0; color: #d4703a; font-size: .8rem; }
+    .q-self-check { margin-top: 12px; padding-top: 12px; border-top: 1px solid #2a2018; display: flex; align-items: center; gap: 10px; font-size: .82rem; color: #8a7a60; cursor: pointer; }
+    .q-self-check input { accent-color: #d4703a; width: 16px; height: 16px; cursor: pointer; }
+    .q-retry { margin-top: 10px; font-size: .78rem; color: #6a5a40; background: none; border: none; cursor: pointer; font-family: 'Mulish', sans-serif; text-decoration: underline; padding: 0; display: block; }
+    .q-score-bar { background: #0f0c08; border: 1px solid #2a2018; border-radius: var(--radius); padding: 20px 24px; margin-top: 32px; display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+    .q-score-num { font-family: 'Playfair Display', serif; font-size: 2rem; color: #d4703a; }
+    .q-score-label { font-size: .85rem; color: #8a7a60; }
+    .q-score-msg { font-size: .88rem; color: #c8b89a; }
+
+    footer { border-top: 1px solid var(--border); padding: 28px 24px; text-align: center; font-size: .78rem; color: var(--muted); margin-top: 40px; }
+    footer a { color: var(--teal); text-decoration: none; }
+
+    @media(max-width: 580px) {
+      .hero { padding: 44px 20px 36px; }
+      .container { padding: 0 16px; }
+      .factor-columns { grid-template-columns: 1fr; gap: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="top-bar">
+  <a href="nk1b-ekologi.html" class="back-link">← Ekologi</a>
+  <div class="top-title">NK1b &mdash; <span>Population & samhälle</span></div>
+</div>
+
+<div class="hero">
+  <p class="hero-eyebrow">Ekologi, avsnitt 3 &middot; NK1b</p>
+  <h1>Population & samhälle</h1>
+  <p class="hero-sub">Hur många individer finns det egentligen av en art på en plats – och vad gör att det blir fler eller färre? Här går vi igenom population, vad som styr dess storlek, och hur man pratar om alla arter tillsammans i ett ekosystem.</p>
+  <nav class="hero-nav">
+    <a href="#population">Population</a>
+    <a href="#faktorer">Vad styr storleken?</a>
+    <a href="#samhalle">Samhälle</a>
+    <a href="#sammanfattning">Sammanfattning</a>
+    <a href="#kolla">Kolla att du kan</a>
+  </nav>
+</div>
+
+<main>
+
+<!-- SEKTION 1 – POPULATION -->
+<div class="section" id="population">
+<div class="container">
+  <p class="section-eyebrow">Grundbegrepp</p>
+  <h2 class="section-title">Population</h2>
+  <p class="section-intro">En <strong>population</strong> är alla individer av en art inom ett ekosystem. Till exempel alla harar som finns i skogen bredvid skolan – inte rävarna, inte träden, bara just harpopulationen.</p>
+
+  <p class="prose">Var gränsen för ett ekosystem dras avgör också var gränsen för populationen går. Om man istället studerar en mycket större skog kan "populationen" av harar vara en helt annan, större grupp. Det är alltså alltid kopplat till ett specifikt område man valt att undersöka.</p>
+</div>
+</div>
+
+<!-- SEKTION 2 – VAD STYR STORLEKEN -->
+<div class="section" id="faktorer">
+<div class="container">
+  <p class="section-eyebrow">Fyra faktorer</p>
+  <h2 class="section-title">Vad styr en populations storlek?</h2>
+  <p class="section-intro">Storleken på en population förändras hela tiden. Fyra faktorer avgör om den växer eller minskar – två som ökar den och två som minskar den.</p>
+
+  <div class="diagram-wrap">
+    <svg class="pop-diagram" viewBox="0 0 560 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagram som visar att födelse och inflyttning ökar en population, medan död och utflyttning minskar den.">
+      <defs>
+        <marker id="arrow-in" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="#2a7a6a"/>
+        </marker>
+        <marker id="arrow-out" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="#b85c2a"/>
+        </marker>
+      </defs>
+
+      <!-- Central ellips -->
+      <ellipse cx="280" cy="210" rx="130" ry="68" fill="#f2ece0" stroke="#e8e0d0" stroke-width="1.5"/>
+      <text x="280" y="203" text-anchor="middle" font-family="Playfair Display, serif" font-size="19" font-weight="700" fill="#1a1612">POPULATION</text>
+      <text x="280" y="224" text-anchor="middle" font-family="Mulish, sans-serif" font-size="11.5" fill="#6a5e52">t.ex. alla harar i skogen</text>
+
+      <!-- Födelse: vänster, in, + -->
+      <path d="M40,210 L150,210" stroke="#2a7a6a" stroke-width="2.5" marker-end="url(#arrow-in)"/>
+      <text x="95" y="196" text-anchor="middle" font-family="Mulish, sans-serif" font-size="13" font-weight="600" fill="#2a7a6a">Födelse</text>
+      <circle cx="95" cy="238" r="13" fill="none" stroke="#2a7a6a" stroke-width="1.5"/>
+      <text x="95" y="243" text-anchor="middle" font-family="Mulish, sans-serif" font-size="14" font-weight="700" fill="#2a7a6a">+</text>
+
+      <!-- Död: höger, ut, - -->
+      <path d="M410,210 L520,210" stroke="#b85c2a" stroke-width="2.5" marker-end="url(#arrow-out)"/>
+      <text x="465" y="196" text-anchor="middle" font-family="Mulish, sans-serif" font-size="13" font-weight="600" fill="#b85c2a">Död</text>
+      <circle cx="465" cy="238" r="13" fill="none" stroke="#b85c2a" stroke-width="1.5"/>
+      <text x="465" y="243" text-anchor="middle" font-family="Mulish, sans-serif" font-size="14" font-weight="700" fill="#b85c2a">−</text>
+
+      <!-- Inflyttning: topp, in, + -->
+      <path d="M280,40 L280,138" stroke="#2a7a6a" stroke-width="2.5" marker-end="url(#arrow-in)"/>
+      <text x="280" y="28" text-anchor="middle" font-family="Mulish, sans-serif" font-size="13" font-weight="600" fill="#2a7a6a">Inflyttning</text>
+      <circle cx="340" cy="60" r="13" fill="none" stroke="#2a7a6a" stroke-width="1.5"/>
+      <text x="340" y="65" text-anchor="middle" font-family="Mulish, sans-serif" font-size="14" font-weight="700" fill="#2a7a6a">+</text>
+
+      <!-- Utflyttning: botten, ut, - -->
+      <path d="M280,282 L280,380" stroke="#b85c2a" stroke-width="2.5" marker-end="url(#arrow-out)"/>
+      <text x="280" y="402" text-anchor="middle" font-family="Mulish, sans-serif" font-size="13" font-weight="600" fill="#b85c2a">Utflyttning</text>
+      <circle cx="340" cy="360" r="13" fill="none" stroke="#b85c2a" stroke-width="1.5"/>
+      <text x="340" y="365" text-anchor="middle" font-family="Mulish, sans-serif" font-size="14" font-weight="700" fill="#b85c2a">−</text>
+    </svg>
+    <p class="diagram-caption"><strong>Födelse</strong> och <strong>inflyttning</strong> ökar en population. <strong>Död</strong> och <strong>utflyttning</strong> minskar den. Om fler individer föds eller flyttar in än vad som dör eller flyttar ut växer populationen – och tvärtom.</p>
+  </div>
+
+  <div class="key-box">
+    <h4>🔑 Kom ihåg</h4>
+    <p>Fyra faktorer styr en populations storlek: <strong>födelse</strong> (+), <strong>död</strong> (−), <strong>inflyttning</strong> (+) och <strong>utflyttning</strong> (−).</p>
+  </div>
+</div>
+</div>
+
+<!-- SEKTION 3 – SAMHÄLLE -->
+<div class="section" id="samhalle">
+<div class="container">
+  <p class="section-eyebrow">Alla arter tillsammans</p>
+  <h2 class="section-title">Samhälle</h2>
+  <p class="section-intro">En population handlar om <strong>en</strong> art. Men ett ekosystem rymmer så klart många olika arter samtidigt – och då pratar man istället om samhällen.</p>
+
+  <div class="factor-columns">
+    <div>
+      <h4>🌳 Växtsamhälle</h4>
+      <div class="tag-grid">
+        <span class="tag-chip">Alla växtarter i ett ekosystem</span>
+        <span class="tag-chip">T.ex. gran, tall, björk, blåbärsris</span>
+      </div>
+    </div>
+    <div>
+      <h4>🦌 Djursamhälle</h4>
+      <div class="tag-grid">
+        <span class="tag-chip">Alla djurarter i ett ekosystem</span>
+        <span class="tag-chip">T.ex. älg, hare, räv, nötskrika</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="key-box">
+    <h4>🔑 Kom ihåg</h4>
+    <p><strong>Population</strong> = alla individer av <strong>en</strong> art. <strong>Samhälle</strong> (växt- eller djursamhälle) = alla arter av en typ i samma ekosystem.</p>
+  </div>
+</div>
+</div>
+
+<!-- SEKTION 4 – SAMMANFATTNING -->
+<div class="section" id="sammanfattning">
+<div class="container">
+  <p class="section-eyebrow">Sammanfattning</p>
+  <h2 class="section-title">Det viktigaste i korthet</h2>
+
+  <div class="key-box">
+    <h4>🔑 Fyra begrepp att kunna</h4>
+    <dl>
+      <div class="term-row"><dt>Population</dt><dd> – alla individer av en art inom ett ekosystem, t.ex. alla harar i en skog.</dd></div>
+      <div class="term-row"><dt>Faktorer som styr populationsstorlek</dt><dd> – födelse och inflyttning ökar den, död och utflyttning minskar den.</dd></div>
+      <div class="term-row"><dt>Växtsamhälle</dt><dd> – alla växtarter i ett ekosystem.</dd></div>
+      <div class="term-row"><dt>Djursamhälle</dt><dd> – alla djurarter i ett ekosystem.</dd></div>
+    </dl>
+  </div>
+</div>
+</div>
+
+<!-- SEKTION 5 – KOLLA ATT DU KAN -->
+<div class="section" id="kolla">
+<div class="container">
+  <p class="section-eyebrow">Självbedömning</p>
+  <h2 class="section-title">Kolla att du kan</h2>
+  <p class="section-intro">Försök svara utan att titta i texten. Visa sedan mallsvaret och bocka i om du hade med det viktigaste.</p>
+  <div id="q-wrap"></div>
+</div>
+</div>
+
+</main>
+
+<footer>
+  <a href="nk1b-ekologi.html">← Tillbaka till Ekologi</a> &middot; NK1b &middot; Population & samhälle
+</footer>
+
+<script src="shared.js"></script>
+<script>
+requireLogin('NK1b');
+
+const QUESTIONS = [
+  {
+    q: "Vad är en population? Ge ett exempel.",
+    model: [
+      "Alla individer av en art inom ett ekosystem.",
+      "T.ex. alla harar i skogen bredvid skolan."
+    ]
+  },
+  {
+    q: "Vilka fyra faktorer styr om en population växer eller minskar?",
+    model: [
+      "Födelse och inflyttning ökar populationen.",
+      "Död och utflyttning minskar populationen."
+    ]
+  },
+  {
+    q: "Vad är skillnaden mellan ett växtsamhälle och ett djursamhälle?",
+    model: [
+      "Växtsamhälle är alla växtarter i ett ekosystem.",
+      "Djursamhälle är alla djurarter i ett ekosystem."
+    ]
+  },
+  {
+    q: "Ge ett exempel på en situation där en population skulle öka, och en där den skulle minska.",
+    model: [
+      "Öka: fler individer föds eller flyttar in än vad som dör eller flyttar ut.",
+      "Minska: fler individer dör eller flyttar ut än vad som föds eller flyttar in."
+    ]
+  }
+];
+
+let checked = new Array(QUESTIONS.length).fill(false);
+
+function buildQuestions() {
+  const wrap = document.getElementById('q-wrap');
+  QUESTIONS.forEach((q, i) => {
+    const items = q.model.map(m => `<li>${m}</li>`).join('');
+    wrap.innerHTML += `
+      <div class="q-card">
+        <div class="q-num">Fråga ${i+1} av ${QUESTIONS.length}</div>
+        <div class="q-text">${q.q}</div>
+        <textarea class="q-textarea" id="qta-${i}" placeholder="Skriv ditt svar här..."></textarea>
+        <button class="q-btn" onclick="showModel(${i})">Visa mallsvar →</button>
+        <div class="q-model" id="qmodel-${i}">
+          <div class="q-model-header">📋 Mallsvar</div>
+          <div class="q-model-body">
+            <ul>${items}</ul>
+            <div class="q-self-check">
+              <input type="checkbox" id="qcheck-${i}" onchange="toggleCheck(${i})"/>
+              <label for="qcheck-${i}">Jag hade med det viktigaste</label>
+            </div>
+          </div>
+        </div>
+        <button class="q-retry" onclick="resetQuestion(${i})">↩ Rensa och försök igen</button>
+      </div>`;
+  });
+  updateScore();
+}
+
+function showModel(i) { document.getElementById(`qmodel-${i}`).classList.add('shown'); }
+function toggleCheck(i) { checked[i] = document.getElementById(`qcheck-${i}`).checked; updateScore(); }
+function resetQuestion(i) {
+  document.getElementById(`qta-${i}`).value = '';
+  document.getElementById(`qmodel-${i}`).classList.remove('shown');
+  document.getElementById(`qcheck-${i}`).checked = false;
+  checked[i] = false;
+  updateScore();
+}
+
+function updateScore() {
+  const n = checked.filter(Boolean).length;
+  const total = QUESTIONS.length;
+  const msg = n === total ? '🎉 Utmärkt – du kan hela avsnittet!'
+    : n >= 3 ? '👍 Bra jobbat! Kika igenom de du missat.'
+    : n >= 1 ? '📖 Bra start – fortsätt öva på resten.'
+    : '🔍 Gå tillbaka till materialet och försök igen.';
+
+  let bar = document.getElementById('q-scorebar');
+  if (!bar) {
+    document.getElementById('q-wrap').insertAdjacentHTML('afterend',
+      `<div class="q-score-bar" id="q-scorebar">
+        <div class="q-score-num" id="qs-num">${n}/${total}</div>
+        <div><div class="q-score-label">Självskattning</div><div class="q-score-msg" id="qs-msg">${msg}</div></div>
+      </div>`);
+  } else {
+    document.getElementById('qs-num').textContent = `${n}/${total}`;
+    document.getElementById('qs-msg').textContent = msg;
+  }
+}
+
+buildQuestions();
+</script>
+
+</body>
+</html>
