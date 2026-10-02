@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Arters samspel & populationsdynamik – NK1b</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Mulish:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #faf7f2; --surface: #ffffff; --border: #e8e0d0;
+      --sand: #f2ece0; --rust: #b85c2a; --rust2: #d4703a;
+      --teal: #2a7a6a; --blue: #2a4a7a; --text: #1a1612;
+      --muted: #6a5e52; --radius: 10px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Mulish', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; font-size: 16px; }
+
+    .top-bar { background: #1a1612; padding: 14px 28px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; position: sticky; top: 0; z-index: 100; }
+    .back-link { color: #c8b89a; text-decoration: none; font-size: .82rem; transition: color .2s; }
+    .back-link:hover { color: #fff; }
+    .top-title { font-family: 'Playfair Display', serif; font-size: 1rem; color: #e8dcc8; }
+    .top-title span { color: #d4a060; }
+
+    .hero { background: linear-gradient(135deg, #1a1612 0%, #1a2820 60%, #1a1612 100%); padding: 64px 32px 56px; text-align: center; position: relative; overflow: hidden; }
+    .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 60% 60% at 30% 50%, rgba(42,122,106,.12) 0%, transparent 60%), radial-gradient(ellipse 50% 70% at 80% 30%, rgba(180,92,42,.06) 0%, transparent 55%); pointer-events: none; }
+    .hero-eyebrow { font-size: .72rem; letter-spacing: .22em; text-transform: uppercase; color: #d4a060; margin-bottom: 12px; }
+    .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 5vw, 3rem); font-weight: 900; color: #f0e8d8; margin-bottom: 16px; line-height: 1.15; }
+    .hero-sub { font-size: 1rem; color: #a09080; max-width: 560px; margin: 0 auto 32px; line-height: 1.7; }
+    .hero-nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+    .hero-nav a { font-size: .8rem; color: #c8b89a; border: 1px solid rgba(200,184,154,.3); border-radius: 30px; padding: 7px 16px; text-decoration: none; transition: all .2s; }
+    .hero-nav a:hover { background: rgba(200,184,154,.12); color: #fff; }
+
+    .container { max-width: 860px; margin: 0 auto; padding: 0 24px; }
+    .section { padding: 60px 0; }
+    .section + .section { border-top: 1px solid var(--border); }
+
+    .section-eyebrow { font-size: .7rem; letter-spacing: .2em; text-transform: uppercase; color: var(--rust); font-weight: 600; margin-bottom: 8px; }
+    .section-title { font-family: 'Playfair Display', serif; font-size: clamp(1.5rem, 3vw, 2rem); color: var(--text); margin-bottom: 6px; line-height: 1.25; }
+    .section-intro { font-size: .95rem; color: var(--muted); margin-bottom: 32px; max-width: 640px; line-height: 1.7; }
+
+    .prose { font-size: .95rem; line-height: 1.75; color: #2a2016; margin-bottom: 24px; }
+    .prose strong { color: var(--text); font-weight: 600; }
+
+    .key-box { background: var(--sand); border-left: 4px solid var(--rust2); border-radius: 0 var(--radius) var(--radius) 0; padding: 18px 22px; margin-bottom: 28px; }
+    .key-box h4 { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--rust); margin-bottom: 10px; }
+    .key-box p { font-size: .88rem; color: #4a3a2a; line-height: 1.65; }
+    .key-box dl { font-size: .88rem; color: #4a3a2a; display: flex; flex-direction: column; gap: 8px; }
+    .key-box dt { font-weight: 600; color: var(--text); display: inline; }
+    .key-box dd { display: inline; margin: 0; }
+    .key-box .term-row { line-height: 1.55; }
+
+    .tag-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
+    .tag-chip { background: var(--sand); border: 1px solid var(--border); border-radius: 30px; padding: 6px 14px; font-size: .82rem; color: #4a3a2a; }
+
+    .factor-columns { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin-bottom: 12px; }
+    .factor-columns h4 { font-family: 'Playfair Display', serif; font-size: .95rem; margin-bottom: 12px; color: var(--text); }
+    .factor-columns .tag-grid { margin-bottom: 0; }
+
+    .key-box.teal { border-left-color: var(--teal); }
+    .key-box.teal h4 { color: var(--teal); }
+
+    .sign { display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 50%; font-weight: 700; font-size: 1rem; color: #fff; }
+    .sign.plus { background: var(--teal); }
+    .sign.minus { background: var(--rust); }
+    .sign.zero { background: #8a7a60; }
+    .sign-legend { display: flex; flex-wrap: wrap; gap: 8px 22px; font-size: .82rem; color: var(--muted); margin-bottom: 18px; }
+    .sign-legend .sign { width: 22px; height: 22px; font-size: .8rem; margin-right: 6px; vertical-align: middle; }
+    .samspel-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 28px; }
+    .samspel-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px 20px; display: flex; flex-direction: column; }
+    .samspel-card h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; margin-bottom: 12px; }
+    .sign-row { display: flex; gap: 22px; margin-bottom: 12px; }
+    .sign-row > div { display: flex; align-items: center; gap: 8px; }
+    .sign-row small { font-size: .78rem; color: var(--muted); }
+    .samspel-card p { font-size: .88rem; color: #4a3a2a; line-height: 1.6; }
+    .samspel-card p.ex { margin-top: auto; padding-top: 10px; border-top: 1px solid var(--border); color: var(--muted); font-size: .84rem; }
+
+    .legend { list-style: none; display: flex; flex-direction: column; gap: 10px; margin: 0 0 24px; }
+    .legend li { display: flex; gap: 12px; align-items: flex-start; font-size: .9rem; color: #4a3a2a; line-height: 1.55; }
+    .num { flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; border-radius: 50%; background: #1a1612; color: #fff; font-size: .78rem; font-weight: 700; }
+
+    .steps { display: flex; align-items: stretch; gap: 8px; margin-bottom: 24px; }
+    .step { flex: 1; background: var(--sand); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 12px; font-size: .84rem; color: #4a3a2a; line-height: 1.45; display: flex; flex-direction: column; gap: 8px; }
+    .step-arrow { align-self: center; color: var(--rust); font-weight: 700; }
+    .diagram-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px 20px 16px; margin-bottom: 20px; }
+    .fig { width: 100%; height: auto; display: block; margin: 0 auto; }
+    .diagram-caption { font-size: .82rem; color: var(--muted); line-height: 1.6; padding: 4px 4px 0; }
+    .diagram-caption strong { color: var(--text); }
+
+    .q-card { background: #1a1612; border: 1px solid #2a2018; border-radius: var(--radius); padding: 22px 26px; margin-bottom: 18px; }
+    .q-num { font-size: .68rem; letter-spacing: .18em; text-transform: uppercase; color: #d4a060; margin-bottom: 7px; font-weight: 600; }
+    .q-text { font-family: 'Playfair Display', serif; font-size: .95rem; color: #f0e8d8; margin-bottom: 14px; line-height: 1.5; }
+    .q-textarea { width: 100%; background: #0f0c08; border: 1.5px solid #2a2018; border-radius: 6px; color: #e8dcc8; font-family: 'Mulish', sans-serif; font-size: .9rem; padding: 11px 13px; resize: vertical; min-height: 80px; outline: none; transition: border-color .2s; line-height: 1.6; }
+    .q-textarea:focus { border-color: #d4703a; }
+    .q-btn { margin-top: 10px; font-family: 'Mulish', sans-serif; font-size: .84rem; font-weight: 600; padding: 8px 20px; border-radius: 6px; border: none; cursor: pointer; background: #d4703a; color: #fff; transition: background .2s; }
+    .q-btn:hover { background: #b85c2a; }
+    .q-model { margin-top: 14px; display: none; background: #0f0c08; border: 1px solid #2a2018; border-radius: 6px; overflow: hidden; }
+    .q-model.shown { display: block; }
+    .q-model-header { background: #2a2018; padding: 8px 16px; font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: #d4a060; font-weight: 600; }
+    .q-model-body { padding: 14px 18px; font-size: .88rem; color: #c8b89a; line-height: 1.75; }
+    .q-model-body strong { color: #f0e8d8; }
+    .q-model-body ul { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+    .q-model-body li { padding-left: 16px; position: relative; }
+    .q-model-body li::before { content: '→'; position: absolute; left: 0; color: #d4703a; font-size: .8rem; }
+    .q-self-check { margin-top: 12px; padding-top: 12px; border-top: 1px solid #2a2018; display: flex; align-items: center; gap: 10px; font-size: .82rem; color: #8a7a60; cursor: pointer; }
+    .q-self-check input { accent-color: #d4703a; width: 16px; height: 16px; cursor: pointer; }
+    .q-retry { margin-top: 10px; font-size: .78rem; color: #6a5a40; background: none; border: none; cursor: pointer; font-family: 'Mulish', sans-serif; text-decoration: underline; padding: 0; display: block; }
+    .q-score-bar { background: #0f0c08; border: 1px solid #2a2018; border-radius: var(--radius); padding: 20px 24px; margin-top: 32px; display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+    .q-score-num { font-family: 'Playfair Display', serif; font-size: 2rem; color: #d4703a; }
+    .q-score-label { font-size: .85rem; color: #8a7a60; }
+    .q-score-msg { font-size: .88rem; color: #c8b89a; }
+
+    footer { border-top: 1px solid var(--border); padding: 28px 24px; text-align: center; font-size: .78rem; color: var(--muted); margin-top: 40px; }
+    footer a { color: var(--teal); text-decoration: none; }
+
+    @media(max-width: 580px) {
+      .hero { padding: 44px 20px 36px; }
+      .container { padding: 0 16px; }
+      .factor-columns { grid-template-columns: 1fr; gap: 20px; }
+      .samspel-grid { grid-template-columns: 1fr; }
+      .steps { flex-direction: column; }
+      .step-arrow { transform: rotate(90deg); }
+    }
+  </style>
+</head>
+<body>
+
+<div class="top-bar">
+  <a href="nk1b-ekologi.html" class="back-link">← Ekologi</a>
+  <div class="top-title">NK1b &mdash; <span>Arters samspel & populationsdynamik</span></div>
+</div>
+
+<div class="hero">
+  <p class="hero-eyebrow">Ekologi, avsnitt 5 &middot; NK1b</p>
+  <h1>Arters samspel & populationsdynamik</h1>
+  <p class="hero-sub">Arter lever inte för sig själva. Här går vi igenom hur de påverkar varandra, från samarbete till konkurrens, och vad som avgör hur stor en population kan bli.</p>
+  <nav class="hero-nav">
+    <a href="#nisch">Nisch</a>
+    <a href="#samspel">Samspel</a>
+    <a href="#barkraft">Bärkraft</a>
+    <a href="#tillvaxt">Tillväxtkurva</a>
+    <a href="#invasiva">Invasiva arter</a>
+    <a href="#sammanfattning">Sammanfattning</a>
+    <a href="#kolla">Kolla att du kan</a>
+  </nav>
+</div>
+
+<main>
+
+<!-- SEKTION 1 – NISCH -->
+<div class="section" id="nisch">
+<div class="container">
+  <p class="section-eyebrow">Artens plats i ekosystemet</p>
+  <h2 class="section-title">Ekologisk nisch</h2>
+  <p class="section-intro">En arts <strong>ekologiska nisch</strong> är dess beteende, val av föda och levnadsplats i ett ekosystem. Man kan tänka på nischen som artens ”yrke och adress”: vad den gör och var den lever.</p>
+
+  <div class="tag-grid">
+    <span class="tag-chip">🍽️ Föda</span>
+    <span class="tag-chip">📍 Levnadsplats</span>
+    <span class="tag-chip">🐾 Beteende</span>
+  </div>
+
+  <div class="diagram-wrap">
+    <svg class="fig" viewBox="0 0 700 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Två bilder. Till vänster har två arter olika nischer och överlappar inte. Till höger överlappar nischerna och arterna delar samma resurs, vilket leder till konkurrens.">
+      <!-- Vänster: olika nischer -->
+      <text x="175" y="30" text-anchor="middle" font-family="Playfair Display, serif" font-size="16" font-weight="700" fill="#1a1612">Olika nischer</text>
+      <text x="175" y="48" text-anchor="middle" font-family="Mulish, sans-serif" font-size="12" font-weight="600" fill="#2a7a6a">ingen konkurrens</text>
+      <circle cx="105" cy="125" r="62" fill="#2a7a6a" fill-opacity=".3" stroke="#2a7a6a" stroke-width="1.5"/>
+      <circle cx="245" cy="125" r="62" fill="#d4703a" fill-opacity=".3" stroke="#b85c2a" stroke-width="1.5"/>
+      <text x="105" y="130" text-anchor="middle" font-family="Mulish, sans-serif" font-size="14" font-weight="600" fill="#1a1612">Blåmes</text>
+      <text x="245" y="130" text-anchor="middle" font-family="Mulish, sans-serif" font-size="14" font-weight="600" fill="#1a1612">Talgoxe</text>
+      <text x="175" y="232" text-anchor="middle" font-family="Mulish, sans-serif" font-size="12" fill="#6a5e52">Väljer olika föda</text>
+
+      <!-- Avdelare -->
+      <path d="M350,30 L350,235" stroke="#e8e0d0" stroke-width="1.5" stroke-dasharray="5 5"/>
+
+      <!-- Höger: överlappande nischer -->
+      <text x="525" y="30" text-anchor="middle" font-family="Playfair Display, serif" font-size="16" font-weight="700" fill="#1a1612">Överlappande nischer</text>
+      <text x="525" y="48" text-anchor="middle" font-family="Mulish, sans-serif" font-size="12" font-weight="600" fill="#b85c2a">konkurrens</text>
+      <circle cx="490" cy="125" r="62" fill="#2a7a6a" fill-opacity=".3" stroke="#2a7a6a" stroke-width="1.5"/>
+      <circle cx="560" cy="125" r="62" fill="#d4703a" fill-opacity=".3" stroke="#b85c2a" stroke-width="1.5"/>
+      <text x="462" y="130" text-anchor="middle" font-family="Mulish, sans-serif" font-size="14" font-weight="600" fill="#1a1612">Art A</text>
+      <text x="588" y="130" text-anchor="middle" font-family="Mulish, sans-serif" font-size="14" font-weight="600" fill="#1a1612">Art B</text>
+      <path d="M525,150 L525,196" stroke="#4a3a2a" stroke-width="1.5"/>
+      <circle cx="525" cy="150" r="3" fill="#4a3a2a"/>
+      <text x="525" y="212" text-anchor="middle" font-family="Mulish, sans-serif" font-size="12.5" font-weight="600" fill="#1a1612">gemensam resurs</text>
+      <text x="525" y="232" text-anchor="middle" font-family="Mulish, sans-serif" font-size="12" fill="#6a5e52">T.ex. samma solljus</text>
+    </svg>
+    <p class="diagram-caption"><strong>Blåmes</strong> och <strong>talgoxe</strong> kan leva i samma skog utan att konkurrera, eftersom de väljer olika föda. När två arters nischer överlappar, som när två växtarter vill ha samma solljus, delar de en resurs – och då uppstår konkurrens.</p>
+  </div>
+
+  <div class="key-box">
+    <h4>🔑 Kom ihåg</h4>
+    <p><strong>Ekologisk nisch</strong> = en arts beteende, val av föda och levnadsplats i ett ekosystem. Arter med olika nischer kan leva sida vid sida utan att konkurrera.</p>
+  </div>
+</div>
+</div>
+
+<!-- SEKTION 2 – SAMSPEL -->
+<div class="section" id="samspel">
+<div class="container">
+  <p class="section-eyebrow">Fyra sorters samspel</p>
+  <h2 class="section-title">Hur arter påverkar varandra</h2>
+  <p class="section-intro">Arterna i ett ekosystem påverkar varandra hela tiden. Man delar in samspelet efter vem som <strong>gynnas</strong> och vem som <strong>missgynnas</strong>.</p>
+
+  <div class="sign-legend">
+    <span><span class="sign plus">+</span> gynnas</span>
+    <span><span class="sign zero">0</span> påverkas varken positivt eller negativt</span>
+    <span><span class="sign minus">−</span> missgynnas</span>
+  </div>
+
+  <div class="samspel-grid">
+    <div class="samspel-card">
+      <h3>Mutualism</h3>
+      <div class="sign-row">
+        <div><span class="sign plus">+</span><small>Art A</small></div>
+        <div><span class="sign plus">+</span><small>Art B</small></div>
+      </div>
+      <p><strong>Båda arterna gynnas</strong> av samspelet.</p>
+      <p class="ex">🐝 Bin pollinerar blommor och får nektar i utbyte.</p>
+    </div>
+    <div class="samspel-card">
+      <h3>Kommensalism</h3>
+      <div class="sign-row">
+        <div><span class="sign plus">+</span><small>Art A</small></div>
+        <div><span class="sign zero">0</span><small>Art B</small></div>
+      </div>
+      <p><strong>Ena arten gynnas</strong>, den andra påverkas varken positivt eller negativt.</p>
+      <p class="ex">🐦 En fågel bygger bo i ett träd utan att trädet påverkas.</p>
+    </div>
+    <div class="samspel-card">
+      <h3>Konkurrens</h3>
+      <div class="sign-row">
+        <div><span class="sign minus">−</span><small>Art A</small></div>
+        <div><span class="sign minus">−</span><small>Art B</small></div>
+      </div>
+      <p>Två arter strider om <strong>samma begränsade resurs</strong>, vilket missgynnar båda parter.</p>
+      <p class="ex">🌲 Två växtarter som konkurrerar om samma solljus i ett tätt skogsbestånd.</p>
+    </div>
+    <div class="samspel-card">
+      <h3>Parasitism</h3>
+      <div class="sign-row">
+        <div><span class="sign plus">+</span><small>Parasit</small></div>
+        <div><span class="sign minus">−</span><small>Värd</small></div>
+      </div>
+      <p><strong>Parasiten gynnas</strong> på värdens bekostnad.</p>
+      <p class="ex">🪱 En bandmask som lever i tarmen hos ett djur.</p>
+    </div>
+  </div>
+
+  <div class="key-box">
+    <h4>🔑 Så tänker du</h4>
+    <p>Fråga dig: vem gynnas och vem missgynnas? <strong>Båda gynnas</strong> → mutualism. <strong>Ena gynnas, andra opåverkad</strong> → kommensalism. <strong>Båda missgynnas</strong> → konkurrens. <strong>Ena gynnas på den andras bekostnad</strong> → parasitism.</p>
+  </div>
+</div>
+</div>
+
+<!-- SEKTION 3 – BÄRKRAFT -->
+<div class="section" id="barkraft">
+<div class="container">
+  <p class="section-eyebrow">Hur många får plats?</p>
+  <h2 class="section-title">Bärkraft</h2>
+  <p class="section-intro">Ett ekosystem kan inte försörja hur många individer som helst. <strong>Bärkraft</strong> (eller bärförmåga) är hur många individer av en art ekosystemet kan försörja, utifrån tillgången på resurser.</p>
+
+  <p class="prose">En skog kan till exempel bara försörja ett visst antal harar innan maten tar slut. Hur stor bärkraften är beror på vilka resurser som finns:</p>
+
+  <div class="tag-grid">
+    <span class="tag-chip">🍃 Mat</span>
+    <span class="tag-chip">💧 Vatten</span>
+    <span class="tag-chip">🏠 Skydd och boplatser</span>
+    <span class="tag-chip">☀️ Ljus (för växter)</span>
+  </div>
+
+  <p class="prose">Bärkraften är inte ett fast tal. Ett år med gott om mat kan skogen försörja fler harar än ett år när maten är knapp.</p>
+
+  <div class="key-box">
+    <h4>🔑 Kom ihåg</h4>
+    <p><strong>Bärkraft</strong> = hur många individer av en art ett ekosystem kan försörja, utifrån tillgången på resurser. När populationen närmar sig bärkraften blir resurserna knappa.</p>
+  </div>
+</div>
+</div>
+
+<!-- SEKTION 4 – TILLVÄXTKURVA -->
+<div class="section" id="tillvaxt">
+<div class="container">
+  <p class="section-eyebrow">Populationen över tid</p>
+  <h2 class="section-title">Tillväxtkurva</h2>
+  <p class="section-intro">En <strong>tillväxtkurva</strong> är en graf som visar hur en population förändras över tid. Kurvan planar ofta ut när populationen når ekosystemets bärkraft.</p>
+
+  <div class="diagram-wrap">
+    <svg class="fig" viewBox="0 0 700 330" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Graf med tid på x-axeln och antal individer på y-axeln. Kurvan växer först långsamt, sedan snabbt, och planar sedan ut vid en streckad linje som markerar bärkraften.">
+      <defs>
+        <marker id="arr-axis" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="#4a3a2a"/>
+        </marker>
+      </defs>
+
+      <!-- Axlar -->
+      <path d="M80,280 L80,16" stroke="#4a3a2a" stroke-width="2" marker-end="url(#arr-axis)"/>
+      <path d="M80,280 L675,280" stroke="#4a3a2a" stroke-width="2" marker-end="url(#arr-axis)"/>
+      <text x="376" y="316" text-anchor="middle" font-family="Mulish, sans-serif" font-size="13" font-weight="600" fill="#4a3a2a">Tid</text>
+      <text transform="rotate(-90 30 150)" x="30" y="150" text-anchor="middle" font-family="Mulish, sans-serif" font-size="13" font-weight="600" fill="#4a3a2a">Antal individer</text>
+
+      <!-- Bärkraft -->
+      <path d="M80,72 L660,72" stroke="#b85c2a" stroke-width="2" stroke-dasharray="7 6"/>
+      <text x="660" y="60" text-anchor="end" font-family="Mulish, sans-serif" font-size="13" font-weight="700" fill="#b85c2a">Bärkraft</text>
+
+      <!-- Kurva -->
+      <path d="M80,272 C260,270 330,72 650,72" stroke="#2a7a6a" stroke-width="3.5" fill="none"/>
+
+      <!-- Markeringar -->
+      <circle cx="178" cy="250" r="13" fill="#1a1612"/>
+      <text x="178" y="255" text-anchor="middle" font-family="Mulish, sans-serif" font-size="14" font-weight="700" fill="#ffffff">1</text>
+      <circle cx="312" cy="171" r="13" fill="#1a1612"/>
+      <text x="312" y="176" text-anchor="middle" font-family="Mulish, sans-serif" font-size="14" font-weight="700" fill="#ffffff">2</text>
+      <circle cx="522" cy="84" r="13" fill="#1a1612"/>
+      <text x="522" y="89" text-anchor="middle" font-family="Mulish, sans-serif" font-size="14" font-weight="700" fill="#ffffff">3</text>
+    </svg>
+    <p class="diagram-caption">Kurvan visar en hararpopulation som växer snabbt men sedan stannar av när maten blir knapp.</p>
+  </div>
+
+  <ol class="legend">
+    <li><span class="num">1</span><div><strong>Start:</strong> populationen är liten och växer först långsamt.</div></li>
+    <li><span class="num">2</span><div><strong>Snabb tillväxt:</strong> det finns gott om mat och plats, så fler föds än vad som dör.</div></li>
+    <li><span class="num">3</span><div><strong>Planar ut:</strong> resurserna börjar ta slut och populationen har nått bärkraften.</div></li>
+  </ol>
+
+  <p class="prose">Tänk tillbaka på de fyra faktorerna i avsnitt 3. När kurvan planar ut är födelser och inflyttning ungefär lika många som dödsfall och utflyttning, så populationens storlek ändras inte längre. I verkligheten är kurvan sällan så slät: populationen kan svänga upp och ner kring bärkraften, till exempel mellan bra och dåliga år.</p>
+
+  <div class="key-box">
+    <h4>🔑 Kom ihåg</h4>
+    <p>En <strong>tillväxtkurva</strong> visar hur en population förändras över tid. Den planar ofta ut när populationen når ekosystemets <strong>bärkraft</strong>.</p>
+  </div>
+</div>
+</div>
+
+<!-- SEKTION 5 – INVASIVA ARTER -->
+<div class="section" id="invasiva">
+<div class="container">
+  <p class="section-eyebrow">Arter på fel plats</p>
+  <h2 class="section-title">Invasiva arter</h2>
+  <p class="section-intro">En <strong>invasiv art</strong> är en art som människan, med eller utan avsikt, har flyttat till en miljö där den inte hör hemma, och som sedan sprider sig och skadar de inhemska arterna eller ekosystemet.</p>
+
+  <div class="steps">
+    <div class="step"><span class="num">1</span>Människan flyttar arten till en ny plats</div>
+    <div class="step-arrow">→</div>
+    <div class="step"><span class="num">2</span>Arten klarar sig och förökar sig</div>
+    <div class="step-arrow">→</div>
+    <div class="step"><span class="num">3</span>Den sprider sig snabbt</div>
+    <div class="step-arrow">→</div>
+    <div class="step"><span class="num">4</span>Inhemska arter påverkas</div>
+  </div>
+
+  <p class="prose">Invasiva arter kan växa snabbt eftersom de ofta saknar naturliga fiender på den nya platsen. De kan <strong>konkurrera ut</strong> inhemska arter om mat och plats, äta upp dem eller sprida sjukdomar. Här knyter alltså flera begrepp från avsnittet ihop: nisch, konkurrens och tillväxt utan hinder.</p>
+
+  <div class="tag-grid">
+    <span class="tag-chip">🐌 Spansk skogssnigel – kom oavsiktligt med växter och transporter</span>
+    <span class="tag-chip">🦞 Signalkräfta – inplanterad med avsikt, bär på kräftpest som slår mot flodkräftan</span>
+  </div>
+
+  <div class="key-box">
+    <h4>🔑 Kom ihåg</h4>
+    <p>En <strong>invasiv art</strong> har flyttats av människan till en miljö där den inte hör hemma. Den sprider sig och kan skada inhemska arter, ofta genom konkurrens.</p>
+  </div>
+</div>
+</div>
+
+<!-- SEKTION 6 – SAMMANFATTNING -->
+<div class="section" id="sammanfattning">
+<div class="container">
+  <p class="section-eyebrow">Sammanfattning</p>
+  <h2 class="section-title">Det viktigaste i korthet</h2>
+
+  <div class="key-box">
+    <h4>🔑 Sju begrepp att kunna</h4>
+    <dl>
+      <div class="term-row"><dt>Ekologisk nisch</dt><dd> – en arts beteende, val av föda och levnadsplats i ett ekosystem.</dd></div>
+      <div class="term-row"><dt>Mutualism</dt><dd> – båda arterna gynnas av samspelet.</dd></div>
+      <div class="term-row"><dt>Kommensalism</dt><dd> – ena arten gynnas, den andra påverkas varken positivt eller negativt.</dd></div>
+      <div class="term-row"><dt>Konkurrens</dt><dd> – två arter strider om samma begränsade resurs, vilket missgynnar båda parter.</dd></div>
+      <div class="term-row"><dt>Parasitism</dt><dd> – parasiten gynnas på värdens bekostnad.</dd></div>
+      <div class="term-row"><dt>Bärkraft (bärförmåga)</dt><dd> – hur många individer av en art ett ekosystem kan försörja, utifrån tillgången på resurser.</dd></div>
+      <div class="term-row"><dt>Tillväxtkurva</dt><dd> – en graf som visar hur en population förändras över tid, och som ofta planar ut när populationen når bärkraften.</dd></div>
+    </dl>
+  </div>
+
+  <div class="key-box teal">
+    <h4>🌍 Invasiva arter</h4>
+    <p>Arter som människan flyttat till en miljö där de inte hör hemma, och som sedan sprider sig och skadar inhemska arter eller ekosystemet.</p>
+  </div>
+</div>
+</div>
+
+<!-- SEKTION 7 – KOLLA ATT DU KAN -->
+<div class="section" id="kolla">
+<div class="container">
+  <p class="section-eyebrow">Självbedömning</p>
+  <h2 class="section-title">Kolla att du kan</h2>
+  <p class="section-intro">Försök svara utan att titta i texten. Visa sedan mallsvaret och bocka i om du hade med det viktigaste.</p>
+  <div id="q-wrap"></div>
+</div>
+</div>
+
+</main>
+
+<footer>
+  <a href="nk1b-ekologi.html">← Tillbaka till Ekologi</a> &middot; NK1b &middot; Arters samspel & populationsdynamik
+</footer>
+
+<script src="shared.js"></script>
+<script>
+requireLogin('NK1b');
+
+const QUESTIONS = [
+  {
+    q: "Vad är en ekologisk nisch? Förklara hur blåmes och talgoxe kan leva i samma skog utan att konkurrera.",
+    model: [
+      "En arts beteende, val av föda och levnadsplats i ett ekosystem.",
+      "Blåmes och talgoxe har olika nischer: de väljer olika föda, så de konkurrerar inte om samma resurs."
+    ]
+  },
+  {
+    q: "Förklara skillnaden mellan mutualism och kommensalism. Ge ett exempel på vardera.",
+    model: [
+      "Mutualism: båda arterna gynnas, t.ex. bin som pollinerar blommor och får nektar.",
+      "Kommensalism: ena arten gynnas och den andra påverkas varken positivt eller negativt, t.ex. en fågel som bygger bo i ett träd."
+    ]
+  },
+  {
+    q: "Vad är skillnaden mellan konkurrens och parasitism? Vem gynnas och vem missgynnas i vardera?",
+    model: [
+      "Konkurrens: två arter strider om samma begränsade resurs, och båda missgynnas.",
+      "Parasitism: parasiten gynnas på värdens bekostnad, så värden missgynnas."
+    ]
+  },
+  {
+    q: "Vilket samspel är det? (a) En bandmask i tarmen hos ett djur. (b) Två växtarter som vill ha samma solljus. (c) Bin som pollinerar blommor och får nektar. (d) En fågel som bygger bo i ett träd.",
+    model: [
+      "(a) Parasitism",
+      "(b) Konkurrens",
+      "(c) Mutualism",
+      "(d) Kommensalism"
+    ]
+  },
+  {
+    q: "Vad är bärkraft? Ge ett exempel.",
+    model: [
+      "Hur många individer av en art ett ekosystem kan försörja, utifrån tillgången på resurser.",
+      "T.ex. kan en skog bara försörja ett visst antal harar innan maten tar slut."
+    ]
+  },
+  {
+    q: "Beskriv hur en tillväxtkurva för en population ser ut och förklara varför den planar ut.",
+    model: [
+      "Kurvan visar hur populationen förändras över tid. Den växer först långsamt, sedan snabbt.",
+      "Den planar ut när populationen når ekosystemets bärkraft, eftersom resurserna (t.ex. maten) då blir knappa."
+    ]
+  },
+  {
+    q: "Vad är en invasiv art och varför kan den bli ett problem?",
+    model: [
+      "En art som människan har flyttat till en miljö där den inte hör hemma och som sedan sprider sig.",
+      "Den kan konkurrera ut inhemska arter om mat och plats, eller sprida sjukdomar, ofta för att den saknar naturliga fiender."
+    ]
+  }
+];
+
+let checked = new Array(QUESTIONS.length).fill(false);
+
+function buildQuestions() {
+  const wrap = document.getElementById('q-wrap');
+  QUESTIONS.forEach((q, i) => {
+    const items = q.model.map(m => `<li>${m}</li>`).join('');
+    wrap.innerHTML += `
+      <div class="q-card">
+        <div class="q-num">Fråga ${i+1} av ${QUESTIONS.length}</div>
+        <div class="q-text">${q.q}</div>
+        <textarea class="q-textarea" id="qta-${i}" placeholder="Skriv ditt svar här..."></textarea>
+        <button class="q-btn" onclick="showModel(${i})">Visa mallsvar →</button>
+        <div class="q-model" id="qmodel-${i}">
+          <div class="q-model-header">📋 Mallsvar</div>
+          <div class="q-model-body">
+            <ul>${items}</ul>
+            <div class="q-self-check">
+              <input type="checkbox" id="qcheck-${i}" onchange="toggleCheck(${i})"/>
+              <label for="qcheck-${i}">Jag hade med det viktigaste</label>
+            </div>
+          </div>
+        </div>
+        <button class="q-retry" onclick="resetQuestion(${i})">↩ Rensa och försök igen</button>
+      </div>`;
+  });
+  updateScore();
+}
+
+function showModel(i) { document.getElementById(`qmodel-${i}`).classList.add('shown'); }
+function toggleCheck(i) { checked[i] = document.getElementById(`qcheck-${i}`).checked; updateScore(); }
+function resetQuestion(i) {
+  document.getElementById(`qta-${i}`).value = '';
+  document.getElementById(`qmodel-${i}`).classList.remove('shown');
+  document.getElementById(`qcheck-${i}`).checked = false;
+  checked[i] = false;
+  updateScore();
+}
+
+function updateScore() {
+  const n = checked.filter(Boolean).length;
+  const total = QUESTIONS.length;
+  const msg = n === total ? '🎉 Utmärkt – du kan hela avsnittet!'
+    : n >= 5 ? '👍 Bra jobbat! Kika igenom de du missat.'
+    : n >= 1 ? '📖 Bra start – fortsätt öva på resten.'
+    : '🔍 Gå tillbaka till materialet och försök igen.';
+
+  let bar = document.getElementById('q-scorebar');
+  if (!bar) {
+    document.getElementById('q-wrap').insertAdjacentHTML('afterend',
+      `<div class="q-score-bar" id="q-scorebar">
+        <div class="q-score-num" id="qs-num">${n}/${total}</div>
+        <div><div class="q-score-label">Självskattning</div><div class="q-score-msg" id="qs-msg">${msg}</div></div>
+      </div>`);
+  } else {
+    document.getElementById('qs-num').textContent = `${n}/${total}`;
+    document.getElementById('qs-msg').textContent = msg;
+  }
+}
+
+buildQuestions();
+</script>
+
+</body>
+</html>
