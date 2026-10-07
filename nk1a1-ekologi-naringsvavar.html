@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Näringsvävar & energiflöde – NK1a1</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Mulish:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #faf7f2; --surface: #ffffff; --border: #e8e0d0;
+      --sand: #f2ece0; --rust: #b85c2a; --rust2: #d4703a;
+      --teal: #2a7a6a; --blue: #2a4a7a; --text: #1a1612;
+      --muted: #6a5e52; --radius: 10px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Mulish', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; font-size: 16px; }
+
+    .top-bar { background: #1a1612; padding: 14px 28px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; position: sticky; top: 0; z-index: 100; }
+    .back-link { color: #c8b89a; text-decoration: none; font-size: .82rem; transition: color .2s; }
+    .back-link:hover { color: #fff; }
+    .top-title { font-family: 'Playfair Display', serif; font-size: 1rem; color: #e8dcc8; }
+    .top-title span { color: #d4a060; }
+
+    .hero { background: linear-gradient(135deg, #1a1612 0%, #1a2820 60%, #1a1612 100%); padding: 64px 32px 56px; text-align: center; position: relative; overflow: hidden; }
+    .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 60% 60% at 30% 50%, rgba(42,122,106,.12) 0%, transparent 60%), radial-gradient(ellipse 50% 70% at 80% 30%, rgba(180,92,42,.06) 0%, transparent 55%); pointer-events: none; }
+    .hero-eyebrow { font-size: .72rem; letter-spacing: .22em; text-transform: uppercase; color: #d4a060; margin-bottom: 12px; }
+    .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 5vw, 3rem); font-weight: 900; color: #f0e8d8; margin-bottom: 16px; line-height: 1.15; }
+    .hero-sub { font-size: 1rem; color: #a09080; max-width: 560px; margin: 0 auto 32px; line-height: 1.7; }
+    .hero-nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+    .hero-nav a { font-size: .8rem; color: #c8b89a; border: 1px solid rgba(200,184,154,.3); border-radius: 30px; padding: 7px 16px; text-decoration: none; transition: all .2s; }
+    .hero-nav a:hover { background: rgba(200,184,154,.12); color: #fff; }
+
+    .container { max-width: 860px; margin: 0 auto; padding: 0 24px; }
+    .section { padding: 60px 0; }
+    .section + .section { border-top: 1px solid var(--border); }
+
+    .section-eyebrow { font-size: .7rem; letter-spacing: .2em; text-transform: uppercase; color: var(--rust); font-weight: 600; margin-bottom: 8px; }
+    .section-title { font-family: 'Playfair Display', serif; font-size: clamp(1.5rem, 3vw, 2rem); color: var(--text); margin-bottom: 6px; line-height: 1.25; }
+    .section-intro { font-size: .95rem; color: var(--muted); margin-bottom: 32px; max-width: 640px; line-height: 1.7; }
+
+    .prose { font-size: .95rem; line-height: 1.75; color: #2a2016; margin-bottom: 24px; }
+    .prose strong { color: var(--text); font-weight: 600; }
+
+    .key-box { background: var(--sand); border-left: 4px solid var(--rust2); border-radius: 0 var(--radius) var(--radius) 0; padding: 18px 22px; margin-bottom: 28px; }
+    .key-box h4 { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--rust); margin-bottom: 10px; }
+    .key-box p { font-size: .88rem; color: #4a3a2a; line-height: 1.65; }
+    .key-box dl { font-size: .88rem; color: #4a3a2a; display: flex; flex-direction: column; gap: 8px; }
+    .key-box dt { font-weight: 600; color: var(--text); display: inline; }
+    .key-box dd { display: inline; margin: 0; }
+    .key-box .term-row { line-height: 1.55; }
+
+    .tag-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
+    .tag-chip { background: var(--sand); border: 1px solid var(--border); border-radius: 30px; padding: 6px 14px; font-size: .82rem; color: #4a3a2a; }
+
+    .factor-columns { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin-bottom: 12px; }
+    .factor-columns h4 { font-family: 'Playfair Display', serif; font-size: .95rem; margin-bottom: 12px; color: var(--text); }
+    .factor-columns .tag-grid { margin-bottom: 0; }
+
+    .key-box.teal { border-left-color: var(--teal); }
+    .key-box.teal h4 { color: var(--teal); }
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 12px; }
+    .two-col .key-box { margin-bottom: 0; }
+    .diagram-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px 20px 16px; margin-bottom: 20px; }
+    .fig { width: 100%; height: auto; display: block; margin: 0 auto; }
+    .diagram-caption { font-size: .82rem; color: var(--muted); line-height: 1.6; padding: 4px 4px 0; }
+    .diagram-caption strong { color: var(--text); }
+
+    .q-card { background: #1a1612; border: 1px solid #2a2018; border-radius: var(--radius); padding: 22px 26px; margin-bottom: 18px; }
+    .q-num { font-size: .68rem; letter-spacing: .18em; text-transform: uppercase; color: #d4a060; margin-bottom: 7px; font-weight: 600; }
+    .q-text { font-family: 'Playfair Display', serif; font-size: .95rem; color: #f0e8d8; margin-bottom: 14px; line-height: 1.5; }
+    .q-textarea { width: 100%; background: #0f0c08; border: 1.5px solid #2a2018; border-radius: 6px; color: #e8dcc8; font-family: 'Mulish', sans-serif; font-size: .9rem; padding: 11px 13px; resize: vertical; min-height: 80px; outline: none; transition: border-color .2s; line-height: 1.6; }
+    .q-textarea:focus { border-color: #d4703a; }
+    .q-btn { margin-top: 10px; font-family: 'Mulish', sans-serif; font-size: .84rem; font-weight: 600; padding: 8px 20px; border-radius: 6px; border: none; cursor: pointer; background: #d4703a; color: #fff; transition: background .2s; }
+    .q-btn:hover { background: #b85c2a; }
+    .q-model { margin-top: 14px; display: none; background: #0f0c08; border: 1px solid #2a2018; border-radius: 6px; overflow: hidden; }
+    .q-model.shown { display: block; }
+    .q-model-header { background: #2a2018; padding: 8px 16px; font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: #d4a060; font-weight: 600; }
+    .q-model-body { padding: 14px 18px; font-size: .88rem; color: #c8b89a; line-height: 1.75; }
+    .q-model-body strong { color: #f0e8d8; }
+    .q-model-body ul { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+    .q-model-body li { padding-left: 16px; position: relative; }
+    .q-model-body li::before { content: '→'; position: absolute; left: 0; color: #d4703a; font-size: .8rem; }
+    .q-self-check { margin-top: 12px; padding-top: 12px; border-top: 1px solid #2a2018; display: flex; align-items: center; gap: 10px; font-size: .82rem; color: #8a7a60; cursor: pointer; }
+    .q-self-check input { accent-color: #d4703a; width: 16px; height: 16px; cursor: pointer; }
+    .q-retry { margin-top: 10px; font-size: .78rem; color: #6a5a40; background: none; border: none; cursor: pointer; font-family: 'Mulish', sans-serif; text-decoration: underline; padding: 0; display: block; }
+    .q-score-bar { background: #0f0c08; border: 1px solid #2a2018; border-radius: var(--radius); padding: 20px 24px; margin-top: 32px; display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+    .q-score-num { font-family: 'Playfair Display', serif; font-size: 2rem; color: #d4703a; }
+    .q-score-label { font-size: .85rem; color: #8a7a60; }
+    .q-score-msg { font-size: .88rem; color: #c8b89a; }
+
+    footer { border-top: 1px solid var(--border); padding: 28px 24px; text-align: center; font-size: .78rem; color: var(--muted); margin-top: 40px; }
+    footer a { color: var(--teal); text-decoration: none; }
+
+    @media(max-width: 580px) {
+      .hero { padding: 44px 20px 36px; }
+      .container { padding: 0 16px; }
+      .factor-columns { grid-template-columns: 1fr; gap: 20px; }
+      .two-col { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="top-bar">
+  <a href="nk1a1-ekologi.html" class="back-link">← Ekologi</a>
+  <div class="top-title">NK1a1 &mdash; <span>Näringsvävar & energiflöde</span></div>
+</div>
+
+<div class="hero">
+  <p class="hero-eyebrow">Ekologi, avsnitt 4 &middot; NK1a1</p>
+  <h1>Näringsvävar & energiflöde</h1>
+  <p class="hero-sub">Vem äter vem i ett ekosystem – och vart tar energin vägen? Här går vi igenom näringskedjor och näringsvävar, trofinivåer och näringspyramider, samt hur energi och materia rör sig genom ett ekosystem.</p>
+  <nav class="hero-nav">
+    <a href="#kedja">Näringskedja</a>
+    <a href="#vav">Näringsväv</a>
+    <a href="#trofinivaer">Trofinivåer</a>
+    <a href="#flode">Energi & materia</a>
+    <a href="#pyramid">Näringspyramid</a>
+    <a href="#sammanfattning">Sammanfattning</a>
+    <a href="#kolla">Kolla att du kan</a>
+  </nav>
+</div>
+
+<main>
+
+<!-- SEKTION 1 – NÄRINGSKEDJA -->
+<div class="section" id="kedja">
+<div class="container">
+  <p class="section-eyebrow">Vem äter vem?</p>
+  <h2 class="section-title">Näringskedjor</h2>
+  <p class="section-intro">En <strong>näringskedja</strong> är en modell som visar näringens väg genom några arter i ett ekosystem. Den börjar alltid med en producent och visar sedan vem som äter vem. Ett klassiskt exempel är <strong>gräs → hare → räv</strong>.</p>
+
+  <div class="diagram-wrap">
+    <svg class="fig" viewBox="0 0 700 170" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Näringskedjan gräs, hare, räv, örn. Pilarna pekar från den som blir uppäten till den som äter.">
+      <defs>
+        <marker id="arr-dark" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="#4a3a2a"/>
+        </marker>
+      </defs>
+
+      <rect x="25" y="20" width="120" height="120" rx="10" fill="#e3f0ec" stroke="#2a7a6a"/>
+      <text x="85" y="62" text-anchor="middle" font-size="28">🌱</text>
+      <text x="85" y="95" text-anchor="middle" font-family="Playfair Display, serif" font-size="17" font-weight="700" fill="#1a1612">Gräs</text>
+      <text x="85" y="117" text-anchor="middle" font-family="Mulish, sans-serif" font-size="12" fill="#6a5e52">Producent</text>
+
+      <rect x="205" y="20" width="120" height="120" rx="10" fill="#f2ece0" stroke="#d9cdb4"/>
+      <text x="265" y="62" text-anchor="middle" font-size="28">🐇</text>
+      <text x="265" y="95" text-anchor="middle" font-family="Playfair Display, serif" font-size="17" font-weight="700" fill="#1a1612">Hare</text>
+      <text x="265" y="117" text-anchor="middle" font-family="Mulish, sans-serif" font-size="12" fill="#6a5e52">Växtätare</text>
+
+      <rect x="385" y="20" width="120" height="120" rx="10" fill="#f6e6da" stroke="#d4703a"/>
+      <text x="445" y="62" text-anchor="middle" font-size="28">🦊</text>
+      <text x="445" y="95" text-anchor="middle" font-family="Playfair Display, serif" font-size="17" font-weight="700" fill="#1a1612">Räv</text>
+      <text x="445" y="117" text-anchor="middle" font-family="Mulish, sans-serif" font-size="12" fill="#6a5e52">Rovdjur</text>
+
+      <rect x="565" y="20" width="120" height="120" rx="10" fill="#f6e6da" stroke="#d4703a"/>
+      <text x="625" y="62" text-anchor="middle" font-size="28">🦅</text>
+      <text x="625" y="95" text-anchor="middle" font-family="Playfair Display, serif" font-size="17" font-weight="700" fill="#1a1612">Örn</text>
+      <text x="625" y="117" text-anchor="middle" font-family="Mulish, sans-serif" font-size="12" fill="#6a5e52">Rovdjur</text>
+
+      <path d="M150,82 L200,82" stroke="#4a3a2a" stroke-width="2.5" marker-end="url(#arr-dark)"/>
+      <path d="M330,82 L380,82" stroke="#4a3a2a" stroke-width="2.5" marker-end="url(#arr-dark)"/>
+      <path d="M510,82 L560,82" stroke="#4a3a2a" stroke-width="2.5" marker-end="url(#arr-dark)"/>
+      <text x="175" y="70" text-anchor="middle" font-family="Mulish, sans-serif" font-size="11" fill="#6a5e52">äts av</text>
+      <text x="355" y="70" text-anchor="middle" font-family="Mulish, sans-serif" font-size="11" fill="#6a5e52">äts av</text>
+      <text x="535" y="70" text-anchor="middle" font-family="Mulish, sans-serif" font-size="11" fill="#6a5e52">äts av</text>
+    </svg>
+    <p class="diagram-caption">Gräset är <strong>producent</strong>. Haren äter gräset, räven äter haren och örnen äter räven. Pilarna visar vart näringen – och energin i den – tar vägen.</p>
+  </div>
+
+  <div class="key-box">
+    <h4>🔑 Kom ihåg</h4>
+    <p>Pilen pekar mot <strong>den som äter</strong>, inte mot den som blir uppäten. Pilen betyder alltså ”blir uppäten av” eller ”ger näring till”. En näringskedja börjar alltid med en producent.</p>
+  </div>
+</div>
+</div>
+
+<!-- SEKTION 2 – NÄRINGSVÄV -->
+<div class="section" id="vav">
+<div class="container">
+  <p class="section-eyebrow">Flera kedjor i ett nät</p>
+  <h2 class="section-title">Näringsvävar</h2>
+  <p class="section-intro">I verkligheten äter de flesta djur mer än en sorts föda, och de kan själva ätas av flera olika arter. Då hakar kedjorna i varandra och bildar en <strong>näringsväv</strong> – flera sammanlänkade näringskedjor i ett ekosystem.</p>
+
+  <div class="diagram-wrap">
+    <svg class="fig" viewBox="0 0 700 440" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Näringsväv från skog. Gräs och blåbärsris är producenter. Hare och sork äter dem. Räv och uggla äter både hare och sork.">
+      <defs>
+        <marker id="arr-web" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="#4a3a2a"/>
+        </marker>
+      </defs>
+
+      <!-- Radetiketter -->
+      <text x="14" y="66" font-family="Mulish, sans-serif" font-size="13" font-weight="700" fill="#1a1612">Andrahandskonsumenter</text>
+      <text x="14" y="84" font-family="Mulish, sans-serif" font-size="12" fill="#6a5e52">rovdjur</text>
+      <text x="14" y="216" font-family="Mulish, sans-serif" font-size="13" font-weight="700" fill="#1a1612">Förstahandskonsumenter</text>
+      <text x="14" y="234" font-family="Mulish, sans-serif" font-size="12" fill="#6a5e52">växtätare</text>
+      <text x="14" y="366" font-family="Mulish, sans-serif" font-size="13" font-weight="700" fill="#1a1612">Producenter</text>
+      <text x="14" y="384" font-family="Mulish, sans-serif" font-size="12" fill="#6a5e52">växter</text>
+
+      <!-- Pilar (ritas först så att rutorna ligger överst) -->
+      <g stroke="#4a3a2a" stroke-width="2" fill="none" marker-end="url(#arr-web)">
+        <path d="M316,337 L316,255" marker-end="url(#arr-web)"/>
+        <path d="M364,337 L556,255" marker-end="url(#arr-web)"/>
+        <path d="M604,337 L604,255" marker-end="url(#arr-web)"/>
+        <path d="M316,187 L316,105" marker-end="url(#arr-web)"/>
+        <path d="M364,187 L556,105" marker-end="url(#arr-web)"/>
+        <path d="M604,187 L604,105" marker-end="url(#arr-web)"/>
+        <path d="M556,187 L364,105" marker-end="url(#arr-web)"/>
+      </g>
+
+      <!-- Producenter -->
+      <rect x="255" y="339" width="170" height="62" rx="10" fill="#e3f0ec" stroke="#2a7a6a"/>
+      <text x="340" y="377" text-anchor="middle" font-family="Mulish, sans-serif" font-size="17" font-weight="600" fill="#1a1612">🌱 Gräs</text>
+      <rect x="495" y="339" width="170" height="62" rx="10" fill="#e3f0ec" stroke="#2a7a6a"/>
+      <text x="580" y="377" text-anchor="middle" font-family="Mulish, sans-serif" font-size="17" font-weight="600" fill="#1a1612">🌿 Blåbärsris</text>
+
+      <!-- Förstahandskonsumenter -->
+      <rect x="255" y="189" width="170" height="62" rx="10" fill="#f2ece0" stroke="#d9cdb4"/>
+      <text x="340" y="227" text-anchor="middle" font-family="Mulish, sans-serif" font-size="17" font-weight="600" fill="#1a1612">🐇 Hare</text>
+      <rect x="495" y="189" width="170" height="62" rx="10" fill="#f2ece0" stroke="#d9cdb4"/>
+      <text x="580" y="227" text-anchor="middle" font-family="Mulish, sans-serif" font-size="17" font-weight="600" fill="#1a1612">🐭 Sork</text>
+
+      <!-- Andrahandskonsumenter -->
+      <rect x="255" y="39" width="170" height="62" rx="10" fill="#f6e6da" stroke="#d4703a"/>
+      <text x="340" y="77" text-anchor="middle" font-family="Mulish, sans-serif" font-size="17" font-weight="600" fill="#1a1612">🦊 Räv</text>
+      <rect x="495" y="39" width="170" height="62" rx="10" fill="#f6e6da" stroke="#d4703a"/>
+      <text x="580" y="77" text-anchor="middle" font-family="Mulish, sans-serif" font-size="17" font-weight="600" fill="#1a1612">🦉 Uggla</text>
+    </svg>
+    <p class="diagram-caption">Följ pilarna: <strong>gräs → hare → räv</strong> är en kedja och <strong>blåbärsris → sork → uggla</strong> är en annan. Eftersom både räv och uggla kan äta både hare och sork hakar kedjorna i varandra och bildar en <strong>väv</strong>. (Nedbrytarna har lämnats utanför bilden för att den inte ska bli plottrig.)</p>
+  </div>
+
+  <p class="prose">En näringsväv är mer verklighetstrogen än en enskild kedja. Den visar också att ekosystem inte hänger på en enda tråd: om en bytesart blir ovanlig kan rovdjuren ofta äta något annat. Mer om det i avsnitt 6 om biologisk mångfald.</p>
+
+  <div class="key-box">
+    <h4>🔑 Kom ihåg</h4>
+    <p><strong>Näringskedja</strong> = en enda väg genom några arter. <strong>Näringsväv</strong> = flera näringskedjor som hakar i varandra i samma ekosystem.</p>
+  </div>
+</div>
+</div>
+
+<!-- SEKTION 3 – TROFINIVÅER -->
+<div class="section" id="trofinivaer">
+<div class="container">
+  <p class="section-eyebrow">Steg från producenten</p>
+  <h2 class="section-title">Trofinivåer</h2>
+  <p class="section-intro">En <strong>trofinivå</strong> är en organisms plats i en näringsväv, räknat i steg från producenten. Producenten står alltid på trofinivå 1, och för varje steg uppåt i kedjan ökar nivån med ett.</p>
+
+  <div class="diagram-wrap">
+    <svg class="fig" viewBox="0 0 700 335" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Trappa med fyra trofinivåer: gräs är producent på nivå 1, hare förstahandskonsument på nivå 2, räv andrahandskonsument på nivå 3 och örn tredjehandskonsument och toppkonsument på nivå 4.">
+      <!-- Steg -->
+      <rect x="30" y="60" width="150" height="210" rx="8" fill="#e3f0ec" stroke="#2a7a6a"/>
+      <text x="105" y="216" text-anchor="middle" font-size="26">🌱</text>
+      <text x="105" y="242" text-anchor="middle" font-family="Playfair Display, serif" font-size="16" font-weight="700" fill="#1a1612">Gräs</text>
+
+      <rect x="195" y="100" width="150" height="170" rx="8" fill="#f2ece0" stroke="#d9cdb4"/>
+      <text x="270" y="216" text-anchor="middle" font-size="26">🐇</text>
+      <text x="270" y="242" text-anchor="middle" font-family="Playfair Display, serif" font-size="16" font-weight="700" fill="#1a1612">Hare</text>
+
+      <rect x="360" y="140" width="150" height="130" rx="8" fill="#f6e6da" stroke="#d4703a"/>
+      <text x="435" y="216" text-anchor="middle" font-size="26">🦊</text>
+      <text x="435" y="242" text-anchor="middle" font-family="Playfair Display, serif" font-size="16" font-weight="700" fill="#1a1612">Räv</text>
+
+      <rect x="525" y="180" width="150" height="90" rx="8" fill="#efd0b8" stroke="#b85c2a"/>
+      <text x="600" y="216" text-anchor="middle" font-size="26">🦅</text>
+      <text x="600" y="242" text-anchor="middle" font-family="Playfair Display, serif" font-size="16" font-weight="700" fill="#1a1612">Örn</text>
+
+      <!-- Toppkonsument-märke -->
+      <rect x="535" y="140" width="130" height="26" rx="13" fill="#b85c2a"/>
+      <text x="600" y="158" text-anchor="middle" font-family="Mulish, sans-serif" font-size="12.5" font-weight="700" fill="#ffffff">Toppkonsument</text>
+
+      <!-- Etiketter under -->
+      <text x="105" y="296" text-anchor="middle" font-family="Mulish, sans-serif" font-size="14" font-weight="700" fill="#1a1612">Trofinivå 1</text>
+      <text x="105" y="315" text-anchor="middle" font-family="Mulish, sans-serif" font-size="12" fill="#6a5e52">Producent</text>
+      <text x="270" y="296" text-anchor="middle" font-family="Mulish, sans-serif" font-size="14" font-weight="700" fill="#1a1612">Trofinivå 2</text>
+      <text x="270" y="315" text-anchor="middle" font-family="Mulish, sans-serif" font-size="12" fill="#6a5e52">Förstahandskonsument</text>
+      <text x="435" y="296" text-anchor="middle" font-family="Mulish, sans-serif" font-size="14" font-weight="700" fill="#1a1612">Trofinivå 3</text>
+      <text x="435" y="315" text-anchor="middle" font-family="Mulish, sans-serif" font-size="12" fill="#6a5e52">Andrahandskonsument</text>
+      <text x="600" y="296" text-anchor="middle" font-family="Mulish, sans-serif" font-size="14" font-weight="700" fill="#1a1612">Trofinivå 4</text>
+      <text x="600" y="315" text-anchor="middle" font-family="Mulish, sans-serif" font-size="12" fill="#6a5e52">Tredjehandskonsument</text>
+    </svg>
+    <p class="diagram-caption">I kedjan <strong>gräs → hare → räv → örn</strong> har gräset trofinivå 1, haren trofinivå 2, räven trofinivå 3 och örnen trofinivå 4.</p>
+  </div>
+
+  <div class="key-box">
+    <h4>🔑 Konsumenterna i kedjan</h4>
+    <dl>
+      <div class="term-row"><dt>Förstahandskonsument</dt><dd> – djur som äter växter eller alger. T.ex. en hare som äter gräs.</dd></div>
+      <div class="term-row"><dt>Andrahandskonsument</dt><dd> – rovdjur som äter växtätare. T.ex. en räv som äter en hare.</dd></div>
+      <div class="term-row"><dt>Tredjehandskonsument</dt><dd> – rovdjur som äter andra rovdjur. T.ex. en örn som äter en räv.</dd></div>
+      <div class="term-row"><dt>Toppkonsument</dt><dd> – rovdjur som inte äts av andra rovdjur. T.ex. en varg eller en kungsörn.</dd></div>
+    </dl>
+  </div>
+
+  <p class="prose"><strong>Toppkonsument</strong> skiljer sig från de andra orden. Det säger inte vilken nivå djuret ligger på, utan att det sitter överst: inget rovdjur äter det. I kedjan ovan är örnen både tredjehandskonsument och toppkonsument. I den kortare kedjan gräs → hare → räv är det istället räven som är toppkonsument.</p>
+
+  <div class="key-box">
+    <h4>🔑 Kom ihåg</h4>
+    <p>Trofinivåerna räknas från producenten. Producenten har trofinivå 1, förstahandskonsumenten trofinivå 2, andrahandskonsumenten trofinivå 3 och så vidare. Siffran är alltså alltid ett steg högre än ”handen” i namnet.</p>
+  </div>
+</div>
+</div>
+
+<!-- SEKTION 4 – ENERGI OCH MATERIA -->
+<div class="section" id="flode">
+<div class="container">
+  <p class="section-eyebrow">Vart tar energin vägen?</p>
+  <h2 class="section-title">Energi och materia</h2>
+  <p class="section-intro">När haren äter gräs flyttar både <strong>energi</strong> och <strong>materia</strong> (byggstenar som näringsämnen) från gräset till haren. Men sedan går de olika vägar: energin går genom ekosystemet en gång, medan materian går runt i ett kretslopp.</p>
+
+  <div class="diagram-wrap">
+    <svg class="fig" viewBox="0 0 700 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Energi kommer in som solljus till producenterna och följer maten till konsumenterna och nedbrytarna. I varje led lämnar en del energi ekosystemet som värme. Näringsämnen återvänder via nedbrytarna till marken och tas upp av producenterna igen.">
+      <defs>
+        <marker id="arr-food" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="#4a3a2a"/>
+        </marker>
+        <marker id="arr-heat" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="#b85c2a"/>
+        </marker>
+        <marker id="arr-sun" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="#d4a060"/>
+        </marker>
+        <marker id="arr-mat" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="#2a7a6a"/>
+        </marker>
+      </defs>
+
+      <!-- Boxar -->
+      <rect x="30" y="150" width="140" height="80" rx="10" fill="#e3f0ec" stroke="#2a7a6a"/>
+      <text x="100" y="186" text-anchor="middle" font-family="Playfair Display, serif" font-size="17" font-weight="700" fill="#1a1612">Producenter</text>
+      <text x="100" y="208" text-anchor="middle" font-family="Mulish, sans-serif" font-size="11.5" fill="#6a5e52">fångar solenergi</text>
+
+      <rect x="280" y="150" width="140" height="80" rx="10" fill="#f6e6da" stroke="#d4703a"/>
+      <text x="350" y="186" text-anchor="middle" font-family="Playfair Display, serif" font-size="17" font-weight="700" fill="#1a1612">Konsumenter</text>
+      <text x="350" y="208" text-anchor="middle" font-family="Mulish, sans-serif" font-size="11.5" fill="#6a5e52">äter andra organismer</text>
+
+      <rect x="530" y="150" width="140" height="80" rx="10" fill="#f2ece0" stroke="#d9cdb4"/>
+      <text x="600" y="186" text-anchor="middle" font-family="Playfair Display, serif" font-size="17" font-weight="700" fill="#1a1612">Nedbrytare</text>
+      <text x="600" y="208" text-anchor="middle" font-family="Mulish, sans-serif" font-size="11.5" fill="#6a5e52">bryter ner döda rester</text>
+
+      <!-- Solljus in -->
+      <text x="65" y="34" text-anchor="middle" font-family="Mulish, sans-serif" font-size="14" font-weight="600" fill="#6a5e52">☀️ Solljus</text>
+      <path d="M65,46 L65,146" stroke="#d4a060" stroke-width="2.5" marker-end="url(#arr-sun)"/>
+      <text x="75" y="104" font-family="Mulish, sans-serif" font-size="11.5" fill="#6a5e52">energi in</text>
+
+      <!-- Mat (energi + näring) -->
+      <path d="M176,190 L274,190" stroke="#4a3a2a" stroke-width="2.5" marker-end="url(#arr-food)"/>
+      <text x="225" y="180" text-anchor="middle" font-family="Mulish, sans-serif" font-size="11.5" fill="#4a3a2a">energi + näring</text>
+      <path d="M426,190 L524,190" stroke="#4a3a2a" stroke-width="2.5" marker-end="url(#arr-food)"/>
+      <text x="475" y="180" text-anchor="middle" font-family="Mulish, sans-serif" font-size="11.5" fill="#4a3a2a">energi + näring</text>
+
+      <!-- Värme ut -->
+      <path d="M140,146 L140,100" stroke="#b85c2a" stroke-width="2.5" marker-end="url(#arr-heat)"/>
+      <text x="140" y="88" text-anchor="middle" font-family="Mulish, sans-serif" font-size="12.5" font-weight="600" fill="#b85c2a">värme</text>
+      <path d="M350,146 L350,100" stroke="#b85c2a" stroke-width="2.5" marker-end="url(#arr-heat)"/>
+      <text x="350" y="88" text-anchor="middle" font-family="Mulish, sans-serif" font-size="12.5" font-weight="600" fill="#b85c2a">värme</text>
+      <path d="M600,146 L600,100" stroke="#b85c2a" stroke-width="2.5" marker-end="url(#arr-heat)"/>
+      <text x="600" y="88" text-anchor="middle" font-family="Mulish, sans-serif" font-size="12.5" font-weight="600" fill="#b85c2a">värme</text>
+
+      <!-- Kretslopp för näringsämnen -->
+      <path d="M600,236 C600,305 100,305 100,236" stroke="#2a7a6a" stroke-width="2.5" fill="none" marker-end="url(#arr-mat)"/>
+      <text x="350" y="326" text-anchor="middle" font-family="Mulish, sans-serif" font-size="12.5" font-weight="600" fill="#2a7a6a">näringsämnen tillbaka till marken – producenterna tar upp dem igen</text>
+    </svg>
+    <p class="diagram-caption">Energin kommer från solen, fångas av producenterna och följer maten uppåt. I varje led används en del i <strong>cellandningen</strong> och lämnar ekosystemet som <strong>värme</strong>. Näringsämnena tas istället om hand av <strong>nedbrytarna</strong> och hamnar i marken, där producenterna kan ta upp dem igen.</p>
+  </div>
+
+  <div class="two-col">
+    <div class="key-box">
+      <h4>⚡ Energi: enkelriktat</h4>
+      <p>Energin kommer in som solljus, går genom producenter och konsumenter och lämnar ekosystemet som värme. Den kan inte återanvändas, så ekosystemet behöver solenergi hela tiden.</p>
+    </div>
+    <div class="key-box teal">
+      <h4>♻️ Materia: kretslopp</h4>
+      <p>Näringsämnena används om och om igen. Nedbrytarna bryter ner döda växt- och djurdelar och återför ämnena till marken, så att producenterna kan ta upp dem igen.</p>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- SEKTION 5 – NÄRINGSPYRAMID -->
+<div class="section" id="pyramid">
+<div class="container">
+  <p class="section-eyebrow">Mindre och mindre uppåt</p>
+  <h2 class="section-title">Näringspyramider</h2>
+  <p class="section-intro">En <strong>näringspyramid</strong> visar mängden organismer – biomassa eller energi – på varje trofinivå. Eftersom energi går förlorad mellan varje nivå blir varje steg uppåt smalare, och därför får diagrammet formen av en pyramid.</p>
+
+  <div class="diagram-wrap">
+    <svg class="fig" viewBox="0 0 720 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Näringspyramid med fyra nivåer. Gräs längst ner, därefter hare, räv och örn överst. Mest energi och flest organismer finns längst ner.">
+      <!-- Nivåer -->
+      <polygon points="470,20 525,100 415,100" fill="#efd0b8" stroke="#faf7f2" stroke-width="3"/>
+      <polygon points="415,100 525,100 580,180 360,180" fill="#f6e6da" stroke="#faf7f2" stroke-width="3"/>
+      <polygon points="360,180 580,180 635,260 305,260" fill="#ece3d0" stroke="#faf7f2" stroke-width="3"/>
+      <polygon points="305,260 635,260 690,340 250,340" fill="#cfe6df" stroke="#faf7f2" stroke-width="3"/>
+
+      <text x="470" y="82" text-anchor="middle" font-family="Mulish, sans-serif" font-size="14" font-weight="600" fill="#1a1612">🦅 Örn</text>
+      <text x="470" y="146" text-anchor="middle" font-family="Mulish, sans-serif" font-size="17" font-weight="600" fill="#1a1612">🦊 Räv</text>
+      <text x="470" y="226" text-anchor="middle" font-family="Mulish, sans-serif" font-size="17" font-weight="600" fill="#1a1612">🐇 Hare</text>
+      <text x="470" y="306" text-anchor="middle" font-family="Mulish, sans-serif" font-size="17" font-weight="600" fill="#1a1612">🌱 Gräs</text>
+
+      <!-- Vänstra etiketter -->
+      <text x="14" y="66" font-family="Mulish, sans-serif" font-size="13" font-weight="700" fill="#1a1612">Trofinivå 4</text>
+      <text x="14" y="84" font-family="Mulish, sans-serif" font-size="12" fill="#6a5e52">Tredjehandskonsument</text>
+      <text x="14" y="136" font-family="Mulish, sans-serif" font-size="13" font-weight="700" fill="#1a1612">Trofinivå 3</text>
+      <text x="14" y="154" font-family="Mulish, sans-serif" font-size="12" fill="#6a5e52">Andrahandskonsument</text>
+      <text x="14" y="216" font-family="Mulish, sans-serif" font-size="13" font-weight="700" fill="#1a1612">Trofinivå 2</text>
+      <text x="14" y="234" font-family="Mulish, sans-serif" font-size="12" fill="#6a5e52">Förstahandskonsument</text>
+      <text x="14" y="296" font-family="Mulish, sans-serif" font-size="13" font-weight="700" fill="#1a1612">Trofinivå 1</text>
+      <text x="14" y="314" font-family="Mulish, sans-serif" font-size="12" fill="#6a5e52">Producent</text>
+
+      <!-- Anteckningar till höger -->
+      <text x="565" y="48" font-family="Mulish, sans-serif" font-size="12.5" fill="#6a5e52">▲ Mindre energi</text>
+      <text x="565" y="66" font-family="Mulish, sans-serif" font-size="12.5" fill="#6a5e52">och färre organismer</text>
+      <text x="600" y="130" font-family="Mulish, sans-serif" font-size="12.5" fill="#6a5e52">▼ Mer energi</text>
+      <text x="600" y="148" font-family="Mulish, sans-serif" font-size="12.5" fill="#6a5e52">och fler organismer</text>
+    </svg>
+    <p class="diagram-caption">Det finns alltid <strong>mer gräs än harar</strong>, och <strong>fler harar än rävar</strong>, i samma ekosystem.</p>
+  </div>
+
+  <p class="prose">Av all energi som finns i gräset når bara en liten del fram till haren. Som tumregel förs ungefär en tiondel av energin vidare till nästa nivå. Resten försvinner på olika sätt:</p>
+
+  <div class="tag-grid">
+    <span class="tag-chip">🔥 Värme från cellandningen</span>
+    <span class="tag-chip">🏃 Energi till rörelse och kroppsvärme</span>
+    <span class="tag-chip">🦴 Delar som inte äts, t.ex. ben och päls</span>
+    <span class="tag-chip">🍄 Avföring och döda rester som nedbrytarna tar hand om</span>
+  </div>
+
+  <p class="prose">Det är också därför näringskedjor sällan har fler än fyra eller fem led. Högst upp finns det för lite energi kvar för att försörja ännu ett steg, och därför är toppkonsumenter som vargar och örnar ganska få.</p>
+
+  <div class="key-box">
+    <h4>🔑 Kom ihåg</h4>
+    <p>En <strong>näringspyramid</strong> visar mängden organismer (biomassa/energi) på varje trofinivå: mest längst ner, minst längst upp. Energi går förlorad mellan varje nivå.</p>
+  </div>
+</div>
+</div>
+
+<!-- SEKTION 6 – SAMMANFATTNING -->
+<div class="section" id="sammanfattning">
+<div class="container">
+  <p class="section-eyebrow">Sammanfattning</p>
+  <h2 class="section-title">Det viktigaste i korthet</h2>
+
+  <div class="key-box">
+    <h4>🔑 Åtta begrepp att kunna</h4>
+    <dl>
+      <div class="term-row"><dt>Näringskedja</dt><dd> – en modell som visar näringens väg genom några arter, t.ex. gräs → hare → räv.</dd></div>
+      <div class="term-row"><dt>Näringsväv</dt><dd> – flera sammanlänkade näringskedjor i ett ekosystem.</dd></div>
+      <div class="term-row"><dt>Trofinivå</dt><dd> – en organisms plats i en näringsväv, räknat i steg från producenten.</dd></div>
+      <div class="term-row"><dt>Förstahandskonsument</dt><dd> – djur som äter växter eller alger.</dd></div>
+      <div class="term-row"><dt>Andrahandskonsument</dt><dd> – rovdjur som äter växtätare.</dd></div>
+      <div class="term-row"><dt>Tredjehandskonsument</dt><dd> – rovdjur som äter andra rovdjur.</dd></div>
+      <div class="term-row"><dt>Toppkonsument</dt><dd> – rovdjur som inte äts av andra rovdjur.</dd></div>
+      <div class="term-row"><dt>Näringspyramid</dt><dd> – visar mängden organismer (biomassa/energi) på varje trofinivå; energi går förlorad mellan varje nivå.</dd></div>
+    </dl>
+  </div>
+
+  <div class="key-box teal">
+    <h4>♻️ Energi och materia</h4>
+    <p>Energi går en väg genom ekosystemet: in som solljus, vidare via maten och ut som värme. Näringsämnen går i kretslopp: nedbrytarna återför dem till marken så att producenterna kan ta upp dem igen.</p>
+  </div>
+</div>
+</div>
+
+<!-- SEKTION 7 – KOLLA ATT DU KAN -->
+<div class="section" id="kolla">
+<div class="container">
+  <p class="section-eyebrow">Självbedömning</p>
+  <h2 class="section-title">Kolla att du kan</h2>
+  <p class="section-intro">Försök svara utan att titta i texten. Visa sedan mallsvaret och bocka i om du hade med det viktigaste.</p>
+  <div id="q-wrap"></div>
+</div>
+</div>
+
+</main>
+
+<footer>
+  <a href="nk1a1-ekologi.html">← Tillbaka till Ekologi</a> &middot; NK1a1 &middot; Näringsvävar & energiflöde
+</footer>
+
+<script src="shared.js"></script>
+<script>
+requireLogin('NK1a1');
+
+const QUESTIONS = [
+  {
+    q: "Vad är skillnaden mellan en näringskedja och en näringsväv? Ge ett exempel på en näringskedja.",
+    model: [
+      "Näringskedja: en modell som visar näringens väg genom några arter i ett ekosystem, t.ex. gräs → hare → räv.",
+      "Näringsväv: flera sammanlänkade näringskedjor i ett ekosystem."
+    ]
+  },
+  {
+    q: "Vad visar pilarna i en näringskedja?",
+    model: [
+      "Pilen pekar mot den som äter, alltså ”blir uppäten av” eller ”ger näring till”.",
+      "T.ex. i gräs → hare går näringen och energin från gräset till haren."
+    ]
+  },
+  {
+    q: "Vad är en trofinivå? Vilken trofinivå har gräs, och vilken har en hare som äter gräset?",
+    model: [
+      "En organisms plats i en näringsväv, räknat i steg från producenten.",
+      "Gräset (producent) har trofinivå 1 och haren (förstahandskonsument) har trofinivå 2."
+    ]
+  },
+  {
+    q: "Förklara skillnaden mellan förstahandskonsument, andrahandskonsument, tredjehandskonsument och toppkonsument. Ge ett exempel på var och en.",
+    model: [
+      "Förstahandskonsument: äter växter eller alger, t.ex. en hare som äter gräs.",
+      "Andrahandskonsument: rovdjur som äter växtätare, t.ex. en räv som äter en hare.",
+      "Tredjehandskonsument: rovdjur som äter andra rovdjur, t.ex. en örn som äter en räv.",
+      "Toppkonsument: rovdjur som inte äts av andra rovdjur, t.ex. en varg eller kungsörn."
+    ]
+  },
+  {
+    q: "Varför blir en näringspyramid smalare för varje nivå uppåt?",
+    model: [
+      "Energi går förlorad mellan varje trofinivå, t.ex. som värme från cellandningen och i delar som inte äts.",
+      "Det finns därför mindre energi kvar för varje steg uppåt, och färre organismer kan försörjas.",
+      "T.ex. finns det alltid mer gräs än harar, och fler harar än rävar."
+    ]
+  },
+  {
+    q: "Förklara hur energi och näringsämnen rör sig på olika sätt genom ett ekosystem.",
+    model: [
+      "Energi går en väg: in som solljus, via producenter och konsumenter, och ut som värme. Den återanvänds inte.",
+      "Näringsämnen går i kretslopp: nedbrytarna återför dem till marken så att producenterna kan ta upp dem igen."
+    ]
+  }
+];
+
+let checked = new Array(QUESTIONS.length).fill(false);
+
+function buildQuestions() {
+  const wrap = document.getElementById('q-wrap');
+  QUESTIONS.forEach((q, i) => {
+    const items = q.model.map(m => `<li>${m}</li>`).join('');
+    wrap.innerHTML += `
+      <div class="q-card">
+        <div class="q-num">Fråga ${i+1} av ${QUESTIONS.length}</div>
+        <div class="q-text">${q.q}</div>
+        <textarea class="q-textarea" id="qta-${i}" placeholder="Skriv ditt svar här..."></textarea>
+        <button class="q-btn" onclick="showModel(${i})">Visa mallsvar →</button>
+        <div class="q-model" id="qmodel-${i}">
+          <div class="q-model-header">📋 Mallsvar</div>
+          <div class="q-model-body">
+            <ul>${items}</ul>
+            <div class="q-self-check">
+              <input type="checkbox" id="qcheck-${i}" onchange="toggleCheck(${i})"/>
+              <label for="qcheck-${i}">Jag hade med det viktigaste</label>
+            </div>
+          </div>
+        </div>
+        <button class="q-retry" onclick="resetQuestion(${i})">↩ Rensa och försök igen</button>
+      </div>`;
+  });
+  updateScore();
+}
+
+function showModel(i) { document.getElementById(`qmodel-${i}`).classList.add('shown'); }
+function toggleCheck(i) { checked[i] = document.getElementById(`qcheck-${i}`).checked; updateScore(); }
+function resetQuestion(i) {
+  document.getElementById(`qta-${i}`).value = '';
+  document.getElementById(`qmodel-${i}`).classList.remove('shown');
+  document.getElementById(`qcheck-${i}`).checked = false;
+  checked[i] = false;
+  updateScore();
+}
+
+function updateScore() {
+  const n = checked.filter(Boolean).length;
+  const total = QUESTIONS.length;
+  const msg = n === total ? '🎉 Utmärkt – du kan hela avsnittet!'
+    : n >= 4 ? '👍 Bra jobbat! Kika igenom de du missat.'
+    : n >= 1 ? '📖 Bra start – fortsätt öva på resten.'
+    : '🔍 Gå tillbaka till materialet och försök igen.';
+
+  let bar = document.getElementById('q-scorebar');
+  if (!bar) {
+    document.getElementById('q-wrap').insertAdjacentHTML('afterend',
+      `<div class="q-score-bar" id="q-scorebar">
+        <div class="q-score-num" id="qs-num">${n}/${total}</div>
+        <div><div class="q-score-label">Självskattning</div><div class="q-score-msg" id="qs-msg">${msg}</div></div>
+      </div>`);
+  } else {
+    document.getElementById('qs-num').textContent = `${n}/${total}`;
+    document.getElementById('qs-msg').textContent = msg;
+  }
+}
+
+buildQuestions();
+</script>
+
+</body>
+</html>
