@@ -30,7 +30,7 @@
       justify-content: center;
       padding: 24px;
       position: relative;
-      overflow: hidden;
+      overflow-x: hidden;
     }
     body::before {
       content: '';
@@ -189,6 +189,17 @@
     }
     .teacher-link:hover { color: var(--text); }
 
+    /* ── ÖPPEN STUDIETEKNIK-LÄNK ── */
+    .open-link {
+      display: block; width: 100%; max-width: 420px; margin-top: 18px;
+      background: rgba(62,207,178,0.08); border: 1px solid rgba(62,207,178,0.3);
+      border-radius: 12px; padding: 14px 18px; text-decoration: none;
+      color: var(--text); font-size: 0.9rem; transition: all 0.2s;
+    }
+    .open-link:hover { border-color: var(--teal); background: rgba(62,207,178,0.14); }
+    .open-link strong { color: var(--teal); }
+    .open-link span { display: block; font-size: 0.76rem; color: var(--muted); margin-top: 2px; }
+
     /* ── WELCOME BACK ── */
     .welcome-tag {
       font-size: 0.8rem;
@@ -279,6 +290,8 @@
     <button class="btn btn-ghost" onclick="goBack('step-name','step-teacher')">← Tillbaka</button>
   </div>
 </div>
+
+<a class="open-link" href="studieteknik.html">📚 <strong>Plugga smart</strong> – studieteknik<span>Öppen för alla – ingen inloggning behövs</span></a>
 
 <script src="shared.js"></script>
 <script>

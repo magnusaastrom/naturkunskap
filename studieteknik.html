@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Plugga smart – studieteknik</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Mulish:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root{--bg:#faf7f2;--s:#fff;--b:#e8e0d0;--sand:#f2ece0;--rust:#b85c2a;--rust2:#d4703a;--teal:#2a7a6a;--blue:#2a4a7a;--t:#1a1612;--m:#6a5e52;--r:10px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:64px}
+body{font-family:'Mulish',sans-serif;background:var(--bg);color:var(--t);line-height:1.7;font-size:16px}
+.top-bar{background:#1a1612;padding:14px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;position:sticky;top:0;z-index:100}
+.back-link{color:#c8b89a;text-decoration:none;font-size:.82rem}.back-link:hover{color:#fff}
+.top-title{font-family:'Playfair Display',serif;font-size:1rem;color:#e8dcc8}.top-title span{color:#d4a060}
+.hero{background:linear-gradient(135deg,#1a1612 0%,#1a2820 60%,#1a1612 100%);padding:60px 32px 50px;text-align:center}
+.eyebrow{font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:#d4a060;margin-bottom:12px}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(2rem,5vw,3rem);font-weight:900;color:#f0e8d8;margin-bottom:14px;line-height:1.15}
+.hero p{color:#a09080;max-width:680px;margin:0 auto 26px}
+.nav{display:flex;flex-wrap:wrap;justify-content:center;gap:10px}
+.nav a{font-size:.8rem;color:#c8b89a;border:1px solid rgba(200,184,154,.3);border-radius:30px;padding:7px 16px;text-decoration:none}
+.nav a:hover{background:rgba(200,184,154,.12);color:#fff}
+.container{max-width:860px;margin:0 auto;padding:0 24px}
+.section{padding:56px 0}.section+.section{border-top:1px solid var(--b)}
+.sec-eyebrow{font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--rust);font-weight:600;margin-bottom:6px}
+h2{font-family:'Playfair Display',serif;font-size:clamp(1.5rem,3vw,2rem);line-height:1.25;margin-bottom:6px}
+.intro{font-size:.95rem;color:var(--m);margin-bottom:26px;max-width:680px}
+.key{background:var(--sand);border-left:4px solid var(--rust2);border-radius:0 var(--r) var(--r) 0;padding:16px 22px;margin:0 0 24px;font-size:.92rem;color:#4a3a2a}
+.key h4{font-family:'Playfair Display',serif;color:var(--rust);margin-bottom:6px}
+.dia{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:20px;margin-bottom:26px;overflow-x:auto}
+.dia h3{font-family:'Playfair Display',serif;font-size:1.05rem;margin-bottom:10px}
+.dia svg{width:100%;max-width:720px;display:block;margin:0 auto}
+.cap{font-size:.78rem;color:var(--m);text-align:center;margin-top:8px;font-style:italic}
+.tips{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:26px}
+.card{background:var(--s);border:1px solid var(--b);border-radius:var(--r);padding:18px 20px;border-top:3px solid var(--rust2)}
+.card.t{border-top-color:var(--teal)}.card.b{border-top-color:var(--blue)}
+.card h4{font-family:'Playfair Display',serif;font-size:1rem;margin-bottom:6px}
+.card p{font-size:.88rem;color:var(--m);line-height:1.6}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:26px}
+.step{background:#1a1612;border-radius:var(--r);padding:16px}
+.step b{display:block;color:#d4a060;font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;margin-bottom:6px}
+.step p{color:#e8dcc8;font-size:.86rem;line-height:1.55}
+.tbl{width:100%;border-collapse:collapse;margin-bottom:26px;font-size:.88rem}
+.tbl th{background:#1a1612;color:#e8dcc8;padding:11px 14px;text-align:left;font-family:'Playfair Display',serif}
+.tbl td{padding:10px 14px;border-bottom:1px solid var(--b);vertical-align:top}
+.tbl tr:nth-child(even) td{background:var(--sand)}.tbl td:first-child{font-weight:700}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:center;margin-bottom:26px}
+.mis{border:1px solid rgba(184,92,42,.25);background:rgba(212,112,58,.08);border-radius:var(--r);padding:16px 20px;margin-bottom:26px}
+.mis h4{font-family:'Playfair Display',serif;color:var(--rust);margin-bottom:6px}
+.mis ul{margin-left:18px;font-size:.9rem;color:#4a3a2a}
+.src{font-size:.8rem;color:var(--m)}
+.t1{font-family:Mulish,sans-serif;font-size:12px;fill:#1a1612}.t2{font-family:Mulish,sans-serif;font-size:11px;fill:#6a5e52}.t3{font-family:'Playfair Display',serif;font-size:13px;font-weight:700;fill:#1a1612}
+.sub{font-family:"Playfair Display",serif;font-size:1.15rem;margin:8px 0 14px}.rows{display:grid;gap:8px;margin-bottom:14px}.rows div{display:flex;gap:14px;background:var(--s);border:1px solid var(--b);border-radius:8px;padding:10px 14px;font-size:.9rem}.rows dt{font-weight:700;min-width:130px;flex-shrink:0}.rows dd{color:var(--m)}.more{border:1px dashed var(--b);border-radius:var(--r);background:rgba(242,236,224,.55);padding:10px 14px;margin-bottom:10px}.more summary{cursor:pointer;font-weight:700;font-size:.9rem}.more p{margin-top:8px;font-size:.9rem;color:#2a2016}
+@media(max-width:620px){.rows div{flex-direction:column;gap:2px}}
+footer{border-top:1px solid var(--b);padding:26px 24px;text-align:center;font-size:.78rem;color:var(--m)}
+footer a{color:var(--teal);text-decoration:none}
+@media(max-width:620px){.hero{padding:44px 20px 36px}.container{padding:0 16px}.tips,.two,.steps{grid-template-columns:1fr}}
+@media print{.top-bar,.nav{display:none}.hero{background:none;padding:20px 0}.hero h1{color:#000}.hero p,.eyebrow{color:#444}.section{padding:24px 0;break-inside:avoid}}
+</style>
+</head>
+<body>
+<div class="top-bar"><a class="back-link" href="index.html">← Startsidan</a><div class="top-title">Naturkunskap — <span>Plugga smart</span></div></div>
+
+<header class="hero">
+<div class="eyebrow">Studieteknik · för alla kurser</div>
+<h1>Plugga smart</h1>
+<p>Så lär du dig mer av det du gör – under lektionen, direkt efter, mellan lektionerna och inför prov. Alla råd bygger på forskning om hur minnet fungerar.</p>
+<nav class="nav"><a href="#lektion">Under lektionen</a><a href="#efter">Efter lektionen</a><a href="#mellan">Mellan lektionerna</a><a href="#prov">Inför prov</a></nav>
+</header>
+
+<main class="container">
+<section class="section" style="border-top:none">
+<div class="key"><h4>Känslan av att kunna är inte samma sak som att kunna</h4>
+Läser du samma text flera gånger blir den bekant, och bekant känns som "jag kan det här". Men att <strong>känna igen</strong> något är lättare än att <strong>komma ihåg</strong> det utan hjälp – och det sista är vad prov och verkligheten kräver. Metoder som känns jobbiga är ofta de som ger mest, eftersom hjärnan lär sig när den får anstränga sig.</div>
+<div class="key" style="border-left-color:var(--teal)"><h4 style="color:var(--teal)">Orkar du bara göra en sak?</h4>Stäng boken och testa dig själv i stället för att läsa om. Gör det flera gånger, utspritt över flera dagar.</div>
+</section>
+
+<section class="section" id="lektion">
+<div class="sec-eyebrow">1 · Under lektionen</div>
+<h2>Fånga det som är viktigt</h2>
+<p class="intro">Allt du lär dig går genom samma trånga passage. Det du inte uppmärksammar kommer aldrig in i långtidsminnet.</p>
+<div class="dia"><h3>Så fungerar minnet</h3>
+<svg viewBox="0 0 720 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Minnesmodell: input, fokus, arbetsminne, långtidsminne">
+<defs><marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L10,3 L0,6 Z" fill="#2a7a6a"/></marker></defs>
+<rect x="10" y="30" width="190" height="240" rx="10" fill="#f2ece0" stroke="#e8e0d0" stroke-width="1.5"/><circle cx="82" cy="157" r="3" fill="#b85c2a" opacity="0.9"/><circle cx="144" cy="119" r="3" fill="#b85c2a" opacity="0.25"/><circle cx="27" cy="182" r="4" fill="#b85c2a" opacity="0.25"/><circle cx="78" cy="213" r="4" fill="#b85c2a" opacity="0.6"/><circle cx="66" cy="107" r="4" fill="#b85c2a" opacity="0.4"/><circle cx="28" cy="244" r="4" fill="#b85c2a" opacity="0.6"/><circle cx="71" cy="122" r="4" fill="#b85c2a" opacity="0.6"/><circle cx="182" cy="175" r="3" fill="#b85c2a" opacity="0.6"/><circle cx="121" cy="209" r="3.5" fill="#b85c2a" opacity="0.4"/><circle cx="85" cy="201" r="4" fill="#b85c2a" opacity="0.25"/><circle cx="162" cy="156" r="3" fill="#b85c2a" opacity="0.6"/><circle cx="168" cy="260" r="4" fill="#b85c2a" opacity="0.4"/><circle cx="127" cy="188" r="4" fill="#b85c2a" opacity="0.9"/><circle cx="137" cy="121" r="3.5" fill="#b85c2a" opacity="0.6"/><circle cx="88" cy="91" r="3" fill="#b85c2a" opacity="0.25"/><circle cx="140" cy="240" r="4" fill="#b85c2a" opacity="0.9"/><circle cx="109" cy="117" r="3.5" fill="#b85c2a" opacity="0.25"/><circle cx="127" cy="131" r="5" fill="#b85c2a" opacity="0.6"/><circle cx="69" cy="171" r="5" fill="#b85c2a" opacity="0.6"/><circle cx="184" cy="222" r="3.5" fill="#b85c2a" opacity="0.6"/><circle cx="47" cy="95" r="3.5" fill="#b85c2a" opacity="0.6"/><circle cx="171" cy="237" r="3.5" fill="#b85c2a" opacity="0.25"/><circle cx="106" cy="125" r="4" fill="#b85c2a" opacity="0.9"/><circle cx="28" cy="90" r="4" fill="#b85c2a" opacity="0.25"/><circle cx="95" cy="252" r="4" fill="#b85c2a" opacity="0.25"/><circle cx="104" cy="153" r="4" fill="#b85c2a" opacity="0.4"/><circle cx="188" cy="185" r="3" fill="#b85c2a" opacity="0.6"/><circle cx="180" cy="129" r="5" fill="#b85c2a" opacity="0.6"/><circle cx="56" cy="144" r="5" fill="#b85c2a" opacity="0.4"/><circle cx="106" cy="226" r="3" fill="#b85c2a" opacity="0.6"/><circle cx="33" cy="196" r="3.5" fill="#b85c2a" opacity="0.6"/><circle cx="114" cy="154" r="3" fill="#b85c2a" opacity="0.9"/><circle cx="75" cy="188" r="3.5" fill="#b85c2a" opacity="0.25"/><circle cx="37" cy="95" r="3" fill="#b85c2a" opacity="0.4"/><circle cx="174" cy="253" r="3.5" fill="#b85c2a" opacity="0.25"/><circle cx="161" cy="205" r="3.5" fill="#b85c2a" opacity="0.6"/><circle cx="31" cy="111" r="4" fill="#b85c2a" opacity="0.9"/><circle cx="188" cy="131" r="5" fill="#b85c2a" opacity="0.4"/><circle cx="83" cy="192" r="5" fill="#b85c2a" opacity="0.9"/><circle cx="31" cy="136" r="5" fill="#b85c2a" opacity="0.9"/><circle cx="85" cy="245" r="5" fill="#b85c2a" opacity="0.4"/><circle cx="149" cy="128" r="3" fill="#b85c2a" opacity="0.25"/><circle cx="87" cy="144" r="3.5" fill="#b85c2a" opacity="0.4"/><circle cx="81" cy="186" r="4" fill="#b85c2a" opacity="0.4"/><circle cx="105" cy="93" r="4" fill="#b85c2a" opacity="0.25"/><circle cx="167" cy="183" r="3" fill="#b85c2a" opacity="0.9"/>
+<text x="105" y="52" text-anchor="middle" class="t3">1 Input</text><text x="105" y="68" text-anchor="middle" class="t2">oändligt många intryck</text>
+<polygon points="210,30 282,135 282,165 210,270" fill="#d4703a" opacity=".3" stroke="#d4703a" stroke-width="1.5"/>
+<text x="246" y="22" text-anchor="middle" class="t3">2 Fokus</text>
+<circle cx="262" cy="148" r="3.5" fill="#b85c2a"/><circle cx="272" cy="154" r="3.5" fill="#b85c2a"/><circle cx="258" cy="158" r="3.5" fill="#b85c2a"/>
+<text x="246" y="290" text-anchor="middle" class="t2" style="fill:#b85c2a">bara det du fokuserar på tar sig in</text>
+<line x1="284" y1="150" x2="300" y2="150" stroke="#2a7a6a" stroke-width="2" marker-end="url(#a)"/>
+<text x="355" y="108" text-anchor="middle" class="t3">3 Arbetsminne</text>
+<rect x="300" y="118" width="110" height="64" rx="8" fill="#e8f0f8" stroke="#2a4a7a" stroke-width="1.5"/><rect x="308" y="138" width="20" height="20" rx="4" fill="#2a4a7a" stroke="#2a4a7a" stroke-width="1.5"/><rect x="334" y="138" width="20" height="20" rx="4" fill="#2a4a7a" stroke="#2a4a7a" stroke-width="1.5"/><rect x="360" y="138" width="20" height="20" rx="4" fill="#2a4a7a" stroke="#2a4a7a" stroke-width="1.5"/><rect x="386" y="138" width="20" height="20" rx="4" fill="#fff" stroke="#2a4a7a" stroke-width="1.5"/>
+<text x="355" y="173" text-anchor="middle" class="t2">ca 4 nya saker</text>
+<line x1="412" y1="132" x2="468" y2="132" stroke="#2a7a6a" stroke-width="2.5" marker-end="url(#a)"/><text x="440" y="124" text-anchor="middle" class="t2" style="fill:#2a7a6a;font-weight:700">lagra</text>
+<line x1="468" y1="168" x2="412" y2="168" stroke="#2a7a6a" stroke-width="2.5" stroke-dasharray="5 4" marker-end="url(#a)"/><text x="440" y="186" text-anchor="middle" class="t2" style="fill:#2a7a6a;font-weight:700">avlastar</text>
+<rect x="470" y="30" width="240" height="240" rx="10" fill="#e6f2ef" stroke="#2a7a6a" stroke-width="1.5"/><line x1="500" y1="100" x2="560" y2="90" stroke="#2a7a6a" stroke-width="1.5" opacity=".5"/><line x1="560" y1="90" x2="630" y2="105" stroke="#2a7a6a" stroke-width="1.5" opacity=".5"/><line x1="630" y1="105" x2="690" y2="95" stroke="#2a7a6a" stroke-width="1.5" opacity=".5"/><line x1="500" y1="100" x2="520" y2="150" stroke="#2a7a6a" stroke-width="1.5" opacity=".5"/><line x1="560" y1="90" x2="585" y2="140" stroke="#2a7a6a" stroke-width="1.5" opacity=".5"/><line x1="630" y1="105" x2="650" y2="155" stroke="#2a7a6a" stroke-width="1.5" opacity=".5"/><line x1="690" y1="95" x2="650" y2="155" stroke="#2a7a6a" stroke-width="1.5" opacity=".5"/><line x1="520" y1="150" x2="585" y2="140" stroke="#2a7a6a" stroke-width="1.5" opacity=".5"/><line x1="585" y1="140" x2="650" y2="155" stroke="#2a7a6a" stroke-width="1.5" opacity=".5"/><line x1="520" y1="150" x2="500" y2="205" stroke="#2a7a6a" stroke-width="1.5" opacity=".5"/><line x1="585" y1="140" x2="560" y2="195" stroke="#2a7a6a" stroke-width="1.5" opacity=".5"/><line x1="650" y1="155" x2="625" y2="210" stroke="#2a7a6a" stroke-width="1.5" opacity=".5"/><line x1="650" y1="155" x2="690" y2="200" stroke="#2a7a6a" stroke-width="1.5" opacity=".5"/><line x1="500" y1="205" x2="560" y2="195" stroke="#2a7a6a" stroke-width="1.5" opacity=".5"/><line x1="560" y1="195" x2="625" y2="210" stroke="#2a7a6a" stroke-width="1.5" opacity=".5"/><line x1="625" y1="210" x2="690" y2="200" stroke="#2a7a6a" stroke-width="1.5" opacity=".5"/><line x1="560" y1="195" x2="540" y2="240" stroke="#2a7a6a" stroke-width="1.5" opacity=".5"/><line x1="625" y1="210" x2="610" y2="245" stroke="#2a7a6a" stroke-width="1.5" opacity=".5"/><line x1="690" y1="200" x2="680" y2="245" stroke="#2a7a6a" stroke-width="1.5" opacity=".5"/><line x1="540" y1="240" x2="610" y2="245" stroke="#2a7a6a" stroke-width="1.5" opacity=".5"/><line x1="610" y1="245" x2="680" y2="245" stroke="#2a7a6a" stroke-width="1.5" opacity=".5"/><circle cx="500" cy="100" r="6" fill="#2a7a6a"/><circle cx="560" cy="90" r="6" fill="#2a7a6a"/><circle cx="630" cy="105" r="6" fill="#2a7a6a"/><circle cx="690" cy="95" r="6" fill="#2a7a6a"/><circle cx="520" cy="150" r="6" fill="#2a7a6a"/><circle cx="585" cy="140" r="6" fill="#2a7a6a"/><circle cx="650" cy="155" r="6" fill="#2a7a6a"/><circle cx="500" cy="205" r="6" fill="#2a7a6a"/><circle cx="560" cy="195" r="6" fill="#2a7a6a"/><circle cx="625" cy="210" r="6" fill="#2a7a6a"/><circle cx="690" cy="200" r="6" fill="#2a7a6a"/><circle cx="540" cy="240" r="6" fill="#2a7a6a"/><circle cx="610" cy="245" r="6" fill="#2a7a6a"/><circle cx="680" cy="245" r="6" fill="#2a7a6a"/>
+<text x="590" y="52" text-anchor="middle" class="t3">4 Långtidsminne</text><text x="590" y="68" text-anchor="middle" class="t2">allt du redan kan, kopplat ihop</text>
+</svg><p class="cap">Arbetsminnet är litet. Input och långtidsminnet är enormt mycket större.</p></div>
+<dl class="rows">
+<div><dt>1 Input</dt><dd>Mycket mer information än du hinner ta in. Det mesta försvinner.</dd></div>
+<div><dt>2 Fokus</dt><dd>Det du uppmärksammar släpps in. Resten når aldrig hit.</dd></div>
+<div><dt>3 Arbetsminne</dt><dd>Här tänker du. Plats för ca fyra nya saker, i ungefär en halv minut.</dd></div>
+<div><dt>4 Långtidsminne</dt><dd>Allt du redan kan. Det avlastar arbetsminnet.</dd></div>
+</dl>
+<details class="more"><summary>Läs mer: Input</summary><p>Varje sekund tar dina sinnen emot ljud, ljus, lukter och beröring: klasskompisar som pratar, mobilen som lyser, läraren som förklarar. Det är mycket mer än hjärnan kan bearbeta. Det mesta försvinner inom några sekunder utan att du märker det, och det är normalt.</p></details>
+<details class="more"><summary>Läs mer: Fokus</summary><p>Det du riktar uppmärksamheten mot släpps in, resten når aldrig vidare. Du kan inte fokusera på två krävande saker samtidigt. Hjärnan hoppar fram och tillbaka och tappar något varje gång. Lyssnar du på genomgången och kollar mobilen gör du ingen av sakerna bra.</p></details>
+<details class="more"><summary>Läs mer: Arbetsminnet</summary><p>Här sker själva tänkandet: du förstår, räknar och kopplar ihop. Men tankebänken är liten. Du kan hålla ungefär fyra nya saker i huvudet samtidigt, och de försvinner inom en halv minut om du inte använder dem. Kommer det för mycket nytt, eller för snabbt, blir arbetsminnet överbelastat och du tappar tråden. Det beror inte på att du är dum. Alla har samma begränsning.</p></details>
+<details class="more"><summary>Läs mer: Långtidsminnet</summary><p>Här finns allt du har med dig sedan tidigare: fakta, begrepp, erfarenheter och hur man gör saker. Det rymmer i praktiken obegränsat och kan hålla i åratal. Det du redan kan tar nästan ingen plats i arbetsminnet, eftersom hjärnan hanterar det som en enda enhet. Prova: <strong>C₆H₁₂O₆ + 6 O₂ → 6 CO₂ + 6 H₂O</strong> ser ut som en lång rad med tecken du måste hålla reda på. Men har du redan lärt dig att det är <em>cellandningen</em> blir det en enda sak att komma ihåg, och du kan lägga din uppmärksamhet på vad den betyder i stället för på tecknen. Därför är det lättare att lära sig nytt som hänger ihop med något du redan vet.</p></details>
+<h3 class="sub">Vad betyder det för dig?</h3>
+<div class="tips">
+<div class="card"><h4>1. Skydda fokus</h4><p>Mobilen på ljudlöst och utom synhåll. Det du inte uppmärksammar kan du inte komma ihåg.</p></div>
+<div class="card t"><h4>2. Ett steg i taget</h4><p>Skriv ner mellanled, och be om hjälp när det går för fort.</p></div>
+<div class="card b"><h4>3. Koppla till det du kan</h4><p>Fråga dig själv: vad liknar det här? Vad känner jag igen?</p></div>
+<div class="card t"><h4>4. Plocka fram det</h4><p>Varje gång du hämtar något ur minnet blir det starkare och lättare att hitta nästa gång.</p></div>
+</div>
+<div class="two"><div>
+<h3 style="font-family:'Playfair Display',serif;margin-bottom:8px">Anteckna – men på rätt sätt</h3>
+<p style="font-size:.92rem;color:#2a2016;margin-bottom:10px">Anteckningar hjälper dig på två sätt: du bearbetar stoffet medan du skriver, och du får något att repetera från sedan. Det fungerar bäst om du skriver <strong>korta anteckningar med egna ord</strong> i stället för att skriva ordagrant.</p>
+<p style="font-size:.92rem;color:#2a2016">Lämna luft i marginalen och skriv egna frågor där. Fyll i luckor så snart genomgången är klar.</p><ul style="font-size:.9rem;color:#2a2016;margin:10px 0 0 18px"><li><strong>Börja med att plocka fram:</strong> skriv vad du minns från förra lektionen innan du tittar i anteckningarna.</li><li><strong>Gissa först:</strong> svara tyst på lärarens frågor innan svaret kommer.</li><li><strong>Skriv inte av bilden:</strong> anteckna det som inte redan står där.</li></ul></div>
+<div class="dia" style="margin:0;padding:12px"><svg viewBox="0 0 300 250" xmlns="http://www.w3.org/2000/svg" style="max-width:300px">
+<rect x="5" y="5" width="290" height="240" rx="6" fill="#fff" stroke="#6a5e52" stroke-width="1.5"/>
+<line x1="95" y1="5" x2="95" y2="185" stroke="#6a5e52"/><line x1="5" y1="185" x2="295" y2="185" stroke="#6a5e52"/>
+<rect x="6" y="6" width="88" height="24" fill="#f2ece0"/><rect x="96" y="6" width="198" height="24" fill="#e8f0f8"/><rect x="6" y="186" width="288" height="24" fill="#e6f2ef"/>
+<text x="50" y="23" text-anchor="middle" class="t1" style="font-weight:700">Frågor</text><text x="195" y="23" text-anchor="middle" class="t1" style="font-weight:700">Anteckningar</text><text x="150" y="203" text-anchor="middle" class="t1" style="font-weight:700">Sammanfattning</text>
+<text x="50" y="60" text-anchor="middle" class="t2">Varför?</text><text x="50" y="80" text-anchor="middle" class="t2">Hur hänger</text><text x="50" y="94" text-anchor="middle" class="t2">det ihop?</text>
+<g stroke="#bbb" stroke-width="2"><line x1="108" y1="55" x2="280" y2="55"/><line x1="108" y1="75" x2="260" y2="75"/><line x1="108" y1="95" x2="275" y2="95"/><line x1="108" y1="115" x2="240" y2="115"/><line x1="108" y1="135" x2="270" y2="135"/></g>
+<text x="150" y="232" text-anchor="middle" class="t2">1–2 meningar, egna ord</text>
+</svg><p class="cap">Cornell-ark</p></div></div>
+</section>
+
+<section class="section" id="efter">
+<div class="sec-eyebrow">2 · Direkt efter lektionen</div>
+<h2>De fem viktigaste minuterna</h2>
+<p class="intro">Glömskan är som snabbast direkt efter att du lärt dig något. Därför gör en kort insats här störst nytta.</p>
+<div class="steps">
+<div class="step"><b>Minut 1</b><p>Stäng boken och lägg undan anteckningarna.</p></div>
+<div class="step"><b>Minut 2–3</b><p>Brain dump: skriv allt du minns om lektionen på ett tomt papper.</p></div>
+<div class="step"><b>Minut 4</b><p>Jämför med anteckningarna. Markera det du missade.</p></div>
+<div class="step"><b>Minut 5</b><p>Skriv 2–3 frågor som du kan svara på nästa dag.</p></div>
+</div>
+<div class="tips">
+<div class="card t"><h4>Gör din egen exit ticket</h4><p>Svara på tre frågor: Vad var viktigast idag? Vad är fortfarande oklart? Vilken fråga skulle kunna komma på ett prov?</p></div>
+<div class="card b"><h4>Mest oklara punkten</h4><p>Skriv en mening om det som var svårast. Då vet du vad du ska fråga om nästa lektion.</p></div>
+<div class="card"><h4>Förklara på en minut</h4><p>Förklara dagens lektion för en kompis, en förälder eller högt för dig själv. Kan du inte förklara det enkelt har du hittat en lucka.</p></div>
+<div class="card t"><h4>Det är okej att svara fel</h4><p>Misstag i det här skedet är bra. Rättelsen gör att du kommer ihåg rätt svar bättre.</p></div>
+</div>
+</section>
+
+<section class="section" id="mellan">
+<div class="sec-eyebrow">3 · Mellan lektionerna</div>
+<h2>Hindra glömskan</h2>
+<p class="intro">Utan repetition glömmer vi snabbt, för att sedan glömma långsammare. Varje gång du plockar fram något ur minnet blir kurvan flackare och minnet stärks.</p>
+<div class="dia"><h3>Glömskekurvan (Ebbinghaus)</h3>
+<svg viewBox="0 0 720 270" xmlns="http://www.w3.org/2000/svg">
+<line x1="50" y1="20" x2="50" y2="225" stroke="#6a5e52" stroke-width="1.5"/><line x1="50" y1="225" x2="700" y2="225" stroke="#6a5e52" stroke-width="1.5"/>
+<text x="14" y="125" class="t2" transform="rotate(-90 14,125)" text-anchor="middle">Det du kommer ihåg</text><text x="375" y="258" class="t2" text-anchor="middle">Tid sedan lektionen</text>
+<path d="M60,40 C85,130 110,170 160,190 S300,208 690,216" fill="none" stroke="#b85c2a" stroke-width="3"/>
+<path d="M60,40 C85,100 110,120 140,128 L140,40 C170,85 200,105 230,110 L230,40 C270,72 310,88 360,92 L360,40 C420,62 470,72 540,76 L540,40 C590,54 640,60 690,63" fill="none" stroke="#2a7a6a" stroke-width="3"/>
+<g stroke="#2a7a6a" stroke-width="1" stroke-dasharray="3 3"><line x1="140" y1="40" x2="140" y2="225"/><line x1="230" y1="40" x2="230" y2="225"/><line x1="360" y1="40" x2="360" y2="225"/><line x1="540" y1="40" x2="540" y2="225"/></g>
+<text x="140" y="240" class="t2" text-anchor="middle">1 dag</text><text x="230" y="240" class="t2" text-anchor="middle">3 dagar</text><text x="360" y="240" class="t2" text-anchor="middle">1 vecka</text><text x="540" y="240" class="t2" text-anchor="middle">3 veckor</text>
+<text x="420" y="205" class="t1" style="fill:#b85c2a;font-weight:700">Utan repetition</text><text x="420" y="35" class="t1" style="fill:#2a7a6a;font-weight:700">Med repetition (testa dig själv)</text>
+</svg><p class="cap">Schematisk bild. Själva mönstret är väl belagt i forskning, men exakta siffror varierar.</p></div>
+<div class="dia"><h3>Flashcards med Leitner-lådor</h3>
+<svg viewBox="0 0 720 210" xmlns="http://www.w3.org/2000/svg">
+<defs><marker id="g2" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L10,3 L0,6 Z" fill="#2a7a6a"/></marker><marker id="r2" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L10,3 L0,6 Z" fill="#b85c2a"/></marker></defs>
+<rect x="30" y="50" width="170" height="80" rx="10" fill="#f2ece0" stroke="#b85c2a" stroke-width="1.5"/><text x="115" y="82" text-anchor="middle" class="t3">Låda 1</text><text x="115" y="102" text-anchor="middle" class="t2">nya / svåra · varje dag</text>
+<rect x="275" y="50" width="170" height="80" rx="10" fill="#e8f0f8" stroke="#2a4a7a" stroke-width="1.5"/><text x="360" y="82" text-anchor="middle" class="t3">Låda 2</text><text x="360" y="102" text-anchor="middle" class="t2">ibland · varannan–var 3:e dag</text>
+<rect x="520" y="50" width="170" height="80" rx="10" fill="#e6f2ef" stroke="#2a7a6a" stroke-width="1.5"/><text x="605" y="82" text-anchor="middle" class="t3">Låda 3</text><text x="605" y="102" text-anchor="middle" class="t2">sitter bra · 1 gång i veckan</text>
+<line x1="200" y1="90" x2="273" y2="90" stroke="#2a7a6a" stroke-width="2.5" marker-end="url(#g2)"/><line x1="445" y1="90" x2="518" y2="90" stroke="#2a7a6a" stroke-width="2.5" marker-end="url(#g2)"/>
+<text x="237" y="80" text-anchor="middle" class="t2" style="fill:#2a7a6a;font-weight:700">rätt</text><text x="482" y="80" text-anchor="middle" class="t2" style="fill:#2a7a6a;font-weight:700">rätt</text>
+<path d="M360,132 C360,190 115,190 115,132" fill="none" stroke="#b85c2a" stroke-width="2" marker-end="url(#r2)"/><path d="M605,132 C605,200 130,200 130,134" fill="none" stroke="#b85c2a" stroke-width="2" marker-end="url(#r2)"/>
+<text x="360" y="200" text-anchor="middle" class="t2" style="fill:#b85c2a;font-weight:700">fel → tillbaka till låda 1</text>
+</svg><p class="cap">Rätt svar flyttar kortet framåt, fel svar flyttar det tillbaka. Då tränar du mest på det du kan sämst.</p></div>
+<div class="tips">
+<div class="card t"><h4>Sprid ut det</h4><p>Repetera efter 1 dag, 3 dagar, 1 vecka och sedan någon gång inom 2–3 veckor. Fyra pass à 15 minuter slår ett pass på en timme.</p></div>
+<div class="card"><h4>Blanda gammalt och nytt</h4><p>Ta med frågor från tidigare moment i varje pass. Det känns krångligare men tränar dig i att välja rätt kunskap.</p></div>
+<div class="card b"><h4>Testa dig, bedöm sedan</h4><p>Efter omläsning tror de flesta att de kan mer än de gör. Testa dig först och bedöm därefter hur väl du kan stoffet.</p></div>
+<div class="card t"><h4>Sov</h4><p>Under sömnen stabiliseras det du lärt dig. Kvällen före är därför dålig tid för att trycka in allt.</p></div>
+</div>
+</section>
+
+<section class="section" id="prov">
+<div class="sec-eyebrow">4 · Inför prov</div>
+<h2>Plugga så att det sitter på provdagen</h2>
+<p class="intro">Samma principer som tidigare, men med en tydlig plan. Börja i god tid.</p>
+<div class="steps">
+<div class="step"><b>7 dagar före</b><p>Gör en lista över momenten. Testa dig på alla, utan material.</p></div>
+<div class="step"><b>3 dagar före</b><p>Fokusera på det du missade. Blanda frågor från olika moment.</p></div>
+<div class="step"><b>Dagen före</b><p>Kort repetition och självtest. Inget nytt stoff. Sov ordentligt.</p></div>
+<div class="step"><b>Provdagen</b><p>Äta, vila och läsa frågorna noga. Försök förklara sambanden.</p></div>
+</div>
+<table class="tbl"><thead><tr><th>Det många gör</th><th>Varför det lurar dig</th><th>Gör så här i stället</th></tr></thead><tbody>
+<tr><td>Läser om texten flera gånger</td><td>Den känns bekant, så du tror att du kan den</td><td>Stäng boken och återge det du minns</td></tr>
+<tr><td>Stryker under med överstrykningspenna</td><td>Känns aktivt, men du tänker sällan särskilt mycket</td><td>Skriv egna frågor av det du hade strukit under</td></tr>
+<tr><td>Läser någon annans sammanfattning</td><td>Någon annan har gjort tankejobbet åt dig</td><td>Skriv din egen utan att titta i boken</td></tr>
+<tr><td>Pluggar allt kvällen före</td><td>Funkar till provet, sedan försvinner det</td><td>Fördela pluggandet över flera dagar</td></tr>
+</tbody></table>
+<div class="mis"><h4>Vanliga missförstånd</h4><ul>
+<li>"Jag har läst det tre gånger, så jag kan det." Bekant är inte samma sak som inlärt.</li>
+<li>"Jag är en visuell inlärare." Det finns inget stöd för att det hjälper att anpassa pluggandet efter inlärningsstil.</li>
+<li>"Det ska kännas lätt när jag pluggar rätt." Ofta är det tvärtom: det som känns svårt ger bäst effekt.</li></ul></div>
+<p class="src"><strong>Läs mer:</strong> Dunlosky et al. (2013), <em>Improving Students' Learning With Effective Learning Techniques</em>. Roediger &amp; Karpicke (2006), testing effect. Cepeda et al. (2006), spaced practice. Murre &amp; Dros (2015), replikation av Ebbinghaus glömskekurva. Weinstein &amp; Sumeracki (2019), <em>Understanding How We Learn</em>.</p>
+</section>
+</main>
+<footer><a href="index.html">← Startsidan</a> &middot; Naturkunskap &middot; Plugga smart</footer>
+</body>
+</html>
