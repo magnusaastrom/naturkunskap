@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Lokala miljöproblem – NK1b</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Mulish:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #faf7f2; --surface: #ffffff; --border: #e8e0d0;
+      --sand: #f2ece0; --rust: #b85c2a; --rust2: #d4703a;
+      --teal: #2a7a6a; --blue: #2a4a7a; --text: #1a1612;
+      --muted: #6a5e52; --radius: 10px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Mulish', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; font-size: 16px; }
+
+    .top-bar { background: #1a1612; padding: 14px 28px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; position: sticky; top: 0; z-index: 100; }
+    .back-link { color: #c8b89a; text-decoration: none; font-size: .82rem; transition: color .2s; }
+    .back-link:hover { color: #fff; }
+    .top-title { font-family: 'Playfair Display', serif; font-size: 1rem; color: #e8dcc8; }
+    .top-title span { color: #d4a060; }
+
+    .hero { background: linear-gradient(135deg, #1a1612 0%, #1a2820 60%, #1a1612 100%); padding: 64px 32px 56px; text-align: center; position: relative; overflow: hidden; }
+    .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 60% 60% at 30% 50%, rgba(42,122,106,.12) 0%, transparent 60%), radial-gradient(ellipse 50% 70% at 80% 30%, rgba(180,92,42,.06) 0%, transparent 55%); pointer-events: none; }
+    .hero-eyebrow { font-size: .72rem; letter-spacing: .22em; text-transform: uppercase; color: #d4a060; margin-bottom: 12px; }
+    .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 5vw, 3rem); font-weight: 900; color: #f0e8d8; margin-bottom: 16px; line-height: 1.15; }
+    .hero-sub { font-size: 1rem; color: #a09080; max-width: 560px; margin: 0 auto 32px; line-height: 1.7; }
+    .hero-nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+    .hero-nav a { font-size: .8rem; color: #c8b89a; border: 1px solid rgba(200,184,154,.3); border-radius: 30px; padding: 7px 16px; text-decoration: none; transition: all .2s; }
+    .hero-nav a:hover { background: rgba(200,184,154,.12); color: #fff; }
+
+    .container { max-width: 860px; margin: 0 auto; padding: 0 24px; }
+    .section { padding: 60px 0; }
+    .section + .section { border-top: 1px solid var(--border); }
+
+    .section-eyebrow { font-size: .7rem; letter-spacing: .2em; text-transform: uppercase; color: var(--rust); font-weight: 600; margin-bottom: 8px; }
+    .section-title { font-family: 'Playfair Display', serif; font-size: clamp(1.5rem, 3vw, 2rem); color: var(--text); margin-bottom: 6px; line-height: 1.25; }
+    .section-intro { font-size: .95rem; color: var(--muted); margin-bottom: 32px; max-width: 640px; line-height: 1.7; }
+
+    .prose { font-size: .95rem; line-height: 1.75; color: #2a2016; margin-bottom: 24px; }
+    .prose strong { color: var(--text); font-weight: 600; }
+
+    .key-box { background: var(--sand); border-left: 4px solid var(--rust2); border-radius: 0 var(--radius) var(--radius) 0; padding: 18px 22px; margin-bottom: 28px; }
+    .key-box h4 { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--rust); margin-bottom: 10px; }
+    .key-box p { font-size: .88rem; color: #4a3a2a; line-height: 1.65; }
+    .key-box dl { font-size: .88rem; color: #4a3a2a; display: flex; flex-direction: column; gap: 8px; }
+    .key-box dt { font-weight: 600; color: var(--text); display: inline; }
+    .key-box dd { display: inline; margin: 0; }
+    .key-box .term-row { line-height: 1.55; }
+
+    .tag-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
+    .tag-chip { background: var(--sand); border: 1px solid var(--border); border-radius: 30px; padding: 6px 14px; font-size: .82rem; color: #4a3a2a; }
+
+    .factor-columns { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin-bottom: 12px; }
+    .factor-columns h4 { font-family: 'Playfair Display', serif; font-size: .95rem; margin-bottom: 12px; color: var(--text); }
+    .factor-columns .tag-grid { margin-bottom: 0; }
+
+    .key-box.teal { border-left-color: var(--teal); }
+    .key-box.teal h4 { color: var(--teal); }
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 28px; }
+    .two-col .key-box { margin-bottom: 0; }
+    .sub-title { font-family: 'Playfair Display', serif; font-size: 1.2rem; margin: 36px 0 12px; color: var(--text); }
+    .note-small { font-size: .8rem; color: var(--muted); margin: 8px 0 28px; }
+
+    details.more { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 0; margin: 0 0 28px; }
+    details.more summary { cursor: pointer; padding: 14px 18px; font-weight: 600; font-size: .9rem; color: var(--rust); list-style: none; }
+    details.more summary::-webkit-details-marker { display: none; }
+    details.more summary::before { content: '▸ '; }
+    details.more[open] summary::before { content: '▾ '; }
+    details.more p { padding: 0 18px 16px; font-size: .9rem; line-height: 1.7; color: #4a3a2a; }
+
+    .num { flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; border-radius: 50%; background: #1a1612; color: #fff; font-size: .78rem; font-weight: 700; }
+    .steps { display: flex; align-items: stretch; gap: 8px; margin: 0 0 24px; }
+    .step { flex: 1; background: var(--sand); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 12px; font-size: .84rem; color: #4a3a2a; line-height: 1.45; display: flex; flex-direction: column; gap: 8px; }
+    .step-arrow { align-self: center; color: var(--rust); font-weight: 700; }
+
+    .arch-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 24px; }
+    .arch-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; }
+    .arch-card .ic { font-size: 1.6rem; margin-bottom: 6px; }
+    .arch-card h4 { font-family: 'Playfair Display', serif; font-size: .98rem; margin-bottom: 4px; }
+    .arch-card p { font-size: .82rem; color: var(--muted); line-height: 1.5; }
+
+    .effect-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 28px; }
+    .effect { display: flex; gap: 12px; align-items: flex-start; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px; }
+    .effect:last-child { grid-column: 1 / -1; }
+    .effect p { font-size: .88rem; color: #4a3a2a; line-height: 1.55; }
+
+    .dim-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 28px; }
+    .dim-card { background: var(--surface); border: 1px solid var(--border); border-top: 5px solid var(--border); border-radius: var(--radius); padding: 18px; }
+    .dim-card.eco { border-top-color: #3a8a4a; }
+    .dim-card.soc { border-top-color: #c0566a; }
+    .dim-card.eko { border-top-color: #3a78b8; }
+    .dim-card h3 { font-family: 'Playfair Display', serif; font-size: 1.02rem; margin-bottom: 8px; }
+    .dim-card p { font-size: .86rem; color: #4a3a2a; line-height: 1.55; }
+
+    .chains { display: grid; gap: 12px; }
+    .chain { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; }
+    .cb { flex: 1 1 110px; min-width: 100px; padding: 10px 12px; border-radius: 10px; font-size: .8rem; font-weight: 600; text-align: center; color: #fff; line-height: 1.35; }
+    .cb.c1 { background: #a23a98; } .cb.c2 { background: #2a6e99; } .cb.c3 { background: #5f8f6e; } .cb.c4 { background: #d4703a; }
+    .cb.ans { background: #f2ece0; color: #6a5e52; border: 2px dashed #b8a888; }
+    .cb.ans.shown { background: #fff; color: #1a1612; border: 2px solid var(--teal); text-align: left; font-weight: 500; }
+    .ar { color: var(--muted); font-weight: 700; }
+    .chain-btn { margin-left: auto; background: var(--rust); color: #fff; border: none; border-radius: 30px; padding: 8px 16px; font-family: inherit; font-size: .8rem; font-weight: 700; cursor: pointer; }
+    .chain-btn:hover { background: var(--rust2); }
+
+    .sc-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 24px; }
+    .sc-card { background: var(--surface); border: 1px solid var(--border); border-top: 5px solid var(--border); border-radius: var(--radius); padding: 16px; display: flex; flex-direction: column; }
+    .sc-card.low { border-top-color: #2a7a6a; } .sc-card.mid { border-top-color: #d4a060; } .sc-card.high { border-top-color: #b3261e; }
+    .sc-tag { display: inline-block; align-self: flex-start; font-size: .72rem; font-weight: 700; background: var(--sand); border-radius: 30px; padding: 3px 10px; margin-bottom: 8px; color: var(--muted); }
+    .sc-card h4 { font-family: 'Playfair Display', serif; font-size: 1.02rem; margin-bottom: 8px; }
+    .sc-card p { font-size: .84rem; color: #4a3a2a; line-height: 1.55; margin-bottom: 8px; }
+    .sc-card p.res { margin-top: auto; padding-top: 8px; border-top: 1px solid var(--border); font-weight: 700; color: var(--text); }
+
+    .reflect-grid { display: grid; gap: 12px; margin-bottom: 28px; }
+    .reflect-card { display: flex; gap: 14px; align-items: flex-start; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 18px; }
+    .reflect-card p { font-size: .92rem; color: #4a3a2a; line-height: 1.55; }
+    .plain-list { margin: 8px 0 12px 20px; font-size: .9rem; color: #4a3a2a; line-height: 1.6; }
+    .link-line { margin: 10px 0; }
+    .link-btn { display: inline-block; background: var(--rust); color: #fff; text-decoration: none; font-weight: 700; font-size: .88rem; padding: 10px 20px; border-radius: 30px; }
+    .link-btn.alt { background: var(--teal); }
+    .link-btn:hover { opacity: .9; }
+    .src-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 28px; }
+    .src-card { background: var(--surface); border: 1px solid var(--border); border-top: 5px solid var(--border); border-radius: var(--radius); padding: 16px 18px; }
+    .src-card.air { border-top-color: #8a949e; } .src-card.soil { border-top-color: #a8883a; } .src-card.water { border-top-color: #3a8ac0; }
+    .src-card h3 { font-family: 'Playfair Display', serif; font-size: 1.02rem; margin-bottom: 8px; }
+    .src-card ul { margin: 0 0 0 18px; font-size: .84rem; color: #4a3a2a; line-height: 1.6; }
+    .metal-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 24px; }
+    .metal-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; }
+    .metal-card .ic { font-size: 1.6rem; margin-bottom: 6px; }
+    .metal-card h4 { font-family: 'Playfair Display', serif; font-size: 1rem; margin-bottom: 6px; }
+    .metal-card p { font-size: .84rem; color: #4a3a2a; line-height: 1.55; }
+    .diagram-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px 20px 16px; margin-bottom: 20px; }
+    .fig { width: 100%; height: auto; display: block; margin: 0 auto; }
+    .diagram-caption { font-size: .82rem; color: var(--muted); line-height: 1.6; padding: 4px 4px 0; }
+    .diagram-caption strong { color: var(--text); }
+
+    .q-card { background: #1a1612; border: 1px solid #2a2018; border-radius: var(--radius); padding: 22px 26px; margin-bottom: 18px; }
+    .q-num { font-size: .68rem; letter-spacing: .18em; text-transform: uppercase; color: #d4a060; margin-bottom: 7px; font-weight: 600; }
+    .q-text { font-family: 'Playfair Display', serif; font-size: .95rem; color: #f0e8d8; margin-bottom: 14px; line-height: 1.5; }
+    .q-textarea { width: 100%; background: #0f0c08; border: 1.5px solid #2a2018; border-radius: 6px; color: #e8dcc8; font-family: 'Mulish', sans-serif; font-size: .9rem; padding: 11px 13px; resize: vertical; min-height: 80px; outline: none; transition: border-color .2s; line-height: 1.6; }
+    .q-textarea:focus { border-color: #d4703a; }
+    .q-btn { margin-top: 10px; font-family: 'Mulish', sans-serif; font-size: .84rem; font-weight: 600; padding: 8px 20px; border-radius: 6px; border: none; cursor: pointer; background: #d4703a; color: #fff; transition: background .2s; }
+    .q-btn:hover { background: #b85c2a; }
+    .q-model { margin-top: 14px; display: none; background: #0f0c08; border: 1px solid #2a2018; border-radius: 6px; overflow: hidden; }
+    .q-model.shown { display: block; }
+    .q-model-header { background: #2a2018; padding: 8px 16px; font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: #d4a060; font-weight: 600; }
+    .q-model-body { padding: 14px 18px; font-size: .88rem; color: #c8b89a; line-height: 1.75; }
+    .q-model-body strong { color: #f0e8d8; }
+    .q-model-body ul { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+    .q-model-body li { padding-left: 16px; position: relative; }
+    .q-model-body li::before { content: '→'; position: absolute; left: 0; color: #d4703a; font-size: .8rem; }
+    .q-self-check { margin-top: 12px; padding-top: 12px; border-top: 1px solid #2a2018; display: flex; align-items: center; gap: 10px; font-size: .82rem; color: #8a7a60; cursor: pointer; }
+    .q-self-check input { accent-color: #d4703a; width: 16px; height: 16px; cursor: pointer; }
+    .q-retry { margin-top: 10px; font-size: .78rem; color: #6a5a40; background: none; border: none; cursor: pointer; font-family: 'Mulish', sans-serif; text-decoration: underline; padding: 0; display: block; }
+    .q-score-bar { background: #0f0c08; border: 1px solid #2a2018; border-radius: var(--radius); padding: 20px 24px; margin-top: 32px; display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+    .q-score-num { font-family: 'Playfair Display', serif; font-size: 2rem; color: #d4703a; }
+    .q-score-label { font-size: .85rem; color: #8a7a60; }
+    .q-score-msg { font-size: .88rem; color: #c8b89a; }
+
+    footer { border-top: 1px solid var(--border); padding: 28px 24px; text-align: center; font-size: .78rem; color: var(--muted); margin-top: 40px; }
+    footer a { color: var(--teal); text-decoration: none; }
+
+    @media(max-width: 580px) {
+      .hero { padding: 44px 20px 36px; }
+      .container { padding: 0 16px; }
+      .factor-columns { grid-template-columns: 1fr; gap: 20px; }
+      .two-col, .effect-grid { grid-template-columns: 1fr; }
+      .arch-grid, .dim-grid, .sc-grid, .src-grid, .metal-grid { grid-template-columns: 1fr; }
+      .steps { flex-direction: column; }
+      .step-arrow { transform: rotate(90deg); }
+      .chain-btn { margin-left: 0; }
+
+    }
+  </style>
+</head>
+<body>
+
+<div class="top-bar">
+  <a href="nk1b-hallbar-utveckling.html" class="back-link">← Hållbar utveckling</a>
+  <div class="top-title">NK1b &mdash; <span>Lokala miljöproblem</span></div>
+</div>
+
+<div class="hero">
+  <p class="hero-eyebrow">Hållbar utveckling &middot; NK1b</p>
+  <h1>Lokala miljöproblem</h1>
+  <p class="hero-sub">Inte alla miljöproblem är globala. Här går vi igenom utsläpp av kemikalier och hur koncentrationen av ett ämne avgör om det blir ett problem, och sedan miljögifter, tungmetaller, försurning och övergödning. Till sist tittar vi på ozonskiktet.</p>
+  <nav class="hero-nav">
+    <a href="#utslapp">Utsläpp av kemikalier</a>
+    <a href="#miljogifter">Miljögifter</a>
+    <a href="#tungmetaller">Tungmetaller</a>
+    <a href="#forsurning">Försurning</a>
+    <a href="#overgodning">Övergödning</a>
+    <a href="#ozon">Ozonskiktet</a>
+    <a href="#sammanfattning">Sammanfattning</a>
+    <a href="#kolla">Kolla att du kan</a>
+  </nav>
+</div>
+
+<main>
+
+<!-- ========== UTSLÄPP ========== -->
+<div class="section" id="utslapp">
+<div class="container">
+  <p class="section-eyebrow">Källorna och spridningen</p>
+  <h2 class="section-title">Utsläpp av kemikalier</h2>
+  <p class="section-intro">Koldioxid är inte det enda vi släpper ut. Våra samhällen släpper ut många olika ämnen, och de hamnar i <strong>luft</strong>, <strong>mark</strong> och <strong>vatten</strong>. Ett utsläpp blir ett miljöproblem när koncentrationen av ämnet i en viss miljö blir så hög att det skadar naturen.</p>
+
+  <div class="diagram-wrap">
+    <svg class="fig" viewBox="0 0 700 310" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ett landskap. Industrin till vänster släpper ut gaser och partiklar som vinden för med sig till en skog långt bort, där de faller ner som surt regn. Jordbruket släpper ut näringsämnen och bekämpningsmedel som läcker via diken till en sjö.">
+      <defs>
+        <marker id="u-w" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#6a7a8a"/></marker>
+        <marker id="u-b" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2a6aa8"/></marker>
+      </defs>
+      <rect x="0" y="0" width="700" height="310" rx="14" fill="#f2f9fe"/>
+      <rect x="0" y="215" width="560" height="95" fill="#cfe6d0"/>
+      <path d="M560,215 L700,215 L700,310 L560,310 Z" fill="#a9d3ee"/>
+      <path d="M0,300 Q0,310 14,310 L686,310 Q700,310 700,296 L700,215 L0,215 Z" fill="none"/>
+
+      <text x="62" y="212" text-anchor="middle" font-size="52">🏭</text>
+      <circle cx="112" cy="168" r="14" fill="#b6bec6"/><circle cx="135" cy="150" r="18" fill="#b6bec6"/><circle cx="168" cy="136" r="20" fill="#c3cad1"/>
+      <path d="M200,126 L318,126" stroke="#6a7a8a" stroke-width="3" stroke-dasharray="7 5" marker-end="url(#u-w)"/>
+      <text x="248" y="108" text-anchor="middle" font-family="Mulish, sans-serif" font-size="12.5" font-weight="700" fill="#4a5a6a">vinden för med utsläppen</text>
+
+      <g transform="translate(405,66)"><ellipse cx="0" cy="0" rx="34" ry="16" fill="#9aa4ae"/><ellipse cx="-22" cy="6" rx="22" ry="12" fill="#9aa4ae"/><ellipse cx="24" cy="6" rx="22" ry="12" fill="#9aa4ae"/></g>
+      <g stroke="#2a6aa8" stroke-width="2.5" stroke-linecap="round"><path d="M385,98 l-3,14"/><path d="M401,98 l-3,14"/><path d="M417,98 l-3,14"/><path d="M433,98 l-3,14"/></g>
+      <text x="340" y="204" text-anchor="middle" font-size="38">🌲</text>
+      <text x="385" y="208" text-anchor="middle" font-size="42">🌲</text>
+      <text x="428" y="204" text-anchor="middle" font-size="38">🌲</text>
+
+      <text x="508" y="208" text-anchor="middle" font-size="40">🌾</text>
+      <text x="548" y="208" text-anchor="middle" font-size="40">🌾</text>
+      <path d="M520,232 L612,232" stroke="#2a6aa8" stroke-width="3.5" marker-end="url(#u-b)"/>
+      <text x="630" y="262" text-anchor="middle" font-size="26">🐟</text>
+
+      <g font-family="Mulish, sans-serif" font-size="11.5" font-weight="600" fill="#1a1612" text-anchor="middle">
+        <text x="95" y="244">Industri: gaser,</text><text x="95" y="259">partiklar, tungmetaller</text>
+        <text x="385" y="244">Skog och mark får</text><text x="385" y="259">nedfallet, långt från källan</text>
+        <text x="515" y="256">Jordbruk</text><text x="515" y="271">näringsämnen</text><text x="515" y="286">och gifter</text>
+        <text x="633" y="283">Sjön tar emot</text><text x="633" y="298">det som rinner dit</text>
+      </g>
+    </svg>
+    <p class="diagram-caption">Utsläpp flyttar sig. Gaser och partiklar i luften sprids med vinden, medan ämnen i marken rinner vidare med vattnet.</p>
+  </div>
+
+  <div class="src-grid">
+    <div class="src-card air">
+      <h3>💨 Luftföroreningar</h3>
+      <ul>
+        <li>Gaser från förbränning av fossila bränslen (koldioxid, svaveldioxid, kväveoxider)</li>
+        <li>Metan från boskap, oljeutvinning och avfallsdeponier</li>
+        <li>Partiklar (sot)</li>
+        <li>Tungmetaller från transport och industri</li>
+      </ul>
+    </div>
+    <div class="src-card soil">
+      <h3>🌍 Markföroreningar</h3>
+      <ul>
+        <li>Industriavfall (tungmetaller och kemikalier)</li>
+        <li>Kemikalier från jordbruket (konstgödsel och bekämpningsmedel)</li>
+        <li>Läckage från avfallsdeponier (tungmetaller, kemikalier och mikroplast)</li>
+      </ul>
+    </div>
+    <div class="src-card water">
+      <h3>💧 Vattenföroreningar</h3>
+      <ul>
+        <li>Ämnen från jordbruket (näringsämnen och bekämpningsmedel)</li>
+        <li>Utsläpp från industrier (tungmetaller och kemikalier)</li>
+        <li>Orenat avloppsvatten (näringsämnen, bakterier och medicinrester)</li>
+        <li>Avfall (plast och mikroplast)</li>
+        <li>Oljeutsläpp</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div class="key-box">
+      <h4>⚖️ Koncentrationen avgör</h4>
+      <p>Många ämnen är ofarliga eller till och med nödvändiga i små mängder. Problemet uppstår när koncentrationen i en viss miljö blir för hög, till exempel när ett ämne ansamlas eller när utsläppet är större än naturen klarar av att ta hand om.</p>
+    </div>
+    <div class="key-box teal">
+      <h4>🌬️ Luft sprider sig lättast</h4>
+      <p>Luftföroreningar kan följa med vinden och orsaka skador långt från platsen där de släpptes ut. Därför kan ett land få miljöproblem som beror på utsläpp i andra länder.</p>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ========== MILJÖGIFTER ========== -->
+<div class="section" id="miljogifter">
+<div class="container">
+  <p class="section-eyebrow">Ämnen som stannar kvar</p>
+  <h2 class="section-title">Miljögifter</h2>
+  <p class="section-intro">Ett <strong>miljögift</strong> är ett ämne som både är giftigt och som stannar kvar och ansamlas i naturen. Det är kombinationen av egenskaper som gör dem så svåra att bli av med.</p>
+
+  <div class="diagram-wrap">
+    <svg class="fig" viewBox="0 0 700 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ett miljögift är svårnedbrytbart, fettlösligt och ansamlas i fettvävnad (bioackumulation), ökar i koncentration uppåt i näringskedjan (biomagnifikation), är giftigt för levande organismer och ger negativa effekter på ekosystemet.">
+      <g stroke="#8a7a60" stroke-width="2"><line x1="350" y1="82" x2="350" y2="140"/><line x1="210" y1="128" x2="290" y2="158"/><line x1="490" y1="128" x2="410" y2="158"/><line x1="210" y1="252" x2="290" y2="192"/><line x1="490" y1="252" x2="410" y2="192"/></g>
+      <rect x="280" y="140" width="140" height="68" rx="14" fill="#b3261e"/>
+      <text x="350" y="168" text-anchor="middle" font-size="22">☠️</text>
+      <text x="350" y="194" text-anchor="middle" font-family="Playfair Display, serif" font-size="18" font-weight="700" fill="#fff">Miljögift</text>
+
+      <g font-family="Mulish, sans-serif" font-size="12.5" fill="#1a1612" text-anchor="middle">
+        <rect x="240" y="14" width="220" height="68" rx="10" fill="#f2ece0" stroke="#d9cdb4"/>
+        <text x="350" y="42" font-weight="700" font-size="14">Svårnedbrytbart</text>
+        <text x="350" y="62" fill="#4a3a2a">Ämnet bryts ner mycket långsamt</text>
+
+        <rect x="10" y="84" width="200" height="82" rx="10" fill="#e3f0fa" stroke="#8ab4d8"/>
+        <text x="110" y="108" font-weight="700" font-size="14">Fettlösligt</text>
+        <text x="110" y="127" fill="#4a3a2a">ansamlas i fettvävnad</text>
+        <text x="110" y="146" fill="#4a3a2a" font-style="italic">bioackumulation</text>
+
+        <rect x="490" y="84" width="200" height="82" rx="10" fill="#e3f0fa" stroke="#8ab4d8"/>
+        <text x="590" y="108" font-weight="700" font-size="14">Ökar uppåt</text>
+        <text x="590" y="127" fill="#4a3a2a">i näringskedjan</text>
+        <text x="590" y="146" fill="#4a3a2a" font-style="italic">biomagnifikation</text>
+
+        <rect x="10" y="212" width="200" height="82" rx="10" fill="#f6e6da" stroke="#d4703a"/>
+        <text x="110" y="244" font-weight="700" font-size="14">Giftigt</text>
+        <text x="110" y="264" fill="#4a3a2a">för levande organismer</text>
+
+        <rect x="490" y="212" width="200" height="82" rx="10" fill="#f6e6da" stroke="#d4703a"/>
+        <text x="590" y="244" font-weight="700" font-size="14">Negativa effekter</text>
+        <text x="590" y="264" fill="#4a3a2a">på hela ekosystemet</text>
+      </g>
+    </svg>
+    <p class="diagram-caption">Ett ämne räknas som miljögift när flera av de här egenskaperna finns samtidigt.</p>
+  </div>
+
+  <h3 class="sub-title">Organiska miljögifter</h3>
+  <p class="prose">Kemiindustrin framställer stora mängder organiska ämnen, till exempel klorerade kolväten, flamskyddsmedel och läkemedel. Många av dem är <strong>fettlösliga</strong> och tar lång tid att bryta ner. Fettlösliga ämnen lagras i fettvävnad och ansamlas därför i organismen. Det kallas <strong>bioackumulation</strong>.</p>
+
+  <h3 class="sub-title">Biomagnifikation: koncentrationen ökar uppåt</h3>
+  <p class="prose">När en organism äter en annan får den med sig det som den ätna har ansamlat. Eftersom en rovfisk äter många mindre fiskar under sitt liv, ackumuleras gifterna från alla dem. Halterna ökar därför för varje led uppåt i näringskedjan, och <strong>toppkonsumenterna</strong> drabbas hårdast. Det kallas <strong>biomagnifikation</strong>.</p>
+
+  <div class="diagram-wrap">
+    <svg class="fig" viewBox="0 0 700 330" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Biomagnifikation. En näringskedja med växtplankton, djurplankton, strömming, rovfisk och havsörn. Stapeln under varje organism visar att halten miljögift ökar för varje led, från låg hos växtplankton till hög hos havsörnen.">
+      <defs><marker id="b-a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#4a3a2a"/></marker></defs>
+      <g font-family="Mulish, sans-serif" text-anchor="middle">
+        <rect x="10" y="10" width="120" height="86" rx="10" fill="#e3f0ec" stroke="#2a7a6a"/><text x="70" y="44" font-size="26">🌱</text><text x="70" y="68" font-size="12.5" font-weight="700" fill="#1a1612">Växtplankton</text><text x="70" y="84" font-size="11" fill="#6a5e52">producent</text>
+        <rect x="150" y="10" width="120" height="86" rx="10" fill="#f2ece0" stroke="#d9cdb4"/><text x="210" y="44" font-size="26">🦐</text><text x="210" y="68" font-size="12.5" font-weight="700" fill="#1a1612">Djurplankton</text><text x="210" y="84" font-size="11" fill="#6a5e52">förstahandskons.</text>
+        <rect x="290" y="10" width="120" height="86" rx="10" fill="#f2ece0" stroke="#d9cdb4"/><text x="350" y="44" font-size="26">🐟</text><text x="350" y="68" font-size="12.5" font-weight="700" fill="#1a1612">Strömming</text><text x="350" y="84" font-size="11" fill="#6a5e52">andrahandskons.</text>
+        <rect x="430" y="10" width="120" height="86" rx="10" fill="#f6e6da" stroke="#d4703a"/><text x="490" y="44" font-size="26">🐟</text><text x="490" y="68" font-size="12.5" font-weight="700" fill="#1a1612">Rovfisk</text><text x="490" y="84" font-size="11" fill="#6a5e52">tredjehandskons.</text>
+        <rect x="570" y="10" width="120" height="86" rx="10" fill="#efd0b8" stroke="#b85c2a"/><text x="630" y="44" font-size="26">🦅</text><text x="630" y="68" font-size="12.5" font-weight="700" fill="#1a1612">Havsörn</text><text x="630" y="84" font-size="11" fill="#6a5e52">toppkonsument</text>
+      </g>
+      <g stroke="#4a3a2a" stroke-width="2.5"><path d="M131,53 L147,53" marker-end="url(#b-a)"/><path d="M271,53 L287,53" marker-end="url(#b-a)"/><path d="M411,53 L427,53" marker-end="url(#b-a)"/><path d="M551,53 L567,53" marker-end="url(#b-a)"/></g>
+
+      <line x1="10" y1="290" x2="690" y2="290" stroke="#4a3a2a" stroke-width="2"/>
+      <rect x="40" y="272" width="60" height="18" fill="#e57373"/>
+      <rect x="180" y="248" width="60" height="42" fill="#e05050"/>
+      <rect x="320" y="212" width="60" height="78" fill="#d03a3a"/>
+      <rect x="460" y="168" width="60" height="122" fill="#bf2a2a"/>
+      <rect x="600" y="112" width="60" height="178" fill="#a31a1a"/>
+      <text x="70" y="310" text-anchor="middle" font-family="Mulish, sans-serif" font-size="12" fill="#6a5e52">låg halt</text>
+      <text x="630" y="310" text-anchor="middle" font-family="Mulish, sans-serif" font-size="12" font-weight="700" fill="#a31a1a">hög halt</text>
+      <text x="350" y="324" text-anchor="middle" font-family="Mulish, sans-serif" font-size="12" fill="#6a5e52">Halt av miljögift i organismen (schematiskt)</text>
+    </svg>
+    <p class="diagram-caption">Halten miljögift är låg i vattnet och hos växtplanktonet, men ökar i varje led och är högst hos toppkonsumenten.</p>
+  </div>
+
+  <div class="key-box teal">
+    <h4>🦅 Exempel: havsörnen</h4>
+    <p>På 1900-talet minskade havsörnen kraftigt i Sverige. Miljögifterna DDT och PCB hade ansamlats i fisken som örnarna åt, och örnarnas äggskal blev så tunna att äggen gick sönder. När gifterna förbjöds började havsörnen återhämta sig.</p>
+  </div>
+
+  <div class="key-box">
+    <h4>🔑 Kom ihåg</h4>
+    <p>Ett <strong>miljögift</strong> är svårnedbrytbart, giftigt och ofta fettlösligt. <strong>Bioackumulation</strong> betyder att ämnet ansamlas i en organisms fettvävnad. <strong>Biomagnifikation</strong> betyder att halten ökar uppåt i näringskedjan, så att toppkonsumenterna drabbas hårdast.</p>
+  </div>
+</div>
+</div>
+
+<!-- ========== TUNGMETALLER ========== -->
+<div class="section" id="tungmetaller">
+<div class="container">
+  <p class="section-eyebrow">Grundämnen som aldrig bryts ner</p>
+  <h2 class="section-title">Tungmetaller</h2>
+  <p class="section-intro"><strong>Tungmetaller</strong> är metaller som kadmium, bly och kvicksilver. De finns naturligt i berggrunden, men utsläppen från gruvor, industri, transporter och avfall har gjort att halterna ökat i många miljöer.</p>
+
+  <div class="metal-grid">
+    <div class="metal-card">
+      <div class="ic">🌡️</div>
+      <h4>Kvicksilver</h4>
+      <p>Släpps ut bland annat vid förbränning av kol och vid guldutvinning. I vatten omvandlas det till en form som ansamlas i fisk. Därför finns råd om att äta rovfisk från vissa sjöar sparsamt.</p>
+    </div>
+    <div class="metal-card">
+      <div class="ic">🔋</div>
+      <h4>Bly</h4>
+      <p>Användes förr bland annat i bensin. Bly skadar nervsystemet, och särskilt barn är känsliga.</p>
+    </div>
+    <div class="metal-card">
+      <div class="ic">⚡</div>
+      <h4>Kadmium</h4>
+      <p>Finns bland annat i vissa batterier och som förorening i konstgödsel. Kadmium kan skada njurarna och ansamlas i kroppen.</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div class="key-box">
+      <h4>🧱 Skillnad mot organiska miljögifter</h4>
+      <p>Tungmetaller är grundämnen och kan därför <strong>aldrig brytas ner</strong>. De kan bara flyttas runt eller bindas i marken. Organiska miljögifter bryts däremot ner, men mycket långsamt.</p>
+    </div>
+    <div class="key-box teal">
+      <h4>📈 Samma mönster</h4>
+      <p>Tungmetaller koncentreras högst upp i näringskedjan precis som andra miljögifter (biomagnifikation). Därför drabbas toppkonsumenter som rovfisk, havsörn och människor mest.</p>
+    </div>
+  </div>
+
+  <div class="key-box">
+    <h4>🔑 Kom ihåg</h4>
+    <p><strong>Tungmetaller</strong> (kadmium, bly, kvicksilver) finns naturligt i berggrunden men kommer också från gruvor och avfall. De bryts aldrig ner och koncentreras högst upp i näringskedjan.</p>
+  </div>
+</div>
+</div>
+
+<!-- ========== FÖRSURNING ========== -->
+<div class="section" id="forsurning">
+<div class="container">
+  <p class="section-eyebrow">Utsläpp som blir till syra</p>
+  <h2 class="section-title">Försurning</h2>
+  <p class="section-intro">Försurning beror på att utsläpp av svaveldioxid och kväveoxider bildar syror i atmosfären. Syrorna faller ner som <strong>surt regn</strong>. Eftersom utsläppen sprids med vinden kan nedfallet hamna i andra länder än där utsläppet skedde.</p>
+
+  <h3 class="sub-title">Orsaker</h3>
+  <div class="steps">
+    <div class="step"><span class="num">1</span>Förbränning av fossila bränslen (och industri)</div>
+    <div class="step-arrow">→</div>
+    <div class="step"><span class="num">2</span>Utsläpp av svaveldioxid och kväveoxider</div>
+    <div class="step-arrow">→</div>
+    <div class="step"><span class="num">3</span>Bildar svavelsyra och salpetersyra i atmosfären</div>
+    <div class="step-arrow">→</div>
+    <div class="step"><span class="num">4</span>Regnar ner som surt regn</div>
+  </div>
+
+  <h3 class="sub-title">Konsekvenser</h3>
+  <div class="diagram-wrap">
+    <svg class="fig" viewBox="0 0 700 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Försurningens konsekvenser för skogen. Surt regn med svavelsyra och salpetersyra faller på en gran. 1 Barrens skyddande vaxlager förstörs. 2 Försvagade träd angrips lättare av skadeinsekter och sjukdomar. 3 Aluminium frigörs vid lågt pH och skadar rötterna. 4 Vätejoner trycker undan näringsämnen från markpartiklarna så att de sköljs bort med markvattnet.">
+      <defs><marker id="f-a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#4a3a2a"/></marker></defs>
+      <rect x="0" y="0" width="420" height="400" rx="14" fill="#f2f9fe"/>
+      <g transform="translate(95,52)"><ellipse cx="0" cy="0" rx="42" ry="18" fill="#8a949e"/><ellipse cx="-26" cy="8" rx="26" ry="14" fill="#8a949e"/><ellipse cx="28" cy="8" rx="26" ry="14" fill="#8a949e"/></g>
+      <g stroke="#2a6aa8" stroke-width="2.5" stroke-linecap="round"><path d="M70,86 l-3,16"/><path d="M92,86 l-3,16"/><path d="M114,86 l-3,16"/></g>
+      <text x="100" y="124" text-anchor="middle" font-family="Mulish, sans-serif" font-size="12" font-weight="700" fill="#4a5a6a">H₂SO₄ och HNO₃</text>
+      <polygon points="265,40 232,120 298,120" fill="#2e7d32"/>
+      <polygon points="265,78 222,160 308,160" fill="#388e3c"/>
+      <polygon points="265,120 212,205 318,205" fill="#2e7d32"/>
+      <rect x="259" y="205" width="12" height="50" fill="#6a4a2a"/>
+      <text x="318" y="110" font-size="22">🪲</text>
+      <rect x="20" y="252" width="380" height="88" fill="#c9a27a"/>
+      <rect x="20" y="248" width="380" height="6" fill="#6a4a2a"/>
+      <rect x="20" y="340" width="380" height="45" rx="0" fill="#a9d3ee"/>
+      <text x="210" y="368" text-anchor="middle" font-family="Mulish, sans-serif" font-size="11.5" fill="#1a3a5a">grundvatten och markvatten</text>
+      <path d="M265,255 l-22,20 M265,255 l0,26 M265,255 l22,20" fill="none" stroke="#6a4a2a" stroke-width="2.5" stroke-linecap="round"/>
+      <g font-family="Mulish, sans-serif" font-size="11.5" font-weight="700">
+        <ellipse cx="90" cy="300" rx="34" ry="22" fill="#5a3d22"/>
+        <text x="90" y="304" text-anchor="middle" fill="#fff" font-size="11">markpartikel</text>
+        <text x="50" y="282" fill="#1a5a9a">Ca²⁺</text><text x="100" y="278" fill="#1a5a9a">Mg²⁺</text><text x="132" y="296" fill="#1a5a9a">K⁺</text>
+        <ellipse cx="320" cy="300" rx="34" ry="22" fill="#5a3d22"/>
+        <text x="320" y="304" text-anchor="middle" fill="#fff" font-size="11">markpartikel</text>
+        <text x="282" y="282" fill="#b3261e">H⁺</text><text x="326" y="278" fill="#b3261e">H⁺</text><text x="356" y="298" fill="#b3261e">H⁺</text>
+        <text x="320" y="338" fill="#1a5a9a" text-anchor="middle" font-size="11">Ca²⁺ Mg²⁺ K⁺ sköljs bort</text>
+      </g>
+      <path d="M135,300 L282,300" stroke="#4a3a2a" stroke-width="2.5" marker-end="url(#f-a)"/>
+      <text x="208" y="322" text-anchor="middle" font-family="Mulish, sans-serif" font-size="11" fill="#4a3a2a">surt regn tränger in</text>
+      <g font-family="Mulish, sans-serif" font-size="13" font-weight="700" fill="#fff" text-anchor="middle">
+        <circle cx="236" cy="150" r="12" fill="#1a1612"/><text x="236" y="155">1</text>
+        <circle cx="300" cy="86" r="12" fill="#1a1612"/><text x="300" y="91">2</text>
+        <circle cx="305" cy="268" r="12" fill="#1a1612"/><text x="305" y="273">3</text>
+        <circle cx="40" cy="262" r="12" fill="#1a1612"/><text x="40" y="267">4</text>
+      </g>
+
+      <g font-family="Mulish, sans-serif" font-size="12.5" fill="#1a1612">
+        <circle cx="448" cy="36" r="12" fill="#1a1612"/><text x="448" y="41" text-anchor="middle" fill="#fff" font-weight="700" font-size="13">1</text>
+        <text x="468" y="32" font-weight="700">Vaxlagret förstörs</text><text x="468" y="48" fill="#4a3a2a">Barren gulnar och tappas i förtid.</text>
+
+        <circle cx="448" cy="106" r="12" fill="#1a1612"/><text x="448" y="111" text-anchor="middle" fill="#fff" font-weight="700" font-size="13">2</text>
+        <text x="468" y="102" font-weight="700">Försvagade träd</text><text x="468" y="118" fill="#4a3a2a">Angrips lättare av skadeinsekter</text><text x="468" y="133" fill="#4a3a2a">och sjukdomar.</text>
+
+        <circle cx="448" cy="186" r="12" fill="#1a1612"/><text x="448" y="191" text-anchor="middle" fill="#fff" font-weight="700" font-size="13">3</text>
+        <text x="468" y="182" font-weight="700">Aluminium frigörs</text><text x="468" y="198" fill="#4a3a2a">Vid lågt pH skadas rötterna av</text><text x="468" y="213" fill="#4a3a2a">aluminiumjoner (Al³⁺).</text>
+
+        <circle cx="448" cy="266" r="12" fill="#1a1612"/><text x="448" y="271" text-anchor="middle" fill="#fff" font-weight="700" font-size="13">4</text>
+        <text x="468" y="262" font-weight="700">Näringsämnen försvinner</text><text x="468" y="278" fill="#4a3a2a">H⁺-joner trycker undan Ca²⁺,</text><text x="468" y="293" fill="#4a3a2a">Mg²⁺ och K⁺ från markpartiklarna,</text><text x="468" y="308" fill="#4a3a2a">och de sköljs bort med markvattnet.</text>
+      </g>
+    </svg>
+    <p class="diagram-caption">Surt regn skadar skogen både ovanför och under marken.</p>
+  </div>
+
+  <div class="two-col">
+    <div class="key-box">
+      <h4>🐟 Sjöar</h4>
+      <p>Också sjöar kan försuras. När pH sjunker kan aluminium lösas ut och skada fisk, och känsliga arter försvinner. Därför kalkar man ibland sjöar för att neutralisera syran.</p>
+    </div>
+    <div class="key-box teal">
+      <h4>✅ Det går att lösa</h4>
+      <p>Utsläppen av svaveldioxid i Europa har minskat kraftigt sedan 1980-talet, bland annat genom rening av rökgaser och bränslen med mindre svavel. Det visar att internationellt samarbete kan fungera.</p>
+    </div>
+  </div>
+
+  <div class="key-box">
+    <h4>🔑 Kom ihåg</h4>
+    <p><strong>Försurning</strong> uppstår när svaveldioxid och kväveoxider från förbränning bildar svavelsyra och salpetersyra i atmosfären och faller ner som surt regn. Det skadar träd och mark, och försurar sjöar. Utsläppen kan spridas långt med vinden.</p>
+  </div>
+</div>
+</div>
+
+<!-- ========== ÖVERGÖDNING ========== -->
+<div class="section" id="overgodning">
+<div class="container">
+  <p class="section-eyebrow">För mycket av något bra</p>
+  <h2 class="section-title">Övergödning</h2>
+  <p class="section-intro">Växter och alger behöver näring för att växa, framför allt <strong>fosfor</strong> och <strong>kväve</strong>. De finns i gödsel. Tillförs för mycket av dem till en sjö eller ett hav blir det en kedjereaktion som slutar med syrebrist. Det kallas <strong>övergödning</strong>.</p>
+
+  <h3 class="sub-title">Orsaker</h3>
+  <div class="tag-grid">
+    <span class="tag-chip">🚜 För mycket gödning av åkrar och skogar</span>
+    <span class="tag-chip">🌧️ Näringen läcker via diken och vattenavrinning</span>
+    <span class="tag-chip">🚰 Orenat avloppsvatten</span>
+    <span class="tag-chip">🌊 Allt rinner ut i sjöar och hav</span>
+  </div>
+
+  <h3 class="sub-title">Händelseförloppet</h3>
+  <div class="diagram-wrap">
+    <svg class="fig" viewBox="0 0 700 440" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Övergödning i fyra steg. 1 En sjö utan övergödning med klart vatten. 2 Algblomning: algerna bildar ett täcke som stänger ute ljuset. 3 Algerna dör och sjunker till botten där nedbrytningen ökar. 4 Syrebrist vid botten, och bottenlevande organismer dör.">
+<rect x="10" y="10" width="340" height="205" rx="10" fill="#fff" stroke="#e8e0d0"/><text x="22" y="32" font-family="Mulish, sans-serif" font-size="12.5" font-weight="700" fill="#1a1612">1. Sjö utan övergödning</text><text x="22" y="48" font-family="Mulish, sans-serif" font-size="11.5" fill="#4a3a2a">klart vatten, ljus når ner</text><rect x="20" y="58" width="320" height="147" fill="#8fd0f0"/><rect x="20" y="191" width="320" height="14" fill="#a8883a"/><path d="M46,191 q-6,-18 2,-34 M54,191 q4,-16 -2,-30 M38,191 q-6,-12 -1,-24" fill="none" stroke="#2e7d32" stroke-width="3" stroke-linecap="round"/><g transform="translate(120,103) scale(1,1)"><ellipse cx="0" cy="0" rx="13" ry="6" fill="#1a1612"/><polygon points="12,0 21,-6 21,6" fill="#1a1612"/><circle cx="-7" cy="-1" r="1.4" fill="#fff"/></g><g transform="translate(250,88) scale(-1,1)"><ellipse cx="0" cy="0" rx="13" ry="6" fill="#1a1612"/><polygon points="12,0 21,-6 21,6" fill="#1a1612"/><circle cx="-7" cy="-1" r="1.4" fill="#fff"/></g><g transform="translate(200,163) scale(1,1)"><ellipse cx="0" cy="0" rx="13" ry="6" fill="#1a1612"/><polygon points="12,0 21,-6 21,6" fill="#1a1612"/><circle cx="-7" cy="-1" r="1.4" fill="#fff"/></g><rect x="350" y="10" width="340" height="205" rx="10" fill="#fff" stroke="#e8e0d0"/><text x="362" y="32" font-family="Mulish, sans-serif" font-size="12.5" font-weight="700" fill="#1a1612">2. Algblomning</text><text x="362" y="48" font-family="Mulish, sans-serif" font-size="11.5" fill="#4a3a2a">algerna bildar ett täcke som stänger ute ljuset</text><rect x="360" y="58" width="320" height="147" fill="#3a8ac0"/><rect x="360" y="191" width="320" height="14" fill="#a8883a"/><path d="M386,191 q-6,-18 2,-34 M394,191 q4,-16 -2,-30 M378,191 q-6,-12 -1,-24" fill="none" stroke="#2e7d32" stroke-width="3" stroke-linecap="round"/><rect x="360" y="58" width="320" height="11" fill="#4caf50"/><g transform="translate(460,103) scale(1,1)"><ellipse cx="0" cy="0" rx="13" ry="6" fill="#1a1612"/><polygon points="12,0 21,-6 21,6" fill="#1a1612"/><circle cx="-7" cy="-1" r="1.4" fill="#fff"/></g><g transform="translate(590,88) scale(-1,1)"><ellipse cx="0" cy="0" rx="13" ry="6" fill="#1a1612"/><polygon points="12,0 21,-6 21,6" fill="#1a1612"/><circle cx="-7" cy="-1" r="1.4" fill="#fff"/></g><g transform="translate(540,163) scale(1,1)"><ellipse cx="0" cy="0" rx="13" ry="6" fill="#1a1612"/><polygon points="12,0 21,-6 21,6" fill="#1a1612"/><circle cx="-7" cy="-1" r="1.4" fill="#fff"/></g><rect x="10" y="225" width="340" height="205" rx="10" fill="#fff" stroke="#e8e0d0"/><text x="22" y="247" font-family="Mulish, sans-serif" font-size="12.5" font-weight="700" fill="#1a1612">3. Algerna dör</text><text x="22" y="263" font-family="Mulish, sans-serif" font-size="11.5" fill="#4a3a2a">de sjunker till botten, där nedbrytningen ökar</text><rect x="20" y="273" width="320" height="147" fill="#6ab0d8"/><rect x="20" y="406" width="320" height="14" fill="#a8883a"/><path d="M46,406 q-6,-18 2,-34 M54,406 q4,-16 -2,-30 M38,406 q-6,-12 -1,-24" fill="none" stroke="#2e7d32" stroke-width="3" stroke-linecap="round"/><rect x="20" y="273" width="320" height="11" fill="#4caf50"/><rect x="80" y="303" width="9" height="3" rx="1.5" fill="#4caf50" transform="rotate(35 80 303)"/><rect x="120" y="333" width="9" height="3" rx="1.5" fill="#4caf50" transform="rotate(35 120 333)"/><rect x="160" y="313" width="9" height="3" rx="1.5" fill="#4caf50" transform="rotate(35 160 313)"/><rect x="200" y="348" width="9" height="3" rx="1.5" fill="#4caf50" transform="rotate(35 200 348)"/><rect x="240" y="323" width="9" height="3" rx="1.5" fill="#4caf50" transform="rotate(35 240 323)"/><rect x="280" y="358" width="9" height="3" rx="1.5" fill="#4caf50" transform="rotate(35 280 358)"/><rect x="310" y="308" width="9" height="3" rx="1.5" fill="#4caf50" transform="rotate(35 310 308)"/><rect x="100" y="368" width="9" height="3" rx="1.5" fill="#4caf50" transform="rotate(35 100 368)"/><rect x="220" y="373" width="9" height="3" rx="1.5" fill="#4caf50" transform="rotate(35 220 373)"/><rect x="170" y="383" width="9" height="3" rx="1.5" fill="#4caf50" transform="rotate(35 170 383)"/><g transform="translate(120,318) scale(1,1)"><ellipse cx="0" cy="0" rx="13" ry="6" fill="#1a1612"/><polygon points="12,0 21,-6 21,6" fill="#1a1612"/><circle cx="-7" cy="-1" r="1.4" fill="#fff"/></g><g transform="translate(250,303) scale(-1,1)"><ellipse cx="0" cy="0" rx="13" ry="6" fill="#1a1612"/><polygon points="12,0 21,-6 21,6" fill="#1a1612"/><circle cx="-7" cy="-1" r="1.4" fill="#fff"/></g><g transform="translate(200,378) scale(1,1)"><ellipse cx="0" cy="0" rx="13" ry="6" fill="#1a1612"/><polygon points="12,0 21,-6 21,6" fill="#1a1612"/><circle cx="-7" cy="-1" r="1.4" fill="#fff"/></g><rect x="350" y="225" width="340" height="205" rx="10" fill="#fff" stroke="#e8e0d0"/><text x="362" y="247" font-family="Mulish, sans-serif" font-size="12.5" font-weight="700" fill="#1a1612">4. Syrebrist vid botten</text><text x="362" y="263" font-family="Mulish, sans-serif" font-size="11.5" fill="#4a3a2a">bottenlevande organismer dör</text><rect x="360" y="273" width="320" height="147" fill="#5aaee0"/><rect x="360" y="406" width="320" height="14" fill="#a8883a"/><path d="M386,406 q-6,-18 2,-34 M394,406 q4,-16 -2,-30 M378,406 q-6,-12 -1,-24" fill="none" stroke="#2e7d32" stroke-width="3" stroke-linecap="round"/><g transform="translate(600,298) scale(1,1)"><ellipse cx="0" cy="0" rx="13" ry="6" fill="#1a1612"/><polygon points="12,0 21,-6 21,6" fill="#1a1612"/><circle cx="-7" cy="-1" r="1.4" fill="#fff"/></g><g transform="translate(510,400) scale(1,-1)"><ellipse cx="0" cy="0" rx="13" ry="6" fill="#8a8a8a"/><polygon points="12,0 21,-6 21,6" fill="#8a8a8a"/><circle cx="-7" cy="-1" r="1.4" fill="#fff"/></g><g transform="translate(585,400) scale(1,-1)"><ellipse cx="0" cy="0" rx="13" ry="6" fill="#8a8a8a"/><polygon points="12,0 21,-6 21,6" fill="#8a8a8a"/><circle cx="-7" cy="-1" r="1.4" fill="#fff"/></g>
+    </svg>
+    <p class="diagram-caption">Från klar sjö till döda bottnar: övergödning sker i fyra steg.</p>
+  </div>
+
+  <div class="steps six">
+    <div class="step"><span class="num">1</span>Gödning av åkrar och skogar</div>
+    <div class="step-arrow">→</div>
+    <div class="step"><span class="num">2</span>Näringen läcker via diken till sjöar och åar</div>
+    <div class="step-arrow">→</div>
+    <div class="step"><span class="num">3</span>Växtligheten ökar i vattnet (algblomning)</div>
+    <div class="step-arrow">→</div>
+    <div class="step"><span class="num">4</span>Algerna dör och bryts ner</div>
+    <div class="step-arrow">→</div>
+    <div class="step"><span class="num">5</span>Syrebrist på botten</div>
+  </div>
+
+  <p class="prose">Nedbrytarna, som bakterier, använder syre när de bryter ner döda alger. När det blir många döda alger förbrukas syret snabbare än det hinner tillföras, och bottenlevande organismer dör. Här syns kopplingen till ekologin: <strong>producenter</strong> (algerna) växer okontrollerat, och <strong>nedbrytarna</strong> förbrukar sedan syret genom sin cellandning.</p>
+
+  <details class="more">
+    <summary>Läs mer: Östersjön och åtgärder</summary>
+    <p>Östersjön är ett känt exempel. Där har näring från jordbruk och avlopp i flera länder lett till algblomningar och stora bottnar utan syre. När bottnarna blir syrefria kan dessutom fosfor frigöras från bottensedimentet, vilket göder ytterligare. Åtgärder är mindre gödsling, skyddszoner och fånggrödor på åkrar, bättre rening av avloppsvatten och anlagda våtmarker som fångar upp näringen. Våtmarker är en av de ekosystemtjänster du läste om i ekologin (vattenrening).</p>
+  </details>
+
+  <div class="key-box">
+    <h4>🔑 Kom ihåg</h4>
+    <p><strong>Övergödning</strong> beror på att fosfor och kväve från framför allt jordbruk och avlopp läcker ut i sjöar och hav. Det ger algblomning, och när algerna dör och bryts ner uppstår syrebrist på botten där bottenlevande organismer dör.</p>
+  </div>
+</div>
+</div>
+
+<!-- ========== OZON ========== -->
+<div class="section" id="ozon">
+<div class="container">
+  <p class="section-eyebrow">Skyddet högt upp</p>
+  <h2 class="section-title">Ozonskiktet</h2>
+  <p class="section-intro">Högt upp i atmosfären, i <strong>stratosfären</strong>, finns ett lager med ozon (O₃). Ozonskiktet fungerar som ett solskydd för jorden eftersom det absorberar mycket av solens skadliga UV-strålning.</p>
+
+  <div class="diagram-wrap">
+    <svg class="fig" viewBox="0 0 700 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ozonskiktet. Till vänster ett intakt ozonskikt som absorberar UV-strålning så att lite når marken. Till höger har freoner släppt ut klor som bryter ner ozon, ozonskiktet har ett hål och mer UV-strålning når marken.">
+      <defs>
+        <marker id="o-u" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#8a3ab8"/></marker>
+      </defs>
+      <rect x="10" y="10" width="325" height="360" rx="14" fill="#f2f9fe" stroke="#cfe0ee"/>
+      <rect x="365" y="10" width="325" height="360" rx="14" fill="#f2f9fe" stroke="#cfe0ee"/>
+      <path d="M10,335 L335,335 L335,356 Q335,370 321,370 L24,370 Q10,370 10,356 Z" fill="#cfe6d0"/>
+      <path d="M365,335 L690,335 L690,356 Q690,370 676,370 L379,370 Q365,370 365,356 Z" fill="#cfe6d0"/>
+
+      <text x="172" y="38" text-anchor="middle" font-family="Playfair Display, serif" font-size="16" font-weight="700" fill="#1a1612">Intakt ozonskikt</text>
+      <text x="527" y="38" text-anchor="middle" font-family="Playfair Display, serif" font-size="16" font-weight="700" fill="#1a1612">Freoner bryter ner ozon</text>
+
+      <rect x="22" y="140" width="301" height="52" rx="10" fill="#d9c5ee" stroke="#a88ac8"/>
+      <rect x="377" y="140" width="130" height="52" rx="10" fill="#d9c5ee" stroke="#a88ac8"/>
+      <rect x="590" y="140" width="88" height="52" rx="10" fill="#d9c5ee" stroke="#a88ac8"/>
+      <text x="172" y="171" text-anchor="middle" font-family="Mulish, sans-serif" font-size="12.5" font-weight="700" fill="#4a2a7a">ozonskiktet (O₃)</text>
+      <text x="442" y="171" text-anchor="middle" font-family="Mulish, sans-serif" font-size="11.5" font-weight="700" fill="#4a2a7a">ozon</text>
+      <text x="634" y="171" text-anchor="middle" font-family="Mulish, sans-serif" font-size="11.5" font-weight="700" fill="#4a2a7a">ozon</text>
+      <text x="548" y="168" text-anchor="middle" font-family="Mulish, sans-serif" font-size="11.5" font-weight="700" fill="#b3261e">hål</text>
+
+      <text x="172" y="80" text-anchor="middle" font-size="26">☀️</text>
+      <text x="527" y="80" text-anchor="middle" font-size="26">☀️</text>
+      <g stroke="#8a3ab8" stroke-width="5" fill="none">
+        <path d="M70,100 L70,136" marker-end="url(#o-u)"/><path d="M172,100 L172,136" marker-end="url(#o-u)"/><path d="M270,100 L270,136" marker-end="url(#o-u)"/>
+        <path d="M430,100 L430,136" marker-end="url(#o-u)"/><path d="M548,100 L548,318" marker-end="url(#o-u)" stroke-width="6"/><path d="M634,100 L634,136" marker-end="url(#o-u)"/>
+        <path d="M172,196 L172,318" stroke-width="2" marker-end="url(#o-u)" opacity=".6"/>
+      </g>
+      <text x="172" y="222" text-anchor="middle" font-family="Mulish, sans-serif" font-size="12" fill="#4a2a7a">UV-strålning absorberas</text>
+      <text x="172" y="238" text-anchor="middle" font-family="Mulish, sans-serif" font-size="12" fill="#4a2a7a">av ozonet</text>
+      <text x="172" y="300" text-anchor="middle" font-family="Mulish, sans-serif" font-size="12" font-weight="700" fill="#4a2a7a">lite UV når marken</text>
+      <text x="610" y="268" text-anchor="middle" font-family="Mulish, sans-serif" font-size="12" font-weight="700" fill="#8a3ab8">mer UV når marken</text>
+
+      <circle cx="470" cy="262" r="15" fill="#2a9a4a"/><text x="470" y="267" text-anchor="middle" font-family="Mulish, sans-serif" font-size="12" font-weight="700" fill="#fff">Cl</text>
+      <text x="470" y="296" text-anchor="middle" font-family="Mulish, sans-serif" font-size="11.5" fill="#1a1612">klor från freoner</text>
+      <path d="M470,244 L470,200" stroke="#2a9a4a" stroke-width="3" marker-end="url(#o-u)"/>
+      <text x="410" y="222" text-anchor="end" font-family="Mulish, sans-serif" font-size="11.5" fill="#1a1612">bryter ner</text>
+      <text x="410" y="236" text-anchor="end" font-family="Mulish, sans-serif" font-size="11.5" fill="#1a1612">ozon</text>
+      <text x="172" y="360" text-anchor="middle" font-family="Mulish, sans-serif" font-size="11" fill="#2a5a3a">jordytan</text>
+      <text x="527" y="360" text-anchor="middle" font-family="Mulish, sans-serif" font-size="11" fill="#2a5a3a">jordytan</text>
+    </svg>
+    <p class="diagram-caption">Freoner innehåller klor. I stratosfären frigörs klor som bryter ner ozon, och då släpper ozonskiktet igenom mer UV-strålning.</p>
+  </div>
+
+  <div class="two-col">
+    <div class="key-box">
+      <h4>🧴 Vad skadade ozonskiktet?</h4>
+      <p><strong>Freoner</strong> (CFC) användes förr i kylskåp, sprayburkar och släckningsutrustning. De är stabila och hinner därför ta sig upp till stratosfären, där UV-strålningen frigör klor. En enda kloratom kan bryta ner många ozonmolekyler. Över Antarktis uppstod ett <strong>ozonhål</strong> varje vår.</p>
+    </div>
+    <div class="key-box">
+      <h4>☀️ Varför är det ett problem?</h4>
+      <p>Mer UV-strålning når marken, vilket ökar risken för <strong>hudcancer</strong> och <strong>grå starr</strong> och kan skada växter och plankton i havet.</p>
+    </div>
+  </div>
+
+  <div class="key-box teal">
+    <h4>✅ En framgångssaga</h4>
+    <p>1987 enades världens länder i <strong>Montrealprotokollet</strong> om att fasa ut freoner. Det har fungerat, och ozonskiktet återhämtar sig långsamt. Det förväntas vara i stort sett återställt omkring mitten av seklet. Ozonet är ett exempel på att internationellt samarbete kan lösa miljöproblem.</p>
+  </div>
+
+  <details class="more">
+    <summary>Läs mer: förväxla inte ozonhålet med växthuseffekten</summary>
+    <p>Ozonhålet och växthuseffekten är två olika problem med olika orsaker. Ozonhålet orsakas av freoner och handlar om att UV-strålning släpps igenom. Växthuseffekten orsakas av koldioxid och andra växthusgaser och handlar om värme som stannar kvar. Ozon finns också nära marken, där det är en luftförorening som kan irritera luftvägarna. Ozon är alltså bra högt upp men skadligt nära marken.</p>
+  </details>
+
+  <div class="key-box">
+    <h4>🔑 Kom ihåg</h4>
+    <p><strong>Ozonskiktet</strong> i stratosfären absorberar skadlig UV-strålning. <strong>Freoner</strong> bröt ner det, men sedan Montrealprotokollet 1987 har utsläppen minskat och ozonskiktet återhämtar sig.</p>
+  </div>
+</div>
+</div>
+
+<!-- ========== SAMMANFATTNING ========== -->
+<div class="section" id="sammanfattning">
+<div class="container">
+  <p class="section-eyebrow">Sammanfattning</p>
+  <h2 class="section-title">Det viktigaste i korthet</h2>
+
+  <div class="key-box">
+    <h4>🔑 Begrepp att kunna</h4>
+    <dl>
+      <div class="term-row"><dt>Luft-, mark- och vattenföroreningar</dt><dd> – utsläpp som hamnar i luft, mark och vatten. Problemet beror på koncentrationen, och luftföroreningar sprids lättast.</dd></div>
+      <div class="term-row"><dt>Miljögift</dt><dd> – ett giftigt, svårnedbrytbart ämne som ofta är fettlösligt och ansamlas i naturen.</dd></div>
+      <div class="term-row"><dt>Bioackumulation</dt><dd> – ett ämne ansamlas i en organisms fettvävnad.</dd></div>
+      <div class="term-row"><dt>Biomagnifikation</dt><dd> – koncentrationen av ett ämne ökar uppåt i näringskedjan.</dd></div>
+      <div class="term-row"><dt>Tungmetaller</dt><dd> – kadmium, bly och kvicksilver. De finns naturligt i berggrunden, men kommer också från gruvor och avfall, och de bryts aldrig ner.</dd></div>
+      <div class="term-row"><dt>Försurning</dt><dd> – svaveldioxid och kväveoxider bildar syror i atmosfären och faller ner som surt regn.</dd></div>
+      <div class="term-row"><dt>Övergödning</dt><dd> – för mycket fosfor och kväve ger algblomning, och när algerna bryts ner uppstår syrebrist.</dd></div>
+      <div class="term-row"><dt>Ozonskiktet</dt><dd> – ett lager i stratosfären som absorberar UV-strålning. Freoner bröt ner det, men det återhämtar sig sedan freonerna förbjöds.</dd></div>
+    </dl>
+  </div>
+
+  <div class="key-box teal">
+    <h4>🌍 Den röda tråden</h4>
+    <p>Miljöproblem handlar om att koncentrationen av ett ämne blir för hög i en viss miljö. Vissa ämnen stannar kvar och ansamlas (miljögifter och tungmetaller), andra sprids med luften (försurning), och andra göder naturen så mycket att den slår över (övergödning). Ozonskiktet visar att problem kan lösas när länder samarbetar.</p>
+  </div>
+</div>
+</div>
+
+<!-- ========== KOLLA ATT DU KAN ========== -->
+<div class="section" id="kolla">
+<div class="container">
+  <p class="section-eyebrow">Självbedömning</p>
+  <h2 class="section-title">Kolla att du kan</h2>
+  <p class="section-intro">Försök svara utan att titta i texten. Visa sedan mallsvaret och bocka i om du hade med det viktigaste.</p>
+  <div id="q-wrap"></div>
+</div>
+</div>
+
+</main>
+
+<footer>
+  <a href="nk1b-hallbar-utveckling.html">← Tillbaka till Hållbar utveckling</a> &middot; NK1b &middot; Lokala miljöproblem
+</footer>
+
+<script src="shared.js"></script>
+<script>
+requireLogin('NK1b');
+
+const QUESTIONS = [
+  { group: "Utsläpp och miljögifter",
+    q: "Förklara varför ett ämne kan vara ofarligt i en miljö men orsaka skador i en annan. Varför kan luftföroreningar orsaka skador långt från utsläppet?",
+    model: [
+      "Det är koncentrationen av ämnet i en viss miljö som avgör. Små mängder kan vara ofarliga, men höga koncentrationer eller ansamling skadar naturen.",
+      "Luftföroreningar sprids med vinden, så de kan hamna långt från platsen där de släpptes ut."
+    ] },
+  { q: "Ge ett exempel på en källa till föroreningar i luft, i mark och i vatten.",
+    model: [
+      "Luft: t.ex. gaser från förbränning av fossila bränslen eller sot.",
+      "Mark: t.ex. industriavfall eller konstgödsel och bekämpningsmedel från jordbruket.",
+      "Vatten: t.ex. orenat avloppsvatten, oljeutsläpp eller läckage av näringsämnen från jordbruk."
+    ] },
+  { q: "Vad är ett miljögift? Nämn egenskaperna som gör ett ämne till ett miljögift.",
+    model: [
+      "Ett ämne som är giftigt för levande organismer och som ger negativa effekter på ekosystemet.",
+      "Det är svårnedbrytbart, ofta fettlösligt (ansamlas i fettvävnad) och ökar i koncentration uppåt i näringskedjan."
+    ] },
+  { q: "Förklara skillnaden mellan bioackumulation och biomagnifikation. Varför drabbas toppkonsumenter hårdast?",
+    model: [
+      "Bioackumulation: ett fettlösligt ämne ansamlas i en organisms fettvävnad.",
+      "Biomagnifikation: koncentrationen ökar för varje led uppåt i näringskedjan, eftersom varje konsument äter många av de som ligger under.",
+      "Toppkonsumenter ligger högst upp och får därför i sig de högsta halterna."
+    ] },
+  { group: "Tungmetaller och försurning",
+    q: "Nämn tre tungmetaller och förklara varför de är problematiska i naturen. Vad skiljer dem från organiska miljögifter?",
+    model: [
+      "Kadmium, bly och kvicksilver. De är giftiga och ansamlas i organismer och koncentreras högst upp i näringskedjan.",
+      "Tungmetaller är grundämnen och kan aldrig brytas ner. Organiska miljögifter bryts ner, men mycket långsamt."
+    ] },
+  { q: "Beskriv hur surt regn bildas.",
+    model: [
+      "Förbränning av fossila bränslen och industri släpper ut svaveldioxid och kväveoxider.",
+      "De reagerar i atmosfären och bildar svavelsyra och salpetersyra, som regnar ner som surt regn."
+    ] },
+  { q: "Förklara två konsekvenser av försurning för skog, mark eller sjöar.",
+    model: [
+      "Barrens skyddande vaxlager förstörs, så barren gulnar och tappas, och träden blir svagare och angrips lättare av skadeinsekter och sjukdomar.",
+      "Vid lågt pH frigörs aluminium som skadar rötterna (och fisk i sjöar).",
+      "Vätejoner trycker undan näringsämnen (Ca²⁺, Mg²⁺, K⁺) från markpartiklarna, och de sköljs bort med markvattnet."
+    ] },
+  { group: "Övergödning och ozonskiktet",
+    q: "Beskriv övergödningens händelseförlopp från gödning av en åker till syrebrist i sjön.",
+    model: [
+      "Fosfor och kväve från gödsling läcker via diken till sjöar och åar.",
+      "Växtligheten ökar, och det blir algblomning som skymmer ljuset.",
+      "Algerna dör och bryts ner av nedbrytare som förbrukar syret. Det blir syrebrist på botten och bottenlevande organismer dör."
+    ] },
+  { q: "Förklara hur övergödning hänger ihop med begreppen producent och nedbrytare från ekologin.",
+    model: [
+      "Algerna är producenter som växer kraftigt när näringen ökar.",
+      "När algerna dör bryter nedbrytarna ner dem och använder syre i sin cellandning, så syret tar slut."
+    ] },
+  { q: "Vad är ozonskiktet, vad hotade det och hur skiljer sig ozonhålet från växthuseffekten?",
+    model: [
+      "Ozonskiktet i stratosfären absorberar skadlig UV-strålning. Freoner bröt ner det, vilket gav ett ozonhål (särskilt över Antarktis).",
+      "Ozonhålet beror på freoner och handlar om att mer UV-strålning släpps igenom. Växthuseffekten beror på koldioxid och andra växthusgaser och handlar om värme som stannar kvar.",
+      "Montrealprotokollet (1987) fasade ut freonerna, och ozonskiktet återhämtar sig."
+    ] }
+];
+
+let checked = new Array(QUESTIONS.length).fill(false);
+
+function buildQuestions() {
+  const wrap = document.getElementById('q-wrap');
+  QUESTIONS.forEach((q, i) => {
+    if (q.group) wrap.insertAdjacentHTML('beforeend', `<h3 class="sub-title" style="margin-top:${i===0?0:32}px">${q.group}</h3>`);
+    const items = q.model.map(m => `<li>${m}</li>`).join('');
+    wrap.insertAdjacentHTML('beforeend', `
+      <div class="q-card">
+        <div class="q-num">Fråga ${i+1} av ${QUESTIONS.length}</div>
+        <div class="q-text">${q.q}</div>
+        <textarea class="q-textarea" id="qta-${i}" placeholder="Skriv ditt svar här..."></textarea>
+        <button class="q-btn" onclick="showModel(${i})">Visa mallsvar →</button>
+        <div class="q-model" id="qmodel-${i}">
+          <div class="q-model-header">📋 Mallsvar</div>
+          <div class="q-model-body">
+            <ul>${items}</ul>
+            <div class="q-self-check">
+              <input type="checkbox" id="qcheck-${i}" onchange="toggleCheck(${i})"/>
+              <label for="qcheck-${i}">Jag hade med det viktigaste</label>
+            </div>
+          </div>
+        </div>
+        <button class="q-retry" onclick="resetQuestion(${i})">↩ Rensa och försök igen</button>
+      </div>`);
+  });
+  updateScore();
+}
+
+function showModel(i) { document.getElementById(`qmodel-${i}`).classList.add('shown'); }
+function toggleCheck(i) { checked[i] = document.getElementById(`qcheck-${i}`).checked; updateScore(); }
+function resetQuestion(i) {
+  document.getElementById(`qta-${i}`).value = '';
+  document.getElementById(`qmodel-${i}`).classList.remove('shown');
+  document.getElementById(`qcheck-${i}`).checked = false;
+  checked[i] = false;
+  updateScore();
+}
+
+function updateScore() {
+  const n = checked.filter(Boolean).length;
+  const total = QUESTIONS.length;
+  const msg = n === total ? '🎉 Utmärkt – du kan hela avsnittet!'
+    : n >= 7 ? '👍 Bra jobbat! Kika igenom de du missat.'
+    : n >= 1 ? '📖 Bra start – fortsätt öva på resten.'
+    : '🔍 Gå tillbaka till materialet och försök igen.';
+
+  let bar = document.getElementById('q-scorebar');
+  if (!bar) {
+    document.getElementById('q-wrap').insertAdjacentHTML('afterend',
+      `<div class="q-score-bar" id="q-scorebar">
+        <div class="q-score-num" id="qs-num">${n}/${total}</div>
+        <div><div class="q-score-label">Självskattning</div><div class="q-score-msg" id="qs-msg">${msg}</div></div>
+      </div>`);
+  } else {
+    document.getElementById('qs-num').textContent = `${n}/${total}`;
+    document.getElementById('qs-msg').textContent = msg;
+  }
+}
+
+
+function toggleChain(btn) {
+  const chain = btn.closest('.chain');
+  const answers = JSON.parse(chain.dataset.answer);
+  const boxes = chain.querySelectorAll('.cb.ans');
+  const showing = boxes[0].classList.contains('shown');
+  boxes.forEach((b, i) => {
+    if (showing) { b.classList.remove('shown'); b.textContent = '???'; }
+    else { b.classList.add('shown'); b.textContent = answers[i] || answers[0]; }
+  });
+  btn.textContent = showing ? 'Visa förslag' : 'Dölj förslag';
+}
+
+buildQuestions();
+</script>
+
+</body>
+</html>
