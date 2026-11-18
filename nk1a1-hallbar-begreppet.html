@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Hållbarhetsbegreppet & konsumtion – NK1a1</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Mulish:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #faf7f2; --surface: #ffffff; --border: #e8e0d0;
+      --sand: #f2ece0; --rust: #b85c2a; --rust2: #d4703a;
+      --teal: #2a7a6a; --blue: #2a4a7a; --text: #1a1612;
+      --muted: #6a5e52; --radius: 10px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Mulish', sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; font-size: 16px; }
+
+    .top-bar { background: #1a1612; padding: 14px 28px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; position: sticky; top: 0; z-index: 100; }
+    .back-link { color: #c8b89a; text-decoration: none; font-size: .82rem; transition: color .2s; }
+    .back-link:hover { color: #fff; }
+    .top-title { font-family: 'Playfair Display', serif; font-size: 1rem; color: #e8dcc8; }
+    .top-title span { color: #d4a060; }
+
+    .hero { background: linear-gradient(135deg, #1a1612 0%, #1a2820 60%, #1a1612 100%); padding: 64px 32px 56px; text-align: center; position: relative; overflow: hidden; }
+    .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 60% 60% at 30% 50%, rgba(42,122,106,.12) 0%, transparent 60%), radial-gradient(ellipse 50% 70% at 80% 30%, rgba(180,92,42,.06) 0%, transparent 55%); pointer-events: none; }
+    .hero-eyebrow { font-size: .72rem; letter-spacing: .22em; text-transform: uppercase; color: #d4a060; margin-bottom: 12px; }
+    .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 5vw, 3rem); font-weight: 900; color: #f0e8d8; margin-bottom: 16px; line-height: 1.15; }
+    .hero-sub { font-size: 1rem; color: #a09080; max-width: 560px; margin: 0 auto 32px; line-height: 1.7; }
+    .hero-nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+    .hero-nav a { font-size: .8rem; color: #c8b89a; border: 1px solid rgba(200,184,154,.3); border-radius: 30px; padding: 7px 16px; text-decoration: none; transition: all .2s; }
+    .hero-nav a:hover { background: rgba(200,184,154,.12); color: #fff; }
+
+    .container { max-width: 860px; margin: 0 auto; padding: 0 24px; }
+    .section { padding: 60px 0; }
+    .section + .section { border-top: 1px solid var(--border); }
+
+    .section-eyebrow { font-size: .7rem; letter-spacing: .2em; text-transform: uppercase; color: var(--rust); font-weight: 600; margin-bottom: 8px; }
+    .section-title { font-family: 'Playfair Display', serif; font-size: clamp(1.5rem, 3vw, 2rem); color: var(--text); margin-bottom: 6px; line-height: 1.25; }
+    .section-intro { font-size: .95rem; color: var(--muted); margin-bottom: 32px; max-width: 640px; line-height: 1.7; }
+
+    .prose { font-size: .95rem; line-height: 1.75; color: #2a2016; margin-bottom: 24px; }
+    .prose strong { color: var(--text); font-weight: 600; }
+
+    .key-box { background: var(--sand); border-left: 4px solid var(--rust2); border-radius: 0 var(--radius) var(--radius) 0; padding: 18px 22px; margin-bottom: 28px; }
+    .key-box h4 { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--rust); margin-bottom: 10px; }
+    .key-box p { font-size: .88rem; color: #4a3a2a; line-height: 1.65; }
+    .key-box dl { font-size: .88rem; color: #4a3a2a; display: flex; flex-direction: column; gap: 8px; }
+    .key-box dt { font-weight: 600; color: var(--text); display: inline; }
+    .key-box dd { display: inline; margin: 0; }
+    .key-box .term-row { line-height: 1.55; }
+
+    .tag-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
+    .tag-chip { background: var(--sand); border: 1px solid var(--border); border-radius: 30px; padding: 6px 14px; font-size: .82rem; color: #4a3a2a; }
+
+    .factor-columns { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin-bottom: 12px; }
+    .factor-columns h4 { font-family: 'Playfair Display', serif; font-size: .95rem; margin-bottom: 12px; color: var(--text); }
+    .factor-columns .tag-grid { margin-bottom: 0; }
+
+    .key-box.teal { border-left-color: var(--teal); }
+    .key-box.teal h4 { color: var(--teal); }
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 28px; }
+    .two-col .key-box { margin-bottom: 0; }
+
+    .dim-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 28px; }
+    .dim-card { background: var(--surface); border: 1px solid var(--border); border-top: 5px solid var(--border); border-radius: var(--radius); padding: 18px 18px 16px; display: flex; flex-direction: column; }
+    .dim-card.eco { border-top-color: #3a8a4a; }
+    .dim-card.soc { border-top-color: #c0566a; }
+    .dim-card.eko { border-top-color: #3a78b8; }
+    .dim-card h3 { font-family: 'Playfair Display', serif; font-size: 1.02rem; margin-bottom: 8px; }
+    .dim-card p { font-size: .86rem; color: #4a3a2a; line-height: 1.55; }
+    .dim-card .def { margin-bottom: 10px; }
+    .dim-card ul { margin: 0 0 12px 18px; font-size: .86rem; color: #4a3a2a; line-height: 1.6; }
+    .dim-card p.ex { margin-top: auto; padding-top: 10px; border-top: 1px solid var(--border); color: var(--muted); font-size: .82rem; }
+
+    .link-row { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 24px; }
+    .link-btn { display: inline-block; background: var(--rust); color: #fff; text-decoration: none; font-weight: 700; font-size: .92rem; padding: 12px 22px; border-radius: 30px; transition: background .15s; }
+    .link-btn:hover { background: var(--rust2); }
+    .link-btn.alt { background: var(--teal); }
+    .link-btn.alt:hover { background: #3a9a88; }
+
+    .reflect-grid { display: grid; gap: 12px; }
+    .reflect-card { display: flex; gap: 14px; align-items: flex-start; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 18px; }
+    .reflect-card p { font-size: .92rem; color: #4a3a2a; line-height: 1.55; }
+    .reflect-card .num { flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 26px; border-radius: 50%; background: #1a1612; color: #fff; font-size: .8rem; font-weight: 700; }
+    .diagram-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px 20px 16px; margin-bottom: 20px; }
+    .fig { width: 100%; height: auto; display: block; margin: 0 auto; }
+    .diagram-caption { font-size: .82rem; color: var(--muted); line-height: 1.6; padding: 4px 4px 0; }
+    .diagram-caption strong { color: var(--text); }
+
+    .q-card { background: #1a1612; border: 1px solid #2a2018; border-radius: var(--radius); padding: 22px 26px; margin-bottom: 18px; }
+    .q-num { font-size: .68rem; letter-spacing: .18em; text-transform: uppercase; color: #d4a060; margin-bottom: 7px; font-weight: 600; }
+    .q-text { font-family: 'Playfair Display', serif; font-size: .95rem; color: #f0e8d8; margin-bottom: 14px; line-height: 1.5; }
+    .q-textarea { width: 100%; background: #0f0c08; border: 1.5px solid #2a2018; border-radius: 6px; color: #e8dcc8; font-family: 'Mulish', sans-serif; font-size: .9rem; padding: 11px 13px; resize: vertical; min-height: 80px; outline: none; transition: border-color .2s; line-height: 1.6; }
+    .q-textarea:focus { border-color: #d4703a; }
+    .q-btn { margin-top: 10px; font-family: 'Mulish', sans-serif; font-size: .84rem; font-weight: 600; padding: 8px 20px; border-radius: 6px; border: none; cursor: pointer; background: #d4703a; color: #fff; transition: background .2s; }
+    .q-btn:hover { background: #b85c2a; }
+    .q-model { margin-top: 14px; display: none; background: #0f0c08; border: 1px solid #2a2018; border-radius: 6px; overflow: hidden; }
+    .q-model.shown { display: block; }
+    .q-model-header { background: #2a2018; padding: 8px 16px; font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: #d4a060; font-weight: 600; }
+    .q-model-body { padding: 14px 18px; font-size: .88rem; color: #c8b89a; line-height: 1.75; }
+    .q-model-body strong { color: #f0e8d8; }
+    .q-model-body ul { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+    .q-model-body li { padding-left: 16px; position: relative; }
+    .q-model-body li::before { content: '→'; position: absolute; left: 0; color: #d4703a; font-size: .8rem; }
+    .q-self-check { margin-top: 12px; padding-top: 12px; border-top: 1px solid #2a2018; display: flex; align-items: center; gap: 10px; font-size: .82rem; color: #8a7a60; cursor: pointer; }
+    .q-self-check input { accent-color: #d4703a; width: 16px; height: 16px; cursor: pointer; }
+    .q-retry { margin-top: 10px; font-size: .78rem; color: #6a5a40; background: none; border: none; cursor: pointer; font-family: 'Mulish', sans-serif; text-decoration: underline; padding: 0; display: block; }
+    .q-score-bar { background: #0f0c08; border: 1px solid #2a2018; border-radius: var(--radius); padding: 20px 24px; margin-top: 32px; display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+    .q-score-num { font-family: 'Playfair Display', serif; font-size: 2rem; color: #d4703a; }
+    .q-score-label { font-size: .85rem; color: #8a7a60; }
+    .q-score-msg { font-size: .88rem; color: #c8b89a; }
+
+    footer { border-top: 1px solid var(--border); padding: 28px 24px; text-align: center; font-size: .78rem; color: var(--muted); margin-top: 40px; }
+    footer a { color: var(--teal); text-decoration: none; }
+
+    @media(max-width: 580px) {
+      .hero { padding: 44px 20px 36px; }
+      .container { padding: 0 16px; }
+      .factor-columns { grid-template-columns: 1fr; gap: 20px; }
+      .two-col { grid-template-columns: 1fr; }
+      .dim-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="top-bar">
+  <a href="nk1a1-hallbar-utveckling.html" class="back-link">← Hållbar utveckling</a>
+  <div class="top-title">NK1a1 &mdash; <span>Hållbarhetsbegreppet & konsumtion</span></div>
+</div>
+
+<div class="hero">
+  <p class="hero-eyebrow">Hållbar utveckling &middot; NK1a1</p>
+  <h1>Hållbarhetsbegreppet & konsumtion</h1>
+  <p class="hero-sub">Vad menas egentligen med hållbar utveckling, och hur hänger det ihop med hur vi lever och vad vi köper? Här går vi igenom de tre dimensionerna, olika sätt att tänka kring dem, ekologiskt fotavtryck och konsumtionens baksidor.</p>
+  <nav class="hero-nav">
+    <a href="#vad">Vad är hållbar utveckling?</a>
+    <a href="#dimensioner">Tre dimensioner</a>
+    <a href="#modeller">Två modeller</a>
+    <a href="#fotavtryck">Ekologiskt fotavtryck</a>
+    <a href="#baksidor">Konsumtionens baksidor</a>
+    <a href="#sammanfattning">Sammanfattning</a>
+    <a href="#kolla">Kolla att du kan</a>
+  </nav>
+</div>
+
+<main>
+
+<!-- SEKTION 1 – VAD ÄR HÅLLBAR UTVECKLING -->
+<div class="section" id="vad">
+<div class="container">
+  <p class="section-eyebrow">Utgångspunkten</p>
+  <h2 class="section-title">Vad är hållbar utveckling?</h2>
+  <p class="section-intro"><strong>Hållbar utveckling</strong> betyder att vi tillgodoser människors behov i dag på ett sätt som inte förstör möjligheterna för kommande generationer att tillgodose sina behov. Definitionen kommer från en FN-kommission som leddes av Gro Harlem Brundtland och som presenterade sin rapport 1987.</p>
+
+  <p class="prose">Man kan tänka på det som ett sparkonto. Vi kan leva på räntan, alltså på det som naturen hinner återskapa, men inte på själva kapitalet. Använder vi mer än jorden hinner förnya lämnar vi mindre till dem som kommer efter oss.</p>
+
+  <div class="key-box">
+    <h4>🔑 Kom ihåg</h4>
+    <p><strong>Hållbar utveckling</strong> = att möta dagens behov utan att äventyra framtida generationers möjligheter att möta sina. Det handlar inte bara om miljön, utan också om människor och ekonomi.</p>
+  </div>
+
+  <div class="key-box teal">
+    <h4>🌍 Fördjupning: de globala målen</h4>
+    <p>FN:s globala mål i Agenda 2030 bygger på samma idé. De försöker få med både miljön, människors levnadsvillkor och ekonomin i en gemensam plan.</p>
+  </div>
+</div>
+</div>
+
+<!-- SEKTION 2 – TRE DIMENSIONER -->
+<div class="section" id="dimensioner">
+<div class="container">
+  <p class="section-eyebrow">Tre dimensioner</p>
+  <h2 class="section-title">Ekologisk, social och ekonomisk hållbarhet</h2>
+  <p class="section-intro">För att kunna prata om hållbarhet delar man ofta upp begreppet i tre dimensioner. En verklig hållbar utveckling kräver att alla tre fungerar tillsammans.</p>
+
+  <div class="diagram-wrap">
+    <svg class="fig" viewBox="0 0 700 440" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Venndiagram med tre överlappande cirklar: ekologisk, social och ekonomisk hållbarhet. I mitten där alla tre möts står hållbar utveckling.">
+      <circle cx="350" cy="150" r="130" fill="#cfe6d0" fill-opacity=".75" stroke="#3a8a4a" stroke-width="2"/>
+      <circle cx="255" cy="285" r="130" fill="#f5d7dc" fill-opacity=".75" stroke="#c0566a" stroke-width="2"/>
+      <circle cx="445" cy="285" r="130" fill="#cfe3f4" fill-opacity=".75" stroke="#3a78b8" stroke-width="2"/>
+
+      <text x="350" y="80" text-anchor="middle" font-family="Playfair Display, serif" font-size="19" font-weight="700" fill="#1a1612">Ekologisk</text>
+      <text x="350" y="102" text-anchor="middle" font-family="Playfair Display, serif" font-size="19" font-weight="700" fill="#1a1612">hållbarhet</text>
+      <text x="350" y="124" text-anchor="middle" font-family="Mulish, sans-serif" font-size="12.5" fill="#3a5a40">naturen</text>
+
+      <text x="210" y="325" text-anchor="middle" font-family="Playfair Display, serif" font-size="19" font-weight="700" fill="#1a1612">Social</text>
+      <text x="210" y="347" text-anchor="middle" font-family="Playfair Display, serif" font-size="19" font-weight="700" fill="#1a1612">hållbarhet</text>
+      <text x="210" y="369" text-anchor="middle" font-family="Mulish, sans-serif" font-size="12.5" fill="#7a3a46">människorna</text>
+
+      <text x="490" y="325" text-anchor="middle" font-family="Playfair Display, serif" font-size="19" font-weight="700" fill="#1a1612">Ekonomisk</text>
+      <text x="490" y="347" text-anchor="middle" font-family="Playfair Display, serif" font-size="19" font-weight="700" fill="#1a1612">hållbarhet</text>
+      <text x="490" y="369" text-anchor="middle" font-family="Mulish, sans-serif" font-size="12.5" fill="#2a4a7a">resurserna</text>
+
+      <rect x="292" y="222" width="116" height="44" rx="10" fill="#ffffff" fill-opacity=".92" stroke="#e8e0d0"/>
+      <text x="350" y="241" text-anchor="middle" font-family="Mulish, sans-serif" font-size="13" font-weight="700" fill="#1a1612">Hållbar</text>
+      <text x="350" y="258" text-anchor="middle" font-family="Mulish, sans-serif" font-size="13" font-weight="700" fill="#1a1612">utveckling</text>
+    </svg>
+    <p class="diagram-caption">Hållbar utveckling finns där de tre dimensionerna möts och stödjer varandra.</p>
+  </div>
+
+  <div class="dim-grid">
+    <div class="dim-card eco">
+      <h3>🌿 Ekologisk hållbarhet</h3>
+      <p class="def">Naturen och ekosystemen mår bra och kan fortsätta ge oss det vi behöver.</p>
+      <ul>
+        <li>Välmående ekosystem</li>
+        <li>Giftfri miljö</li>
+        <li>Biologisk mångfald</li>
+      </ul>
+      <p class="ex">Exempel: en sjö som är ren nog för fisk och badande.</p>
+    </div>
+    <div class="dim-card soc">
+      <h3>🤝 Social hållbarhet</h3>
+      <p class="def">Människor har det de behöver för ett bra liv, och möjligheterna är rättvist fördelade.</p>
+      <ul>
+        <li>Hälsa</li>
+        <li>Trygghet</li>
+        <li>Utbildning</li>
+        <li>Rättvisa</li>
+      </ul>
+      <p class="ex">Exempel: alla barn kan gå i skolan, oavsett var de föds.</p>
+    </div>
+    <div class="dim-card eko">
+      <h3>💼 Ekonomisk hållbarhet</h3>
+      <p class="def">Ekonomin fungerar över tid utan att äta upp resurserna den bygger på.</p>
+      <ul>
+        <li>Hållbart resursuttag</li>
+        <li>Rättvisa arbetsvillkor</li>
+        <li>Miljövänlig teknik</li>
+      </ul>
+      <p class="ex">Exempel: ett företag som tjänar pengar utan att förstöra miljön eller utnyttja sina anställda.</p>
+    </div>
+  </div>
+
+  <div class="key-box">
+    <h4>🔑 Kom ihåg</h4>
+    <p><strong>Ekologisk hållbarhet</strong> handlar om naturen, <strong>social hållbarhet</strong> om människors liv och villkor, och <strong>ekonomisk hållbarhet</strong> om att hushålla med resurser. Alla tre behövs för att utvecklingen ska vara hållbar.</p>
+  </div>
+</div>
+</div>
+
+<!-- SEKTION 3 – TVÅ MODELLER -->
+<div class="section" id="modeller">
+<div class="container">
+  <p class="section-eyebrow">Olika sätt att tänka</p>
+  <h2 class="section-title">Två modeller över de tre dimensionerna</h2>
+  <p class="section-intro">Dimensionerna kan ritas upp på två olika sätt. Valet av modell säger något om hur man ser på hur de hänger ihop.</p>
+
+  <p class="prose"><strong>Venndiagrammet</strong> (cirklarna ovan) visar att de tre dimensionerna är lika viktiga och att de överlappar. Här väger ingen dimension tyngre än någon annan.</p>
+
+  <p class="prose"><strong>Hierarkimodellen</strong> ser det annorlunda. Här är den ekologiska hållbarheten grunden, eftersom ingen människa och ingen ekonomi kan finnas utan fungerande natur. Ovanpå naturen vilar samhället, och ovanpå samhället vilar ekonomin. Ordningen visar vad som är en förutsättning för vad.</p>
+
+  <div class="diagram-wrap">
+    <svg class="fig" viewBox="0 0 700 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Hierarkimodell i tre lager. Ekologisk hållbarhet är det breda understa lagret, social hållbarhet ligger ovanpå, och ekonomisk hållbarhet är det översta lagret.">
+      <rect x="70" y="250" width="560" height="84" rx="12" fill="#cfe6d0" stroke="#3a8a4a" stroke-width="2"/>
+      <text x="350" y="286" text-anchor="middle" font-family="Playfair Display, serif" font-size="19" font-weight="700" fill="#1a1612">Ekologisk hållbarhet</text>
+      <text x="350" y="310" text-anchor="middle" font-family="Mulish, sans-serif" font-size="13" fill="#3a5a40">naturen sätter ramarna för allt annat</text>
+
+      <rect x="150" y="160" width="400" height="84" rx="12" fill="#f5d7dc" stroke="#c0566a" stroke-width="2"/>
+      <text x="350" y="196" text-anchor="middle" font-family="Playfair Display, serif" font-size="19" font-weight="700" fill="#1a1612">Social hållbarhet</text>
+      <text x="350" y="220" text-anchor="middle" font-family="Mulish, sans-serif" font-size="13" fill="#7a3a46">samhället ryms inom naturen</text>
+
+      <rect x="230" y="70" width="240" height="84" rx="12" fill="#cfe3f4" stroke="#3a78b8" stroke-width="2"/>
+      <text x="350" y="106" text-anchor="middle" font-family="Playfair Display, serif" font-size="19" font-weight="700" fill="#1a1612">Ekonomisk hållbarhet</text>
+      <text x="350" y="130" text-anchor="middle" font-family="Mulish, sans-serif" font-size="13" fill="#2a4a7a">ekonomin bygger på samhället</text>
+
+      <text x="350" y="40" text-anchor="middle" font-family="Mulish, sans-serif" font-size="13" font-weight="600" fill="#6a5e52">Det som ligger under är en förutsättning för det som ligger ovanpå</text>
+    </svg>
+    <p class="diagram-caption">I hierarkimodellen är ekologisk hållbarhet grunden, och den sociala hållbarheten är grunden för den ekonomiska.</p>
+  </div>
+
+  <div class="key-box">
+    <h4>🔑 Det modellerna inte säger</h4>
+    <p>Ingen av modellerna visar vad som ingår i varje dimension. De säger inte heller om dimensionerna drar åt samma håll (<strong>synergi</strong>) eller åt olika håll (<strong>konflikt</strong>). Det måste man själv ta reda på i varje fall. Det gäller också att fråga vad någon menar när hen säger ”ekonomiskt hållbart”: att ekonomin ska kunna fortsätta växa, eller att vi ska hushålla med jordens resurser?</p>
+  </div>
+
+  <div class="two-col">
+    <div class="key-box">
+      <h4>⚡ Konflikt</h4>
+      <p>Billiga kläder är bra för plånboken (ekonomi), men kan betyda dåliga arbetsvillkor (social) och stora utsläpp (ekologisk).</p>
+    </div>
+    <div class="key-box teal">
+      <h4>🌱 Synergi</h4>
+      <p>Bättre utbildning (social) ger kunskap som kan leda till miljövänlig teknik (ekologisk), som i sin tur skapar nya jobb (ekonomisk).</p>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- SEKTION 4 – EKOLOGISKT FOTAVTRYCK -->
+<div class="section" id="fotavtryck">
+<div class="container">
+  <p class="section-eyebrow">Hur stor plats tar vi?</p>
+  <h2 class="section-title">Ekologiskt fotavtryck</h2>
+  <p class="section-intro">Ekologisk hållbarhet kan kännas abstrakt. Därför använder man ofta <strong>ekologiskt fotavtryck</strong>: en indirekt mätmetod som gör det möjligt att jämföra hur mycket vi påverkar naturen. Den räknar ut hur mycket natur som krävs för att förse en människa med boende, mat, kläder, transport och mycket annat.</p>
+
+  <div class="diagram-wrap">
+    <svg class="fig" viewBox="0 0 700 310" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Det ekologiska fotavtrycket. Till vänster en människas konsumtion: boende, mat, kläder, transport och prylar. Till höger den natur som krävs: CO₂-yta, skogsyta, betesmark, åkermark, produktivt hav och bebyggd yta.">
+      <defs>
+        <marker id="arr-fp" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="#4a3a2a"/>
+        </marker>
+      </defs>
+      <rect x="15" y="15" width="260" height="280" rx="14" fill="#f2ece0" stroke="#e8e0d0"/>
+      <text x="145" y="46" text-anchor="middle" font-family="Playfair Display, serif" font-size="17" font-weight="700" fill="#1a1612">Vi behöver</text>
+      <text x="45" y="90" font-family="Mulish, sans-serif" font-size="16" font-weight="600" fill="#1a1612">🏠 Boende</text>
+      <text x="45" y="132" font-family="Mulish, sans-serif" font-size="16" font-weight="600" fill="#1a1612">🍽️ Mat</text>
+      <text x="45" y="174" font-family="Mulish, sans-serif" font-size="16" font-weight="600" fill="#1a1612">👕 Kläder</text>
+      <text x="45" y="216" font-family="Mulish, sans-serif" font-size="16" font-weight="600" fill="#1a1612">🚗 Transport</text>
+      <text x="45" y="258" font-family="Mulish, sans-serif" font-size="16" font-weight="600" fill="#1a1612">📱 Prylar med mera</text>
+
+      <path d="M290,155 L412,155" stroke="#4a3a2a" stroke-width="3" marker-end="url(#arr-fp)"/>
+      <text x="351" y="140" text-anchor="middle" font-family="Mulish, sans-serif" font-size="12" fill="#6a5e52">kräver</text>
+
+      <rect x="425" y="15" width="260" height="280" rx="14" fill="#e3f0ec" stroke="#2a7a6a"/>
+      <text x="555" y="46" text-anchor="middle" font-family="Playfair Display, serif" font-size="17" font-weight="700" fill="#1a1612">Natur som krävs</text>
+      <text x="455" y="82" font-family="Mulish, sans-serif" font-size="15" font-weight="600" fill="#1a1612">🌫️ CO₂-yta</text>
+      <text x="455" y="118" font-family="Mulish, sans-serif" font-size="15" font-weight="600" fill="#1a1612">🌲 Skogsyta</text>
+      <text x="455" y="154" font-family="Mulish, sans-serif" font-size="15" font-weight="600" fill="#1a1612">🐄 Betesmark</text>
+      <text x="455" y="190" font-family="Mulish, sans-serif" font-size="15" font-weight="600" fill="#1a1612">🌾 Åkermark</text>
+      <text x="455" y="226" font-family="Mulish, sans-serif" font-size="15" font-weight="600" fill="#1a1612">🐟 Produktivt hav</text>
+      <text x="455" y="262" font-family="Mulish, sans-serif" font-size="15" font-weight="600" fill="#1a1612">🏙️ Bebyggd yta</text>
+    </svg>
+    <p class="diagram-caption">Fotavtrycket räknar ihop all mark och allt hav som behövs för det vi konsumerar och för att ta hand om utsläppen.</p>
+  </div>
+
+  <div class="tag-grid">
+    <span class="tag-chip">🌫️ CO₂-yta – skog som behövs för att binda koldioxiden vi släpper ut</span>
+    <span class="tag-chip">🌲 Skogsyta – skog för virke och papper</span>
+    <span class="tag-chip">🐄 Betesmark – mark för djur som betar</span>
+    <span class="tag-chip">🌾 Åkermark – mark för odling av mat och foder</span>
+    <span class="tag-chip">🐟 Produktivt hav – hav där fisk fångas</span>
+    <span class="tag-chip">🏙️ Bebyggd yta – mark under hus och vägar</span>
+  </div>
+
+  <p class="prose">Fotavtrycket mäts oftast i <strong>globala hektar</strong> per person. Det jämförs sedan med hur mycket biologiskt produktiv mark och vatten jorden har att dela på. Är vårt fotavtryck större än så, lever vi på mer än naturen hinner återskapa. Skillnaderna mellan länder är stora, och om alla levde som i Sverige skulle det behövas flera jordklot.</p>
+
+  <div class="key-box teal">
+    <h4>📅 Fördjupning: överkonsumtionsdagen</h4>
+    <p>Den dag på året då mänskligheten har förbrukat så mycket som jorden hinner förnya under ett helt år kallas <strong>överkonsumtionsdagen</strong>. Den infaller i dag på sommaren, och har med åren flyttats allt tidigare. Resten av året lever vi alltså på naturens kapital.</p>
+  </div>
+
+  <div class="key-box">
+    <h4>🔑 Kom ihåg</h4>
+    <p><strong>Ekologiskt fotavtryck</strong> = en indirekt mätmetod som visar hur mycket natur som krävs för att försörja en människa med boende, mat, kläder, transport med mera. Det gör det möjligt att jämföra människors och länders påverkan på naturen.</p>
+  </div>
+</div>
+</div>
+
+<!-- SEKTION 5 – KONSUMTIONENS BAKSIDOR -->
+<div class="section" id="baksidor">
+<div class="container">
+  <p class="section-eyebrow">Det vi inte ser</p>
+  <h2 class="section-title">Konsumtion har baksidor</h2>
+  <p class="section-intro">Det vi köper har en historia som sällan syns i butiken. Utsläpp och resursförbrukning sker längs hela vägen, både <strong>direkt</strong> när vi själva använder något, och <strong>indirekt</strong> när det tillverkas och transporteras innan det når oss.</p>
+
+  <div class="diagram-wrap">
+    <svg class="fig" viewBox="0 0 700 225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Konsumtionens väg i fem steg: råvaror, tillverkning, transport, användning och avfall. I varje steg sker utsläpp och resursförbrukning.">
+      <defs>
+        <marker id="arr-kv" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="#4a3a2a"/>
+        </marker>
+      </defs>
+
+      <g font-family="Mulish, sans-serif" text-anchor="middle">
+        <rect x="8" y="12" width="124" height="140" rx="12" fill="#f2ece0" stroke="#e8e0d0"/>
+        <text x="70" y="52" font-size="28">⛏️</text>
+        <text x="70" y="80" font-size="14" font-weight="700" fill="#1a1612">Råvaror</text>
+        <text x="70" y="102" font-size="11.5" fill="#6a5e52">gruvor, odling</text>
+        <text x="70" y="118" font-size="11.5" fill="#6a5e52">och avskogning</text>
+
+        <rect x="147" y="12" width="124" height="140" rx="12" fill="#f2ece0" stroke="#e8e0d0"/>
+        <text x="209" y="52" font-size="28">🏭</text>
+        <text x="209" y="80" font-size="14" font-weight="700" fill="#1a1612">Tillverkning</text>
+        <text x="209" y="102" font-size="11.5" fill="#6a5e52">energi och</text>
+        <text x="209" y="118" font-size="11.5" fill="#6a5e52">kemikalier</text>
+
+        <rect x="286" y="12" width="124" height="140" rx="12" fill="#f2ece0" stroke="#e8e0d0"/>
+        <text x="348" y="52" font-size="28">🚢</text>
+        <text x="348" y="80" font-size="14" font-weight="700" fill="#1a1612">Transport</text>
+        <text x="348" y="102" font-size="11.5" fill="#6a5e52">utsläpp från</text>
+        <text x="348" y="118" font-size="11.5" fill="#6a5e52">fartyg, bil, flyg</text>
+
+        <rect x="425" y="12" width="124" height="140" rx="12" fill="#f2ece0" stroke="#e8e0d0"/>
+        <text x="487" y="52" font-size="28">📱</text>
+        <text x="487" y="80" font-size="14" font-weight="700" fill="#1a1612">Användning</text>
+        <text x="487" y="102" font-size="11.5" fill="#6a5e52">el, vatten</text>
+        <text x="487" y="118" font-size="11.5" fill="#6a5e52">och underhåll</text>
+
+        <rect x="564" y="12" width="124" height="140" rx="12" fill="#f2ece0" stroke="#e8e0d0"/>
+        <text x="626" y="52" font-size="28">🗑️</text>
+        <text x="626" y="80" font-size="14" font-weight="700" fill="#1a1612">Avfall</text>
+        <text x="626" y="102" font-size="11.5" fill="#6a5e52">sopor, plast</text>
+        <text x="626" y="118" font-size="11.5" fill="#6a5e52">och kemikalier</text>
+      </g>
+
+      <g stroke="#4a3a2a" stroke-width="2.5" fill="none">
+        <path d="M133,82 L145,82" marker-end="url(#arr-kv)"/>
+        <path d="M272,82 L284,82" marker-end="url(#arr-kv)"/>
+        <path d="M411,82 L423,82" marker-end="url(#arr-kv)"/>
+        <path d="M550,82 L562,82" marker-end="url(#arr-kv)"/>
+      </g>
+
+      <path d="M8,176 L688,176" stroke="#b85c2a" stroke-width="3"/>
+      <text x="348" y="204" text-anchor="middle" font-family="Mulish, sans-serif" font-size="14" font-weight="700" fill="#b85c2a">Utsläpp och resursförbrukning sker i varje steg</text>
+    </svg>
+    <p class="diagram-caption">Det mesta av påverkan sker utanför butiken, och mycket av den ser vi aldrig.</p>
+  </div>
+
+  <div class="tag-grid">
+    <span class="tag-chip">💨 Växthusgaser</span>
+    <span class="tag-chip">☣️ Miljögifter</span>
+    <span class="tag-chip">🪨 Metaller</span>
+    <span class="tag-chip">🧴 Plast</span>
+    <span class="tag-chip">💊 Läkemedel och kemikalier</span>
+    <span class="tag-chip">🗑️ Sopavfall</span>
+  </div>
+
+  <p class="prose">Konsumtion påverkar också hur mycket livsmiljö som finns kvar för andra arter. När skog avverkas för att odla mat och foder, eller marken grävs upp för att få fram metaller, förlorar växter och djur sina <strong>habitat</strong>. Det leder till minskad biologisk mångfald (se avsnitt 6 i ekologin).</p>
+
+  <div class="two-col">
+    <div class="key-box">
+      <h4>🌳 Exempel: avskogning</h4>
+      <p>Regnskog i Amazonas avverkas för att odla mat till köttdjur och för annan konsumtion. Då försvinner livsmiljöer, och kolet som skogen lagrat kan hamna i atmosfären.</p>
+    </div>
+    <div class="key-box">
+      <h4>⛏️ Exempel: gruvor</h4>
+      <p>Gruvor används för att få fram rena metaller. De innebär stora ingrepp i naturen, och utvinningen kräver både energi och kemikalier.</p>
+    </div>
+  </div>
+
+  <div class="key-box">
+    <h4>🔑 Kom ihåg</h4>
+    <p>Konsumtion ger <strong>direkta</strong> och <strong>indirekta</strong> utsläpp och en stor resursförbrukning. Den leder också till avfall och förlorade livsmiljöer, och därmed till minskad biologisk mångfald.</p>
+  </div>
+</div>
+</div>
+
+<!-- SEKTION 6 – SAMMANFATTNING -->
+<div class="section" id="sammanfattning">
+<div class="container">
+  <p class="section-eyebrow">Sammanfattning</p>
+  <h2 class="section-title">Det viktigaste i korthet</h2>
+
+  <div class="key-box">
+    <h4>🔑 Begrepp att kunna</h4>
+    <dl>
+      <div class="term-row"><dt>Hållbar utveckling</dt><dd> – att möta dagens behov utan att äventyra kommande generationers möjligheter att möta sina.</dd></div>
+      <div class="term-row"><dt>Ekologisk hållbarhet</dt><dd> – välmående ekosystem, giftfri miljö och biologisk mångfald.</dd></div>
+      <div class="term-row"><dt>Social hållbarhet</dt><dd> – hälsa, trygghet, utbildning och rättvisa.</dd></div>
+      <div class="term-row"><dt>Ekonomisk hållbarhet</dt><dd> – hållbart resursuttag, rättvisa arbetsvillkor och miljövänlig teknik.</dd></div>
+      <div class="term-row"><dt>Ekologiskt fotavtryck</dt><dd> – en indirekt mätmetod som visar hur mycket natur som krävs för att försörja en människa med boende, mat, kläder, transport med mera.</dd></div>
+    </dl>
+  </div>
+
+  <div class="key-box teal">
+    <h4>🌍 Två sätt att se det</h4>
+    <p>I <strong>Venndiagrammet</strong> är de tre dimensionerna lika viktiga. I <strong>hierarkimodellen</strong> är ekologisk hållbarhet grunden, och den sociala är grunden för den ekonomiska.</p>
+  </div>
+</div>
+</div>
+
+<!-- SEKTION 8 – KOLLA ATT DU KAN -->
+<div class="section" id="kolla">
+<div class="container">
+  <p class="section-eyebrow">Självbedömning</p>
+  <h2 class="section-title">Kolla att du kan</h2>
+  <p class="section-intro">Försök svara utan att titta i texten. Visa sedan mallsvaret och bocka i om du hade med det viktigaste.</p>
+  <div id="q-wrap"></div>
+</div>
+</div>
+
+</main>
+
+<footer>
+  <a href="nk1a1-hallbar-utveckling.html">← Tillbaka till Hållbar utveckling</a> &middot; NK1a1 &middot; Hållbarhetsbegreppet & konsumtion
+</footer>
+
+<script src="shared.js"></script>
+<script>
+requireLogin('NK1a1');
+
+const QUESTIONS = [
+  {
+    q: "Vad menas med hållbar utveckling?",
+    model: [
+      "En utveckling som tillgodoser dagens behov utan att äventyra kommande generationers möjligheter att tillgodose sina behov.",
+      "Den handlar både om miljön, människors liv och villkor, och ekonomin."
+    ]
+  },
+  {
+    q: "Förklara de tre dimensionerna av hållbar utveckling. Ge ett exempel på vardera.",
+    model: [
+      "Ekologisk hållbarhet: välmående ekosystem, giftfri miljö och biologisk mångfald, t.ex. en ren sjö.",
+      "Social hållbarhet: hälsa, trygghet, utbildning och rättvisa, t.ex. att alla barn kan gå i skolan.",
+      "Ekonomisk hållbarhet: hållbart resursuttag, rättvisa arbetsvillkor och miljövänlig teknik, t.ex. ett företag som tjänar pengar utan att förstöra miljön."
+    ]
+  },
+  {
+    q: "Beskriv skillnaden mellan Venndiagrammet och hierarkimodellen över hållbar utveckling.",
+    model: [
+      "Venndiagrammet: de tre dimensionerna är lika viktiga och överlappar varandra.",
+      "Hierarkimodellen: ekologisk hållbarhet är grunden och en förutsättning för den sociala, och den sociala är en förutsättning för den ekonomiska."
+    ]
+  },
+  {
+    q: "Ge ett exempel där två dimensioner av hållbarhet står i konflikt med varandra, och ett exempel där de hjälper varandra (synergi).",
+    model: [
+      "Konflikt, t.ex. billiga kläder: bra för ekonomin men kan ge dåliga arbetsvillkor (social) och stora utsläpp (ekologisk).",
+      "Synergi, t.ex. bättre utbildning (social) som leder till miljövänlig teknik (ekologisk) och nya jobb (ekonomisk)."
+    ]
+  },
+  {
+    q: "Vad är ekologiskt fotavtryck, och vad kan man använda det till?",
+    model: [
+      "En indirekt mätmetod som visar hur mycket natur som krävs för att förse en människa med boende, mat, kläder, transport med mera.",
+      "Man kan jämföra människors, länders eller livsstilars påverkan på naturen."
+    ]
+  },
+  {
+    q: "Förklara varför konsumtion har baksidor. Ge minst två exempel på hur en vara kan påverka miljön innan den når butiken.",
+    model: [
+      "Utsläpp och resursförbrukning sker i många steg, t.ex. i gruvor, vid tillverkning och vid transport, och inte bara när vi använder varan (indirekta utsläpp).",
+      "Exempel: gruvor ger ingrepp i naturen och kräver energi och kemikalier. Tillverkning och transport ger utsläpp av växthusgaser och miljögifter."
+    ]
+  },
+  {
+    q: "Hur kan avskogning för att odla foder till köttdjur påverka den biologiska mångfalden?",
+    model: [
+      "Växter och djur förlorar sina livsmiljöer (habitat) när skogen försvinner.",
+      "Arter kan minska eller försvinna, och den biologiska mångfalden blir mindre."
+    ]
+  }
+];
+
+let checked = new Array(QUESTIONS.length).fill(false);
+
+function buildQuestions() {
+  const wrap = document.getElementById('q-wrap');
+  QUESTIONS.forEach((q, i) => {
+    const items = q.model.map(m => `<li>${m}</li>`).join('');
+    wrap.innerHTML += `
+      <div class="q-card">
+        <div class="q-num">Fråga ${i+1} av ${QUESTIONS.length}</div>
+        <div class="q-text">${q.q}</div>
+        <textarea class="q-textarea" id="qta-${i}" placeholder="Skriv ditt svar här..."></textarea>
+        <button class="q-btn" onclick="showModel(${i})">Visa mallsvar →</button>
+        <div class="q-model" id="qmodel-${i}">
+          <div class="q-model-header">📋 Mallsvar</div>
+          <div class="q-model-body">
+            <ul>${items}</ul>
+            <div class="q-self-check">
+              <input type="checkbox" id="qcheck-${i}" onchange="toggleCheck(${i})"/>
+              <label for="qcheck-${i}">Jag hade med det viktigaste</label>
+            </div>
+          </div>
+        </div>
+        <button class="q-retry" onclick="resetQuestion(${i})">↩ Rensa och försök igen</button>
+      </div>`;
+  });
+  updateScore();
+}
+
+function showModel(i) { document.getElementById(`qmodel-${i}`).classList.add('shown'); }
+function toggleCheck(i) { checked[i] = document.getElementById(`qcheck-${i}`).checked; updateScore(); }
+function resetQuestion(i) {
+  document.getElementById(`qta-${i}`).value = '';
+  document.getElementById(`qmodel-${i}`).classList.remove('shown');
+  document.getElementById(`qcheck-${i}`).checked = false;
+  checked[i] = false;
+  updateScore();
+}
+
+function updateScore() {
+  const n = checked.filter(Boolean).length;
+  const total = QUESTIONS.length;
+  const msg = n === total ? '🎉 Utmärkt – du kan hela avsnittet!'
+    : n >= 5 ? '👍 Bra jobbat! Kika igenom de du missat.'
+    : n >= 1 ? '📖 Bra start – fortsätt öva på resten.'
+    : '🔍 Gå tillbaka till materialet och försök igen.';
+
+  let bar = document.getElementById('q-scorebar');
+  if (!bar) {
+    document.getElementById('q-wrap').insertAdjacentHTML('afterend',
+      `<div class="q-score-bar" id="q-scorebar">
+        <div class="q-score-num" id="qs-num">${n}/${total}</div>
+        <div><div class="q-score-label">Självskattning</div><div class="q-score-msg" id="qs-msg">${msg}</div></div>
+      </div>`);
+  } else {
+    document.getElementById('qs-num').textContent = `${n}/${total}`;
+    document.getElementById('qs-msg').textContent = msg;
+  }
+}
+
+buildQuestions();
+</script>
+
+</body>
+</html>
